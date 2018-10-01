@@ -22,7 +22,7 @@ export default new VueRouter({
     },
     {
       path: '*',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/UnAuthed.vue'),
       children: [
         { path: '', component: () => import('pages/Error404.vue') },
       ],
