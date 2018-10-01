@@ -1,6 +1,6 @@
 <template>
   <div>
-      Pin Pad
+    Pin Pad
   </div>
 </template>
 
