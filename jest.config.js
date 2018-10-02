@@ -10,7 +10,7 @@ module.exports =
       '<rootDir>/src/**/*.{js}',
       '<rootDir>/src/**/*.{vue}'
     ],
-    'coverageDirectory': '<rootDir>/test/coverage',
+    'coverageDirectory': '<rootDir>/tests/coverage',
     'coverageThreshold': {
       'global': {
         'branches': 50,
