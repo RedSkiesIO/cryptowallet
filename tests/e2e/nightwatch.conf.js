@@ -1,10 +1,6 @@
 require('babel-register');
-// var config = require('../../config')
 const seleniumServer = require('selenium-server');
 const chromeDriver = require('chromedriver');
-
-const config = {};
-config.dev.port = 8080;
 
 module.exports = {
   src_folders: ['test/e2e/specs'],
@@ -27,7 +23,7 @@ module.exports = {
       selenium_host: 'localhost',
       silent: true,
       globals: {
-        devServerURL: `http://localhost:${(process.env.PORT || config.dev.port)}`,
+        devServerURL: `http://localhost:${process.env.PORT}`,
       },
     },
 

@@ -16,9 +16,11 @@
     "babel-loader": "^8.0.4",
     "bulma": "^0.7.1",
     "cordova": "^8.1.1",
+    "numeral": "^2.0.6",
     "vue-i18n": "^7.3.3"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.1.0",
     "@types/cross-spawn": "^6.0.0",
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-e2e-nightwatch": "^3.0.0",
@@ -29,6 +31,7 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
+    "babel-plugin-module-resolver": "^3.1.1",
     "cross-spawn": "^6.0.5",
     "lint-staged": "^7.2.0",
     "node-sass": "^4.9.0",
