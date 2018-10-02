@@ -1,4 +1,25 @@
 {
-    "presets": ["@vue/app"],
-    "comments": false
+  "presets": ["@vue/app"],
+  "comments": false,
+  "env": {
+    "test": {
+      "presets": [
+        ["env", { "targets": { "node": "current" }}]
+      ],
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": [
+              "./src"
+            ],
+            "alias": {
+              "quasar": "quasar-framework/dist/quasar.mat.esm.js",
+              "^vue$": "vue/dist/vue.common.js"
+            }
+          }
+        ]
+      ]
+    }
   }
+}
