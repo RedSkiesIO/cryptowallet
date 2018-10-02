@@ -1,4 +1,4 @@
 {
-    "presets": ["@vue/app"],
-    "comments": false
-  }
+  "presets": ["@vue/app"],
+  "comments": false,
+}

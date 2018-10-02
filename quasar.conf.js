@@ -1,3 +1,5 @@
+const path = require('path');
+
 /* eslint-disable-next-line */
 module.exports = function (ctx) {
   return {
@@ -16,7 +18,7 @@ module.exports = function (ctx) {
       scopeHoisting: true,
       // vueRouterMode: 'history',
       // vueCompiler: true,
-      gzip: true,
+      // gzip: true,
       // analyze: true,
       // extractCSS: false,
       extendWebpack(cfg) {
@@ -32,6 +34,7 @@ module.exports = function (ctx) {
       // https: true,
       // port: 8080,
       open: true,
+      contentBase: path.join(__dirname, '.quasar'),
     },
     framework: {
       components: [
