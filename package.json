@@ -1,6 +1,6 @@
 {
   "name": "acmobilewallet",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Atlas City Crypto Currency Wallet",
   "productName": "AC Mobile Wallet",
   "cordovaId": "com.atlascity.wallet.mobile",
@@ -10,11 +10,11 @@
     "lint": "vue-cli-service lint",
     "test:unit": "cross-env NODE_ENV=test jest",
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
-    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll"
+    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
+    "test:e2e": "cross-env NODE_ENV=test nightwatch -c tests/e2e/nightwatch.conf.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "babel-loader": "^8.0.4",
     "bulma": "^0.7.1",
     "cordova": "^8.1.1",
     "numeral": "^2.0.6",
@@ -23,7 +23,6 @@
   "devDependencies": {
     "@types/cross-spawn": "^6.0.0",
     "@types/jest": "^23.3.2",
-    "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-e2e-nightwatch": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
     "@vue/cli-service": "^3.0.0",
@@ -32,7 +31,6 @@
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
-    "codecov": "^3.1.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "eslint": "^5.5.0",
@@ -50,7 +48,6 @@
     "node-sass": "^4.9.0",
     "quasar-cli": "^0.17.19",
     "sass-loader": "^7.0.1",
-    "strip-ansi": "=3.0.1",
     "vue-jest": "^2.6.0"
   },
   "gitHooks": {
