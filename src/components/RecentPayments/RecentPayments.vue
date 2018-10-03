@@ -17,6 +17,7 @@ export default {
   components: {
     PaymentsGroup,
   },
+
   computed: {
     payments() {
       return this.$store.state.wallet.payments;
