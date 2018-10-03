@@ -2,19 +2,19 @@ module.exports = {
   root: true,
   parserOptions: {
     parser: 'babel-eslint',
-    sourceType: 'module'
+    sourceType: 'module',
   },
   env: {
-    browser: true
+    browser: true,
   },
   extends: ['plugin:vue/recommended', 'airbnb-base'],
   plugins: [
-    'vue'
+    'vue',
   ],
   globals: {
-    'cordova': true,
+    cordova: true,
   },
-  'rules': {
+  rules: {
     'no-param-reassign': 0,
     'import/first': 0,
     'import/named': 2,
@@ -24,6 +24,6 @@ module.exports = {
     'import/extensions': 0,
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': 0,
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
-  }
-}
+    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+  },
+};
