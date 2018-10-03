@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { date } from 'quasar';
 import PaymentsGroup from './PaymentsGroup.vue';
 
 export default {
@@ -27,17 +26,19 @@ export default {
       const groupedPayments = [];
 
       sortedByDate.forEach((payment) => {
-        const groupItem = groupedPayments.find(item => item.date === date.formatDate(payment.ts, 'DD MMMM'));
+        let timeStamp = new Date(payment.ts * 1000);
+        timeStamp = `${timeStamp.getDay} ${timeStamp.getYear}`;
+        const groupItem = groupedPayments.find(item => item.date === timeStamp);
 
         if (!groupItem) {
           groupedPayments.push({
-            date: date.formatDate(payment.ts, 'DD MMMM'),
+            date: timeStamp,
             payments: [],
           });
         }
 
         groupedPayments.map((item) => {
-          if (item.date === date.formatDate(payment.ts, 'DD MMMM')) item.payments.push(payment);
+          if (item.date === timeStamp) item.payments.push(payment);
           return item;
         });
       });
