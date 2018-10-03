@@ -10,7 +10,7 @@ module.exports =
       '<rootDir>/src/**/*.{js}',
       '<rootDir>/src/**/*.{vue}'
     ],
-    'coverageDirectory': '<rootDir>/tests/coverage',
+    'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
     'coverageThreshold': {
       'global': {
         'branches': 50,
@@ -30,7 +30,7 @@ module.exports =
       '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     ],
     'testPathIgnorePatterns': [
-      '<rootDir>/components/coverage/'
+      '<rootDir>/tests/unit/__coverage__'
     ],
     'moduleFileExtensions': [
       'js',
@@ -39,7 +39,8 @@ module.exports =
     ],
     'moduleNameMapper': {
       '^@/(.*)$': '<rootDir>/src/$1',
-      '^vue$': 'vue/dist/vue.common.js',
+      "^assets/(.*)$": "<rootDir>/src/assets/$1",
+      "^variables/(.*)$": "<rootDir>/src/themes/quasar.variables.sty/$1",
       'quasar': 'quasar-framework/dist/umd/quasar.mat.umd.min.js'
     },
     'transformIgnorePatterns': [
@@ -49,9 +50,12 @@ module.exports =
       'node_modules/vue'
     ],
     'transform': {
-      '^.+\\.vue$': 'vue-jest',
-      '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-      '^.+\\.js$': 'babel-jest',
+      '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
+      '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
+      '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub'
     },
-    snapshotSerializers: ['jest-serializer-vue'],
+    'snapshotSerializers': [
+      '<rootDir>/node_modules/jest-serializer-vue'
+    ]
   }
+
