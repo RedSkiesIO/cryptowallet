@@ -5,10 +5,12 @@ module.exports =
     'globals': {
       '__DEV__': true
     },
-    'collectCoverage': true,
+    'collectCoverage': false,
     'collectCoverageFrom': [
-      '<rootDir>/src/**/*.{js}',
-      '<rootDir>/src/**/*.{vue}'
+      '<rootDir>/src/components/**/*.vue',
+      '<rootDir>/src/layouts/**/*.vue',
+      '<rootDir>/src/pages/**/*.vue',
+      '<rootDir>/src/plugins/**/*.js'
     ],
     'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
     'coverageThreshold': {
@@ -38,10 +40,10 @@ module.exports =
       'vue'
     ],
     'moduleNameMapper': {
-      '^@/(.*)$': '<rootDir>/src/$1',
-      "^assets/(.*)$": "<rootDir>/src/assets/$1",
-      "^variables/(.*)$": "<rootDir>/src/themes/quasar.variables.sty/$1",
-      'quasar': 'quasar-framework/dist/umd/quasar.mat.umd.min.js'
+      '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
+      '^quasar$': '<rootDir>/tmp/quasar.common.js',
+      '^~/(.*)$': '<rootDir>/$1',
+      '^@/(.*)$': '<rootDir>/src/$1'
     },
     'transformIgnorePatterns': [
       'node_modules/core-js',
@@ -52,7 +54,6 @@ module.exports =
     'transform': {
       '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
       '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
-      '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub'
     },
     'snapshotSerializers': [
       '<rootDir>/node_modules/jest-serializer-vue'
