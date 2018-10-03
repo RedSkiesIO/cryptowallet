@@ -35,7 +35,6 @@ module.exports = function (ctx) {
     },
     framework: {
       components: [
-        'date',
         'QLayout',
         'QLayoutHeader',
         'QLayoutDrawer',
