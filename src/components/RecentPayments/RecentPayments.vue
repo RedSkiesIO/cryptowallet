@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { date } from 'quasar';
 import PaymentsGroup from './PaymentsGroup.vue';
 
 export default {
@@ -22,6 +23,7 @@ export default {
       return this.$store.state.wallet.payments;
     },
     groupedPayments() {
+      console.log(date);
       const sortedByDate = this.payments.slice().sort((a, b) => b.ts - a.ts);
       const groupedPayments = [];
 
