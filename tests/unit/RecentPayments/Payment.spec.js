@@ -36,6 +36,6 @@ describe('Payment.vue', () => {
   });
 
   it('renders the payment time string', () => {
-    expect(wrapper.html().includes('13:46')).toBe(true);
+    expect(wrapper.html().includes('12:46')).toBe(true);
   });
 });

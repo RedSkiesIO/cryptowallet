@@ -40,7 +40,7 @@ export default {
      * @return {String} eg. "02:59"
      */
     paymentTime() {
-      return new Date(this.payment.ts).toTimeString().split(' ')[0].slice(0, 5);
+      return new Date(this.payment.ts).toUTCString().split(' ')[4].slice(0, 5);
     },
   },
 };
