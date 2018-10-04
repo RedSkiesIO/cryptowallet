@@ -24,6 +24,11 @@ export default {
     },
   },
   computed: {
+    /*
+     * adds up all of the paymements amounts within this payment group
+     * will result in eiter a positive or a negative number
+     * @return {Number}
+     */
     balanceChange() {
       return this.group.payments.reduce((accumulator, payment) => accumulator + payment.amount, 0);
     },

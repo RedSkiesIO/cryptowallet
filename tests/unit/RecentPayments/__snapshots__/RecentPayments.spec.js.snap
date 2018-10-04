@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecentPayments.vue renders and matches snapshot 1`] = `
+<section
+  class="recent-payments"
+>
+  <paymentsgroup-stub
+    group="[object Object]"
+  />
+  <paymentsgroup-stub
+    group="[object Object]"
+  />
+  <paymentsgroup-stub
+    group="[object Object]"
+  />
+</section>
+`;
