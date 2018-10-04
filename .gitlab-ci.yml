@@ -1,0 +1,7 @@
+build-develop:
+  stage: build
+  script:
+    - docker build .
+    - docker run -v ${PWD}:/srv cryptosregistry.azurecr.io/alpine-node:lts-carbon sh -c "cd srv && npm install && npm run test:unit
+  only:
+    - develop
