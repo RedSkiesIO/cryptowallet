@@ -1,15 +1,6 @@
-<!--
-
-it renders a div with amount-ox class
-it variant grey is passed, it renders grey-text class
-it rendersp properly formatted amount
-
- -->
-
-
 <template>
   <div
-    :class="{ 'grey-text': variant.indexOf('grey') != -1 }"
+    :class="{ 'grey-text': variant.indexOf('grey') >= 0 }"
     class="amount-box"
   >
     <div>{{ formattedAmount }}</div>
@@ -34,6 +25,12 @@ export default {
     },
   },
   computed: {
+    /*
+     * converts raw amount {Number} into a {String} that begins with
+     * either "+" or "-" and ends with " £"" also, it formats the number
+     * into currency friendly format: "0.00"
+     * @return {String} eg. "+12.40 £" or "-1.00 £"
+     */
     formattedAmount() {
       const formatted = `${numeral(this.amount).format('0.00')} £`;
       return (this.amount > 0 ? `+${formatted}` : formatted);
