@@ -12,6 +12,7 @@
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
     "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
     "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
+    "snapshot:update": "cross-env NODE_ENV=test jest --updateSnapshot",
     "appium": "appium",
     "appium-doctor": "appium-doctor"
   },
@@ -36,6 +37,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
+    "chromedriver": "^2.42.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "eslint": "^4.9.0",
