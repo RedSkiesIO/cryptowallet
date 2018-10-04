@@ -1,7 +1,7 @@
 export default {
   payments: [
     {
-      ts: 1539527543000,
+      ts: 1539527543100,
       title: 'Sainsbury\'s',
       amount: -4.97,
     },
@@ -11,7 +11,7 @@ export default {
       amount: -10.00,
     },
     {
-      ts: 1539144743000,
+      ts: 1539144743020,
       title: 'Motion',
       amount: -47.97,
     },
@@ -21,7 +21,7 @@ export default {
       amount: -27.98,
     },
     {
-      ts: 1539866783000,
+      ts: 1539866783020,
       title: 'From Tom Jones',
       amount: 8.10,
     },
