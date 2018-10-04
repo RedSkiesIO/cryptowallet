@@ -12,6 +12,7 @@
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
     "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
     "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
+    "snapshot:update":  "cross-env NODE_ENV=test jest --updateSnapshot",
     "appium": "appium",
     "appium-doctor": "appium-doctor"
   },
