@@ -22,7 +22,6 @@
 
 <script>
 import Amount from './Amount.vue';
-import { date } from 'quasar';
 
 export default {
   name: 'Payment',
@@ -36,8 +35,12 @@ export default {
     },
   },
   computed: {
+    /*
+     * converts timestamp into full date string and then extracts only the time out of it (HH:mm)
+     * @return {String} eg. "02:59"
+     */
     paymentTime() {
-      return date.formatDate(this.payment.ts, 'HH:mm');
+      return new Date(this.payment.ts).toTimeString().split(' ')[0].slice(0, 5);
     },
   },
 };
