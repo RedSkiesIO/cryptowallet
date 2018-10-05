@@ -21,6 +21,7 @@ module.exports = {
     'import/namespace': 2,
     'import/default': 2,
     'import/export': 2,
+    'import/prefer-default-export': 0,
     'import/extensions': 0,
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': 0,
