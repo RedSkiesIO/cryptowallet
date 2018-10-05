@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     payments() {
-      return this.$store.state.wallet.payments;
+      return this.$store.state.payments.payments;
     },
     /*
      * raw payments data is a flat array, it has to be transformed first,
