@@ -10,12 +10,11 @@
 
 <script>
 import keyboard from 'vue-keyboard';
-import Balance from 'components/RecentPayments/Amount.vue';
 import bcrypt from 'bcryptjs';
 
 export default {
 
-  components: { keyboard, Balance },
+  components: { keyboard },
 
   data() {
     return {
