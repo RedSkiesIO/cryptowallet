@@ -19,7 +19,6 @@ export default {
   data() {
     return {
       pin: '',
-      salt: '',
     };
   },
 
@@ -28,7 +27,7 @@ export default {
   },
 
   created() {
-    this.salt = bcrypt.genSaltSync(10);
+
   },
 
   beforeMount() {
