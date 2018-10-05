@@ -1,4 +1,5 @@
 export default {
+  balance: 74.15,
   payments: [
     {
       ts: 1539527543100,

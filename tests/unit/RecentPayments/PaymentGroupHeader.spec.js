@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import PaymentsGroupHeader from '@/components/RecentPayments/PaymentsGroupHeader.vue';
-import Amount from '@/components/RecentPayments/Amount.vue';
+import Amount from '@/components/Amount/Amount.vue';
 
 describe('PaymentsGroupHeader.vue', () => {
   let wrapper;
