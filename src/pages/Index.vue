@@ -4,9 +4,19 @@
   </q-page>
 </template>
 
+<style>
+
+</style>
+
+
 <script>
+import ProfileButton from '../components/ProfileButton.vue';
+
 export default {
   name: 'PageIndex',
+  components: {
+    ProfileButton,
+  },
 };
 </script>
 
