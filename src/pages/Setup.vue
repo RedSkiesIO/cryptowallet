@@ -4,6 +4,12 @@
       <h1>{{ $t('setupTitle') }}</h1>
       <span>This is your seed for the love of satoshi write it down!</span>
       <div>{{ seed }}</div>
+      <q-btn
+        :label="$t('continue')"
+        style="color: goldenrod;"
+        outline
+        @click="$router.push({ path: '/' })"
+      />
     </div>
   </section>
 </template>
@@ -30,8 +36,6 @@ export default {
 
   beforeMount() {
     this.seed = bip39.generateMnemonic();
-    console.log(this);
-    console.log(bcrypt.genSaltSync(42));
     this.$store.dispatch('wallet/setSalt', bcrypt.genSaltSync(42));
   },
 
@@ -56,7 +60,9 @@ export default {
   },
 
   methods: {
+    continue() {
 
+    },
   },
 
 };

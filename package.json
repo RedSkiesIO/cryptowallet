@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "bcryptjs": "^2.4.3",
     "bip39": "^2.5.0",
     "bulma": "^0.7.1",
     "cordova": "^8.1.1",
