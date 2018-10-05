@@ -18,7 +18,6 @@ export default {
   },
 
   created() {
-    console.log(this);
     if (this.$store.getters['wallet/getSalty'] === null) {
       this.$router.push({ path: 'setup' });
     }
@@ -66,4 +65,8 @@ export default {
 @import 'bulma/sass/components/media.sass';
 @import 'bulma/sass/grid/columns.sass';
 
+body {
+  background-color: #1e3c57;
+  color: white;
+}
 </style>
