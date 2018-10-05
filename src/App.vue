@@ -18,6 +18,7 @@ export default {
   },
 
   created() {
+    console.log(this);
     if (this.$store.getters['wallet/getSalty'] === null) {
       this.$router.push({ path: 'setup' });
     }

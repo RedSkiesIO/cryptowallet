@@ -11,7 +11,7 @@ module.exports = function (ctx) {
       // 'mdi',
       // 'fontawesome'
     ],
-    supportIE: true,
+    supportIE: false,
     build: {
       scopeHoisting: true,
       // vueRouterMode: 'history',
@@ -54,13 +54,10 @@ module.exports = function (ctx) {
       // Quasar plugins
       plugins: ['Notify'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      // i18n: 'de' // Quasar language
+      i18n: 'en-us',
     },
     // animations: 'all' --- includes all animations
     animations: [],
-    ssr: {
-      pwa: false,
-    },
     cordova: {
       id: 'com.atlas.mobile.wallet',
     },
