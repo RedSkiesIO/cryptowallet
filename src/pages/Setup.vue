@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <h1>CryptoWallet Setup!</h1>
+      <h1>{{ $t('setupTitle') }}</h1>
       <span>This is your seed for the love of satoshi write it down!</span>
       <div>{{ seed }}</div>
     </div>
