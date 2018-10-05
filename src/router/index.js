@@ -14,6 +14,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/setup',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup.vue') },
+      ],
+    },
+    {
       path: '/balance',
       component: () => import('layouts/Authed.vue'),
       children: [
