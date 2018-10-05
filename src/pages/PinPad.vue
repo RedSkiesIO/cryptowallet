@@ -1,16 +1,26 @@
 <template>
   <div>
-    Pin Pad
+    <keyboard
+      v-model="pin"
+      layouts="0123456789"
+      @input="hashPin"
+    />
   </div>
 </template>
 
 <script>
+import keyboard from 'vue-keyboard';
+import Balance from 'components/RecentPayments/Amount.vue';
+import bcrypt from 'bcryptjs';
 
 export default {
 
+  components: { keyboard, Balance },
+
   data() {
     return {
-
+      pin: '',
+      salt: '',
     };
   },
 
@@ -19,7 +29,7 @@ export default {
   },
 
   created() {
-
+    this.salt = bcrypt.genSaltSync(10);
   },
 
   beforeMount() {
@@ -47,7 +57,10 @@ export default {
   },
 
   methods: {
-
+    hashPin(plainPin) {
+      const hash = bcrypt.hashSync(plainPin, this.salt);
+      console.log(hash);
+    },
   },
 
 };
