@@ -19,6 +19,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
+    "bip39": "^2.5.0",
     "bulma": "^0.7.1",
     "cordova": "^8.1.1",
     "jest": "^23.6.0",
@@ -40,7 +41,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
-    "bitcoinjs-lib": "^4.0.2",
     "chromedriver": "^2.42.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
