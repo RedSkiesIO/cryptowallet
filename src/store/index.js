@@ -1,18 +1,20 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist';
 
-import example from './module-example';
-import payments from './module-payments';
+import wallet from './wallet';
+import payments from './payments';
 
 Vue.use(Vuex);
 
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      example,
-      payments,
-    },
-  });
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
+});
 
-  return Store;
-}
+export default new Vuex.Store({
+  modules: {
+    wallet,
+    payments,
+  },
+  plugins: [vuexLocal.plugin],
+});

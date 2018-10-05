@@ -12,6 +12,40 @@
 <script>
 export default {
   name: 'App',
+
+  beforeCreate() {
+
+  },
+
+  created() {
+    if (this.$store.getters['wallet/getSalty'] === null) {
+      this.$router.push({ path: 'setup' });
+    }
+  },
+
+  beforeMount() {
+
+  },
+
+  mounted() {
+
+  },
+
+  beforeUpdate() {
+
+  },
+
+  updated() {
+
+  },
+
+  beforeDestroy() {
+
+  },
+
+  destroyed() {
+
+  },
 };
 </script>
 
