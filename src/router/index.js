@@ -10,7 +10,7 @@ export default new VueRouter({
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/PinPad.vue') },
+        { path: '', component: () => import('components/ProfileButton.vue') },
       ],
     },
     {
@@ -19,6 +19,16 @@ export default new VueRouter({
       children: [
         { path: '', component: () => import('pages/Balance.vue') },
       ],
+    },
+    {
+      path: '/UserProfile',
+      name: 'UserProfile',
+      component: () => import('pages/UserProfile.vue'),
+    },
+    {
+      path: '/EditProfile',
+      name: 'editProfile',
+      component: () => import('pages/EditProfile.vue'),
     },
     {
       path: '*',
