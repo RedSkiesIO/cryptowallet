@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import Amount from '@/components/RecentPayments/Amount.vue';
+import Amount from '@/components/Amount/Amount.vue';
 
 describe('Amount.vue', () => {
   let wrapper;

@@ -17,13 +17,6 @@ export default new VueRouter({
       path: '/balance',
       component: () => import('layouts/Authed.vue'),
       children: [
-        { path: '', component: () => import('pages/Index.vue') },
-      ],
-    },
-    {
-      path: '/recent',
-      component: () => import('layouts/Authed.vue'),
-      children: [
         { path: '', component: () => import('pages/Balance.vue') },
       ],
     },
