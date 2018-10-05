@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserProfile.vue renders and matches snapshot 1`] = `
+<qlayout-stub
+  view="hhh lpr fff"
+>
+  <qpagecontainer-stub>
+    <button
+      id="backButton_id"
+    >
+      <img
+        src="~/assets/back.png"
+      />
+    </button>
+     
+    <div
+      class="mainContent"
+    >
+      <profilecard-stub
+        id="profilecard_id"
+      />
+       
+      <hr />
+       
+      <div
+        id="profileButtons_id"
+      >
+        <h1>
+          Profile
+        </h1>
+        <br />
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/personal-details.png"
+            />
+              
+            Personal Details
+          </i>
+        </a>
+         
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/acount_details.png"
+            />
+              
+            Acount Details
+          </i>
+        </a>
+         
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/acount_details.png"
+            />
+              
+            Top-up Limit
+          </i>
+        </a>
+      </div>
+       
+      <hr />
+       
+      <div
+        id="profileButtons_id"
+      >
+        <strong>
+          Security
+        </strong>
+         
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/personal-details.png"
+            />
+              
+            Some text here
+          </i>
+        </a>
+         
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/acount_details.png"
+            />
+              
+            Some text here
+          </i>
+        </a>
+         
+        <br />
+        <br />
+         
+        <a
+          href="#"
+        >
+          <i>
+            <img
+              src="~/assets/acount_details.png"
+            />
+              
+            Some text here
+          </i>
+        </a>
+      </div>
+       
+      <br />
+       
+      <a>
+        <router-link-stub
+          class="button is-dark"
+          event="click"
+          id="editBtn_id"
+          tag="button"
+          to="/EditProfile"
+        >
+          Edit Profile Details
+        
+        </router-link-stub>
+      </a>
+       
+      <br />
+      <br />
+    </div>
+  </qpagecontainer-stub>
+</qlayout-stub>
+`;

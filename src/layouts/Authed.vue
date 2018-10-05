@@ -29,7 +29,7 @@
     >
       <q-list
         no-border
-        link
+        linkz
         inset-delimiter
       >
         <q-list-header>Essential Links</q-list-header>
@@ -81,9 +81,13 @@
 
 <script>
 import { openURL } from 'quasar';
+// import ProfileButton from '@/components/ProfileButton.vue';
 
 export default {
   name: 'AuthedLayout',
+  components: {
+    //
+  },
   data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop,
@@ -97,3 +101,4 @@ export default {
 
 <style>
 </style>
+
