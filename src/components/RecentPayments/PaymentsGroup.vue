@@ -11,7 +11,7 @@
 
 <script>
 import PaymentsGroupHeader from './PaymentsGroupHeader.vue';
-import Payment from './Payment.vue';
+import Payment from '../Payment/Payment.vue';
 
 export default {
   name: 'PaymentsGroup',
