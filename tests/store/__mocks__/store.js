@@ -13,6 +13,7 @@ export const actions = {};
 export const getters = {};
 export const mutations = {};
 export const state = {
+  balance: 74.15,
   payments: [
     {
       ts: 1539527543000,
@@ -42,7 +43,7 @@ export const state = {
   ],
 };
 
-const wallet = {
+const payments = {
   namespaced: true,
   state,
   getters,
@@ -57,7 +58,7 @@ export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}
    */
 
   const modules = {
-    wallet,
+    payments,
   };
 
   let mockGettersCombined = {};
