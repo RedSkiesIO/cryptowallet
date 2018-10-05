@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileCard.vue renders and matches snapshot 1`] = `
+<div
+  class="mainContentCard"
+>
+  <img
+    id="avatar_img_id"
+    src="~/assets/avatar.png"
+  />
+   
+  <h1>
+    Atlas City
+  </h1>
+  <br />
+   
+  <p
+    id="profileTitle"
+  >
+    CEO & Founder, Example
+  </p>
+</div>
+`;
