@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import ProfileButton from '@/components/ProfileButton.vue';
-import { localVue } from './setupLocalVue';
+import { localVue } from '../setupLocalVue';
+import VueI18n from 'vue-i18n'
 
 describe('ProfileButton.vue', () => {
   let wrapper;
@@ -10,7 +11,8 @@ describe('ProfileButton.vue', () => {
   }
 
   beforeEach(() => {
-    wrapper = wrapperInit({ localVue });
+    const i18n = new VueI18n({locale: 'en-us'});
+    wrapper = wrapperInit({ localVue, i18n });
   });
 
   it('renders and matches snapshot', () => {
