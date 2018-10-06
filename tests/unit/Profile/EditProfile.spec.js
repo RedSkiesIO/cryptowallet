@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import EditProfile from '@/pages/EditProfile.vue';
+import EditProfile from '@/pages/Profile/EditProfile.vue';
 import { localVue } from '../setupLocalVue';
 
-describe('ProfileCard.vue', () => {
+describe('EditProfile.vue', () => {
   let wrapper;
 
   function wrapperInit(options) {
