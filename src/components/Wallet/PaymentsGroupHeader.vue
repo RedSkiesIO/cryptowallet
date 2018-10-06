@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Amount from '../Amount/Amount.vue';
+import Amount from './Amount.vue';
 
 export default {
   name: 'PaymentsGroupHeader',
