@@ -8,7 +8,7 @@
         :label="$t('continue')"
         style="color: goldenrod;"
         outline
-        @click="$router.push({ path: '/' })"
+        @click="$router.push({ path: '/setup/pin' })"
       />
     </div>
   </section>
@@ -36,7 +36,7 @@ export default {
 
   beforeMount() {
     this.seed = bip39.generateMnemonic();
-    this.$store.dispatch('wallet/setSalt', bcrypt.genSaltSync(42));
+    this.$store.dispatch('account/setSalt', bcrypt.genSaltSync(10));
   },
 
   mounted() {
