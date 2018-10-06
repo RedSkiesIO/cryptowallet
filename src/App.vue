@@ -10,17 +10,33 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'App',
+
+  computed: {
+    ...mapState({
+      account: state => state.account,
+    }),
+  },
 
   beforeCreate() {
 
   },
 
   created() {
-    if (this.$store.getters['wallet/getSalty'] === null) {
-      this.$router.push({ path: 'setup' });
+    if (this.account.salt === null) {
+      this.$router.push({ path: 'setup/seed' });
+      return false;
     }
+
+    if (this.account.pin === null) {
+      this.$router.push({ path: 'setup/Pin' });
+      return false;
+    }
+
+    return true;
   },
 
   beforeMount() {
@@ -28,7 +44,7 @@ export default {
   },
 
   mounted() {
-
+    console.log(this);
   },
 
   beforeUpdate() {
