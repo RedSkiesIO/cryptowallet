@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import ProfileCard from '@/components/ProfileCard.vue';
-import { localVue } from './setupLocalVue';
+import { localVue } from '../setupLocalVue';
 
 describe('ProfileCard.vue', () => {
   let wrapper;
