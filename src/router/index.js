@@ -10,32 +10,39 @@ export default new VueRouter({
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('components/ProfileButton.vue') },
+        { path: '', component: () => import('pages/Login.vue') },
       ],
     },
     {
-      path: '/setup',
+      path: '/setup/seed',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/Setup.vue') },
+        { path: '', component: () => import('pages/Setup/Seed.vue') },
       ],
     },
     {
-      path: '/balance',
+      path: '/setup/pin',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup/Pin.vue') },
+      ],
+    },
+    {
+      path: '/wallet/balance',
       component: () => import('layouts/Authed.vue'),
       children: [
-        { path: '', component: () => import('pages/Balance.vue') },
+        { path: '', component: () => import('pages/Wallet/Balance.vue') },
       ],
     },
     {
       path: '/UserProfile',
       name: 'UserProfile',
-      component: () => import('pages/UserProfile.vue'),
+      component: () => import('pages/Profile/UserProfile.vue'),
     },
     {
       path: '/EditProfile',
       name: 'editProfile',
-      component: () => import('pages/EditProfile.vue'),
+      component: () => import('pages/Profile/EditProfile.vue'),
     },
     {
       path: '*',
@@ -46,8 +53,6 @@ export default new VueRouter({
     },
   ],
 
-  // Leave these as is and change from quasar.conf.js instead!
-  // quasar.conf.js -> build -> vueRouterMode
   mode: process.env.VUE_ROUTER_MODE,
   base: process.env.VUE_ROUTER_BASE,
 });
