@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import RecentPayments from '@/components/RecentPayments/RecentPayments.vue';
-import PaymentsGroup from '@/components/RecentPayments/PaymentsGroup.vue';
+import RecentPayments from '@/components/Wallet/RecentPayments.vue';
+import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
 import { __createMocks as createStoreMocks } from '@/../tests/store/__mocks__/store.js';
 
 const localVue = createLocalVue();

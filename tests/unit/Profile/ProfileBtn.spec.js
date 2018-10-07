@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils';
-import ProfileButton from '@/components/ProfileButton.vue';
+import ProfileButton from '@/components/Profile/ProfileButton.vue';
 import { localVue } from '../setupLocalVue';
 import VueI18n from 'vue-i18n'
 
