@@ -78,9 +78,9 @@ export default {
     },
 
     attemptUnlock() {
-      console.log(`attempt pin ${this.pin}`);
-      const response = this.$acmwcrypto.bcryptCompareString(this.pin.join(''), this.pinHash);
-      console.log(`attempt response ${response}`);
+      if (this.$acmwcrypto.bcryptCompareString(this.pin.join(''), this.pinHash) === true) {
+        this.$router.push({ path: '/wallet/balance' });
+      }
     },
   },
 
