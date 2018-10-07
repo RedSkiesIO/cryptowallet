@@ -1,26 +1,32 @@
 <template>
   <div>
     <div>pin setup page</div>
-    <keyboard
-      v-model="pin"
-      layouts="0123456789"
-      @input="hashPin"
+    <pin-pad @:input="input(pin)" />
+    <q-btn
+      v-if="pin.length >= 6"
+      :label="$t('continue')"
+      style="color: goldenrod;"
+      outline
+      @click="hashPin"
     />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import keyboard from 'vue-keyboard';
 import bcrypt from 'bcryptjs';
+import PinPad from '../../components/Auth/PinPad.vue';
 
 export default {
 
-  components: { keyboard },
+  components: {
+    PinPad,
+  },
 
   data() {
     return {
-      pin: '',
+      pin: [],
+      minLength: 6,
     };
   },
 
@@ -39,7 +45,9 @@ export default {
   },
 
   beforeMount() {
-
+    this.$root.$on('inputPin', (p) => {
+      this.inputPin(p);
+    });
   },
 
   mounted() {
@@ -63,9 +71,26 @@ export default {
   },
 
   methods: {
-    hashPin(plainPin) {
-      const hash = bcrypt.hashSync(plainPin, this.salt);
-      console.log(hash);
+
+    inputPin(p) {
+      if (p === '') {
+        this.pin.pop();
+      } else {
+        this.pin.push(p);
+      }
+    },
+
+    hashPin() {
+      bcrypt.hash(
+        this.pin.join(''), this.salt,
+        (error, hash) => {
+          if (error === null) {
+            this.$store.dispatch('account/setPin', hash).then(this.$router.push({ path: '/' }));
+          } else {
+            throw new Error('hash failed');
+          }
+        },
+      );
     },
   },
 

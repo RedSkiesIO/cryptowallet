@@ -1,20 +1,18 @@
 <template>
   <div>
-    <keyboard
-      v-model="pin"
-      layouts="0123456789"
-      @input="hashPin"
-    />
+    <pin-pad/>
   </div>
 </template>
 
 <script>
-import keyboard from 'vue-keyboard';
 import bcrypt from 'bcryptjs';
+import PinPad from '../components/Auth/PinPad.vue';
 
 export default {
 
-  components: { keyboard },
+  components: {
+    PinPad,
+  },
 
   data() {
     return {
