@@ -7,13 +7,14 @@ export function setSalt(context, salt) {
 }
 
 /**
- * Action to set pin.
+ * Action to set pin hash.
  * @param {*} context
  */
-export function setPin(context, pin) {
+export function setPinHash(context, pinHash) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      context.commit('SET_PIN', pin);
+      context.commit('SET_PIN_HASH', pinHash.pinHash);
+      context.commit('SET_PIN_LENGTH', pinHash.pinLength);
       resolve();
     }, 1000);
   });
