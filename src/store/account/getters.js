@@ -1,5 +1,5 @@
 /**
- * return the store salt
+ * return the store salt.
  * @param {*} state
  */
 export function getSalty(state) {
@@ -7,9 +7,25 @@ export function getSalty(state) {
 }
 
 /**
- * return the hashed pin
+ * return the hashed pin hash.
  * @param {*} state
  */
-export function getPin(state) {
-  return state.pin;
+export function getPinHash(state) {
+  return state.pinHash;
+}
+
+/**
+ * return the unhashed pin length.
+ * @param {*} state
+ */
+export function getPinLength(state) {
+  return state.pinLength;
+}
+
+/**
+ * return the minimum pin length.
+ * @param {*} state
+ */
+export function getMinLength(state) {
+  return state.minLength;
 }
