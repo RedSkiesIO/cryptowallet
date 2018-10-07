@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProfileCard.vue renders and matches snapshot 1`] = `
+exports[`EditProfile.vue renders and matches snapshot 1`] = `
 <qlayout-stub
   view="hhh lpr fff"
 >

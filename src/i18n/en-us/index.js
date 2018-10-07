@@ -1,8 +1,6 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
+  setupTitle: 'CryptoWallet Setup!',
+  continue: 'Continue',
   profile: 'Profile',
-  failed: 'Action failed',
-  success: 'Action was successful',
+  unlock: 'Un-Lock',
 };

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import UserProfile from '@/pages/UserProfile.vue';
-import ProfileCard from '@/components/ProfileCard.vue';
+import UserProfile from '@/pages/Profile/UserProfile.vue';
+import ProfileCard from '@/components/Profile/ProfileCard.vue';
 import { localVue } from '../setupLocalVue';
 
 describe('UserProfile.vue', () => {

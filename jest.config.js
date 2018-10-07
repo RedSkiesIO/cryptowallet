@@ -9,7 +9,7 @@ module.exports = {
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/layouts/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
-    '<rootDir>/src/plugins/**/*.js'
+    '<rootDir>/src/store/**/*.js'
   ],
   'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
   'coverageThreshold': {
@@ -23,7 +23,7 @@ module.exports = {
       'branches': 40,
       'statements': 40
     },
-    './src/reducers/**/*.js': {
+    './src/store/': {
       'statements': 90,
     }
   },
