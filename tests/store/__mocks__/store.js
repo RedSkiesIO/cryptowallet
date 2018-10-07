@@ -3,12 +3,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-/**
- * Currenty we have only one store module called "wallet" and it is very simple...
- * I have quickly mocked it up below, but eventually we should move it to it's own file
- * For more details look here https://quasar-framework.org/guide/app-vuex-store.html
- */
-
 export const actions = {};
 export const getters = {};
 export const mutations = {};
@@ -51,13 +45,22 @@ const payments = {
   actions,
 };
 
+const account = {
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions,
+};
+
 // eslint-disable-next-line no-underscore-dangle
 export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}, state: {} }) {
-  /**
-   * The store mock is being setup here, its going to contain all of the elemnts from all of the store modules.
-   */
 
+  /**
+   * mock store modules.
+   */
   const modules = {
+    account,
     payments,
   };
 
