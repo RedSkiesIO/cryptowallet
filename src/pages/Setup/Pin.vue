@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>pin setup page</div>
-    <pin-pad @:input="input(pin)" />
+    <pin-pad />
     <q-btn
       v-if="pin.length >= 6"
       :label="$t('continue')"
@@ -14,7 +14,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import bcrypt from 'bcryptjs';
 import PinPad from '../../components/Auth/PinPad.vue';
 
 export default {
@@ -26,13 +25,13 @@ export default {
   data() {
     return {
       pin: [],
-      minLength: 6,
     };
   },
 
   computed: {
     ...mapState({
       salt: state => state.account.salt,
+      minLength: state => state.account.minLength,
     }),
   },
 
@@ -45,9 +44,7 @@ export default {
   },
 
   beforeMount() {
-    this.$root.$on('inputPin', (p) => {
-      this.inputPin(p);
-    });
+    this.pinInputListener();
   },
 
   mounted() {
@@ -72,28 +69,27 @@ export default {
 
   methods: {
 
-    inputPin(p) {
-      if (p === '') {
-        this.pin.pop();
-      } else {
-        this.pin.push(p);
-      }
+    /**
+     * adds or removes pin input event to pin arr.
+     */
+    pinInputListener() {
+      this.$root.$on('inputPin', (pinArr) => {
+        this.pin = pinArr;
+      });
     },
 
+    /**
+     * Hashes pin and stores in account store.
+     */
     hashPin() {
-      bcrypt.hash(
-        this.pin.join(''), this.salt,
-        (error, hash) => {
-          if (error === null) {
-            this.$store.dispatch('account/setPin', hash).then(this.$router.push({ path: '/' }));
-          } else {
-            throw new Error('hash failed');
-          }
-        },
-      );
+      const pinHash = this.$acmwcrypto.bcryptHashString(this.pin.join(''), this.salt);
+      console.log(pinHash);
+      this.$store.dispatch('account/setPinHash', {
+        pinHash,
+        pinLength: this.pin.length,
+      }).then(this.$router.push({ path: '/' }));
     },
   },
-
 };
 
 </script>

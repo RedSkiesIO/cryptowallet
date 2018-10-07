@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import keyboard from 'vue-keyboard';
 
 export default {
@@ -18,7 +19,15 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      pin: [],
+    };
+  },
+
+  computed: {
+    ...mapState({
+      minLength: state => state.account.minLength,
+    }),
   },
 
   beforeCreate() {
@@ -57,9 +66,17 @@ export default {
 
     /**
      * Emits pincode to parent components.
+      * @param {*} pin
      */
     inputPin(pin) {
-      this.$root.$emit('inputPin', pin);
+      if (pin === '') {
+        this.pin.pop();
+      } else {
+        this.pin.push(pin);
+      }
+      if (this.pin.length >= this.minLength) {
+        this.$root.$emit('inputPin', this.pin);
+      }
     },
   },
 

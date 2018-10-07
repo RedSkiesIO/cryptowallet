@@ -1,11 +1,17 @@
 <template>
   <div>
-    <pin-pad/>
+    <pin-pad />
+    <q-btn
+      :label="$t('unlock')"
+      style="color: goldenrod;"
+      outline
+      @click="attemptUnlock"
+    />
   </div>
 </template>
 
 <script>
-import bcrypt from 'bcryptjs';
+import { mapState } from 'vuex';
 import PinPad from '../components/Auth/PinPad.vue';
 
 export default {
@@ -16,8 +22,16 @@ export default {
 
   data() {
     return {
-      pin: '',
+      pin: [],
     };
+  },
+
+  computed: {
+    ...mapState({
+      salt: state => state.account.salt,
+      pinHash: state => state.account.pinHash,
+      pinLength: state => state.account.pinLength,
+    }),
   },
 
   beforeCreate() {
@@ -29,11 +43,11 @@ export default {
   },
 
   beforeMount() {
-
+    this.pinInputListener();
   },
 
   mounted() {
-
+    console.log(this.$acmwcrypto);
   },
 
   beforeUpdate() {
@@ -53,9 +67,20 @@ export default {
   },
 
   methods: {
-    hashPin(plainPin) {
-      const hash = bcrypt.hashSync(plainPin, this.salt);
-      console.log(hash);
+
+    /**
+     * adds or removes pin input event to pin arr.
+     */
+    pinInputListener() {
+      this.$root.$on('inputPin', (pinArr) => {
+        this.pin = pinArr;
+      });
+    },
+
+    attemptUnlock() {
+      console.log(`attempt pin ${this.pin}`);
+      const response = this.$acmwcrypto.bcryptCompareString(this.pin.join(''), this.pinHash);
+      console.log(`attempt response ${response}`);
     },
   },
 
