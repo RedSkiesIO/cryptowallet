@@ -10,8 +10,58 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'App',
+
+  computed: {
+    ...mapState({
+      account: state => state.account,
+    }),
+  },
+
+  beforeCreate() {
+
+  },
+
+  created() {
+    if (this.account.salt === null) {
+      this.$router.push({ path: 'setup/seed' });
+      return false;
+    }
+
+    if (this.account.pin === null) {
+      this.$router.push({ path: 'setup/Pin' });
+      return false;
+    }
+
+    return true;
+  },
+
+  beforeMount() {
+
+  },
+
+  mounted() {
+
+  },
+
+  beforeUpdate() {
+
+  },
+
+  updated() {
+
+  },
+
+  beforeDestroy() {
+
+  },
+
+  destroyed() {
+
+  },
 };
 </script>
 
@@ -31,4 +81,8 @@ export default {
 @import 'bulma/sass/components/media.sass';
 @import 'bulma/sass/grid/columns.sass';
 
+body {
+  background-color: #1e3c57;
+  color: white;
+}
 </style>

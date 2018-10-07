@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import ProfileCard from '../components/ProfileCard.vue';
+import ProfileCard from '../../components/Profile/ProfileCard.vue';
 
 export default {
 
