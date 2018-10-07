@@ -36,13 +36,13 @@ export default new VueRouter({
     },
     {
       path: '/UserProfile',
-      name: 'UserProfile',
       component: () => import('pages/Profile/UserProfile.vue'),
+      name: 'UserProfile',
     },
     {
       path: '/EditProfile',
-      name: 'editProfile',
       component: () => import('pages/Profile/EditProfile.vue'),
+      name: 'editProfile',
     },
     {
       path: '*',
