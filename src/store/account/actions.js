@@ -11,5 +11,10 @@ export function setSalt(context, salt) {
  * @param {*} context
  */
 export function setPin(context, pin) {
-  context.commit('SET_PIN', pin);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      context.commit('SET_PIN', pin);
+      resolve();
+    }, 1000);
+  });
 }
