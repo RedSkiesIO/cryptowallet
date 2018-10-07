@@ -1,4 +1,6 @@
 export default {
   salt: null,
-  pin: null,
+  minLength: 6,
+  pinHash: null,
+  pinLength: null,
 };
