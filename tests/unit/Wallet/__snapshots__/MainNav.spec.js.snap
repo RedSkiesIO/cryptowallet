@@ -12,10 +12,11 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       href="#/wallet/balance"
     >
       <i
-        aria-hidden="true"
-        class="q-icon fas fa-wallet"
+        class="svg-icon"
       >
-         
+        <img
+          src="~assets/icons/Wallet.svg"
+        />
       </i>
        
       <div>
@@ -32,10 +33,11 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       href="#/wallet/analytics"
     >
       <i
-        aria-hidden="true"
-        class="q-icon fas fa-chart-bar"
+        class="svg-icon"
       >
-         
+        <img
+          src="~assets/icons/Analytics.svg"
+        />
       </i>
        
       <div>
@@ -52,10 +54,11 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       href="#/wallet/payments"
     >
       <i
-        aria-hidden="true"
-        class="q-icon fas fa-exchange-alt"
+        class="svg-icon"
       >
-         
+        <img
+          src="~assets/icons/Payments.svg"
+        />
       </i>
        
       <div>
@@ -72,10 +75,11 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       href="#/wallet/exchange"
     >
       <i
-        aria-hidden="true"
-        class="q-icon fas fa-sync"
+        class="svg-icon"
       >
-         
+        <img
+          src="~assets/icons/Exchange.svg"
+        />
       </i>
        
       <div>
@@ -92,10 +96,11 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       href="#/wallet/more"
     >
       <i
-        aria-hidden="true"
-        class="q-icon fas fa-ellipsis-h"
+        class="svg-icon"
       >
-         
+        <img
+          src="~assets/icons/More.svg"
+        />
       </i>
        
       <div>
