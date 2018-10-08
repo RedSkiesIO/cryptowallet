@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'fontawesome', // optional, you are not bound to it
+      //'fontawesome', // optional, you are not bound to it
       // 'ionicons',
       // 'mdi',
       // 'fontawesome'
@@ -56,8 +56,6 @@ module.exports = function (ctx) {
       directives: ['Ripple'],
       // Quasar plugins
       plugins: ['Notify'],
-      iconSet: 'fontawesome',
-
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       i18n: 'en-us',
     },
