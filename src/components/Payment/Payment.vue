@@ -21,7 +21,9 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Amount from '../Amount/Amount.vue';
+import { date } from 'quasar';
 
 export default {
   name: 'Payment',
