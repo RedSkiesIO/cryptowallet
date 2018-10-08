@@ -1,6 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import Payment from '@/components/Payment/Payment.vue';
 import Amount from '@/components/Amount/Amount.vue';
+import { localVue } from '../setupLocalVue';
 
 describe('Payment.vue', () => {
   let wrapper;
@@ -18,7 +19,7 @@ describe('Payment.vue', () => {
   }
 
   function storeInit (custom) {
-    wrapper = wrapperInit({ propsData });
+    wrapper = wrapperInit({ localVue, propsData });
   }
 
   beforeEach(() => storeInit());
