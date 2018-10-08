@@ -8,7 +8,7 @@ exports[`RecentPayments.vue renders and matches snapshot 1`] = `
     contentactivestyle="[object Object]"
     contentstyle="[object Object]"
     delay="1000"
-    style="width: auto; height: 55vh;"
+    style="width: auto; height: 60vh;"
     thumbstyle="[object Object]"
   >
     <div

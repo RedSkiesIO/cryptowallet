@@ -1,6 +1,6 @@
 <template>
   <section class="recent-payments">
-    <q-scroll-area style="width: auto; height: 55vh;">
+    <q-scroll-area style="width: auto; height: 60vh;">
       <div class="scroll-content">
         <PaymentsGroup
           v-for="group in groupedPayments"
@@ -70,10 +70,11 @@ export default {
 
 <style scoped>
   .recent-payments {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    border-top: 2px solid #09233a;
+    border-bottom: 2px solid #09233a;
     position: relative;
-    margin: 0 1rem;
+    padding: 0 0.5rem;
+    background: #16324a;
   }
 
   .scroll-content {
