@@ -1,7 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import Payment from '@/components/Wallet/Payment.vue';
 import Amount from '@/components/Wallet/Amount.vue';
-
 describe('Payment.vue', () => {
   let wrapper;
 

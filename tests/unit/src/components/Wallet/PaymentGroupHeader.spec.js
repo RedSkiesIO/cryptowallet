@@ -1,9 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
-import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
-import Payment from '@/components/Wallet/Payment.vue';
 import PaymentsGroupHeader from '@/components/Wallet/PaymentsGroupHeader.vue';
-
-describe('PaymentsGroup.vue', () => {
+import Amount from '@/components/Wallet/Amount.vue';
+describe('PaymentsGroupHeader.vue', () => {
   let wrapper;
 
   const propsData = {
@@ -25,7 +23,7 @@ describe('PaymentsGroup.vue', () => {
   };
 
   function wrapperInit (options) {
-    return shallowMount(PaymentsGroup, options);
+    return shallowMount(PaymentsGroupHeader, options);
   }
 
   function storeInit (custom) {
@@ -39,11 +37,19 @@ describe('PaymentsGroup.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('renders a PaymentsGroupHeader component within it', () => {
-    expect(wrapper.contains(PaymentsGroupHeader)).toBe(true);
+  it('renders a div with .payments-group-header class', () => {
+    expect(wrapper.contains('div.payments-group-header')).toBe(true);
   });
 
-  it('loops through the data and renders enough of Payment components', () => {
-    expect(wrapper.findAll(Payment).length).toBe(propsData.group.payments.length);
+  it('renders a group date string', () => {
+    expect(wrapper.html().includes(propsData.group.date)).toBe(true);
+  });
+
+  it('renders an Amount component within it', () => {
+    expect(wrapper.contains(Amount)).toBe(true);
+  });
+
+  it('computes and renders the total balance change', () => {
+    expect(wrapper.html().includes('57.97')).toBe(true);
   });
 });
