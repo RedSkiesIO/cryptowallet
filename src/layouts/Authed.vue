@@ -5,10 +5,8 @@
 </template>
 
 <script>
-
 export default {
   name: 'AuthedLayout',
-
   data() {
     return {
 
@@ -22,3 +20,4 @@ export default {
 
 <style>
 </style>
+

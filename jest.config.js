@@ -9,7 +9,7 @@ module.exports = {
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/layouts/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
-    '<rootDir>/src/plugins/**/*.js'
+    '<rootDir>/src/store/**/*.js'
   ],
   'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
   'coverageThreshold': {
@@ -23,7 +23,7 @@ module.exports = {
       'branches': 40,
       'statements': 40
     },
-    './src/reducers/**/*.js': {
+    './src/store/': {
       'statements': 90,
     }
   },
@@ -40,7 +40,7 @@ module.exports = {
   ],
   'moduleNameMapper': {
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
-    '^quasar$': '<rootDir>/tests/unit/__runner__/quasar.common.js',
+    '^quasar$': '<rootDir>/node_modules/quasar-framework/dist/umd/quasar.mat.umd.min.js',
     '^~/(.*)$': '<rootDir>/$1',
     '^@/(.*)$': '<rootDir>/src/$1'
   },
