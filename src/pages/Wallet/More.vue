@@ -1,7 +1,6 @@
 <template>
   <q-layout>
-    <UserBalance/>
-    <RecentPayments/>
+    /wallet/more
     <q-layout-footer>
       <MainNav/>
     </q-layout-footer>
@@ -9,15 +8,11 @@
 </template>
 
 <script>
-import UserBalance from '../../components/Wallet/UserBalance.vue';
-import RecentPayments from '../../components/Wallet/RecentPayments.vue';
 import MainNav from '../../components/Wallet/MainNav.vue';
 
 export default {
-  name: 'Balance',
+  name: 'More',
   components: {
-    UserBalance,
-    RecentPayments,
     MainNav,
   },
   data() {
