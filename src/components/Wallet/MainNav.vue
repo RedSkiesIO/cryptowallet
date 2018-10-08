@@ -5,8 +5,10 @@
         class="main-nav-link"
         to="/wallet/balance"
       >
-        <q-icon name="fas fa-wallet" />
-        <div>Balance</div>
+        <i class="svg-icon">
+          <img src="~assets/icons/Wallet.svg">
+        </i>
+        <div>{{ $t('balance') }}</div>
       </router-link>
     </div>
     <div class="column">
@@ -14,8 +16,10 @@
         class="main-nav-link"
         to="/wallet/analytics"
       >
-        <q-icon name="fas fa-chart-bar" />
-        <div>Analytics</div>
+        <i class="svg-icon">
+          <img src="~assets/icons/Analytics.svg">
+        </i>
+        <div>{{ $t('analytics') }}</div>
       </router-link>
     </div>
     <div class="column">
@@ -23,8 +27,10 @@
         class="main-nav-link"
         to="/wallet/payments"
       >
-        <q-icon name="fas fa-exchange-alt" />
-        <div>Payments</div>
+        <i class="svg-icon">
+          <img src="~assets/icons/Payments.svg">
+        </i>
+        <div>{{ $t('payments') }}</div>
       </router-link>
     </div>
     <div class="column">
@@ -32,8 +38,10 @@
         class="main-nav-link"
         to="/wallet/exchange"
       >
-        <q-icon name="fas fa-sync" />
-        <div>Exchange</div>
+        <i class="svg-icon">
+          <img src="~assets/icons/Exchange.svg">
+        </i>
+        <div>{{ $t('exchange') }}</div>
       </router-link>
     </div>
     <div class="column">
@@ -41,8 +49,10 @@
         class="main-nav-link"
         to="/wallet/more"
       >
-        <q-icon name="fas fa-ellipsis-h" />
-        <div>More</div>
+        <i class="svg-icon">
+          <img src="~assets/icons/More.svg">
+        </i>
+        <div>{{ $t('more') }}</div>
       </router-link>
 
     </div>
@@ -52,6 +62,11 @@
 <script>
 export default {
   name: 'MainNav',
+  data() {
+    return {
+      icon: '/assets/icons/Analytics.svg',
+    };
+  },
 };
 </script>
 
@@ -59,13 +74,15 @@ export default {
   .main-nav {
     width: 100%;
     height: 15vh;
+    background: white;
+    background: #f3f3f3;
   }
 
   .main-nav > .column {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    padding: 10px;
   }
 
   .main-nav-link {
@@ -73,20 +90,34 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: black;
+    width: 100%;
+    font-family: 'Montserrat-Regular';
+    height: 100%;
   }
 
   .main-nav-link i {
-    margin-top: 0.3rem;
     font-size: 2.5rem;
   }
 
   .main-nav-link > div {
-    margin-top: 0.5rem;
+
     font-size: 0.8rem;
   }
 
   .router-link-active {
-    color: gold;
+    background: #eaeaea;
+  }
+
+  .svg-icon {
+    width: 100%;
+    height: 4rem;
+    line-height: 0;
+    display: flex;
+  }
+
+  .svg-icon img {
+    max-width: 75%;
+    margin: 0 auto;
   }
 </style>
