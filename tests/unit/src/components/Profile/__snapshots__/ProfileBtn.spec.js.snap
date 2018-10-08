@@ -17,7 +17,7 @@ exports[`ProfileButton.vue renders and matches snapshot 1`] = `
         <p
           id="profile_id"
         >
-          profile
+          Profile
         </p>
       </router-link-stub>
     </div>

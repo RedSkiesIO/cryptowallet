@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 51 51" style="enable-background:new 0 0 51 51;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
+	.st1{display:none;}
+	.st2{display:inline;fill:none;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st3{display:inline;}
+</style>
+<g id="Wallet">
+	<path class="st0" d="M46.1,31.5v5.3c0,2.4-1.9,4.3-4.3,4.3H9.5c-2.4,0-4.3-1.9-4.3-4.3V15.5c0-2.4,1.9-4.3,4.3-4.3h32.3
+		c2.4,0,4.3,1.9,4.3,4.3v5.2"/>
+	<circle cx="46.1" cy="26.1" r="3.1"/>
+</g>
+<g id="Payments" class="st1">
+	<line class="st2" x1="8" y1="19.8" x2="41.8" y2="19.8"/>
+	<polyline class="st2" points="35.8,13.3 42.3,19.8 35.8,26.3 	"/>
+	<line class="st2" x1="42.3" y1="32.8" x2="8.5" y2="32.8"/>
+	<polyline class="st2" points="14.5,39.3 8,32.8 14.5,26.3 	"/>
+</g>
+<g id="Exchange" class="st1">
+	<path class="st2" d="M15.3,21.7c0-5.6,4.6-10.2,10.2-10.2s10.2,4.6,10.2,10.2"/>
+	<polyline class="st2" points="42.2,16.3 35.7,22.8 29.2,16.3 	"/>
+	<path class="st2" d="M35.7,30.2c0,5.6-4.6,10.2-10.2,10.2s-10.2-4.6-10.2-10.2"/>
+	<polyline class="st2" points="8.8,35.7 15.3,29.2 21.9,35.7 	"/>
+</g>
+<g id="More" class="st1">
+	<circle class="st3" cx="26" cy="15.8" r="7.8"/>
+	<circle class="st3" cx="12.3" cy="28.6" r="5"/>
+	<circle class="st3" cx="35.3" cy="33.6" r="3.5"/>
+</g>
+</svg>
