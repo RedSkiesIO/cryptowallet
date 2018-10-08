@@ -35,6 +35,34 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/wallet/analytics',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/Analytics.vue') },
+      ],
+    },
+    {
+      path: '/wallet/payments',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/Payments.vue') },
+      ],
+    },
+    {
+      path: '/wallet/exchange',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/Exchange.vue') },
+      ],
+    },
+    {
+      path: '/wallet/more',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/More.vue') },
+      ],
+    },
+    {
       path: '/UserProfile',
       component: () => import('pages/Profile/UserProfile.vue'),
       name: 'UserProfile',

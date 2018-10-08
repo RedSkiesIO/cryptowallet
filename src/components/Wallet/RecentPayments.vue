@@ -70,8 +70,8 @@ export default {
 
 <style scoped>
   .recent-payments {
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     position: relative;
     margin: 0 1rem;
   }
