@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import { localVue } from '../../../helpers/setupLocalVue';
 import PinPad from '@/components/Auth/PinPad.vue';
+import { localVue } from '../../../helpers/setupLocalVue';
 
 describe('Auth/PinPad.vue', () => {
   let wrapper;

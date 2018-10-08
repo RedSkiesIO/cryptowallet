@@ -10,7 +10,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Keyboard from 'vue-keyboard';
+import Keyboard from '%/vue-keyboard';
 
 export default {
 

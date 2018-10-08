@@ -9,10 +9,11 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "test:unit": "cross-env NODE_ENV=test jest",
-    "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
-    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
     "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
-    "update:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
+    "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
+    "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
+    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
+    "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
     "appium": "appium",
     "appium-doctor": "appium-doctor"
