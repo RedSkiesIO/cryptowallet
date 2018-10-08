@@ -1,7 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
 import Payment from '@/components/Wallet/Payment.vue';
+import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
 import PaymentsGroupHeader from '@/components/Wallet/PaymentsGroupHeader.vue';
+
 describe('PaymentsGroup.vue', () => {
   let wrapper;
 
