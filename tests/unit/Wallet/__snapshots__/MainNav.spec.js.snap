@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainNav.vue renders and matches snapshot 1`] = `
+<section
+  class="columns is-mobile main-nav is-gapless"
+>
+  <div
+    class="column"
+  >
+    <a
+      class="main-nav-link"
+      href="#/wallet/balance"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon fas fa-wallet"
+      >
+         
+      </i>
+       
+      <div>
+        Balance
+      </div>
+    </a>
+  </div>
+   
+  <div
+    class="column"
+  >
+    <a
+      class="main-nav-link"
+      href="#/wallet/analytics"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon fas fa-chart-bar"
+      >
+         
+      </i>
+       
+      <div>
+        Analytics
+      </div>
+    </a>
+  </div>
+   
+  <div
+    class="column"
+  >
+    <a
+      class="main-nav-link"
+      href="#/wallet/payments"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon fas fa-exchange-alt"
+      >
+         
+      </i>
+       
+      <div>
+        Payments
+      </div>
+    </a>
+  </div>
+   
+  <div
+    class="column"
+  >
+    <a
+      class="main-nav-link"
+      href="#/wallet/exchange"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon fas fa-sync"
+      >
+         
+      </i>
+       
+      <div>
+        Exchange
+      </div>
+    </a>
+  </div>
+   
+  <div
+    class="column"
+  >
+    <a
+      class="main-nav-link"
+      href="#/wallet/more"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon fas fa-ellipsis-h"
+      >
+         
+      </i>
+       
+      <div>
+        More
+      </div>
+    </a>
+  </div>
+</section>
+`;

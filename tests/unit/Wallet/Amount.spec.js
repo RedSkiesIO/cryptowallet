@@ -13,7 +13,7 @@ describe('Amount.vue', () => {
   }
 
   function storeInit (custom) {
-    wrapper = wrapperInit({ localVue, propsData });
+    wrapper = wrapperInit({ propsData });
   }
 
   beforeEach(() => storeInit());
