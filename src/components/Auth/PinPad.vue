@@ -1,5 +1,5 @@
 <template>
-  <Keyboard
+  <keyboard
     :layouts="[
       '123|456|789|0|{delete:backspace}{!@£:goto:1}',
       '!@#|?%^|&()|*|{delete:backspace}{123:goto:0}',
@@ -10,12 +10,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import Keyboard from '%/vue-keyboard';
+import keyboard from './keyboard';
 
 export default {
 
   components: {
-    Keyboard,
+    keyboard,
   },
 
   data() {

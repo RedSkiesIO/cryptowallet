@@ -4,8 +4,12 @@ exports[`RecentPayments.vue renders and matches snapshot 1`] = `
 <section
   class="recent-payments"
 >
-  <q-scroll-area
+  <qscrollarea-stub
+    contentactivestyle="[object Object]"
+    contentstyle="[object Object]"
+    delay="1000"
     style="width: auto; height: 60vh;"
+    thumbstyle="[object Object]"
   >
     <div
       class="scroll-content"
@@ -20,6 +24,6 @@ exports[`RecentPayments.vue renders and matches snapshot 1`] = `
         group="[object Object]"
       />
     </div>
-  </q-scroll-area>
+  </qscrollarea-stub>
 </section>
 `;
