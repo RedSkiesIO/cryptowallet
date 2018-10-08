@@ -10,15 +10,39 @@ export default new VueRouter({
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/PinPad.vue') },
+        { path: '', component: () => import('pages/Login.vue') },
       ],
     },
     {
-      path: '/balance',
+      path: '/setup/seed',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup/Seed.vue') },
+      ],
+    },
+    {
+      path: '/setup/pin',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup/Pin.vue') },
+      ],
+    },
+    {
+      path: '/wallet/balance',
       component: () => import('layouts/Authed.vue'),
       children: [
-        { path: '', component: () => import('pages/Balance.vue') },
+        { path: '', component: () => import('pages/Wallet/Balance.vue') },
       ],
+    },
+    {
+      path: '/UserProfile',
+      component: () => import('pages/Profile/UserProfile.vue'),
+      name: 'UserProfile',
+    },
+    {
+      path: '/EditProfile',
+      component: () => import('pages/Profile/EditProfile.vue'),
+      name: 'editProfile',
     },
     {
       path: '*',
@@ -29,8 +53,6 @@ export default new VueRouter({
     },
   ],
 
-  // Leave these as is and change from quasar.conf.js instead!
-  // quasar.conf.js -> build -> vueRouterMode
   mode: process.env.VUE_ROUTER_MODE,
   base: process.env.VUE_ROUTER_BASE,
 });

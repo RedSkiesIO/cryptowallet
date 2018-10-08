@@ -11,4 +11,6 @@ WORKDIR /srv
 
 VOLUME [ "/srv" ]
 
+USER node
+
 CMD [ "node" ]
