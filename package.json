@@ -59,6 +59,7 @@
     "sass-loader": "^7.0.1",
     "selenium": "^2.20.0",
     "strip-ansi": "^3.0.1",
+    "@vue/cli-service": "^3.0.0",
     "vue-jest": "^2.6.0",
     "wdio-appium-service": "^0.2.3",
     "wdio-chromedriver-service": "^0.1.3",

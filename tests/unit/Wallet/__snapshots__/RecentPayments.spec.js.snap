@@ -4,18 +4,26 @@ exports[`RecentPayments.vue renders and matches snapshot 1`] = `
 <section
   class="recent-payments"
 >
-  <q-scroll-area
-    style="width: 100%; height: 300px;"
+  <qscrollarea-stub
+    contentactivestyle="[object Object]"
+    contentstyle="[object Object]"
+    delay="1000"
+    style="width: auto; height: 55vh;"
+    thumbstyle="[object Object]"
   >
-    <paymentsgroup-stub
-      group="[object Object]"
-    />
-    <paymentsgroup-stub
-      group="[object Object]"
-    />
-    <paymentsgroup-stub
-      group="[object Object]"
-    />
-  </q-scroll-area>
+    <div
+      class="scroll-content"
+    >
+      <paymentsgroup-stub
+        group="[object Object]"
+      />
+      <paymentsgroup-stub
+        group="[object Object]"
+      />
+      <paymentsgroup-stub
+        group="[object Object]"
+      />
+    </div>
+  </qscrollarea-stub>
 </section>
 `;
