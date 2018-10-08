@@ -19,7 +19,11 @@ export default {
 <style scoped>
 .user-balance {
   text-align: center;
-  padding: 3rem 0 3rem 0;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center
 }
 
 .balance-h1 {
