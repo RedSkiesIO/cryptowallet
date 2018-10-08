@@ -1,3 +1,20 @@
 import { shallowMount } from '@vue/test-utils';
-import EditProfile from '@/components/Auth/PinPad.vue';
-import { localVue } from '../../helpers/setupLocalVue';
+import { localVue } from '../../../helpers/setupLocalVue';
+import PinPad from '@/components/Auth/PinPad.vue';
+
+describe('Auth/PinPad.vue', () => {
+  let wrapper;
+
+  function wrapperInit(options) {
+    return shallowMount(PinPad, options);
+  }
+
+  beforeEach(() => {
+    wrapper = wrapperInit({ localVue });
+  });
+
+  it('renders and matches snapshot', () => {
+    expect(wrapper.element).toMatchSnapshot();
+  });
+
+});
