@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import MainNav from '@/components/Wallet/MainNav.vue';
 import { localVue, router, i18n } from '../helpers/setupLocalVue';
-import { __createMocks as createStoreMocks } from '../../../store/__mocks__/store.js';
+import { __createMocks as createStoreMocks } from '../../store/__mocks__/store.js';
 
 const menuItems = ['Balance', 'Analytics', 'Payments', 'Exchange', 'More'];
 
