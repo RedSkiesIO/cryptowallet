@@ -27,7 +27,10 @@ export default {
 }
 
 .balance-h1 {
-  font-size: 50px;
-  font-weight: bold;
+  font-size: 3.5rem;
+  font-family: 'CooperHewitt-SemiboldItalic';
+  letter-spacing: 0.1px;
+  margin-top: 0.5rem;
+  margin-bottom: -0.5rem;
 }
 </style>

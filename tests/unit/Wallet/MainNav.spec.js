@@ -1,7 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import MainNav from '@/components/Wallet/MainNav.vue';
 import { __createMocks as createStoreMocks } from '@/../tests/store/__mocks__/store.js';
-import { localVue, router } from '../setupLocalVue';
+import { localVue, router, i18n } from '../setupLocalVue';
 
 const menuItems = ['Balance', 'Analytics', 'Payments', 'Exchange', 'More'];
 
@@ -16,7 +16,7 @@ describe('MainNav.vue', () => {
 
   function storeInit (custom) {
     storeMocks = createStoreMocks(custom);
-    wrapper = wrapperInit({ router, localVue, store: storeMocks.store, });
+    wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store, });
     store = wrapper.vm.$store;
   }
 
@@ -48,13 +48,5 @@ describe('MainNav.vue', () => {
     expect(wrapper.vm.$route.path).toBe('/wallet/exchange');
     wrapper.findAll('a').at(4).trigger('click');
     expect(wrapper.vm.$route.path).toBe('/wallet/more');
-  });
-
-  it('renders a correct icon on each menu item', () => {
-    expect(wrapper.findAll('a').at(0).contains('.fa-wallet')).toBe(true);
-    expect(wrapper.findAll('a').at(1).contains('.fa-chart-bar')).toBe(true);
-    expect(wrapper.findAll('a').at(2).contains('.fa-exchange-alt')).toBe(true);
-    expect(wrapper.findAll('a').at(3).contains('.fa-sync')).toBe(true);
-    expect(wrapper.findAll('a').at(4).contains('.fa-ellipsis-h')).toBe(true);
   });
 });
