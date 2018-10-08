@@ -1,11 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import Payment from '@/components/Wallet/Payment.vue';
 import Amount from '@/components/Wallet/Amount.vue';
-<<<<<<< HEAD:tests/unit/src/components/Wallet/Payment.spec.js
-=======
-import { localVue } from '../setupLocalVue';
+import Payment from '@/components/Wallet/Payment.vue';
+import { localVue } from '../../../helpers/setupLocalVue';
 
->>>>>>> e42e3d0cd06595737cd1d644c1914427b12dd998:tests/unit/Wallet/Payment.spec.js
 describe('Payment.vue', () => {
   let wrapper;
 

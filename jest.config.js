@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 module.exports = {
   'globals': {
     '__DEV__': true
@@ -43,9 +42,9 @@ module.exports = {
     '**/tests/unit/src/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
   'testPathIgnorePatterns': [
-    '<rootDir>/tests/unit/__coverage__',
     '<rootDir>/tests/unit/__helpers__',
-    '<rootDir>/tests/unit/__snapshots__'
+    '<rootDir>/tests/unit/__coverage__',
+    '<rootDir>/tests/unit/__snapshots__',
   ],
   'moduleFileExtensions': [
     'js',
@@ -67,7 +66,6 @@ module.exports = {
   'transform': {
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
-    '<rootDir>/.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
   },
   'snapshotSerializers': [
     '<rootDir>/node_modules/jest-serializer-vue'
