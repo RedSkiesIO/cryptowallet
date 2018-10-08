@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --fix --ext .js,.vue src",
     "test:unit": "cross-env NODE_ENV=test jest",
     "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",

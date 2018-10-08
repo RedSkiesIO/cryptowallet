@@ -1,13 +1,11 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
 import RecentPayments from '@/components/Wallet/RecentPayments.vue';
+import PaymentsGroup from '@/components/Wallet/PaymentsGroup.vue';
 import { __createMocks as createStoreMocks } from '../../../../store/__mocks__/store.js';
-import Vuex from 'vuex';
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
+import { localVue } from '../../../helpers/setupLocalVue';
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 describe('RecentPayments.vue', () => {
   let storeMocks;
   let wrapper;

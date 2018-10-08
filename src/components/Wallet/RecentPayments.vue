@@ -41,6 +41,7 @@ export default {
         const day = new Date(payment.ts).getDate();
         const month = monthNames[new Date(payment.ts).getMonth()];
         const paymentDate = `${day} ${month}`;
+        // @TODO KONRAD STOP DISABLING LINT IN CODE
         // eslint-disable-next-line
         const groupItem = groupedPayments.find((item) => {
           if (item) return item.date === paymentDate;

@@ -1,17 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Auth/PinPad.vue renders and matches snapshot 1`] = `
-<div>
-  <h1>
-    parent
-  </h1>
-   
-  <main>
-    <child-stub />
-     
-    <child-stub />
-     
-    <child-stub />
-  </main>
-</div>
+exports[`App.vue renders and matches snapshot 1`] = `
+<keyboard-stub
+  layouts="123|456|789|0|{delete:backspace}{!@£:goto:1},!@#|?%^|&()|*|{delete:backspace}{123:goto:0}"
+  maxlength="0"
+  value=""
+/>
 `;
