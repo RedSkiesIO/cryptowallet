@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons', // optional, you are not bound to it
+      // 'fontawesome', // optional, you are not bound to it
       // 'ionicons',
       // 'mdi',
       // 'fontawesome'
@@ -49,6 +49,9 @@ module.exports = function (ctx) {
         'QItem',
         'QItemMain',
         'QItemSide',
+        'QPageSticky',
+        'QScrollArea',
+        'QLayoutFooter',
       ],
       directives: ['Ripple'],
       // Quasar plugins
