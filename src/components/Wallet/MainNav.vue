@@ -101,7 +101,6 @@ export default {
   }
 
   .main-nav-link > div {
-
     font-size: 0.8rem;
   }
 
