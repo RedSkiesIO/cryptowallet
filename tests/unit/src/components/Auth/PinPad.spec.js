@@ -24,7 +24,7 @@ describe('App.vue', () => {
 
   function storeInit (custom) {
     storeMocks = createStoreMocks(custom);
-    wrapper = wrapperInit({ localVue, PinPad, store: storeMocks.store, computed: {
+    wrapper = wrapperInit({ localVue, PinPad, store: storeMocks.store,computed: {
       minLength: () => 6
     }});
     store = wrapper.vm.$store;
@@ -38,7 +38,11 @@ describe('App.vue', () => {
 
   it('renders the correct markup', () => {
     expect(wrapper.html()).toContain(stubs.keyboard)
-  })  
+  });
+
+  it('data pin should be empty array ', () => {
+    expect(wrapper.vm._data.pin).toEqual([])
+  })
 
   it('min length should match ', () => {
     expect(wrapper.vm._computedWatchers.minLength.getter()).toBe(6)
