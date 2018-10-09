@@ -10,7 +10,7 @@ export default new VueRouter({
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/Login.vue') },
+        { path: '', component: () => import('components/RecentTX.vue') },
       ],
     },
     {
@@ -43,6 +43,14 @@ export default new VueRouter({
       path: '/EditProfile',
       component: () => import('pages/Profile/EditProfile.vue'),
       name: 'editProfile',
+    },
+    {
+      path: '/TxDetails',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Transactions/TxDetails.vue') },
+      ],
+      name: 'TxDetails',
     },
     {
       path: '*',
