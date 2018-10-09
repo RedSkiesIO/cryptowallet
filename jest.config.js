@@ -1,14 +1,16 @@
 /* eslint-disable */
-
 module.exports = {
   'globals': {
     '__DEV__': true
   },
   'collectCoverage': false,
   'collectCoverageFrom': [
+    '<rootDir>/src/App.vue',
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/layouts/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
+    '<rootDir>/src/plugins/**/*.js',
+    '<rootDir>/src/router/**/*.js',
     '<rootDir>/src/store/**/*.js'
   ],
   'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
@@ -20,18 +22,29 @@ module.exports = {
       'statements': 50
     },
     './src/components/': {
-      'branches': 40,
-      'statements': 40
+      'branches': 50,
+      'statements': 50
     },
     './src/store/': {
-      'statements': 90,
-    }
+      'branches': 100,
+      'statements': 100,
+    },
+    './src/pages/': {
+      'branches': 50,
+      'statements': 50
+    },
+    './src/router/': {
+      'branches': 50,
+      'statements': 50
+    },
   },
   'testMatch': [
-    '**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/tests/unit/src/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
   'testPathIgnorePatterns': [
-    '<rootDir>/tests/unit/__coverage__'
+    '<rootDir>/tests/unit/__helpers__',
+    '<rootDir>/tests/unit/__coverage__',
+    '<rootDir>/tests/unit/__snapshots__',
   ],
   'moduleFileExtensions': [
     'js',

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileButton.vue renders and matches snapshot 1`] = `
+<qpage-stub>
+  <div
+    class="profileButton"
+  >
+    <div
+      class="container"
+    >
+      <router-link-stub
+        event="click"
+        id="Btn_id"
+        tag="button"
+        to="/UserProfile"
+      >
+        <p
+          id="profile_id"
+        >
+          Profile
+        </p>
+      </router-link-stub>
+    </div>
+  </div>
+</qpage-stub>
+`;
