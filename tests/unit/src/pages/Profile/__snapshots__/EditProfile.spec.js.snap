@@ -26,8 +26,6 @@ exports[`EditProfile.vue renders and matches snapshot 1`] = `
         <h1>
           Profile
         </h1>
-        <br />
-        <br />
          
         <div
           class="field"

@@ -8,8 +8,7 @@
       <div class="mainContent">
         <hr>
         <div id="form_id" >
-          <h1>Profile</h1><br><br>
-
+          <h1>Profile</h1>
           <div class="field">
             <label class="label">Name</label>
             <input
@@ -233,7 +232,6 @@ img {
   width: 30%;
 }
 
-
 #backButton_id {
   background-color: transparent;
   text-align: left;
@@ -243,7 +241,6 @@ img {
   width: 200px;
   vertical-align: middle;
 }
-
 
 button:hover, a:hover {
   opacity: 0.7;
@@ -257,6 +254,5 @@ button:hover, a:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-
 }
 </style>

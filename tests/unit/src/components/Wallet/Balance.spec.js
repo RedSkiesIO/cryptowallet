@@ -1,7 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import UserBalance from '@/components/Wallet/UserBalance.vue';
-import { __createMocks as createStoreMocks } from '@/../tests/store/__mocks__/store.js';
+import UserBalance from '@/components/Wallet/Balance.vue';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { __createMocks as createStoreMocks } from '../../../../store/__mocks__/store.js';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

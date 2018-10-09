@@ -35,6 +35,12 @@ export const state = {
       amount: 8.10,
     },
   ],
+  account: {
+    salt: null,
+    minLength: 6,
+    pinHash: null,
+    pinLength: null,
+  }
 };
 
 const payments = {

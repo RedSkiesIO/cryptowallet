@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      //'fontawesome', // optional, you are not bound to it
+      // 'fontawesome', // optional, you are not bound to it
       // 'ionicons',
       // 'mdi',
       // 'fontawesome'
