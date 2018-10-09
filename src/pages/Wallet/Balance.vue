@@ -9,17 +9,19 @@
 </template>
 
 <script>
-import UserBalance from '../../components/Wallet/UserBalance.vue';
+import UserBalance from '../../components/Wallet/Balance.vue';
 import RecentPayments from '../../components/Wallet/RecentPayments.vue';
 import MainNav from '../../components/Wallet/MainNav.vue';
 
 export default {
   name: 'Balance',
+
   components: {
     UserBalance,
     RecentPayments,
     MainNav,
   },
+
   data() {
     return {
 
