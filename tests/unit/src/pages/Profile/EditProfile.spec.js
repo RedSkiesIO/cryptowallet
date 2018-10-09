@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import EditProfile from '@/pages/Profile/EditProfile.vue';
-import { localVue } from '../setupLocalVue';
+import { localVue } from '../../../helpers/setupLocalVue';
 
 describe('EditProfile.vue', () => {
   let wrapper;
@@ -17,7 +17,7 @@ describe('EditProfile.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  
+
   it('expect back button', () => {
     expect(wrapper.contains('button#backButton_id')).toBe(true);
   });

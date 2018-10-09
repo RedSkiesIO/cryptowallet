@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import ProfileButton from '@/components/Profile/ProfileButton.vue';
-import { localVue, i18n } from '../setupLocalVue';
+import { localVue, i18n } from '../../../helpers/setupLocalVue';
 
 describe('ProfileButton.vue', () => {
   let wrapper;
