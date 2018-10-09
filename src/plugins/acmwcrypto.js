@@ -8,7 +8,6 @@ const ACMWCrypto = {
    * @param {*} salt
    */
   bcryptHashString(string, salt) {
-    console.log('trace bcryptHashString');
     return bcrypt.hashSync(string, salt);
   },
 
@@ -18,9 +17,6 @@ const ACMWCrypto = {
    * @param {*} hashedString
    */
   bcryptCompareString(string, hashedString) {
-    console.log('trace bcryptCompareString');
-    console.log(string);
-    console.log(hashedString);
     return bcrypt.compareSync(string, hashedString);
   },
 
