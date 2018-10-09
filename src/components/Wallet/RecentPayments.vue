@@ -1,13 +1,16 @@
 <template>
   <section class="recent-payments">
-    <PaymentsGroup
-      v-for="group in groupedPayments"
-      :key="group.key"
-      :group="group"
-    />
+    <q-scroll-area style="width: auto; height: 60vh;">
+      <div class="scroll-content">
+        <PaymentsGroup
+          v-for="group in groupedPayments"
+          :key="group.key"
+          :group="group"
+        />
+      </div>
+    </q-scroll-area>
   </section>
 </template>
-
 <script>
 import PaymentsGroup from './PaymentsGroup.vue';
 
@@ -38,6 +41,7 @@ export default {
         const day = new Date(payment.ts).getDate();
         const month = monthNames[new Date(payment.ts).getMonth()];
         const paymentDate = `${day} ${month}`;
+        // @TODO KONRAD STOP DISABLING LINT IN CODE
         // eslint-disable-next-line
         const groupItem = groupedPayments.find((item) => {
           if (item) return item.date === paymentDate;
@@ -67,11 +71,15 @@ export default {
 
 <style scoped>
   .recent-payments {
-    padding: 0rem 1rem 1rem 1rem;
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
+    border-top: 2px solid #09233a;
+    border-bottom: 2px solid #09233a;
     position: relative;
-    overflow-y: scroll;
-    margin: 0 10px;
+    padding: 0 0.5rem;
+    background: #16324a;
+  }
+
+  .scroll-content {
+    overflow: hidden;
+    padding: 0 1rem;
   }
 </style>
