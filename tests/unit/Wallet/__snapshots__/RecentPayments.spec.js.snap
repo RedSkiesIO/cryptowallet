@@ -5,10 +5,10 @@ exports[`RecentPayments.vue renders and matches snapshot 1`] = `
   class="recent-payments"
 >
   <qscrollarea-stub
+    class="recent-payments-scroll-area"
     contentactivestyle="[object Object]"
     contentstyle="[object Object]"
     delay="1000"
-    style="width: auto; height: 60vh;"
     thumbstyle="[object Object]"
   >
     <div
