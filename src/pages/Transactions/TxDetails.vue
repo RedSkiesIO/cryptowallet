@@ -3,43 +3,45 @@
     <div class="table-title">
       <h3>Transaction Information</h3>
     </div>
-    <table class="table-fill">
-      <tbody class="table-hover">
-        <tr>
-          <td class="text-left">TxHash:
-            <p id="txHash_id">
-              0x97f5e7e95e37ed19714a9da8f86149d3af2905700ff5704aaa22ba70c469945a</p>
-          </td>
-        </tr>
-        <tr>
-          <td class="text-left">TxReceipt Status:
-            <p id="txReceiptStatus_id">Success </p>
-          </td>
-        </tr>
-        <tr>
-          <td class="text-left">TimeStamp:
-          <p id="timeStamp_id">45 secs ago (Oct-09-2018 10:07:15 AM +UTC) </p></td>
-        </tr>
-        <tr>
-          <td class="text-left">From:
-          <p id="from_id">0xa11b2364b3e1f7d94f51444fb560bb206af85efe </p></td>
-        </tr>
-        <tr>
-          <td class="text-left">To:
-          <p id="to_id">0xa11b2364b3e1f7d94f51444fb560bb206af85efe </p></td>
-        </tr>
-        <tr>
-          <td class="text-left">Value:
-          <p id="value_id">4.237564853702590359 Atlas ($968.45) </p></td>
-        </tr>
-        <tr>
-          <td
-            id="txCostFee_id"
-            class="text-left">Actual Tx Cost/Fee:
-          <p>0.000084 Atlas ($0.02) </p></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="wrapper ">
+      <table class="table-fill">
+        <tbody class="table-hover">
+          <tr>
+            <td class="text-left">TxHash:
+              <p id="txHash_id">
+                0x97f5e7e95e37ed19714a9da8f86149d3af2905700ff5704aaa22ba70c469945a</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-left">TxReceipt Status:
+              <p id="txReceiptStatus_id">Success </p>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-left">TimeStamp:
+            <p id="timeStamp_id">45 secs ago (Oct-09-2018 10:07:15 AM +UTC) </p></td>
+          </tr>
+          <tr>
+            <td class="text-left">From:
+            <p id="from_id">0xa11b2364b3e1f7d94f51444fb560bb206af85efe </p></td>
+          </tr>
+          <tr>
+            <td class="text-left">To:
+            <p id="to_id">0xa11b2364b3e1f7d94f51444fb560bb206af85efe </p></td>
+          </tr>
+          <tr>
+            <td class="text-left">Value:
+            <p id="value_id">4.237564853702590359 Atlas ($968.45) </p></td>
+          </tr>
+          <tr>
+            <td
+              id="txCostFee_id"
+              class="text-left">Actual Tx Cost/Fee:
+            <p>0.000084 Atlas ($0.02) </p></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -122,8 +124,12 @@ div.table-title {
 }
 
 
-/*** Table Styles **/
+div.wrapper {
+  height: auto;
+  overflow: auto;
+}
 
+/*** Table Styles **/
 .table-fill {
   background: white;
   border-radius:3px;
@@ -166,6 +172,8 @@ tr {
   font-size:16px;
   font-weight:normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+    overflow: auto;
+  white-space: nowrap;
 }
 
 tr:hover td {
