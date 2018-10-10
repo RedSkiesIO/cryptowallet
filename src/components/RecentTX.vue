@@ -4,8 +4,7 @@
       id="Btn_id"
       tag="button"
       to="/TxDetails">
-      <p id="transaction_id">TX# &nbsp;
-      0x97f5e7e95e37ed19714a9da8f86149d3af29057...
+      <p id="transaction_id">TX# 0x97gf5e7e95e..
       </p>
     </router-link>
     <br>
@@ -65,19 +64,23 @@ export default {
 <style @scoped>
 
 .container {
-  width: auto;
+  width: 100%;
+
 }
 
 #Btn_id {
   background-color: white;
-  width: auto;
-  max-width: 600px;
-  height: 45px;
+  width: 100%;
+  height: auto;
   border: none;
   cursor:pointer;
   outline:none;
-  margin-top: 5px;
+  margin-top: 15px;
+  margin-left: 0px;
+  margin-right: 10px;
   font-size: 20px;
+  border-radius: 25px;
+  overflow: hidden;
 }
 
 </style>
