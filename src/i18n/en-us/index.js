@@ -8,4 +8,5 @@ export default {
   payments: 'Payments',
   exchange: 'Exchange',
   more: 'More',
+  recent: 'Recent',
 };
