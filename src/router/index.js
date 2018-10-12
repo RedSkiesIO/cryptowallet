@@ -10,7 +10,7 @@ export default new VueRouter({
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('components/RecentTX.vue') },
+        { path: '', component: () => import('pages/Login.vue') },
       ],
     },
     {
@@ -64,6 +64,7 @@ export default new VueRouter({
     },
     {
       path: '/UserProfile',
+
       component: () => import('pages/Profile/UserProfile.vue'),
       name: 'UserProfile',
     },
