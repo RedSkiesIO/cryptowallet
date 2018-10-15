@@ -1,11 +1,6 @@
 <template>
   <div id="q-app">
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <router-view/>
-    </transition>
+    <router-view/>
   </div>
 </template>
 
@@ -14,6 +9,12 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'App',
+
+  data() {
+    return {
+      isMainNavVisible: true,
+    };
+  },
 
   computed: {
     ...mapState({
@@ -66,7 +67,6 @@ export default {
 </script>
 
 <style lang='scss'>
-
 @import 'bulma/sass/utilities/_all.sass';
 @import 'bulma/sass/base/_all.sass';
 @import 'bulma/sass/layout/_all.sass';
