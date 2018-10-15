@@ -1,19 +1,22 @@
 <template>
-  <q-layout>
-    /wallet/payments
-    <q-layout-footer>
-      <MainNav/>
-    </q-layout-footer>
-  </q-layout>
+  <div>
+    <SearchContacts key="SearchContacts"/>
+    <RecentContacts key="RecentContacts"/>
+    <ContactsList key="ContactsList"/>
+  </div>
 </template>
 
 <script>
-import MainNav from '../../components/Wallet/MainNav.vue';
+import SearchContacts from '../../components/Wallet/Payments/SearchContacts.vue';
+import RecentContacts from '../../components/Wallet/Payments/RecentContacts.vue';
+import ContactsList from '../../components/Wallet/Payments/ContactsList.vue';
 
 export default {
   name: 'Exchange',
   components: {
-    MainNav,
+    SearchContacts,
+    RecentContacts,
+    ContactsList,
   },
   data() {
     return {
@@ -62,5 +65,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -5,8 +5,7 @@ exports[`App.vue renders and matches snapshot 1`] = `
   id="q-app"
 >
   <router-view-stub
-    mode="out-in"
-    name="fade"
+    name="default"
   />
 </div>
 `;
