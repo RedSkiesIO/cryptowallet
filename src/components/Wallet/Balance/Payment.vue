@@ -60,6 +60,6 @@ export default {
   border-radius: 100%;
   height: 2.5rem;
   width: 2.5rem;
-  margin-top: 5px;
+  margin-top: 0.2rem;
 }
 </style>
