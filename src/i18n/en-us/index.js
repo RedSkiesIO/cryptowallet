@@ -8,5 +8,7 @@ export default {
   payments: 'Payments',
   exchange: 'Exchange',
   more: 'More',
+  'payments/noWalletAddress': 'No wallet address is available for this contact',
+  contacts: 'Contacts',
   recent: 'Recent',
 };
