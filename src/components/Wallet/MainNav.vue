@@ -1,5 +1,7 @@
 <template>
-  <section class="columns is-mobile main-nav is-gapless">
+  <section
+    class="columns is-mobile main-nav is-gapless"
+  >
     <div class="column">
       <router-link
         class="main-nav-link"

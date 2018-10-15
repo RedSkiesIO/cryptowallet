@@ -16,6 +16,7 @@ module.exports = {
   ],
   globals: {
     cordova: true,
+    ContactFindOptions: true,
   },
   rules: {
     'no-param-reassign': 0,

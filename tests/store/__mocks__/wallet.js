@@ -1,4 +1,7 @@
-export default {
+const actions = {};
+const getters = {};
+const mutations = {};
+const state = {
   contacts: [
     {
       displayName: 'Kipros',
@@ -6,7 +9,6 @@ export default {
     },
     {
       displayName: 'James',
-      address: '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2',
     },
     {
       displayName: 'Fio',
@@ -41,3 +43,13 @@ export default {
     },
   ],
 };
+
+const wallet = {
+  namespaced: true,
+  actions,
+  getters,
+  mutations,
+  state,
+};
+
+export default wallet;

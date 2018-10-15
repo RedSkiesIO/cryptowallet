@@ -1,20 +1,12 @@
 <template>
   <q-layout>
     /wallet/exchange
-    <q-layout-footer>
-      <MainNav/>
-    </q-layout-footer>
   </q-layout>
 </template>
 
 <script>
-import MainNav from '../../components/Wallet/MainNav.vue';
-
 export default {
   name: 'Exchange',
-  components: {
-    MainNav,
-  },
   data() {
     return {
 
