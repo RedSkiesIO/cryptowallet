@@ -6,7 +6,7 @@ module.exports = function (ctx) {
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      // 'fontawesome', // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
       // 'ionicons',
       // 'mdi',
       // 'fontawesome'
@@ -52,6 +52,7 @@ module.exports = function (ctx) {
         'QPageSticky',
         'QScrollArea',
         'QLayoutFooter',
+        'QInput'
       ],
       directives: ['Ripple'],
       // Quasar plugins
@@ -60,7 +61,7 @@ module.exports = function (ctx) {
       i18n: 'en-us',
     },
     // animations: 'all' --- includes all animations
-    animations: [],
+    animations: ['slideInUp', 'slideOutDown'],
     cordova: {
       id: 'com.atlas.mobile.wallet',
     },

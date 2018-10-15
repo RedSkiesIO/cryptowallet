@@ -33,7 +33,8 @@ export default {
      */
     formattedAmount() {
       const formatted = `${numeral(this.amount).format('0.00')} £`;
-      return (this.amount > 0 ? `+${formatted}` : formatted);
+      if (this.amount > 0) return `+${formatted}`;
+      return formatted;
     },
   },
 };

@@ -6,13 +6,16 @@ import wallet from './wallet';
 import account from './account';
 import payments from './payments';
 
+import cordovaStateInit from './cordovaStateInit';
+
 Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
 });
 
-export default new Vuex.Store({
+
+const store = new Vuex.Store({
   modules: {
     wallet,
     account,
@@ -20,3 +23,7 @@ export default new Vuex.Store({
   },
   plugins: [vuexLocal.plugin],
 });
+
+cordovaStateInit(store);
+
+export default store;

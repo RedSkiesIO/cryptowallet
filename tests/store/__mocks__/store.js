@@ -1,73 +1,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import wallet from './wallet.js';
+import payments from './payments.js';
+import account from './account.js';
+
 Vue.use(Vuex);
 
 export const actions = {};
 export const getters = {};
 export const mutations = {};
-export const state = {
-  balance: 74.15,
-  payments: [
-    {
-      ts: 1539527543000,
-      title: 'Sainsbury\'s',
-      amount: -4.97,
-    },
-    {
-      ts: 1539527543000,
-      title: 'Amazon',
-      amount: -10.00,
-    },
-    {
-      ts: 1539144743000,
-      title: 'Motion',
-      amount: -47.97,
-    },
-    {
-      ts: 1539181943000,
-      title: 'Space',
-      amount: -27.98,
-    },
-    {
-      ts: 1539866783000,
-      title: 'From Tom Jones',
-      amount: 8.10,
-    },
-  ],
-  account: {
-    salt: null,
-    minLength: 6,
-    pinHash: null,
-    pinLength: null,
-  }
-};
+export const state = {};
 
-const payments = {
-  namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions,
-};
-
-const account = {
-  namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions,
-};
-
-// eslint-disable-next-line no-underscore-dangle
 export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}, state: {} }) {
-
   /**
    * mock store modules.
    */
   const modules = {
-    account,
+    wallet,
     payments,
+    account,
   };
 
   let mockGettersCombined = {};
@@ -82,6 +34,7 @@ export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}
     mockStateCombined = Object.assign({}, mockStateCombined, module.state);
 
     modules[name] = {
+      namespaced: true,
       getters: Object.assign({}, getters, module.getters),
       mutations: Object.assign({}, mutations, module.mutations),
       actions: Object.assign({}, actions, module.actions),
@@ -89,10 +42,10 @@ export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}
     };
   });
 
-  mockGettersCombined = Object.assign({}, getters, custom.getters);
-  mockMutationsCombined = Object.assign({}, mutations, custom.mutations);
-  mockActionsCombined = Object.assign({}, actions, custom.actions);
-  mockStateCombined = Object.assign({}, state, custom.state);
+  mockGettersCombined = Object.assign({}, mockGettersCombined, custom.getters);
+  mockMutationsCombined = Object.assign({}, mockMutationsCombined, custom.mutations);
+  mockActionsCombined = Object.assign({}, mockActionsCombined, custom.actions);
+  mockStateCombined = Object.assign({}, mockStateCombined, custom.state);
 
   return {
     getters: mockGettersCombined,

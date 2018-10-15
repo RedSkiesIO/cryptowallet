@@ -41,11 +41,7 @@ export default {
         const day = new Date(payment.ts).getDate();
         const month = monthNames[new Date(payment.ts).getMonth()];
         const paymentDate = `${day} ${month}`;
-        // @TODO KONRAD STOP DISABLING LINT IN CODE
-        // eslint-disable-next-line
-        const groupItem = groupedPayments.find((item) => {
-          if (item) return item.date === paymentDate;
-        });
+        const groupItem = groupedPayments.find(item => item.date === paymentDate);
 
         if (!groupItem) {
           groupedPayments.push({
@@ -72,14 +68,13 @@ export default {
 <style scoped>
   .recent-payments-scroll-area {
     width: auto;
-    height: 60vh;
+    height: 100%;
   }
 
   .recent-payments {
+    height: 60vh;
     border-top: 2px solid #09233a;
-    border-bottom: 2px solid #09233a;
     position: relative;
-    padding: 0 0.5rem;
     background: #16324a;
   }
 

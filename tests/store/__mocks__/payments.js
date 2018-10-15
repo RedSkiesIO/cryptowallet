@@ -1,4 +1,10 @@
-export default {
+const actions = {
+  updateSearchContactsQueryString: jest.fn(),
+  updateIsSearchingContacts: jest.fn(),
+};
+const getters = {};
+const mutations = {};
+const state = {
   balance: 74.15,
   payments: [
     {
@@ -30,3 +36,13 @@ export default {
   isSearchingContacts: false,
   searchingContactsQueryString: '',
 };
+
+const payments = {
+  namespaced: true,
+  actions,
+  getters,
+  mutations,
+  state,
+};
+
+export default payments;
