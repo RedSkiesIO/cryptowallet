@@ -5,7 +5,8 @@ LABEL Author="James Kirkby <james.kirby@atlascity.io>"
 RUN apk add --no-cache --virtual .gyp \
         python \
         make \
-        g++
+        g++ \
+        git
 
 WORKDIR /srv
 
