@@ -10,12 +10,6 @@ import { mapState } from 'vuex';
 export default {
   name: 'App',
 
-  data() {
-    return {
-      isMainNavVisible: true,
-    };
-  },
-
   computed: {
     ...mapState({
       account: state => state.account,

@@ -72,7 +72,7 @@ export default {
   }
 
   .recent-payments {
-    height: 60vh;
+    height: 55vh;
     border-top: 2px solid #09233a;
     position: relative;
     background: #16324a;

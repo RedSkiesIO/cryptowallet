@@ -24,6 +24,14 @@
 	font-family CooperHewitt-SemiboldItalic
 	src url(/assets/fonts/CooperHewitt/CooperHewitt-SemiboldItalic.otf)
 
+@font-face
+	font-family CooperHewitt-Bold
+	src url(/assets/fonts/CooperHewitt/CooperHewitt-Bold.otf)
+
+@font-face
+	font-family CooperHewitt-Semibold
+	src url(/assets/fonts/CooperHewitt/CooperHewitt-Semibold.otf)
+
 body #q-app
 	font-family Montserrat-Regular
 
@@ -34,3 +42,27 @@ body #q-app
 .bg-blueish {
   background: #33597b;
 }
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  padding-top: 2.5em;
+}
+
+.layout-wrapper > div {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.layout-wrapper > div > section:last-of-type {
+  flex-grow: 1;
+}
+
+.layout-wrapper.no-footer {
+	height: 100vh;
+}
+
+
+

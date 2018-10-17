@@ -63,6 +63,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/contact-item/:id',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/ContactItem.vue') },
+      ],
+    },
+    {
       path: '/UserProfile',
 
       component: () => import('pages/Profile/UserProfile.vue'),

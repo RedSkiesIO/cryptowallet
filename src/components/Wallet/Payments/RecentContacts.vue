@@ -5,7 +5,7 @@
   >
     <h1 class="section-h1">{{ $t('recent') }}</h1>
     <div class="flex-scroll-area-wrapper">
-      <div class="test">
+      <div class="height-fix">
         <q-scroll-area class="recent-contacts-scroll-area">
           <div class="scroll-content">
             <RecentContactItem
@@ -39,10 +39,10 @@ export default {
 </script>
 
 <style scoped>
-.test {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.height-fix {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .section-h1 {
@@ -58,7 +58,7 @@ export default {
 
 .flex-scroll-area-wrapper {
   flex: auto;
-  flex-grow: 0;
+  flex-grow: 1;
   position: relative;
   height: 100%;
 }
@@ -69,13 +69,13 @@ export default {
 }
 
 .recent-contacts-list {
-  height: 25vh;
   border-top: 2px solid #09233a;
   position: relative;
   background: #16324a;
   display: flex;
   flex-direction: column;
   transition: height 100ms ease-in-out;
+  min-height: 9rem;
 }
 
 .scroll-content {

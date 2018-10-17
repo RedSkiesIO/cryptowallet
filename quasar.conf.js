@@ -2,7 +2,7 @@
 module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
-    plugins: ['i18n', 'axios', 'acmwcrypto'],
+    plugins: ['i18n', 'axios', 'acmwcrypto', 'vuex-router-sync'],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -52,7 +52,7 @@ module.exports = function (ctx) {
         'QPageSticky',
         'QScrollArea',
         'QLayoutFooter',
-        'QInput'
+        'QInput',
       ],
       directives: ['Ripple'],
       // Quasar plugins

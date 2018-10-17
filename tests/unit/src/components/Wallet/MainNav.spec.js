@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import MainNav from '@/components/Wallet/MainNav.vue';
-import { localVue, router, i18n } from '../helpers/setupLocalVue';
-import { __createMocks as createStoreMocks } from '../../store/__mocks__/store.js';
+import { localVue, createRouter, i18n } from '../../../helpers/setupLocalVue';
+import { __createMocks as createStoreMocks } from '../../../../store/__mocks__/store.js';
 
 const menuItems = ['Balance', 'Analytics', 'Payments', 'Exchange', 'More'];
 
@@ -9,12 +9,14 @@ describe('MainNav.vue', () => {
   let storeMocks;
   let wrapper;
   let store;
+  let router;
 
   function wrapperInit (options) {
     return mount(MainNav, options);
   }
 
   function storeInit (custom) {
+    router = createRouter();
     storeMocks = createStoreMocks(custom);
     wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store, });
     store = wrapper.vm.$store;
