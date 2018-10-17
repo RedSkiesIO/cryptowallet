@@ -1,5 +1,8 @@
 <template>
-  <div class="contact-list-item">
+  <div
+    class="contact-list-item"
+    @click.prevent="goToContact"
+  >
     <div class="columns is-mobile no-margin-bottom">
       <div class="column is-2">
         <div class="circle"/>
@@ -28,6 +31,11 @@ export default {
     contact: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    goToContact() {
+      this.$router.push({ path: `/contact-item/${this.contact.id}` });
     },
   },
 };

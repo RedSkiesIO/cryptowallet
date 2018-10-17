@@ -1,8 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-page-container>
+    <q-layout-header>
+      <Header/>
+    </q-layout-header>
+
+    <div
+      :class="{ 'no-footer': !isMainNavVisible }"
+      class="layout-wrapper"
+    >
       <router-view/>
-    </q-page-container>
+    </div>
+
     <transition
       enter-active-class="animated slideInUp"
       leave-active-class="animated slideOutDown"
@@ -17,11 +25,13 @@
 <script>
 import { mapState } from 'vuex';
 import MainNav from '../components/Wallet/MainNav.vue';
+import Header from '../components/Wallet/Header.vue';
 
 export default {
   name: 'AuthedLayout',
   components: {
     MainNav,
+    Header,
   },
   data() {
     return {

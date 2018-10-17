@@ -1,7 +1,9 @@
 <template>
   <div class="contact-list-item">
-    <div class="circle"/>
-    {{ contact.displayName }}
+    <div @click.prevent="goToContact">
+      <div class="circle"/>
+      {{ contact.displayName }}
+    </div>
   </div>
 </template>
 
@@ -14,11 +16,16 @@ export default {
       required: true,
     },
   },
+  methods: {
+    goToContact() {
+      this.$router.push({ path: `/contact-item/${this.contact.id}` });
+    },
+  },
 };
 </script>
 
 <style scoped>
-.contact-list-item {
+.contact-list-item > div {
   padding-right: 2rem;
   display: flex;
   flex-direction: column;

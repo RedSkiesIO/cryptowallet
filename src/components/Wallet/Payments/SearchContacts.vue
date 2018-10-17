@@ -1,5 +1,5 @@
 <template>
-  <div class="search-contacts">
+  <section class="search-contacts">
     <div class="flex-wrapper">
       <div class="search-input-wrapper">
         <q-input
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -64,34 +64,30 @@ export default {
 </script>
 
 <style>
-  .search-contacts {
-    height: 20vh;
-    transition: height 250ms ease-in-out;
-  }
+.search-contacts {
+  transition: height 250ms ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 5em;
+}
 
-  .search-input-wrapper {
-    width: 90vw;
-    display: flex;
-  }
+.search-input-wrapper {
+  width: 90vw;
+  display: flex;
+}
 
-  .search-input-wrapper > .q-input {
-    width: 60%;
-    flex-grow: 1;
-  }
+.search-input-wrapper > .q-input {
+  width: 60%;
+  flex-grow: 1;
+}
 
-  .cancel-search-wrapper > .q-btn {
-    margin-left: 1rem;
-    height: 100%;
-  }
+.cancel-search-wrapper > .q-btn {
+  margin-left: 1rem;
+  height: 100%;
+}
 
-  .search-input-wrapper .column {
-    padding: 0;
-  }
-
-  .search-contacts .flex-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
+.search-input-wrapper .column {
+  padding: 0;
+}
 </style>

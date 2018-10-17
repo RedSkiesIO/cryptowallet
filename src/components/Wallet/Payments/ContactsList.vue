@@ -54,19 +54,20 @@ export default {
 
 .flex-scroll-area-wrapper {
   flex: auto;
-  flex-grow: 0;
+  flex-grow: 1;
   position: relative;
   overflow: hidden;
   height: 100%;
 }
 
 .contacts-list-scroll-area {
-  width: auto;
+  flex-grow: 1;
+  width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .contacts-list {
-  height: 40vh;
   border-top: 2px solid #09233a;
   position: relative;
   background: #16324a;
@@ -76,7 +77,7 @@ export default {
 }
 
 .contacts-list.isSearchingContacts {
-  height: 80vh;
+  height: 85vh;
 }
 
 .scroll-content {

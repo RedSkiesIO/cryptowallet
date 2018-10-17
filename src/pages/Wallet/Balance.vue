@@ -1,8 +1,8 @@
 <template>
-  <q-layout>
+  <div>
     <UserBalance/>
     <RecentPayments/>
-  </q-layout>
+  </div>
 </template>
 
 <script>

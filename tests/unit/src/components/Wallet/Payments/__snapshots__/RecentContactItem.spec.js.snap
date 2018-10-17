@@ -4,11 +4,13 @@ exports[`RecentContactItem.vue renders and matches snapshot 1`] = `
 <div
   class="contact-list-item"
 >
-  <div
-    class="circle"
-  />
+  <div>
+    <div
+      class="circle"
+    />
+    
+    Fio
   
-  Fio
-
+  </div>
 </div>
 `;

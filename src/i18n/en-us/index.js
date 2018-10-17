@@ -1,4 +1,5 @@
 export default {
+  walletName: 'WALLET NAME',
   setupTitle: 'CryptoWallet Setup!',
   continue: 'Continue',
   profile: 'Profile',
@@ -11,4 +12,5 @@ export default {
   'payments/noWalletAddress': 'No wallet address is available for this contact',
   contacts: 'Contacts',
   recent: 'Recent',
+  'go back': 'Go Back',
 };

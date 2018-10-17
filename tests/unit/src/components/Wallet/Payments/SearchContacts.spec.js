@@ -24,8 +24,8 @@ describe('SearchContacts.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('renders a div with .search-contacts class', () => {
-    expect(wrapper.contains('div.search-contacts')).toBe(true);
+  it('renders a section with .search-contacts class', () => {
+    expect(wrapper.contains('section.search-contacts')).toBe(true);
   });
 
   it('renders an input', () => {

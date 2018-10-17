@@ -14,7 +14,7 @@ exports[`RecentContacts.vue renders and matches snapshot 1`] = `
     class="flex-scroll-area-wrapper"
   >
     <div
-      class="test"
+      class="height-fix"
     >
       <qscrollarea-stub
         class="recent-contacts-scroll-area"
