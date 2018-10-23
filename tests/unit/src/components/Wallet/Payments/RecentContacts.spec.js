@@ -29,10 +29,10 @@ describe('RecentContacts.vue', () => {
     expect(wrapper.contains('section.recent-contacts-list')).toBe(true);
   });
 
-  it('is hidden if store has payments.isSearchingContacts === true', () => {
-    expect(store.state.payments.isSearchingContacts).toBe(false);
+  it('is hidden if store has search.isSearchingContacts === true', () => {
+    expect(store.state.search.isSearchingContacts).toBe(false);
     expect(wrapper.isVisible()).toBe(true);
-    store.state.payments.isSearchingContacts = true
+    store.state.search.isSearchingContacts = true
     expect(wrapper.isVisible()).toBe(false);
   });
 

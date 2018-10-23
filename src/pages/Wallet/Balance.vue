@@ -1,20 +1,22 @@
 <template>
   <div>
-    <UserBalance/>
-    <RecentPayments/>
+    <q-pull-to-refresh :handler="refresher">
+      <UserBalance/>
+      <Transactions/>
+    </q-pull-to-refresh>
   </div>
 </template>
 
 <script>
 import UserBalance from '../../components/Wallet/Balance/Balance.vue';
-import RecentPayments from '../../components/Wallet/Balance/RecentPayments.vue';
+import Transactions from '../../components/Wallet/Balance/Transactions.vue';
 
 export default {
   name: 'Balance',
 
   components: {
     UserBalance,
-    RecentPayments,
+    Transactions,
   },
 
   data() {
@@ -23,40 +25,12 @@ export default {
     };
   },
 
-  beforeCreate() {
-
-  },
-
-  created() {
-
-  },
-
-  beforeMount() {
-
-  },
-
-  mounted() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
-  },
-
   methods: {
-
+    refresher(done) {
+      setTimeout(() => {
+        done();
+      }, 1000);
+    },
   },
 
 };

@@ -1,8 +1,9 @@
-/* eslint-disable-next-line */
-module.exports = function (ctx) {
+/* eslint-disable */
+const path = require('path');
+
+module.exports = (ctx) => {
   return {
-    // app plugins (/src/plugins)
-    plugins: ['i18n', 'axios', 'acmwcrypto', 'vuex-router-sync'],
+    plugins: ['i18n', 'axios', 'acmwcrypto', 'vuexRouterSync', 'toaster', 'errorHandler'],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -26,6 +27,10 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/,
         });
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          '@': path.resolve(__dirname, './src/'),
+        };
       },
     },
     devServer: {
@@ -53,10 +58,20 @@ module.exports = function (ctx) {
         'QScrollArea',
         'QLayoutFooter',
         'QInput',
+        'QTabs',
+        'QTab',
+        'QTabPane',
+        'QRouteTab',
+        'QPullToRefresh',
+        'QTimeline',
+        'QTimelineEntry',
+        'QInfiniteScroll',
+        'QSpinnerDots',
+        'QCollapsible'
       ],
       directives: ['Ripple'],
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       i18n: 'en-us',
     },

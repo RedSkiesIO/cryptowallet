@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import wallet from './wallet.js';
 import payments from './payments.js';
 import account from './account.js';
+import search from './search.js';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}
     wallet,
     payments,
     account,
+    search,
   };
 
   let mockGettersCombined = {};

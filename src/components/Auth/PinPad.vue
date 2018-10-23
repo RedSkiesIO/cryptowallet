@@ -26,49 +26,51 @@ export default {
 
   computed: {
     ...mapState({
-      minLength: state => state.account.minLength,
+      minLength: state => state.settings.pin.minLength,
     }),
   },
 
-  beforeCreate() {
+  // beforeCreate() {
 
-  },
+  // },
 
-  created() {
+  // created() {
 
-  },
+  // },
 
-  beforeMount() {
+  // beforeMount() {
 
-  },
+  // },
 
-  mounted() {
+  // mounted() {
 
-  },
+  // },
 
-  beforeUpdate() {
+  // beforeUpdate() {
 
-  },
+  // },
 
-  updated() {
+  // updated() {
 
-  },
+  // },
 
-  beforeDestroy() {
+  // beforeDestroy() {
 
-  },
+  // },
 
-  destroyed() {
+  // destroyed() {
 
-  },
+  // },
 
   methods: {
 
     /**
-     * Emits pincode to parent components.
-      * @param {*} pin
+     * Emits pin code to parent components.
+     * @param pin
      */
     inputPin(pin) {
+      console.log(pin);
+      console.log(this);
       if (pin === '') {
         this.pin.pop();
       } else {
@@ -79,7 +81,6 @@ export default {
       }
     },
   },
-
 };
 
 </script>

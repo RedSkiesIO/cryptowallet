@@ -1,7 +1,7 @@
 <template>
   <div class="mainContentContacts">
     <p> &nbsp; </p>
-    <p id="Title_id">&nbsp;{{ $t("recent") }}</p>
+    <p id="title_id">&nbsp;{{ $t("recent") }}</p>
     <hr>
     <div class="container is-fluid">
       <div id="items">&nbsp;
@@ -48,47 +48,47 @@ export default {
     RecentContactBox,
   },
 
-  data() {
-    return {
+  // data() {
+  //   return {
 
-    };
-  },
+  //   };
+  // },
 
-  beforeCreate() {
+  // beforeCreate() {
 
-  },
+  // },
 
-  created() {
+  // created() {
 
-  },
+  // },
 
-  beforeMount() {
+  // beforeMount() {
 
-  },
+  // },
 
-  mounted() {
+  // mounted() {
 
-  },
+  // },
 
-  beforeUpdate() {
+  // beforeUpdate() {
 
-  },
+  // },
 
-  updated() {
+  // updated() {
 
-  },
+  // },
 
-  beforeDestroy() {
+  // beforeDestroy() {
 
-  },
+  // },
 
-  destroyed() {
+  // destroyed() {
 
-  },
+  // },
 
-  methods: {
+  // methods: {
 
-  },
+  // },
 
 };
 
@@ -97,25 +97,26 @@ export default {
 
 <style scoped>
 
-.mainContentContacts {
-  background-color:transparent;
-  width: auto;
-  height: auto;
-  margin: auto;
-}
+  .mainContentContacts {
+    background-color:transparent;
+    width: auto;
+    height: auto;
+    margin: auto;
+  }
 
-#Title_id {
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  margin-left: 10px;
+  #title_id {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 10px;
   }
 
   #items{
-  overflow-x: scroll;
-  width: auto;
-  white-space: nowrap;
+    overflow-x: scroll;
+    width: auto;
+    white-space: nowrap;
   }
+
   .item{
     text-align: center;
     position: sticky;
@@ -123,8 +124,8 @@ export default {
   }
 
   img {
-  height: 70px;
-  width: 45%;
-}
+    height: 70px;
+    width: 45%;
+  }
 
 </style>

@@ -3,7 +3,7 @@
     <div class="profileButton">
       <div class="container">
         <router-link
-          id="Btn_id"
+          id="btn_id"
           tag="button"
           to="/UserProfile">
           <p id="profile_id">{{ $t('profile') }}</p>
@@ -17,53 +17,53 @@
 
 export default {
 
-  data() {
-    return {
+  // data() {
+  //   return {
 
-    };
-  },
+  //   };
+  // },
 
-  beforeCreate() {
+  // beforeCreate() {
 
-  },
+  // },
 
-  created() {
+  // created() {
 
-  },
+  // },
 
-  beforeMount() {
+  // beforeMount() {
 
-  },
+  // },
 
-  mounted() {
+  // mounted() {
 
-  },
+  // },
 
-  beforeUpdate() {
+  // beforeUpdate() {
 
-  },
+  // },
 
-  updated() {
+  // updated() {
 
-  },
+  // },
 
-  beforeDestroy() {
+  // beforeDestroy() {
 
-  },
+  // },
 
-  destroyed() {
+  // destroyed() {
 
-  },
+  // },
 
-  methods: {
+  // methods: {
 
-  },
+  // },
 
 };
 
 </script>
 
-<style @scoped>
+<style scoped>
 #profile_id{
   position:relative;
   left: 0%;
@@ -75,7 +75,7 @@ export default {
     position: relative;
 }
 
-#Btn_id {
+#btn_id {
     background-image: url( "~assets/avatar.png" );
     background-color: Transparent;
     background-size: 90px 95px;

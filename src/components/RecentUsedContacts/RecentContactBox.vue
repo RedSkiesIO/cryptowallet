@@ -1,7 +1,7 @@
 <template>
   <div class="contactBox">
     <router-link
-      id="Btn_id"
+      id="btn_id"
       tag="button"
       to="/#FixThePath">
       <div class="item">
@@ -9,7 +9,6 @@
         <p id="usersName_id">Name Surname</p>
       </div>&nbsp;
     </router-link>
-    <!-- <br><br> -->
   </div>
 </template>
 
@@ -17,56 +16,56 @@
 
 export default {
 
-  data() {
-    return {
+  // data() {
+  //   return {
 
-    };
-  },
+  //   };
+  // },
 
-  beforeCreate() {
+  // beforeCreate() {
 
-  },
+  // },
 
-  created() {
+  // created() {
 
-  },
+  // },
 
-  beforeMount() {
+  // beforeMount() {
 
-  },
+  // },
 
-  mounted() {
+  // mounted() {
 
-  },
+  // },
 
-  beforeUpdate() {
+  // beforeUpdate() {
 
-  },
+  // },
 
-  updated() {
+  // updated() {
 
-  },
+  // },
 
-  beforeDestroy() {
+  // beforeDestroy() {
 
-  },
+  // },
 
-  destroyed() {
+  // destroyed() {
 
-  },
+  // },
 
-  methods: {
+  // methods: {
 
-  },
+  // },
 
 };
 
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
-  .item{
+  .item {
     text-align: center;
     position: sticky;
     display: inline-block;
@@ -77,20 +76,22 @@ export default {
   }
 
   img {
-  height: 70px;
-  width: 45%;
-}
+    height: 70px;
+    width: 45%;
+  }
 
-p#usersName_id {
-  color: white;
-}
+  p {
+    #usersName_id {
+      color: white;
+    }
+  }
 
-#Btn_id {
-  background-color: Transparent;
-  border: none;
-  cursor:pointer;
-  overflow: hidden;
-  outline:none;
-}
+  #btn_id {
+    background-color: Transparent;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+  }
 
 </style>

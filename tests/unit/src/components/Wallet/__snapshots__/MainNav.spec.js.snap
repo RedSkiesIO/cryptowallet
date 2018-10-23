@@ -2,11 +2,9 @@
 
 exports[`MainNav.vue renders and matches snapshot 1`] = `
 <section
-  class="columns is-mobile main-nav is-gapless"
+  class="main-nav"
 >
-  <div
-    class="column"
-  >
+  <div>
     <a
       class="main-nav-link"
       href="#/wallet/balance"
@@ -25,9 +23,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
     </a>
   </div>
    
-  <div
-    class="column"
-  >
+  <div>
     <a
       class="main-nav-link"
       href="#/wallet/analytics"
@@ -46,9 +42,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
     </a>
   </div>
    
-  <div
-    class="column"
-  >
+  <div>
     <a
       class="main-nav-link"
       href="#/wallet/payments"
@@ -67,9 +61,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
     </a>
   </div>
    
-  <div
-    class="column"
-  >
+  <div>
     <a
       class="main-nav-link"
       href="#/wallet/exchange"
@@ -88,9 +80,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
     </a>
   </div>
    
-  <div
-    class="column"
-  >
+  <div>
     <a
       class="main-nav-link"
       href="#/wallet/more"

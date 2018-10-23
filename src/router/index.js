@@ -4,27 +4,46 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 export default new VueRouter({
+  /**
+   * Gets scroll position
+   * @returns {{y: number}}
+   */
   scrollBehavior: () => ({ y: 0 }),
+
   routes: [
     {
       path: '/',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/Login.vue') },
+        { path: '', component: () => import('pages/Auth/Login.vue') },
+      ],
+    },
+    {
+      path: '/setup/language',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup/Steps/Language.vue') },
       ],
     },
     {
       path: '/setup/seed',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/Setup/Seed.vue') },
+        { path: '', component: () => import('pages/Setup/Steps/Seed.vue') },
       ],
     },
     {
       path: '/setup/pin',
       component: () => import('layouts/UnAuthed.vue'),
       children: [
-        { path: '', component: () => import('pages/Setup/Pin.vue') },
+        { path: '', component: () => import('pages/Setup/Steps/Pin.vue') },
+      ],
+    },
+    {
+      path: '/setup/complete',
+      component: () => import('layouts/UnAuthed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Setup/Steps/Complete.vue') },
       ],
     },
     {

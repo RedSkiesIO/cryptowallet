@@ -1,9 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-
-    <!-- <img alt="Quasar logo" src="~assets/quasar-logo-full.svg"> -->
     <ProfileButton/>
-
     <h1><span class="title">home</span></h1>
   </q-page>
 </template>
@@ -14,7 +11,7 @@
 
 
 <script>
-import ProfileButton from '../components/ProfileButton.vue';
+import ProfileButton from '../components/Profile/ProfileButton.vue';
 
 export default {
   name: 'PageIndex',

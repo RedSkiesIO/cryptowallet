@@ -9,6 +9,11 @@
 export default {
   name: 'UserBalance',
   computed: {
+
+    /**
+     * Returns user balance from Vuex state
+     * @returns {Number}
+     */
     UserBalance() {
       return this.$store.state.payments.balance;
     },

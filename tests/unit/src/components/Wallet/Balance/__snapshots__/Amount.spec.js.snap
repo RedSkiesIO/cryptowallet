@@ -5,7 +5,7 @@ exports[`Amount.vue renders and matches snapshot 1`] = `
   class="amount-box"
 >
   <div>
-    +10.00 £
+    &#43; 10.00
   </div>
 </div>
 `;
