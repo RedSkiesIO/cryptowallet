@@ -3,7 +3,7 @@
     <div class="header-button-wrapper">
       <q-btn
         :disable="!isBackButtonEnabled"
-        :label="$t('go back')"
+        :label="$t('goBack')"
         color="secondary"
         size="sm"
         @click.prevent="goBack"

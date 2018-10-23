@@ -32,8 +32,13 @@ describe('Amount.vue', () => {
   });
 
   it('renders properly formatted amount', () => {
-    expect(wrapper.html().includes('+10.00 £')).toBe(true);
+    expect(wrapper.html().includes('#43; 10.00')).toBe(true);
     wrapper.setProps({amount: -21.2});
-    expect(wrapper.html().includes('-21.20 £')).toBe(true);
+    expect(wrapper.html().includes('#8722; 21.20')).toBe(true);
+
+    wrapper.setProps({currency: '£'});
+    expect(wrapper.html().includes('#8722; £21.20')).toBe(true);
+    wrapper.setProps({amount: 21.2});
+    expect(wrapper.html().includes('#43; £21.20')).toBe(true);
   });
 });

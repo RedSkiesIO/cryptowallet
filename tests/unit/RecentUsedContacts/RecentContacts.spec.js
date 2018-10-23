@@ -18,7 +18,7 @@ describe('RecentContacts.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  
+
   it('expect main content', () => {
     expect(wrapper.contains('.mainContentContacts')).toBe(true);
   });

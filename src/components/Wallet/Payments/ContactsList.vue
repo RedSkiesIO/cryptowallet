@@ -29,10 +29,15 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
-      searchingContactsQueryString: state => state.payments.searchingContactsQueryString,
+      isSearchingContacts: state => state.search.isSearchingContacts,
+      searchingContactsQueryString: state => state.search.searchingContactsQueryString,
       contacts: state => state.wallet.contacts,
     }),
+
+    /**
+     * Filters contact based on the search input value
+     * @return {Array}
+     */
     filteredContacts() {
       return this.contacts.filter(contact => new RegExp(`^${this.searchingContactsQueryString}`, 'i').test(contact.displayName));
     },

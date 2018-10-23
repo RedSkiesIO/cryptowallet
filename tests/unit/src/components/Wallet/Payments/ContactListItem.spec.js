@@ -1,12 +1,17 @@
 import { shallowMount } from '@vue/test-utils';
 import ContactListItem from '@/components/Wallet/Payments/ContactListItem.vue';
-import { localVue, i18n } from '../../../../helpers/setupLocalVue';
+import { localVue, i18n, createRouter } from '@/../tests/unit/helpers/setupLocalVue.js';
+import { __createMocks as createStoreMocks } from '@/../tests/store/__mocks__/store.js';
 
 describe('ContactListItem.vue', () => {
+  let storeMocks;
   let wrapper;
+  let store;
+  let router;
 
   const propsData = {
     contact: {
+      id: 1,
       displayName: 'Fio',
       address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE',
     }
@@ -17,7 +22,11 @@ describe('ContactListItem.vue', () => {
   }
 
   function storeInit (custom) {
-    wrapper = wrapperInit({ localVue, i18n, propsData });
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: `/` });
+    wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store, propsData });
+    store = wrapper.vm.$store;
   }
 
   beforeEach(() => storeInit());
@@ -44,5 +53,11 @@ describe('ContactListItem.vue', () => {
     delete contactCopy.address;
     wrapper.setProps({contact: contactCopy});
     expect(wrapper.html().includes('No wallet address is available for this contact')).toBe(true);
+  });
+
+  it('navigates to correct route when clicked on', () => {
+    expect(store.state.route.path).toBe('/');
+    wrapper.find('.contact-list-item').trigger('click');
+    expect(store.state.route.path).toBe(`/contact-item/${propsData.contact.id}`);
   });
 });

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import Header from '@/components/Wallet/Header.vue';
-import { localVue, createRouter, i18n } from '../../../helpers/setupLocalVue';
+import { localVue, i18n, createRouter } from '@/../tests/unit/helpers/setupLocalVue.js';
 import { __createMocks as createStoreMocks } from '../../../../store/__mocks__/store.js';
 
 describe('Header.vue', () => {
@@ -33,7 +33,7 @@ describe('Header.vue', () => {
 
   it('renders a h1 element with .header-h1 class and the wallet name within it', () => {
     expect(wrapper.contains('h1.header-h1')).toBe(true);
-    expect(wrapper.find('h1.header-h1').html().includes('WALLET NAME')).toBe(true);
+    expect(wrapper.find('h1.header-h1').html().includes('CryptoWallet')).toBe(true);
   });
 
   it('renders a "Go Back" button', () => {

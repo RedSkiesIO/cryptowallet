@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import ProfileButton from '@/components/Profile/ProfileButton.vue';
-import { localVue, i18n } from '../../../helpers/setupLocalVue';
+import { localVue, i18n } from '@/../tests/unit/helpers/setupLocalVue.js';
 
 describe('ProfileButton.vue', () => {
   let wrapper;
@@ -22,7 +22,4 @@ describe('ProfileButton.vue', () => {
     expect(wrapper.contains('div.profileButton')).toBe(true);
   });
 
-  it('expect router-link button', () => {
-    expect(wrapper.contains('#Btn_id')).toBe(true);
-  });
 });

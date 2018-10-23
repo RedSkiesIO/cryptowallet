@@ -15,47 +15,47 @@
 
 export default {
 
-  data() {
-    return {
+  // data() {
+  //   return {
 
-    };
-  },
+  //   };
+  // },
 
-  beforeCreate() {
+  // beforeCreate() {
 
-  },
+  // },
 
-  created() {
+  // created() {
 
-  },
+  // },
 
-  beforeMount() {
+  // beforeMount() {
 
-  },
+  // },
 
-  mounted() {
+  // mounted() {
 
-  },
+  // },
 
-  beforeUpdate() {
+  // beforeUpdate() {
 
-  },
+  // },
 
-  updated() {
+  // updated() {
 
-  },
+  // },
 
-  beforeDestroy() {
+  // beforeDestroy() {
 
-  },
+  // },
 
-  destroyed() {
+  // destroyed() {
 
-  },
+  // },
 
-  methods: {
+  // methods: {
 
-  },
+  // },
 
 };
 

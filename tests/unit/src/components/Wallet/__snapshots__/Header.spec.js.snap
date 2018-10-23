@@ -29,7 +29,7 @@ exports[`Header.vue renders and matches snapshot 1`] = `
   <h1
     class="header-h1"
   >
-    WALLET NAME
+    CryptoWallet
   </h1>
 </section>
 `;

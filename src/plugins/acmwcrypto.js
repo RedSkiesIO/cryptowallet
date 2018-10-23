@@ -1,5 +1,9 @@
 import bcrypt from 'bcryptjs';
 
+/**
+ * ACMW crypto Helpers.
+ * @type {{bcryptHashString(*, *): *, bcryptCompareString(*, *): *}}
+ */
 const ACMWCrypto = {
 
   /**
@@ -12,16 +16,19 @@ const ACMWCrypto = {
   },
 
   /**
-   * compares a unhashed string with a bcrypt string
+   * compares a un-hashed string with a bcrypt string
    * @param {*} string
    * @param {*} hashedString
    */
   bcryptCompareString(string, hashedString) {
     return bcrypt.compareSync(string, hashedString);
   },
-
 };
 
+/**
+ * Installs the ACMWCrypto plugin.
+ * @param Vue
+ */
 export default ({ Vue }) => {
   Vue.prototype.$acmwcrypto = ACMWCrypto;
 };

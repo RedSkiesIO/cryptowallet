@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import Contact from '@/components/Wallet/Contact/Contact.vue';
 import { __createMocks as createStoreMocks } from '../../../../../store/__mocks__/store.js';
-import { localVue, createRouter } from '../../../../helpers/setupLocalVue';
+import { localVue, i18n, createRouter } from '@/../tests/unit/helpers/setupLocalVue.js';
 
 describe('Contact.vue', () => {
   let storeMocks;
@@ -17,7 +17,7 @@ describe('Contact.vue', () => {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
     router.push({ path: `/contact-item/1` });
-    wrapper = wrapperInit({ router, localVue, store: storeMocks.store });
+    wrapper = wrapperInit({ router, localVue, store: storeMocks.store, i18n });
     store = wrapper.vm.$store;
   }
 

@@ -10,7 +10,7 @@ exports[`ProfileButton.vue renders and matches snapshot 1`] = `
     >
       <router-link-stub
         event="click"
-        id="Btn_id"
+        id="btn_id"
         tag="button"
         to="/UserProfile"
       >

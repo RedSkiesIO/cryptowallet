@@ -38,26 +38,43 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
-      searchingContactsQueryString: state => state.payments.searchingContactsQueryString,
+      isSearchingContacts: state => state.search.isSearchingContacts,
+      searchingContactsQueryString: state => state.search.searchingContactsQueryString,
     }),
     searchQueryString: {
+      /**
+       * Use a computed value getter to keep the input value in sync with the store
+       * @return {String}
+       */
       get() {
-        return this.$store.state.payments.searchingContactsQueryString;
+        return this.$store.state.search.searchingContactsQueryString;
       },
+      /**
+       * Use a computed value setter to update the store if input value changes
+       * @param {String} value The new input value
+       */
       set(value) {
-        this.$store.dispatch('payments/updateSearchContactsQueryString', { value });
+        this.$store.dispatch('search/updateSearchContactsQueryString', { value });
       },
     },
 
   },
   methods: {
+    /**
+     * Updates the store search/isSearchingContacts state
+     * @param  {Boolean} value Either is searching or isn't
+     * @return {Boolean}
+     */
     isSearching(value) {
-      this.$store.dispatch('payments/updateIsSearchingContacts', { value });
+      this.$store.dispatch('search/updateIsSearchingContacts', { value });
     },
+    /**
+     * Will be called if user clicks the CANCEL button while searching contacts
+     * Will dispatch actions needed to reset the input value and reset the UI state
+     */
     cancelSearch() {
-      this.$store.dispatch('payments/updateIsSearchingContacts', { value: false });
-      this.$store.dispatch('payments/updateSearchContactsQueryString', { value: '' });
+      this.$store.dispatch('search/updateIsSearchingContacts', { value: false });
+      this.$store.dispatch('search/updateSearchContactsQueryString', { value: '' });
     },
   },
 };

@@ -43,11 +43,21 @@ body #q-app
   background: #33597b;
 }
 
+.modal-header {
+  color: #4a4a4a;
+}
+
+// bulma.css casues a conflict with its .column class, overwrite
+.q-notifications > div.column {
+  display: flex
+}
+
 .layout-wrapper {
   display: flex;
   flex-direction: column;
-  height: 85vh;
+  height: 100vh;
   padding-top: 2.5em;
+  padding-bottom: 6em;
 }
 
 .layout-wrapper > div {
@@ -63,6 +73,3 @@ body #q-app
 .layout-wrapper.no-footer {
 	height: 100vh;
 }
-
-
-

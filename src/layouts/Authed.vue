@@ -24,8 +24,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import MainNav from '../components/Wallet/MainNav.vue';
-import Header from '../components/Wallet/Header.vue';
+import MainNav from '@/components/Wallet/MainNav.vue';
+import Header from '@/components/Wallet/Header.vue';
 
 export default {
   name: 'AuthedLayout',
@@ -41,23 +41,34 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
+      isSearchingContacts: state => state.search.isSearchingContacts,
     }),
   },
   watch: {
-    $route(to, from) {
-      this.updateMainNavVisiblity();
-      const toDepth = to.path.split('/').length;
-      const fromDepth = from.path.split('/').length;
-      this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+    /**
+     * Watch the $route to keep the MainNav visibility updated
+     */
+    $route() {
+      this.updateMainNavVisibility();
     },
-    isSearchingContacts() { this.updateMainNavVisiblity(); },
+    /**
+     * Watch the isSearchingContacts to keep the MainNav visibility updated
+     */
+    isSearchingContacts() { this.updateMainNavVisibility(); },
   },
+  /**
+   * Make sure that the MainNav visibility is set correctly on initial render
+   */
   beforeMount() {
-    this.updateMainNavVisiblity();
+    this.updateMainNavVisibility();
   },
   methods: {
-    updateMainNavVisiblity() {
+    /**
+     * Decide if the MainNav component should be visible
+     * Update MainNav component visibility
+     * @TODO James review future
+     */
+    updateMainNavVisibility() {
       if (this.$route.path === '/wallet/payments' && this.isSearchingContacts) {
         this.isMainNavVisible = false;
       } else {

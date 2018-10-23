@@ -1,8 +1,8 @@
 <template>
   <section
-    class="columns is-mobile main-nav is-gapless"
+    class="main-nav"
   >
-    <div class="column">
+    <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/balance"
@@ -13,7 +13,7 @@
         <div>{{ $t('balance') }}</div>
       </router-link>
     </div>
-    <div class="column">
+    <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/analytics"
@@ -24,7 +24,7 @@
         <div>{{ $t('analytics') }}</div>
       </router-link>
     </div>
-    <div class="column">
+    <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/payments"
@@ -35,7 +35,7 @@
         <div>{{ $t('payments') }}</div>
       </router-link>
     </div>
-    <div class="column">
+    <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/exchange"
@@ -46,7 +46,7 @@
         <div>{{ $t('exchange') }}</div>
       </router-link>
     </div>
-    <div class="column">
+    <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/more"
@@ -78,13 +78,12 @@ export default {
     height: 15vh;
     background: white;
     background: #f3f3f3;
+    display: flex;
+    justify-content: space-between;
   }
 
-  .main-nav > .column {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+  .main-nav > div {
+    flex: 1;
   }
 
   .main-nav-link {

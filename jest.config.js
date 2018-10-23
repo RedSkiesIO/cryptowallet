@@ -40,6 +40,8 @@ module.exports = {
   },
   'testMatch': [
     '**/tests/unit/src/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/tests/unit/src/plugins/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/tests/unit/src/store/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
   'testPathIgnorePatterns': [
     '<rootDir>/tests/unit/__helpers__',
@@ -53,9 +55,12 @@ module.exports = {
   ],
   'moduleNameMapper': {
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
-    '^quasar$': '<rootDir>/node_modules/quasar-framework/dist/umd/quasar.mat.umd.min.js',
+    '^quasar$': '<rootDir>/tests/tmp/quasar.common.js',
     '^~/(.*)$': '<rootDir>/$1',
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
+    "^src/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
+    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
   },
   'transformIgnorePatterns': [
     'node_modules/core-js',

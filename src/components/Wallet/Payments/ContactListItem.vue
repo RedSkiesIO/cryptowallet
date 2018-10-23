@@ -16,7 +16,7 @@
             {{ contact.address }}
           </div>
           <div v-else>
-            {{ $t('payments/noWalletAddress') }}
+            {{ $t('noWalletForContact') }}
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import numeral from 'numeral';
+import { amount } from '@/helpers';
 
 export default {
   name: 'Amount',
@@ -23,18 +23,20 @@ export default {
         return '';
       },
     },
+    currency: {
+      type: String,
+      default() {
+        return '';
+      },
+    },
   },
   computed: {
-    /*
-     * converts raw amount {Number} into a {String} that begins with
-     * either "+" or "-" and ends with " £"" also, it formats the number
-     * into currency friendly format: "0.00"
-     * @return {String} eg. "+12.40 £" or "-1.00 £"
+    /**
+     * Converts amount value (Number) into a String with optional currency symbol
+     * @return {String}
      */
     formattedAmount() {
-      const formatted = `${numeral(this.amount).format('0.00')} £`;
-      if (this.amount > 0) return `+${formatted}`;
-      return formatted;
+      return amount(this.amount, this.currency);
     },
   },
 };
