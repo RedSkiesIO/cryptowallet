@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddWallet.vue renders and matches snapshot 1`] = `
+<div
+  class="new-wallet-btn-wrapper"
+>
+  <button
+    class="q-btn inline relative-position q-btn-item non-selectable q-btn-rectangle q-focusable q-hoverable bg-primary text-white"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="q-focus-helper"
+    />
+    <div
+      class="q-btn-inner row col items-center justify-center"
+    >
+      <i
+        aria-hidden="true"
+        class="q-icon material-icons on-left"
+      >
+        library_add
+      </i>
+      <div>
+        Add Wallet
+      </div>
+    </div>
+  </button>
+</div>
+`;

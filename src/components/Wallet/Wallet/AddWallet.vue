@@ -1,8 +1,8 @@
 <template>
   <div class="new-wallet-btn-wrapper">
     <q-btn
+      :label="$t('addWallet')"
       icon="library_add"
-      label="Add Wallet"
       color="primary"
       @click="addWallet"
     />

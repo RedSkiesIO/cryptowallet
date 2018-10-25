@@ -1,7 +1,6 @@
 <template>
   <section class="scroll-area">
     <q-scroll-area
-      ref="scrollArea"
       class="scroll-area"
     >
       <WalletItem
@@ -18,7 +17,7 @@
 import WalletItem from './WalletItem.vue';
 
 export default {
-  name: 'WalletList',
+  name: 'WalletsList',
   components: {
     WalletItem,
   },

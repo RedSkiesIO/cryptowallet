@@ -41,11 +41,11 @@ describe('Header.vue', () => {
   });
 
   it('calls a goBack method on the "Go Back" button click', () => {
-    const goBack = jest.fn();
-    wrapper.vm.goBack = goBack;
+    const goBackMock = jest.fn();
+    wrapper.setMethods({goBack: goBackMock})
     router.push({ path: `/fake/` });
     wrapper.find('button').trigger('click');
-    expect(goBack).toBeCalledTimes(1);
+    expect(goBackMock).toBeCalledTimes(1);
   });
 
   it('switches the "Go Back" button disabled state based on the window.history length', () => {

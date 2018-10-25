@@ -46,4 +46,5 @@ export default {
   thursday: 'Thursday',
   friday: 'Friday',
   saturday: 'Saturday',
+  addWallet: 'Add Wallet',
 };

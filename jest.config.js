@@ -5,7 +5,6 @@ module.exports = {
   },
   'collectCoverage': false,
   'collectCoverageFrom': [
-    '<rootDir>/src/App.vue',
     '<rootDir>/src/components/**/*.vue',
     '<rootDir>/src/layouts/**/*.vue',
     '<rootDir>/src/pages/**/*.vue',
