@@ -80,7 +80,7 @@ export default {
       // need ability to choose which account you're login into.
       const accounts = this.$store.getters['entities/account/query']().get();
       if (this.$acmwcrypto.bcryptCompareString(this.pin.join(''), accounts[0].pinHash) === true) {
-        this.$router.push({ path: '/wallet/balance' });
+        this.$router.push({ path: '/wallet/wallet' });
       }
     },
   },

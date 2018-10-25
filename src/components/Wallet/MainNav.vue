@@ -5,12 +5,12 @@
     <div class="">
       <router-link
         class="main-nav-link"
-        to="/wallet/balance"
+        to="/wallet/wallet"
       >
         <i class="svg-icon">
           <img src="~assets/icons/Wallet.svg">
         </i>
-        <div>{{ $t('balance') }}</div>
+        <div>{{ $t('wallet') }}</div>
       </router-link>
     </div>
     <div class="">

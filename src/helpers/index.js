@@ -1,7 +1,7 @@
-import amount from './amount';
+import Amount from './amount';
 import date from './date';
 
 export {
-  amount,
+  Amount,
   date,
 };

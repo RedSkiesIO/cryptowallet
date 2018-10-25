@@ -7,7 +7,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
   <div>
     <a
       class="main-nav-link"
-      href="#/wallet/balance"
+      href="#/wallet/wallet"
     >
       <i
         class="svg-icon"
@@ -18,7 +18,7 @@ exports[`MainNav.vue renders and matches snapshot 1`] = `
       </i>
        
       <div>
-        Balance
+        Wallet
       </div>
     </a>
   </div>

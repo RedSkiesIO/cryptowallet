@@ -74,7 +74,7 @@ describe('SingleTransaction.vue', () => {
   it('computes and renders the amount correctly', () => {
     let amount = wrapper.vm.$props.data.amount;
     expect(amount < 0).toBe(true);
-    expect(wrapper.contains(`qcollapsible-stub.negative-amount[sublabel="&#8722; ${Math.abs(amount)}"]`)).toBe(true);
+    expect(wrapper.contains(`qcollapsible-stub.negative-amount[sublabel="&#45; ${Math.abs(amount)}"]`)).toBe(true);
 
     const dataCopy = Object.assign({}, propsData.data);
     dataCopy.amount = 6.22;
@@ -82,9 +82,6 @@ describe('SingleTransaction.vue', () => {
     amount = wrapper.vm.$props.data.amount;
     expect(amount > 0).toBe(true);
     expect(wrapper.contains(`qcollapsible-stub.positive-amount[sublabel="&#43; ${amount}"]`)).toBe(true);
-
-    wrapper.setProps({currency: '£'});
-    expect(wrapper.contains(`qcollapsible-stub.positive-amount[sublabel="&#43; £${amount}"]`)).toBe(true);
   });
 
   it('renders the received data point', () => {

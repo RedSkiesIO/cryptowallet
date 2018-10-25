@@ -20,6 +20,7 @@ module.exports = {
   },
   rules: {
     'no-param-reassign': 0,
+    'no-underscore-dangle': 0,
     'import/first': 0,
     'import/named': 2,
     'import/namespace': 2,

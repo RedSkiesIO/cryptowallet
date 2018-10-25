@@ -7,7 +7,11 @@ exports[`UserBalance.vue renders and matches snapshot 1`] = `
   <h1
     class="balance-h1"
   >
-    £74.15
+    <amount-stub
+      amount="74.15"
+      currency="GPB"
+      format="0.00"
+    />
   </h1>
    
   <div>

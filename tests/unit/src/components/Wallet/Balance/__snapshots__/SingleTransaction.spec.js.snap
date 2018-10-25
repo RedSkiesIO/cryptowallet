@@ -9,7 +9,7 @@ exports[`SingleTransaction.vue renders and matches snapshot 1`] = `
   <qcollapsible-stub
     class="negative-amount"
     label="14 October"
-    sublabel="&#8722; 4.97"
+    sublabel="&#45; 4.97"
   >
     <div>
       <p>

@@ -47,7 +47,14 @@ export default new VueRouter({
       ],
     },
     {
-      path: '/wallet/balance',
+      path: '/wallet/wallet',
+      component: () => import('layouts/Authed.vue'),
+      children: [
+        { path: '', component: () => import('pages/Wallet/Wallet.vue') },
+      ],
+    },
+    {
+      path: '/wallet/balance/:uid',
       component: () => import('layouts/Authed.vue'),
       children: [
         { path: '', component: () => import('pages/Wallet/Balance.vue') },

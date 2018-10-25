@@ -1,11 +1,12 @@
 import { shallowMount } from '@vue/test-utils';
-import Amount from '@/components/Wallet/Balance/Amount.vue';
+import Amount from '@/components/Wallet/SharedComponents/Amount.vue';
 
 describe('Amount.vue', () => {
   let wrapper;
 
   const propsData = {
     'amount': 10,
+    'format': '0.00',
   };
 
   function wrapperInit (options) {
@@ -19,6 +20,9 @@ describe('Amount.vue', () => {
   beforeEach(() => storeInit());
 
   it('renders and matches snapshot', () => {
+
+
+
     expect(wrapper.element).toMatchSnapshot();
   });
 
@@ -26,19 +30,16 @@ describe('Amount.vue', () => {
     expect(wrapper.contains('div.amount-box')).toBe(true);
   });
 
-  it('adds a grey-text class if prop {variant: ["grey"]} is passed', () => {
-    wrapper.setProps({variant : ['grey']});
-    expect(wrapper.contains('div.amount-box.grey-text')).toBe(true);
-  });
-
   it('renders properly formatted amount', () => {
-    expect(wrapper.html().includes('#43; 10.00')).toBe(true);
+    wrapper.setProps({prependPlusOrMinus: true});
+    expect(wrapper.html().includes('+ 10.00')).toBe(true);
     wrapper.setProps({amount: -21.2});
-    expect(wrapper.html().includes('#8722; 21.20')).toBe(true);
+    expect(wrapper.html().includes('- 21.20')).toBe(true);
 
-    wrapper.setProps({currency: '£'});
-    expect(wrapper.html().includes('#8722; £21.20')).toBe(true);
     wrapper.setProps({amount: 21.2});
-    expect(wrapper.html().includes('#43; £21.20')).toBe(true);
+    wrapper.setProps({currency: 'GPB'});
+    expect(wrapper.html().includes('+ £21.20')).toBe(true);
+    wrapper.setProps({amount: -21.2});
+    expect(wrapper.html().includes('- £21.20')).toBe(true);
   });
 });
