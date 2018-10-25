@@ -13,7 +13,7 @@ exports[`TransactionsList.vue renders and matches snapshot 1`] = `
   >
     <qinfinitescroll-stub
       handler="function () { [native code] }"
-      offset="0"
+      offset="50"
     >
       <qtimeline-stub
         color="secondary"

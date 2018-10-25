@@ -75,7 +75,7 @@ export default {
 <style scoped>
   .main-nav {
     width: 100%;
-    height: 15vh;
+    height: 6rem;
     background: white;
     background: #f3f3f3;
     display: flex;

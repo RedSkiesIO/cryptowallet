@@ -7,48 +7,6 @@
 <script>
 export default {
   name: 'More',
-  data() {
-    return {
-
-    };
-  },
-
-  beforeCreate() {
-
-  },
-
-  created() {
-
-  },
-
-  beforeMount() {
-
-  },
-
-  mounted() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
-  },
-
-  methods: {
-
-  },
-
 };
 
 </script>
