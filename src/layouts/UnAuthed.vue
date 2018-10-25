@@ -7,14 +7,6 @@
 <script>
 export default {
   name: 'UnAuthedLayout',
-  data() {
-    return {
-
-    };
-  },
-  methods: {
-
-  },
 };
 </script>
 
