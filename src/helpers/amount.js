@@ -1,7 +1,6 @@
 /**
  * @TODO James Konrad
- * I've mocked some exchange rates below for the amount() function to use
- * Would make sense to put them somewhere in the Vuex store
+ * mocked data below
  */
 
 import numeral from 'numeral';
@@ -44,7 +43,6 @@ const exchangeRates = {
   ],
 };
 
-
 export default class Amount {
   constructor(options) {
     this.amount = options.amount;
@@ -55,6 +53,10 @@ export default class Amount {
     this.prependPlusOrMinus = options.prependPlusOrMinus;
   }
 
+  /**
+   * Formats a Number and returns a String
+   * @return {String}
+   */
   get formatted() {
     let { amount } = this;
     if (this.coin && this.currency) {
@@ -72,6 +74,10 @@ export default class Amount {
     return formatted;
   }
 
+  /**
+   * Converts a coin into a currency
+   * @return {Number}
+   */
   coinToCurrency() {
     const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency);
     return this.amount * rate;
