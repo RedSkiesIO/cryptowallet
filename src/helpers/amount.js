@@ -46,49 +46,34 @@ const exchangeRates = {
 
 
 export default class Amount {
-  constructor(value) {
-    this.value = value;
-  }
-
-  set coin(val) {
-    this._coin = val;
-  }
-
-  set currency(val) {
-    this._currency = val;
-  }
-
-  set format(format) {
-    this._format = format;
-  }
-
-  set withCurrencySymbol(val) {
-    this._withCurrencySymbol = val;
-  }
-
-  set prependPlusOrMinus(val) {
-    this._prependPlusOrMinus = val;
+  constructor(options) {
+    this.amount = options.amount;
+    this.coin = options.coin;
+    this.currency = options.currency;
+    this.format = options.format;
+    this.withCurrencySymbol = options.withCurrencySymbol;
+    this.prependPlusOrMinus = options.prependPlusOrMinus;
   }
 
   get formatted() {
-    let { value } = this;
-    if (this._coin && this._currency) {
-      value = this.coinToCurrency(this.value, this._coin, this._currency);
+    let { amount } = this;
+    if (this.coin && this.currency) {
+      amount = this.coinToCurrency(this.amount, this.coin, this.currency);
     }
 
-    let formatted = `${numeral(Math.abs(value)).format(this._format)}`;
-    if (this._currency) formatted = `${currencySymbols[this._currency]}${formatted}`;
+    let formatted = `${numeral(Math.abs(amount)).format(this.format)}`;
+    if (this.currency) formatted = `${currencySymbols[this.currency]}${formatted}`;
 
-    if (this._prependPlusOrMinus) {
-      if (value < 0) return `&#45; ${formatted}`;
-      if (value > 0) return `&#43; ${formatted}`;
+    if (this.prependPlusOrMinus) {
+      if (amount < 0) return `&#45; ${formatted}`;
+      if (amount > 0) return `&#43; ${formatted}`;
     }
 
     return formatted;
   }
 
   coinToCurrency() {
-    const { rate } = exchangeRates[this._coin].find(item => item.currency === this._currency);
-    return this.value * rate;
+    const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency);
+    return this.amount * rate;
   }
 }

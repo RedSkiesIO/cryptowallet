@@ -73,9 +73,12 @@ export default {
      * @return {String}
      */
     amount() {
-      const amount = new Amount(this.data.amount);
-      amount.format = '0.00';
-      amount.prependPlusOrMinus = true;
+      const amount = new Amount({
+        amount: this.data.amount,
+        format: '0.00',
+        prependPlusOrMinus: true,
+      });
+
       return amount.formatted;
     },
     /**

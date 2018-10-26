@@ -47,12 +47,23 @@ export default {
      * @return {String}
      */
     formattedAmount() {
-      const amount = new Amount(this.amount);
-      if (this.currency) amount.currency = this.currency;
-      if (this.format) amount.format = this.format;
-      if (this.coin) amount.coin = this.coin;
-      if (this.prependPlusOrMinus) amount.prependPlusOrMinus = this.prependPlusOrMinus;
-      return amount.formatted;
+      const {
+        amount,
+        format,
+        coin,
+        prependPlusOrMinus,
+        currency,
+      } = this;
+
+      const formattedAmount = new Amount({
+        amount,
+        format,
+        coin,
+        prependPlusOrMinus,
+        currency,
+      });
+
+      return formattedAmount.formatted;
     },
   },
 };
