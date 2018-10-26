@@ -27,6 +27,9 @@ export default {
    * data below is mocked
    *
    * currency String is a prefered user currency, should be in the Vuex store
+   * you should probably select your prefered currency during the initial setup
+   * alongside the language
+   *
    * coins Object also shoudn't be here
    */
   data() {

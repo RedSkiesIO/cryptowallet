@@ -1,3 +1,8 @@
+/**
+ * @TODO James Konrad
+ * data below is mocked, please fix
+ */
+
 export default {
   contacts: [
     {

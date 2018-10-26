@@ -1,3 +1,8 @@
+/**
+ * @TODO James Konrad
+ * data below is mocked, please fix
+ */
+
 const state = {
   balance: 74.15,
   transactions: [
