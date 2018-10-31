@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Authed.vue renders and matches snapshot 1`] = `
+<qlayout-stub
+  view="lHh Lpr lFf"
+>
+  <qlayoutheader-stub
+    revealoffset="250"
+    value="true"
+  >
+    <header-stub />
+  </qlayoutheader-stub>
+   
+  <div
+    class="layout-wrapper"
+  >
+    <router-view-stub
+      name="default"
+    />
+  </div>
+   
+  <qlayoutfooter-stub
+    enter-active-class="animated slideInUp"
+    leave-active-class="animated slideOutDown"
+    value="true"
+  >
+    <mainnav-stub />
+  </qlayoutfooter-stub>
+</qlayout-stub>
+`;

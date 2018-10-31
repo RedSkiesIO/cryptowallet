@@ -3,7 +3,7 @@ import MainNav from '@/components/Wallet/MainNav.vue';
 import { localVue, createRouter, i18n } from '../../../helpers/setupLocalVue';
 import { __createMocks as createStoreMocks } from '../../../../store/__mocks__/store.js';
 
-const menuItems = ['Balance', 'Analytics', 'Payments', 'Exchange', 'More'];
+const menuItems = ['Wallet', 'Analytics', 'Payments', 'Exchange', 'More'];
 
 describe('MainNav.vue', () => {
   let storeMocks;
@@ -41,7 +41,7 @@ describe('MainNav.vue', () => {
 
   it('updates the path on each menu item click', () => {
     wrapper.findAll('a').at(0).trigger('click');
-    expect(wrapper.vm.$route.path).toBe('/wallet/balance');
+    expect(wrapper.vm.$route.path).toBe('/wallet/wallet');
     wrapper.findAll('a').at(1).trigger('click');
     expect(wrapper.vm.$route.path).toBe('/wallet/analytics');
     wrapper.findAll('a').at(2).trigger('click');

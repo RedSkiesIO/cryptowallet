@@ -48,7 +48,7 @@ export default {
   }
 
   .recent-transactions {
-    height: 55vh;
+    height: calc(100vh - 25vh - 6rem - 2.5rem);
     border-top: 2px solid #09233a;
     position: relative;
     background: #16324a;

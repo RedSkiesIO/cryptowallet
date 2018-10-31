@@ -13,18 +13,10 @@ import Transactions from '../../components/Wallet/Balance/Transactions.vue';
 
 export default {
   name: 'Balance',
-
   components: {
     UserBalance,
     Transactions,
   },
-
-  data() {
-    return {
-
-    };
-  },
-
   methods: {
     refresher(done) {
       setTimeout(() => {
@@ -32,7 +24,6 @@ export default {
       }, 1000);
     },
   },
-
 };
 
 </script>

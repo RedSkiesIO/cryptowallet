@@ -4,6 +4,7 @@ export default {
   continue: 'Continue',
   profile: 'Profile',
   unlock: 'Un-Lock',
+  wallet: 'Wallet',
   balance: 'Balance',
   analytics: 'Analytics',
   payments: 'Payments',
@@ -45,4 +46,5 @@ export default {
   thursday: 'Thursday',
   friday: 'Friday',
   saturday: 'Saturday',
+  addWallet: 'Add Wallet',
 };

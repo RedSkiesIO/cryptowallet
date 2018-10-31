@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import UserBalance from '@/components/Wallet/Balance/Balance.vue';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import { __createMocks as createStoreMocks } from '../../../../../store/__mocks__/store.js';
+import { __createMocks as createStoreMocks } from '@/../tests/store/__mocks__/store.js';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -33,9 +33,5 @@ describe('UserBalance.vue', () => {
 
   it('renders a h1 with .balance-h1 class', () => {
     expect(wrapper.contains('h1.balance-h1')).toBe(true);
-  });
-
-  it('renders the correct balance value and prepends "£" to it', () => {
-    expect(wrapper.find('.balance-h1').text()).toBe(`£${store.state.payments.balance}`);
   });
 });

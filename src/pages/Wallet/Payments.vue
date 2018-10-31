@@ -18,48 +18,6 @@ export default {
     RecentContacts,
     ContactsList,
   },
-  data() {
-    return {
-
-    };
-  },
-
-  beforeCreate() {
-
-  },
-
-  created() {
-
-  },
-
-  beforeMount() {
-
-  },
-
-  mounted() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
-  },
-
-  methods: {
-
-  },
-
 };
 
 </script>

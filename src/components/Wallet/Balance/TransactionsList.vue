@@ -7,7 +7,10 @@
       ref="scrollArea"
       class="scroll-area"
     >
-      <q-infinite-scroll :handler="loadMore">
+      <q-infinite-scroll
+        :handler="loadMore"
+        :offset="50"
+      >
         <q-timeline
           responsive
           color="secondary"
@@ -104,7 +107,7 @@ export default {
        * Wait 1500ms and the load the next page
        * await is needed for unit tests to wait for asynchronous code
        */
-      await sleeper(1500)().then(() => {
+      await sleeper(500)().then(() => {
         this.page = this.page + 1;
         done(false);
       });

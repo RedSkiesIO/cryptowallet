@@ -5,12 +5,12 @@
     <div class="">
       <router-link
         class="main-nav-link"
-        to="/wallet/balance"
+        to="/wallet/wallet"
       >
         <i class="svg-icon">
           <img src="~assets/icons/Wallet.svg">
         </i>
-        <div>{{ $t('balance') }}</div>
+        <div>{{ $t('wallet') }}</div>
       </router-link>
     </div>
     <div class="">
@@ -75,7 +75,7 @@ export default {
 <style scoped>
   .main-nav {
     width: 100%;
-    height: 15vh;
+    height: 6rem;
     background: white;
     background: #f3f3f3;
     display: flex;

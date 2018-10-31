@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletItem.vue renders and matches snapshot 1`] = `
+<div
+  class="coin"
+>
+  <div
+    class="details"
+  >
+    <div
+      class="icon"
+    />
+     
+    <div
+      class="name"
+    >
+      Bitcoin
+    </div>
+  </div>
+   
+  <div
+    class="balance"
+  >
+    <div>
+      25.532344
+    </div>
+     
+    <div>
+      <amount-stub
+        amount="25.532344"
+        coin="BTC"
+        currency="GPB"
+      />
+    </div>
+  </div>
+   
+  <div>
+    <qicon-stub
+      name="chevron_right"
+    />
+  </div>
+</div>
+`;

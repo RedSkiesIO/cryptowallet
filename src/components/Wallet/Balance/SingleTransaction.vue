@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { amount, date } from '@/helpers';
+import { date, Amount } from '@/helpers';
 
 export default {
   name: 'SingleTransaction',
@@ -73,7 +73,13 @@ export default {
      * @return {String}
      */
     amount() {
-      return amount(this.data.amount, this.currency);
+      const amount = new Amount({
+        amount: this.data.amount,
+        format: '0.00',
+        prependPlusOrMinus: true,
+      });
+
+      return amount.formatted;
     },
     /**
      * Returns the transaction status in a human friendly format

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnAuthed.vue renders and matches snapshot 1`] = `
+<qlayout-stub
+  view="lHh Lpr lFf"
+>
+  <router-view-stub
+    name="default"
+  />
+</qlayout-stub>
+`;
