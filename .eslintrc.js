@@ -17,8 +17,10 @@ module.exports = {
   globals: {
     cordova: true,
     ContactFindOptions: true,
+    jest: true,
   },
   rules: {
+    'vue/require-default-prop': 0,
     'no-param-reassign': 0,
     'import/first': 0,
     'import/named': 2,

@@ -18,7 +18,7 @@ export default function (store, Vue) {
         store.state.wallet.contacts = contacts;
       }, new Error('Failed to retrieve contacts from the device'), options);
     } catch (err) {
-      Vue.config.errorHandler(err);
+      Vue.config.errorHandler(err); // @TODO sanity check
     }
   }
 

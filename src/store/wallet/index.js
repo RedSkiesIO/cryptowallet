@@ -13,10 +13,6 @@ const state = {
       address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE',
     },
     {
-      displayName: 'Marcos',
-      address: '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2',
-    },
-    {
       displayName: 'Vahan',
       address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE',
     },

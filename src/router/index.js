@@ -13,112 +13,90 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: () => import('layouts/UnAuthed.vue'),
+      component: () => import('layouts/UnAuthed'),
       children: [
-        { path: '', component: () => import('pages/Auth/Login.vue') },
+        { path: '', component: () => import('pages/Auth/Login') },
       ],
     },
     {
-      path: '/setup/language',
-      component: () => import('layouts/UnAuthed.vue'),
+      path: '/setup',
+      component: () => import('layouts/UnAuthed'),
       children: [
-        { path: '', component: () => import('pages/Setup/Steps/Language.vue') },
+        { path: '', component: () => import('pages/Setup') },
       ],
     },
     {
-      path: '/setup/seed',
-      component: () => import('layouts/UnAuthed.vue'),
+      path: '/wallet',
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Setup/Steps/Seed.vue') },
-      ],
-    },
-    {
-      path: '/setup/pin',
-      component: () => import('layouts/UnAuthed.vue'),
-      children: [
-        { path: '', component: () => import('pages/Setup/Steps/Pin.vue') },
-      ],
-    },
-    {
-      path: '/setup/complete',
-      component: () => import('layouts/UnAuthed.vue'),
-      children: [
-        { path: '', component: () => import('pages/Setup/Steps/Complete.vue') },
-      ],
-    },
-    {
-      path: '/wallet/wallet',
-      component: () => import('layouts/Authed.vue'),
-      children: [
-        { path: '', component: () => import('pages/Wallet/Wallet.vue') },
+        { path: '', component: () => import('pages/Wallet') },
       ],
     },
     {
       path: '/wallet/balance/:uid',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/Balance.vue') },
+        { path: '', component: () => import('pages/Balance') },
       ],
     },
     {
       path: '/wallet/analytics',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/Analytics.vue') },
+        { path: '', component: () => import('pages/Analytics') },
       ],
     },
     {
       path: '/wallet/payments',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/Payments.vue') },
+        { path: '', component: () => import('pages/Payments') },
       ],
     },
     {
       path: '/wallet/exchange',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/Exchange.vue') },
+        { path: '', component: () => import('pages/Exchange') },
       ],
     },
     {
       path: '/wallet/more',
-      component: () => import('layouts/Authed.vue'),
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/More.vue') },
+        { path: '', component: () => import('pages/More') },
       ],
     },
     {
-      path: '/contact-item/:id',
-      component: () => import('layouts/Authed.vue'),
+      path: '/contact/:id',
+      component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet/ContactItem.vue') },
+        { path: '', component: () => import('pages/Contact') },
       ],
     },
     {
       path: '/UserProfile',
-
-      component: () => import('pages/Profile/UserProfile.vue'),
+      component: () => import('pages/Profile/UserProfile'),
       name: 'UserProfile',
     },
     {
       path: '/EditProfile',
-      component: () => import('pages/Profile/EditProfile.vue'),
+      component: () => import('pages/Profile/EditProfile'),
       name: 'editProfile',
     },
     {
       path: '/TxDetails',
-      component: () => import('layouts/UnAuthed.vue'),
+      component: () => import('layouts/UnAuthed'),
       children: [
-        { path: '', component: () => import('pages/Transactions/TxDetails.vue') },
+        { path: '', component: () => import('pages/TxDetails') },
       ],
       name: 'TxDetails',
     },
     {
       path: '*',
-      component: () => import('layouts/UnAuthed.vue'),
+      component: () => import('layouts/UnAuthed'),
       children: [
-        { path: '', component: () => import('pages/Error404.vue') },
+        { path: '', component: () => import('pages/Error/404') },
       ],
     },
   ],

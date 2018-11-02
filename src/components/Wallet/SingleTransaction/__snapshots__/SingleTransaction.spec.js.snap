@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SingleTransaction.vue renders and matches snapshot 1`] = `
+<qtimelineentry-stub
+  side="left"
+  tag="h3"
+  title="To: Jack Black"
+>
+  <qcollapsible-stub
+    class="negative-amount"
+    label="14 October"
+    sublabel="- 4.97"
+  >
+    <div>
+      <p>
+        
+        Received:
+        <br />
+         
+        <span
+          class="received"
+        >
+          1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE
+        </span>
+      </p>
+       
+      <p>
+        
+        TX Hash:
+        <br />
+         
+        <span
+          class="tx-hash"
+        >
+          1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE
+        </span>
+      </p>
+       
+      <p>
+        
+        Status:
+        <br />
+         
+        <span
+          class="status confirmed-tx"
+        >
+          
+          Confirmed
+        
+        </span>
+      </p>
+       
+      <p>
+        
+        TX Fee:
+        <br />
+         
+        <span
+          class="tx-fee"
+        >
+          0.000000012
+        </span>
+      </p>
+    </div>
+  </qcollapsible-stub>
+</qtimelineentry-stub>
+`;

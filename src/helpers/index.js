@@ -1,7 +1,7 @@
-import Amount from './amount';
-import date from './date';
+import AmountFormatter from './AmountFormatter';
+import dateTranslater from './DateTranslater';
 
 export {
-  Amount,
-  date,
+  AmountFormatter,
+  dateTranslater,
 };

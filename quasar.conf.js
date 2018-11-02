@@ -1,8 +1,9 @@
+/* eslint-disable */
 const path = require('path');
 
 module.exports = (ctx) => {
   return {
-    plugins: ['i18n', 'axios', 'acmwcrypto', 'vuexRouterSync', 'toaster', 'errorHandler'],
+    plugins: ['i18n', 'Axios', 'CWCrypto', 'VuexRouterSync', 'Toaster', 'ErrorHandler'],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -66,13 +67,13 @@ module.exports = (ctx) => {
         'QTimelineEntry',
         'QInfiniteScroll',
         'QSpinnerDots',
-        'QCollapsible'
+        'QCollapsible',
       ],
       directives: ['Ripple'],
       // Quasar plugins
       plugins: ['Notify', 'Dialog'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      i18n: 'en-us',
+      i18n: 'en-uk',
     },
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],

@@ -1,2 +1,3 @@
 /dist
-/tests/**/*.js
+/src/**/*.spec.js
+/src/**/*.e2e.js
