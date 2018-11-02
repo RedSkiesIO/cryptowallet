@@ -21,7 +21,7 @@ export default {
   },
 
   created() {
-    /*  if (this.account.salt === null) {
+    if (this.account.salt === null) {
       this.$router.push({ path: 'setup/seed' });
       return false;
     }
@@ -31,7 +31,7 @@ export default {
       return false;
     }
 
-    return true;  */
+    return true;
   },
 
   beforeMount() {
@@ -39,19 +39,24 @@ export default {
   },
 
   mounted() {
-    this.$toast.create(5, 'some warning', 500);
-    // this.$toast.create();
-    // console.log(this.$toast.create());
-    // if (this !== 1) {
-    //   console.trace();
-    //   throw new Error(20);
-    // }
+    this.$toast.vm.$on('TEAPOT', () => {
+      console.log(123123123);
+    });
     const accounts = this.$store.getters['entities/account/query']().get();
     // console.log(accounts);
 
     // check with have at least one account in the data base,
     // otherwise send them to setup.
+
+    // if (process.env !== 'dev') {
+    //   if (accounts.length < 1) {
+    //     this.$router.push({ path: 'setup/seed' });
+    //     return false;
+    //   }
+    // }
+
     if (accounts.length < 1) {
+      this.$router.push({ path: 'setup' });
       return false;
     }
 
@@ -79,7 +84,7 @@ export default {
 <style lang='scss'>
 @import 'bulma/sass/utilities/_all.sass';
 @import 'bulma/sass/base/_all.sass';
-
+@import 'bulma/sass/grid/columns.sass';
 body {
   background-color: #1e3c57;
   color: white;

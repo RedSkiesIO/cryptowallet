@@ -39,15 +39,14 @@ module.exports = {
     },
   },
   'testMatch': [
-    '**/tests/unit/src/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
-    '**/tests/unit/src/plugins/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
-    '**/tests/unit/src/store/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/components/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/layouts/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/helpers/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/plugins/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/router/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/store/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
-  'testPathIgnorePatterns': [
-    '<rootDir>/tests/unit/__helpers__',
-    '<rootDir>/tests/unit/__coverage__',
-    '<rootDir>/tests/unit/__snapshots__',
-  ],
+  'testPathIgnorePatterns': [],
   'moduleFileExtensions': [
     'js',
     'json',
@@ -55,12 +54,14 @@ module.exports = {
   ],
   'moduleNameMapper': {
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
-    '^quasar$': '<rootDir>/tests/tmp/quasar.common.js',
-    '^~/(.*)$': '<rootDir>/$1',
-    '^@/(.*)$': '<rootDir>/src/$1',
-    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
-    "^src/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
-    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1.vue",
+    '^quasar$': '<rootDir>/tests/unit/quasar.common.js',
+    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1/index.vue",
+    "^@/layouts/([^\\.]*)$": "<rootDir>/src/layouts/$1/index.vue",
+    "^@/helpers([^\\.]*)$": "<rootDir>/src/helpers/$1/index.js",
+    "^@/i18n/([^\\.]*)$": "<rootDir>/src/i18n/index.js",
+    "^@/plugins/([^\\.]*)$": "<rootDir>/src/plugins/$1/index.js",
+    "^@/store/([^\]*)$": "<rootDir>/src/store/$1",
+
   },
   'transformIgnorePatterns': [
     'node_modules/core-js',

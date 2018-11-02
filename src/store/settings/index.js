@@ -1,4 +1,4 @@
-import state from './state';
+import state from './state/state.js';
 // import * as getters from './getters';
 // import * as mutations from './mutations';
 // import * as actions from './actions';

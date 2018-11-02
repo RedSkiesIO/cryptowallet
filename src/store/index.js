@@ -11,11 +11,11 @@ import Wallet from './wallet/entities/wallet';
 import Coin from './wallet/entities/coin';
 
 // import modules.
-import account from './wallet/account';
 import payments from './payments';
 import search from './search';
 import settings from './settings';
 import setup from './setup';
+import contacts from './contacts';
 
 import cordovaStateInit from './cordovaStateInit';
 
@@ -24,7 +24,7 @@ Vue.use(Vuex);
 // Setup ORM database.
 const database = new VuexORM.Database();
 
-database.register(Account, account);
+database.register(Account, {});
 database.register(Address, {});
 database.register(Tx, {});
 database.register(Wallet, {});
@@ -46,6 +46,7 @@ const store = new Vuex.Store({
     search,
     settings,
     setup,
+    contacts,
   },
   plugins: [vuexLocal.plugin, VuexORM.install(database)],
 });

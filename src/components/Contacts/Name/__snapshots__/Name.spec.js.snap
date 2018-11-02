@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Name.vue renders and matches snapshot 1`] = `
+<div
+  class="center-me"
+>
+  
+  {
+  "id": 1,
+  "displayName": "Terry Tibbs",
+  "address": "ncousohfodicwjdclwdnc"
+}
+
+</div>
+`;

@@ -19,11 +19,32 @@ export function SET_PIN_HASH(state, pinHash) {
 }
 
 /**
+ * State mutation for pin hash.
+ * @param state
+ * @param pinHashConfirm
+ * @constructor
+ */
+export function SET_PIN_HASH_CONFIRM(state, pinHashConfirm) {
+  state.pinHashConfirm = pinHashConfirm;
+}
+
+
+/**
  * State mutation for seed.
  * @param state
  * @param seed
  * @constructor
  */
 export function SET_SEED(state, seed) {
-  state.pinHash = seed;
+  state.seed = {};
+  for (let i = 0; i < seed.length; i += 1) {
+    state.seed[seed[i].substring(0, 3)] = seed[i];
+  }
+}
+
+/**
+ * SET STATE for seet counter
+ */
+export function SET_SPV_MODE(state, payload) {
+  state.spvMode = payload;
 }
