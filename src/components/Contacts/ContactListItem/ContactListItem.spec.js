@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import ContactListItem from '@/components/Contacts/ContactListItem';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
+import AppInvitationMock from '@/plugins/AppInvitation/mock/';
 
 describe('ContactListItem.vue', () => {
   let storeMocks;
@@ -51,13 +52,25 @@ describe('ContactListItem.vue', () => {
   it('renders a custom message if there is no wallet address available', () => {
     const contactCopy = Object.assign({}, propsData.contact);
     delete contactCopy.address;
-    wrapper.setProps({contact: contactCopy});
+    wrapper.setProps({ contact: contactCopy });
     expect(wrapper.html().includes('No wallet address is available for this contact')).toBe(true);
   });
 
-  it('navigates to correct route when clicked on', () => {
-    expect(store.state.route.path).toBe('/');
+  it('it calls clickHandler() method when clicked on', () => {
+    const clickHandlerMock = jest.fn();
+    wrapper.setMethods({ clickHandler: clickHandlerMock });
     wrapper.find('.contact-list-item').trigger('click');
-    expect(store.state.route.path).toBe(`/contact-item/${propsData.contact.id}`);
+    expect(clickHandlerMock).toHaveBeenCalled();
+  });
+
+  it('creates an AppInvitation when clickItemAction prop === \'app-invitation\'', () => {
+    wrapper.setProps({ clickItemAction: 'app-invitation' });
+    wrapper.vm.AppInvitation = AppInvitationMock;
+    wrapper.vm.clickHandler();;
+    expect(wrapper.vm.invitation.send).toHaveBeenCalled();
+  });
+
+  it('returns false from clickHandler() method', () => {
+    expect(wrapper.vm.clickHandler()).toBe(false);
   });
 });

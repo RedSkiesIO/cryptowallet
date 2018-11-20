@@ -4,7 +4,6 @@ import Amount from '@/components/Wallet/Amount';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
-
 describe('WalletItem.vue', () => {
   let storeMocks;
   let wrapper;
@@ -49,8 +48,6 @@ describe('WalletItem.vue', () => {
   });
 
   it('calls selectWalletMock() method on click correctly', () => {
-  
-
     const selectWalletMock = jest.fn();
     wrapper.setMethods({selectWallet: selectWalletMock});
     wrapper.setProps(walletObjProp);

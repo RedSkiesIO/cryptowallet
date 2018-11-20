@@ -16,7 +16,7 @@ describe('Name.vue', () => {
   function storeInit(custom) {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
-    router.push({ path: `/contact-item/1` });
+    router.push({ path: `/contact/1` });
     wrapper = wrapperInit({ router, localVue, store: storeMocks.store, i18n });
     store = wrapper.vm.$store;
   }

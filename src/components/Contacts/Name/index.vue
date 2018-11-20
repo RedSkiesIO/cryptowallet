@@ -1,6 +1,6 @@
 <template>
   <div class="center-me">
-    {{ contactData }}
+    {{ contactData.displayName }}
   </div>
 </template>
 
@@ -10,12 +10,10 @@ import { mapState } from 'vuex';
 export default {
   name: 'Name',
   computed: {
-
     ...mapState({
       contacts: state => state.contacts.contacts,
       id: state => state.route.params.id,
     }),
-
     contactData() {
       return this.contacts.find(contact => String(contact.id) === this.id);
     },

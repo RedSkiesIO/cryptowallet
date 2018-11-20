@@ -26,21 +26,6 @@ exports[`ContactsList.vue renders and matches snapshot 1`] = `
         <contactlistitem-stub
           contact="[object Object]"
         />
-        <contactlistitem-stub
-          contact="[object Object]"
-        />
-        <contactlistitem-stub
-          contact="[object Object]"
-        />
-        <contactlistitem-stub
-          contact="[object Object]"
-        />
-        <contactlistitem-stub
-          contact="[object Object]"
-        />
-        <contactlistitem-stub
-          contact="[object Object]"
-        />
       </div>
     </qscrollarea-stub>
   </div>

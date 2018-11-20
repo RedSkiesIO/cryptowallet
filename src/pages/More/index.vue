@@ -1,12 +1,18 @@
 <template>
-  <q-layout>
+  <div>
     /wallet/more
-  </q-layout>
+    <Invite/>
+  </div>
 </template>
 
 <script>
+import Invite from '@/components/Invite';
+
 export default {
   name: 'More',
+  components: {
+    Invite,
+  },
 };
 
 </script>

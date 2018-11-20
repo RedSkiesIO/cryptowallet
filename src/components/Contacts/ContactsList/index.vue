@@ -11,6 +11,7 @@
             v-for="contact in filteredContacts"
             :key="contact.displayName"
             :contact="contact"
+            :click-item-action="clickItemAction"
           />
         </div>
       </q-scroll-area>
@@ -27,11 +28,17 @@ export default {
   components: {
     ContactListItem,
   },
+  props: {
+    clickItemAction: {
+      type: String,
+      required: false,
+    },
+  },
   computed: {
     ...mapState({
       isSearchingContacts: state => state.search.isSearchingContacts,
       searchingContactsQueryString: state => state.search.searchingContactsQueryString,
-      contacts: state => state.wallet.contacts,
+      contacts: state => state.contacts.contacts,
     }),
 
     /**
@@ -79,6 +86,7 @@ export default {
   display: flex;
   flex-direction: column;
   transition: height 100ms ease-in-out;
+  height: 100%;
 }
 
 .contacts-list.isSearchingContacts {

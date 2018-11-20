@@ -29,7 +29,7 @@ exports[`ContactListItem.vue renders and matches snapshot 1`] = `
       </div>
        
       <div
-        class="grey-text wallet-address"
+        class="wallet-address"
       >
         <div>
           
