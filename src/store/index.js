@@ -17,8 +17,6 @@ import settings from './settings';
 import setup from './setup';
 import contacts from './contacts';
 
-import cordovaStateInit from './cordovaStateInit';
-
 Vue.use(Vuex);
 
 // Setup ORM database.
@@ -50,8 +48,5 @@ const store = new Vuex.Store({
   },
   plugins: [vuexLocal.plugin, VuexORM.install(database)],
 });
-
-// load cordova data
-cordovaStateInit(store, Vue);
 
 export default store;

@@ -1,4 +1,4 @@
-/* eslint-disable */
+/*eslint-disable*/
 module.exports = {
   'globals': {
     '__DEV__': true
@@ -11,7 +11,9 @@ module.exports = {
     '<rootDir>/src/pages/**/*.vue',
     '<rootDir>/src/plugins/**/*.js',
     '<rootDir>/src/router/**/*.js',
-    '<rootDir>/src/store/**/*.js'
+    '<rootDir>/src/store/**/*.js',
+    '<rootDir>/src/helpers/**/*.js',
+    '<rootDir>/src/actions/**/*.js',
   ],
   'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
   'coverageThreshold': {
@@ -42,11 +44,14 @@ module.exports = {
     '**/src/components/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     '**/src/layouts/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     '**/src/helpers/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
+    '**/src/actions/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     '**/src/plugins/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     '**/src/router/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
     '**/src/store/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
-  'testPathIgnorePatterns': [],
+  'testPathIgnorePatterns': [
+    'mock',
+  ],
   'moduleFileExtensions': [
     'js',
     'json',
@@ -55,13 +60,14 @@ module.exports = {
   'moduleNameMapper': {
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
     '^quasar$': '<rootDir>/tests/unit/quasar.common.js',
-    "^@/components/([^\\.]*)$": "<rootDir>/src/components/$1/index.vue",
-    "^@/layouts/([^\\.]*)$": "<rootDir>/src/layouts/$1/index.vue",
-    "^@/helpers([^\\.]*)$": "<rootDir>/src/helpers/$1/index.js",
-    "^@/i18n/([^\\.]*)$": "<rootDir>/src/i18n/index.js",
-    "^@/plugins/([^\\.]*)$": "<rootDir>/src/plugins/$1/index.js",
-    "^@/store/([^\]*)$": "<rootDir>/src/store/$1",
-
+    '^@/components/([^\\.]*)$': '<rootDir>/src/components/$1/index.vue',
+    '^@/layouts/([^\\.]*)$': '<rootDir>/src/layouts/$1/index.vue',
+    '^@/helpers([^\\.]*)$': '<rootDir>/src/helpers/$1/index.js',
+    '^@/actions([^\\.]*)$': '<rootDir>/src/actions/$1/index.js',
+    '^@/i18n/([^\\.]*)$': '<rootDir>/src/i18n/index.js',
+    '^@/plugins/([^\\.]*)$': '<rootDir>/src/plugins/$1/index.js',
+    '^@/store/([^\]*)$': '<rootDir>/src/store/$1',
+    '@/cordovaMocks': '<rootDir>/tests/CordovaMocks/index.js',
   },
   'transformIgnorePatterns': [
     'node_modules/core-js',

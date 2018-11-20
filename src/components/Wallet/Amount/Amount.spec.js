@@ -52,11 +52,11 @@ describe('Amount.vue', () => {
     wrapper.setProps({prependPlusOrMinus: true});
     expect(wrapper.html().includes('+ 10.00')).toBe(true);
   });
-  
+
   it('renders negative amount with - sign', () => {
     wrapper.setProps({prependPlusOrMinus: true});
     wrapper.setProps({amount: -21.20});
-    expect(wrapper.html().includes('- 21.20')).toBe(true);    
+    expect(wrapper.html().includes('- 21.20')).toBe(true);
   });
 
   it('renders amount with a GBP currency symbol', () => {

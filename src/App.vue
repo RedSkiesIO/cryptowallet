@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/*eslint-disable*/ // @todo remove this eslint-disable, eslint-complains about mounted() method
 import { mapState } from 'vuex';
 
 export default {

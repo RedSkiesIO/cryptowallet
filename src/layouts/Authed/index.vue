@@ -33,17 +33,20 @@ export default {
     MainNav,
     Header,
   },
+
   data() {
     return {
       isMainNavVisible: false,
       transitionName: 'slide-left',
     };
   },
+
   computed: {
     ...mapState({
       isSearchingContacts: state => state.search.isSearchingContacts,
     }),
   },
+
   watch: {
     /**
      * Watch the $route to keep the MainNav visibility updated

@@ -3,7 +3,19 @@ const path = require('path');
 
 module.exports = (ctx) => {
   return {
-    plugins: ['i18n', 'Axios', 'CWCrypto', 'VuexRouterSync', 'Toaster', 'ErrorHandler'],
+    plugins: [
+      'i18n',
+      'Axios',
+      'CWCrypto',
+      'VuexRouterSync',
+      'Toaster',
+      'ErrorHandler',
+      'Permissions',
+      'AppInvitation',
+      'Sms',
+      'Email',
+      'ContactsImport',
+    ],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
@@ -68,10 +80,11 @@ module.exports = (ctx) => {
         'QInfiniteScroll',
         'QSpinnerDots',
         'QCollapsible',
+        'QModal',
       ],
-      directives: ['Ripple'],
+      directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
-      plugins: ['Notify', 'Dialog'],
+      plugins: ['Notify', 'Dialog', 'ActionSheet'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       i18n: 'en-uk',
     },

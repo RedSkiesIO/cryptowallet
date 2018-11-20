@@ -6,7 +6,13 @@ import VueI18n from 'vue-i18n';
 import messages from '@/i18n/';
 import axios from 'axios';
 import { sync } from 'vuex-router-sync';
-import errorHandler from '@/plugins/ErrorHandler';
+import errorHandlerPlugin from '@/plugins/ErrorHandler';
+import toasterPlugin from '@/plugins/Toaster';
+import permissionsPlugin from '@/plugins/Permissions';
+import appInvitationPlugin from '@/plugins/AppInvitation';
+import smsPlugin from '@/plugins/Sms';
+import emailPlugin from '@/plugins/Email';
+import contactsImportPlugin from '@/plugins/ContactsImport';
 
 const localVue = createLocalVue();
 
@@ -15,7 +21,13 @@ localVue.use(Vuex);
 localVue.use(Quasar, { components: All, directives: All, plugins: All });
 localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
-errorHandler({ Vue: localVue });
+errorHandlerPlugin({ Vue: localVue });
+toasterPlugin({ Vue: localVue });
+permissionsPlugin({ Vue: localVue });
+appInvitationPlugin({ Vue: localVue });
+smsPlugin({ Vue: localVue });
+emailPlugin({ Vue: localVue });
+contactsImportPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
@@ -26,7 +38,7 @@ const createRouter = (store = null) => {
   const router = new VueRouter({
     routes: [
       {
-        path: '/contact-item/:id',
+        path: '/contact/:id',
       },
     ],
   });

@@ -34,10 +34,10 @@ describe('ContactsList.vue', () => {
   });
 
   it('loops through the data and renders multiple ContactListItem components', () => {
-    expect(wrapper.findAll(ContactListItem).length).toBeGreaterThan(1);
+    expect(wrapper.findAll(ContactListItem).length).toBeGreaterThan(0);
   });
 
-  it('adds the .isSearchingContacts class if the store has search.isSearchingContacts === true ', () => {
+  it('adds the .isSearchingContacts class if store has search.isSearchingContacts === true ', () => {
     expect(store.state.search.isSearchingContacts).toBe(false);
     expect(wrapper.contains('section.contacts-list.isSearchingContacts')).toBe(false);
     store.state.search.isSearchingContacts = true;
@@ -47,11 +47,11 @@ describe('ContactsList.vue', () => {
 
   it('filters the contacts if store has search.searchingContactsQueryString', () => {
     wrapper = mount(ContactsList, { i18n, localVue, store: storeMocks.store });
-    expect(store.state.wallet.contacts.length === wrapper.findAll(ContactListItem).length).toBe(true);
+    expect(store.state.contacts.contacts.length === wrapper.findAll(ContactListItem).length).toBe(true);
     store.state.search.searchingContactsQueryString = 'pseudorandomstring';
     expect(wrapper.findAll(ContactListItem).length).toBe(0);
-    store.state.search.searchingContactsQueryString = 'fio';
+    store.state.search.searchingContactsQueryString = 'Te';
     expect(wrapper.findAll(ContactListItem).length).toBe(1);
-    expect(wrapper.findAll(ContactListItem).at(0).html().toLowerCase().includes('fio')).toBe(true);
+    expect(wrapper.findAll(ContactListItem).at(0).html().toLowerCase().includes('te')).toBe(true);
   });
 });

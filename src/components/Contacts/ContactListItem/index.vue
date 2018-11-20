@@ -1,7 +1,7 @@
 <template>
   <div
     class="contact-list-item"
-    @click.prevent="goToContact"
+    @click.prevent="clickHandler"
   >
     <div class="columns is-mobile no-margin-bottom">
       <div class="column is-2">
@@ -11,7 +11,7 @@
         <div class="columns is-mobile no-margin-bottom">
           <div class="column is-7 no-padding-bottom">{{ contact.displayName }}</div>
         </div>
-        <div class="grey-text wallet-address">
+        <div class="wallet-address">
           <div v-if="contact.address">
             {{ contact.address }}
           </div>
@@ -32,10 +32,25 @@ export default {
       type: Object,
       required: true,
     },
+    clickItemAction: {
+      type: String,
+      required: false,
+    },
   },
   methods: {
-    goToContact() {
-      this.$router.push({ path: `/contact-item/${this.contact.id}` });
+    /**
+     * Initiates sending the invitation
+     */
+    clickHandler() {
+      switch (this.clickItemAction) {
+        case 'app-invitation':
+          this.invitation = new this.AppInvitation({ vm: this, contact: this.contact });
+          this.invitation.send();
+          break;
+        default:
+          return false;
+      }
+      return false;
     },
   },
 };

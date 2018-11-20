@@ -5,11 +5,7 @@ exports[`Name.vue renders and matches snapshot 1`] = `
   class="center-me"
 >
   
-  {
-  "id": 1,
-  "displayName": "Terry Tibbs",
-  "address": "ncousohfodicwjdclwdnc"
-}
+  Terry Tibbs
 
 </div>
 `;

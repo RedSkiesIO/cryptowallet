@@ -18,6 +18,7 @@ module.exports = {
     cordova: true,
     ContactFindOptions: true,
     jest: true,
+    sms: true,
   },
   rules: {
     'vue/require-default-prop': 0,

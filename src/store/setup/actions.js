@@ -38,7 +38,6 @@ export function setPinHash(context, pinHash) {
   });
 }
 
-
 /**
  * Action to set pin hash confirmation.
  * @param {*} context
@@ -52,7 +51,6 @@ export function setPinHashConfirm(context, pinHashConfirm) {
     }, 1000);
   });
 }
-
 
 /*
 * Action setSeedCounter.

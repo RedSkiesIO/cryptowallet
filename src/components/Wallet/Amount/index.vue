@@ -15,7 +15,7 @@ export default {
     },
     prependPlusOrMinus: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     currency: {
       type: Object,
