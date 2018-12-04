@@ -4,4 +4,7 @@ export default {
   pinHash: null,
   pinHashConfirm: null,
   spvMode: null,
+  accountName: null,
+  accountLocale: null,
+  accountIpNode: null,
 };

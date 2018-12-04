@@ -47,6 +47,7 @@ export default {
     selectLang(language) {
       this.locale = language;
       this.$i18n.locale = language;
+      this.$store.dispatch('setup/setAccountLocale', language);
       this.$root.$emit('showNext');
     },
   },

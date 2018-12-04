@@ -13,25 +13,20 @@ import { mapState } from 'vuex';
 import keyboard from 'vue-keyboard';
 
 export default {
-
   components: {
     keyboard,
   },
-
   data() {
     return {
       pin: [],
     };
   },
-
   computed: {
     ...mapState({
       minLength: state => state.settings.pin.minLength,
     }),
   },
-
   methods: {
-
     /**
      * Emits pincode to parent components.
       * @param {*} pin
@@ -46,8 +41,14 @@ export default {
         this.$root.$emit('inputPin', this.pin);
       }
     },
-  },
 
+    /**
+     * Resets PinPad internal state
+     */
+    resetState() {
+      this.pin = [];
+    },
+  },
 };
 
 </script>

@@ -28,7 +28,6 @@ export function SET_PIN_HASH_CONFIRM(state, pinHashConfirm) {
   state.pinHashConfirm = pinHashConfirm;
 }
 
-
 /**
  * State mutation for seed.
  * @param state
@@ -48,3 +47,25 @@ export function SET_SEED(state, seed) {
 export function SET_SPV_MODE(state, payload) {
   state.spvMode = payload;
 }
+
+/**
+ * SET ACCOUNT NAME
+ */
+export function SET_ACCOUNT_NAME(state, payload) {
+  state.accountName = payload;
+}
+
+/**
+ * SET ACCOUNT LOCALE
+ */
+export function SET_ACCOUNT_LOCALE(state, payload) {
+  state.accountLocale = payload;
+}
+
+/**
+ * SET ACCOUNT IP NODE
+ */
+export function SET_ACCOUNT_IP_NODE(state, payload) {
+  state.accountIpNode = payload;
+}
+

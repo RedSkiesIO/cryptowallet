@@ -26,6 +26,8 @@
     "bip39": "^2.5.0",
     "bulma": "^0.7.1",
     "cordova": "^8.1.2",
+    "crypto": "^1.0.1",
+    "crypto-js": "^3.1.9-1",
     "numeral": "^2.0.6",
     "vue-axios": "^2.1.4",
     "vue-form-wizard": "^0.8.4",
@@ -33,9 +35,10 @@
     "vue-keyboard": "git://github.com/dufia/vue-keyboard.git",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",
-    "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/jamesK/plugin-lokijs.git",
+    "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/jamesK/plugin-lokijs.git#add-insert-method-on-model-and-hydrate-vuex-orm",
     "vuex-persist": "^1.7.1",
-    "vuex-router-sync": "^5.0.0"
+    "vuex-router-sync": "^5.0.0",
+    "cryptowallet-js": "git+ssh://git@192.168.1.118/atlas/cryptowallet-js.git#cryptowallet-development"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.50",

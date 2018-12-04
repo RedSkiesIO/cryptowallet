@@ -1,10 +1,10 @@
 import { Model } from '@vuex-orm/core';
 
 /**
- * Wallet Entity.
+ * KeyPair Entity.
  */
-export default class Wallet extends Model {
-  static entity = 'wallet';
+export default class KeyPair extends Model {
+  static entity = 'keyPair';
 
   /**
    * Sets entity attributes.
@@ -14,8 +14,8 @@ export default class Wallet extends Model {
     return {
       id: this.increment(),
       account_id: this.attr(''),
-      name: this.attr(''),
-      wallet: this.attr(''),
+      wallet_id: this.attr(''),
+      keyPair: this.attr(''),
     };
   }
 }

@@ -12,6 +12,7 @@
 <script>
 import { uid } from 'quasar';
 import { mapState } from 'vuex';
+import Account from '@/store/wallet/entities/account';
 
 export default {
 
@@ -26,14 +27,23 @@ export default {
      * complete setup and store account entity.
      */
     complete() {
-      this.$store
-        .dispatch('entities/account/insert', {
-          data: {
-            uid: uid(),
-            salt: this.setup.salt,
-            pinHash: this.setup.pinHash,
-          },
-        }).then(() => {
+      const accounts = this.$store.getters['entities/account/query']().get();
+
+      const data = {
+        uid: uid(),
+        name: this.setup.accountName,
+        salt: this.setup.salt,
+        pinHash: this.setup.pinHash,
+        default: accounts.length === 0,
+        locale: this.setup.accountLocale,
+        node: this.setup.accountIpNode,
+        seed: Object.values(this.setup.seed),
+      };
+
+      this.$store.dispatch('settings/setSelectedAccount', data.name);
+
+      Account.$insert({ data })
+        .then(() => {
           this.$router.push({ path: '/' });
         });
     },

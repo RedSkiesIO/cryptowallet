@@ -65,3 +65,26 @@ export function setSeedCounter(context, payload) {
 export function setSPVmode(context, payload) {
   context.commit('SET_SPV_MODE', payload);
 }
+
+/*
+ * Action setAccountName
+ */
+export function setAccountName(context, payload) {
+  context.commit('SET_ACCOUNT_NAME', payload);
+}
+
+/**
+ * Action setAccountLanguage
+ */
+
+export function setAccountLocale(context, payload) {
+  context.commit('SET_ACCOUNT_LOCALE', payload);
+}
+
+/**
+ * Action setAccountIpNode
+ */
+
+export function setAccountIpNode(context, payload) {
+  context.commit('SET_ACCOUNT_IP_NODE', payload);
+}

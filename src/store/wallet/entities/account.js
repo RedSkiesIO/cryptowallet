@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core';
+import Wallet from './wallet';
 
 /**
  * Account Entity.
@@ -16,6 +17,12 @@ export default class Account extends Model {
       uid: this.attr(''),
       salt: this.attr(''),
       pinHash: this.attr(''),
+      name: this.attr(''),
+      locale: this.attr(''),
+      node: this.attr(''),
+      default: this.attr(false),
+      seed: this.attr(''),
+      wallets: this.hasMany(Wallet, 'account_id'),
     };
   }
 }

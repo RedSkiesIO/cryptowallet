@@ -13,7 +13,7 @@ const exchangeRates = {
       rate: 6431.14,
     },
     {
-      currency: 'GPB',
+      currency: 'GBP',
       rate: 4977.06,
     },
   ],
@@ -23,7 +23,7 @@ const exchangeRates = {
       rate: 201.76,
     },
     {
-      currency: 'GPB',
+      currency: 'GBP',
       rate: 156.14,
     },
   ],
@@ -33,7 +33,7 @@ const exchangeRates = {
       rate: 22222,
     },
     {
-      currency: 'GPB',
+      currency: 'GBP',
       rate: 9999,
     },
   ],
@@ -75,7 +75,8 @@ export default class AmountFormatter {
    * @return {Number}
    */
   coinToCurrency() {
-    const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency);
-    return this.amount * rate;
+    const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency.code);
+    if (rate) return this.amount * rate;
+    return this.amount;
   }
 }

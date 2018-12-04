@@ -57,26 +57,12 @@ export default {
      * Checks two arrays are the same.
      */
     arraysEqual(a, b) {
-      if (a instanceof Array && b instanceof Array) {
-        if (a.length !== b.length) {
-          this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
-          this.pipSeq.length = 0;
-          return false;
-        }
-        for (let i = 0; i < a.length; i += 1) {
-          if (!this.arraysEqual(a[i], b[i])) {
-            this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
-            this.pipSeq.length = 0;
-            return false;
-          }
-          this.pipSeq.length = 0;
-          return true;
-        }
-      } else {
-        return a === b;
+      const equal = a.join('') === b.join('');
+      if (!equal) {
+        this.pipSeq = [];
+        this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
       }
-      this.pipSeq.length = 0;
-      return true;
+      return equal;
     },
 
     addToSequence(pip) {

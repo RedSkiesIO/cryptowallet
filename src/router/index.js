@@ -26,6 +26,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/settings',
+      component: () => import('layouts/Authed'),
+      children: [
+        { path: '', component: () => import('pages/Settings') },
+      ],
+    },
+    {
       path: '/wallet',
       component: () => import('layouts/Authed'),
       children: [

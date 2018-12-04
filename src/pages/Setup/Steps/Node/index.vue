@@ -30,6 +30,7 @@ export default {
   watch: {
     nodeIp(ip) {
       if (this.validIp(ip)) {
+        this.$store.dispatch('setup/setAccountIpNode', ip);
         this.$root.$emit('showNext');
       }
     },
