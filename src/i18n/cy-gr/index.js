@@ -1,4 +1,5 @@
 export default {
+  'en-gb': 'Αγγλικά',
   setupTitle: 'Ρύθμιση CryptoWallet!',
   continue: 'Συνέχισε',
   profile: 'Προφίλ',

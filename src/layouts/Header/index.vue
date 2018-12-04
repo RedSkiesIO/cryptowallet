@@ -1,6 +1,6 @@
 <template>
   <section class="header-section">
-    <div class="header-button-wrapper">
+    <div class="header-back-button-wrapper">
       <q-btn
         :disable="!isBackButtonEnabled"
         :label="$t('goBack')"
@@ -10,6 +10,17 @@
       />
     </div>
     <h1 class="header-h1">CryptoWallet</h1>
+
+    <div class="header-settings-button-wrapper">
+      <q-btn
+        :label="$t('settings')"
+        color="secondary"
+        size="sm"
+        @click.prevent="goToSettings"
+      />
+    </div>
+
+
   </section>
 </template>
 
@@ -34,6 +45,9 @@ export default {
     goBack() {
       this.$router.go(-1);
     },
+    goToSettings() {
+      this.$router.push({ path: '/settings' });
+    },
   },
 };
 </script>
@@ -55,11 +69,20 @@ export default {
     margin-top: 0.4em;
   }
 
-  .header-button-wrapper {
+  .header-back-button-wrapper {
     position: absolute;
     left: 0.5rem;
     height: 100%;
     display: flex;
     align-items: center;
   }
+
+  .header-settings-button-wrapper {
+    position: absolute;
+    right: 0.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
 </style>

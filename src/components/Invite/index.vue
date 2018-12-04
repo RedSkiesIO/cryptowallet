@@ -110,6 +110,7 @@ export default {
 <style lang="scss">
   .close-button-wrapper {
     padding: 0.5rem;
+    height: 2.7rem;
   }
 
   .dark-modal {

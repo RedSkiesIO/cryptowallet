@@ -1,5 +1,6 @@
 import coins from '../state/coins.js';
 import currencies from '../state/currencies.js';
+import supportedCoins from '../state/supportedCoins.js';
 
 const actions = {};
 const getters = {};
@@ -18,6 +19,7 @@ const state = {
   acNode: {},
   coins,
   currencies,
+  supportedCoins,
   selectedCurrency: currencies.GBP,
 };
 

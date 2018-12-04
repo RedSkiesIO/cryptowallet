@@ -15,6 +15,8 @@ module.exports = (ctx) => {
       'Sms',
       'Email',
       'ContactsImport',
+      'AppDataEncryption',
+      'CryptoWalletSDK',
     ],
     css: ['app.styl'],
     extras: [
@@ -81,10 +83,13 @@ module.exports = (ctx) => {
         'QSpinnerDots',
         'QCollapsible',
         'QModal',
+        'QSpinner',
+        'QToggle',
+        'QRadio',
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
-      plugins: ['Notify', 'Dialog', 'ActionSheet'],
+      plugins: ['Notify', 'Dialog', 'ActionSheet', 'AppVisibility'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       i18n: 'en-uk',
     },

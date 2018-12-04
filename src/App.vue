@@ -1,12 +1,23 @@
 <template>
   <div id="q-app">
-    <router-view/>
+    <div
+      v-if="settings.loading"
+      class="app-loading"
+    >
+      <q-spinner
+        :size="100"
+        color="primary"
+      />
+    </div>
+    <div v-else>
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
-/*eslint-disable*/ // @todo remove this eslint-disable, eslint-complains about mounted() method
 import { mapState } from 'vuex';
+import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
 
 export default {
   name: 'App',
@@ -17,12 +28,50 @@ export default {
     }),
   },
 
+  watch: {
+    /**
+     * Encrypts and decrypts app data according to toEncryptConfig
+     *
+     * @todo Konrad Make it so the data in the Loki database is always encrypted
+     * Meaning, ecrypt when saved to Loki, decrypt when hydrating
+     */
+    '$q.appVisible': {
+      handler(visible) {
+        const encryptionUtil = new this.AppDataEncryption(toEncryptConfig);
+        if (visible) encryptionUtil.decrypt('pin hash');
+        if (!visible) encryptionUtil.encrypt('pin hash');
+      },
+    },
+
+    /**
+     * Waits until hydration is completed,
+     * If there are no Accounts, got to setup
+     */
+    'settings.loading': {
+      handler(value) {
+        if (value) return false;
+        const accounts = this.$store.getters['entities/account/query']().get();
+        if (accounts.length < 1) this.$router.push({ path: 'setup' });
+        return true;
+      },
+
+      'settings.selectedAccount': {
+        handler(value) {
+          if (!value) this.$router.push({ path: '/' });
+        },
+      },
+    },
+  },
+
+
   beforeCreate() {
 
   },
 
   created() {
-    if (this.account.salt === null) {
+    if (!this.settings.selectedAccount) this.$router.push({ path: '/' });
+
+    /* if (this.account.salt === null) {
       this.$router.push({ path: 'setup/seed' });
       return false;
     }
@@ -32,7 +81,7 @@ export default {
       return false;
     }
 
-    return true;
+    return true; */
   },
 
   beforeMount() {
@@ -40,28 +89,7 @@ export default {
   },
 
   mounted() {
-    this.$toast.vm.$on('TEAPOT', () => {
-      console.log(123123123);
-    });
-    const accounts = this.$store.getters['entities/account/query']().get();
-    // console.log(accounts);
 
-    // check with have at least one account in the data base,
-    // otherwise send them to setup.
-
-    // if (process.env !== 'dev') {
-    //   if (accounts.length < 1) {
-    //     this.$router.push({ path: 'setup/seed' });
-    //     return false;
-    //   }
-    // }
-
-    if (accounts.length < 1) {
-      this.$router.push({ path: 'setup' });
-      return false;
-    }
-
-    return true;
   },
 
   beforeUpdate() {
@@ -89,5 +117,13 @@ export default {
 body {
   background-color: #1e3c57;
   color: white;
+}
+
+.app-loading {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

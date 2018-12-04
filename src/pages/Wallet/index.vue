@@ -1,67 +1,39 @@
 <template>
   <div class="layout">
     <div class="list">
-      <wallet-list
+      <WalletsList
         :wallets="wallets"
         :currency="selectedCurrency"
+        click-item-action="selectWallet"
       />
     </div>
     <div class="button">
-      <add-wallet/>
+      <AddWallet/>
     </div>
   </div>
 </template>
 
 <script>
-import WalletList from '@/components/Wallet/WalletsList';
+import { mapState } from 'vuex';
+import WalletsList from '@/components/Wallet/WalletsList';
 import AddWallet from '@/components/Wallet/AddWallet';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
-  name: 'Balance',
-
+  name: 'Wallet',
   components: {
-    WalletList,
+    WalletsList,
     AddWallet,
   },
-
-  /**
-   * @TODO James Konrad
-   * data below is mocked
-   *
-   * currency String is a prefered user currency, should be in the Vuex store
-   * you should probably select your prefered currency during the initial setup
-   * alongside the language
-   *
-   * coins Object also shoudn't be here
-   */
-  data() {
-    return {
-      wallets: {
-        BTC: {
-          key: 'BTC',
-          name: 'Bitcoin',
-          balance: 25.532344,
-          uid: 1,
-        },
-        ATL: {
-          key: 'ATL',
-          name: 'Atlas',
-          balance: 21.532344,
-          uid: 2,
-        },
-        ETH: {
-          key: 'ETH',
-          name: 'Ethereum',
-          balance: 55.532344,
-          uid: 3,
-        },
-      },
-    };
-  },
-
   computed: {
+    ...mapState({
+      authenticatedAccount: state => state.settings.authenticatedAccount,
+    }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
+    },
+    wallets() {
+      return Wallet.query().where('account_id', this.authenticatedAccount).get();
     },
   },
 };

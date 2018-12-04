@@ -1,6 +1,11 @@
 <template>
   <section class="scroll-area">
+    <h1 v-if="wallets.length === 0">
+      {{ $t('noWallets') }}
+    </h1>
+
     <q-scroll-area
+      v-if="wallets.length > 0"
       class="scroll-area"
     >
       <WalletItem
@@ -8,6 +13,7 @@
         :key="wallet.name"
         :wallet="wallet"
         :currency="currency"
+        :click-item-action="clickItemAction"
       />
     </q-scroll-area>
   </section>
@@ -25,12 +31,17 @@ export default {
 
   props: {
     wallets: {
-      type: Object,
+      type: Array,
       required: true,
     },
 
     currency: {
       type: Object,
+      required: false,
+    },
+
+    clickItemAction: {
+      type: String,
       required: true,
     },
   },
