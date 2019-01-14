@@ -18,3 +18,10 @@ export function SET_SELECTED_ACCOUNT(state, payload) {
 export function SET_AUTHENTICATED_ACCOUNT(state, payload) {
   state.authenticatedAccount = payload;
 }
+
+/*
+* SET STATE for app layout
+*/
+export function SET_LAYOUT(state, payload) {
+  state.layout = payload;
+}

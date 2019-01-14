@@ -1,38 +1,40 @@
 <template>
-  <section>
-    <div>
-      <h1 id="title_id">{{ $t('setupTitle') }}</h1>
-      <br>
-      <span id="subtitle_id">
-        {{ $t('writeSeed') }}
+  <div>
+    <h1 class="setup">{{ $t('seed') }}</h1>
+    <p class="setup">{{ $t('writeSeed') }}</p>
+    <h4 class="setup seed-box">
+      <span
+        v-for="(word, i) in seedPhrase"
+        :key="`word${i}`"
+        class="word-span"
+      >
+        <span class="word-index">{{ i + 1 }}.</span>
+        {{ word }}
       </span>
-      <span id="subtitle_id">
-        {{ $t('clickSeed') }}
-      </span>
+    </h4>
+
+    <div class="btns-wrapper">
       <q-btn
-        v-if="generateble"
-        :label="`generate`"
-        style="color: goldenrod;"
-        outline
+        color="secondary"
+        label="Try Different Seed"
         @click="generateSeed"
       />
-      <div class="seedContainer">
-        <span
-          v-for="(word, i) in seedPhrase"
-          :key="`word${i}`"
-          style="color: goldenrod;"
-        > {{ word }}
-        </span>
-      </div>
+
+      <q-btn
+        color="secondary"
+        label="Done"
+        @click="done"
+      />
     </div>
-  </section>
+
+  </div>
 </template>
 
 <script>
 import bip39 from 'bip39';
+import { mapState } from 'vuex';
 
 export default {
-
   data() {
     return {
       generateble: true,
@@ -40,27 +42,44 @@ export default {
       valid: false,
     };
   },
-
+  computed: {
+    ...mapState({
+      id: state => parseInt(state.route.params.id, 10),
+    }),
+  },
+  mounted() {
+    this.generateSeed();
+  },
   methods: {
-    validate() {
-      if (Array.isArray(this.seedPhrase) && this.seedPhrase.length === 12) {
-        this.$store.dispatch('setup/setSeed', this.seedPhrase);
-        this.valid = true;
-      } else {
-        this.$toast.create(10, this.$t('pinLengthError'), 500);
-        this.valid = false;
-      }
-      return this.valid;
-    },
-
     generateSeed() {
-      while (this.seedPhrase.length < 12) {
-        this.seedPhrase = bip39.generateMnemonic().split(' ');
-      }
-      this.generateble = false;
+      this.seedPhrase = bip39.generateMnemonic().split(' ');
       console.log(this.seedPhrase);
-      this.$root.$emit('showNext');
+      this.$store.dispatch('setup/setSeed', this.seedPhrase);
+    },
+    done() {
+      this.$router.push({ path: `/setup/${this.id + 1}` });
+    },
+    anotherSeed() {
+      this.generateSeed();
     },
   },
 };
 </script>
+
+<style scoped>
+.seed-box {
+  padding: 1em;
+  line-height: 2;
+}
+
+.word-span {
+  margin: 0 .5em;
+  display: inline-block;
+}
+
+.word-index {
+  opacity: 0.3;
+  white-space: nowrap;
+  font-size: 0.75em;
+}
+</style>

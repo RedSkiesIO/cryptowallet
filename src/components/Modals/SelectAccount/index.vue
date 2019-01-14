@@ -1,0 +1,161 @@
+<template>
+  <div>
+    <q-modal
+      v-model="selectAccountModalOpened"
+      class="dark-modal"
+    >
+      <div class="close-button-wrapper">
+        <q-btn
+          icon="clear"
+          color="primary"
+          size="lg"
+          class="icon-btn close-btn"
+          flat
+          @click.prevent="closeModal()"
+        />
+      </div>
+      <div
+        v-for="(account, index) in accounts"
+        :key="index"
+        class="account-item"
+      >
+        <div>
+          {{ account.name }}
+        </div>
+        <div class="default-switch">
+          <q-toggle
+            v-model="account.default"
+            :disabled="account.default"
+            :label="$t('default')"
+            @input="defualtAccountChange({
+              val: account.default,
+              name: account.name
+            })"
+          />
+        </div>
+        <div>
+          <q-btn
+            icon="chevron_right"
+            size="lg"
+            color="primary"
+            class="list-chevron"
+            flat
+            @click="selectAccount(account.name)"
+          />
+        </div>
+      </div>
+
+      <div class="btns-wrapper">
+        <q-btn
+          :label="$t('createAccount')"
+          icon="add_box"
+          color="primary"
+          text-color="blueish"
+          @click="createAccount"
+        />
+      </div>
+    </q-modal>
+  </div>
+</template>
+
+<script>
+import Account from '@/store/wallet/entities/account.js';
+
+export default {
+  name: 'SelectAccount',
+  data() {
+    return {
+      selectAccountModalOpened: false,
+    };
+  },
+  computed: {
+    accounts() {
+      return this.$store.getters['entities/account/query']().get();
+    },
+  },
+  mounted() {
+    this.$root.$on('selectAccountModalOpened', (value) => {
+      window.a = this;
+      this.selectAccountModalOpened = value;
+    });
+  },
+  methods: {
+    closeModal() {
+      this.$root.$emit('selectAccountModalOpened', false);
+    },
+    switchAccount() {
+      this.$root.$emit('selectAccountModalOpened', true);
+    },
+    createAccount() {
+      this.$root.$emit('selectAccountModalOpened', false);
+      this.$router.push({ path: '/setup/0' });
+    },
+    selectAccount(name) {
+      this.$store.dispatch('settings/setSelectedAccount', name);
+      this.$root.$emit('selectAccountModalOpened', false);
+    },
+    defualtAccountChange(data) {
+      if (data.val) {
+        Account.$update({
+          where: () => true,
+          data: { default: false },
+        });
+
+        Account.$update({
+          where: record => record.name === data.name,
+          data: { default: true },
+        });
+      } else {
+        Account.$update({
+          where: record => record.name === data.name,
+          data: { default: true },
+        });
+      }
+    },
+  },
+};
+</script>
+
+<style lang='scss'>
+.close-button-wrapper {
+  padding: 0.5rem;
+  height: 2.7rem;
+}
+
+.dark-modal {
+  .modal-content {
+    background: #1e3c57;
+  }
+}
+
+.account-item {
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  margin-bottom: 2px;
+}
+
+.default-switch {
+  margin-left: auto;
+}
+
+.account-settings-button-wrapper {
+  padding: 0.5rem;
+}
+
+.list-chevron {
+  height: 2em!important;
+  min-height: auto;
+  padding: 0;
+  padding-left: 2em;
+  position: relative;
+  right: -0.25em;
+}
+
+.list-chevron .q-btn-inner {
+  justify-content: flex-end;
+}
+</style>

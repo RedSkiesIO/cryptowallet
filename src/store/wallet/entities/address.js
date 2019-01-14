@@ -1,21 +1,19 @@
 import { Model } from '@vuex-orm/core';
-import Wallet from './wallet';
 
 /**
  * Address Entity.
  */
 export default class Address extends Model {
   static entity = 'address';
-
-  /**
-   * Sets entity attributes.
-   * @returns {{id: Increment, address: Attr, wallet_id: BelongsTo}}
-   */
   static fields() {
     return {
       id: this.increment(),
+      wallet_id: this.attr(''),
+      account_id: this.attr(''),
       address: this.attr(''),
-      wallet_id: this.belongsTo(Wallet, 'address_id'),
+      index: this.attr(''),
+      chain: this.attr(''),
+      used: this.attr(false),
     };
   }
 }

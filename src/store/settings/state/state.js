@@ -13,4 +13,5 @@ export default {
   selectedCurrency: currencies.GBP,
   loading: true,
   selectedAccount: null,
+  layout: 'dark',
 };

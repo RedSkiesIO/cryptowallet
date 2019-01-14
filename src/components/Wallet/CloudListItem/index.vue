@@ -1,0 +1,197 @@
+<template>
+  <div
+    class="wallet-cloud"
+    @click="goToWallet"
+  >
+    <div class="cloud-top-row">
+      <CoinHeader :wallet="wallet"/>
+    </div>
+    <div
+      v-if="chartData"
+      class="trend-wrapper"
+    >
+      <trend
+        :data="chartData"
+        :gradient="['#fabc57']"
+        :stroke-width="5"
+
+        auto-draw
+        smooth
+      />
+    </div>
+    <div class="wallet-buttons">
+      <q-btn-group>
+        <q-btn
+          icon="send"
+          size="sm"
+          color="primary"
+          label="Send"
+          class="wallet-group-btn"
+          flat
+          @click.stop="send"
+        />
+        <q-btn
+          icon="call_received"
+          size="sm"
+          color="primary"
+          label="Receive"
+          class="wallet-group-btn"
+          flat
+          @click.stop="receive"
+        />
+        <!-- <q-btn
+          icon="list"
+          size="sm"
+          color="primary"
+          label="History"
+          class="wallet-group-btn"
+          flat
+          @click="history"
+        /> -->
+        <q-btn
+          size="lg"
+          color="primary"
+          icon="timeline"
+          class="wallet-group-btn just-icon"
+          flat
+          @click.stop="prices"
+        />
+      </q-btn-group>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+import CoinHeader from '@/components/Wallet/CoinHeader';
+
+export default {
+  name: 'CloudListItem',
+  components: {
+    CoinHeader,
+  },
+  props: {
+    wallet: {
+      type: Object,
+      required: true,
+    },
+    currency: {
+      type: Object,
+      required: false,
+    },
+  },
+  data() {
+    return {
+      chartData: null,
+    };
+  },
+  computed: {
+    ...mapState({
+      authenticatedAccount: state => state.settings.authenticatedAccount,
+    }),
+    selectedCurrency() {
+      return this.$store.state.settings.selectedCurrency;
+    },
+    supportedCoins() {
+      return this.$store.state.settings.supportedCoins;
+    },
+    coinDenomination() {
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+    },
+    coinSymbol() {
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+    },
+  },
+  async mounted() {
+    const coinSDK = this.coinSDKS[this.wallet.sdk];
+    const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+    this.chartData = dataset.map(item => item.y);
+  },
+  methods: {
+    send() {
+      this.$router.push({ path: `/wallet/send/${this.wallet.id}` });
+    },
+    receive() {
+      this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
+    },
+    history() {
+      this.$router.push({ path: `/wallet/history/${this.wallet.id}` });
+    },
+    prices() {
+      this.$router.push({ path: `/wallet/prices/${this.wallet.id}` });
+    },
+    goToWallet() {
+      this.$router.push({ path: `/wallet/single/${this.wallet.id}` });
+    },
+  },
+};
+</script>
+
+<style>
+.wallet-cloud {
+  width: 100%;
+  border-radius: 0.4em;
+  padding-bottom: 0.2em;
+  background: white;
+  color: #1e3c57;
+  /* border: 1px solid rgba(0, 0, 0, 0.03); */
+  margin-bottom: 0.2em;
+  margin-top: 0.3em;
+  box-shadow: inset -2px -2px 0px 2px #1d3b5659;
+}
+
+.cloud-top-row {
+  padding: 1em 1em 0em 1em;
+}
+
+.trend-wrapper {
+  opacity: 0.7;
+  margin: .5em 0;
+  padding: 0 1em;
+}
+
+.wallet-buttons {
+  border-top: 1px solid #f2f3f5;
+  margin-right: 0.25rem;
+  margin-top: 1rem;
+}
+
+.wallet-buttons .q-btn-group {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.wallet-buttons .q-btn {
+  display: block;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.wallet-buttons .q-btn-inner {
+  font-size: 1em;
+  color: #1e3c57;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.wallet-group-btn {
+  background: transparent;
+  padding: 0 .5rem;
+}
+
+.wallet-group-btn i {
+  margin-right: 0.5em;
+  position: relative;
+  top: -0.05rem;
+}
+
+.wallet-group-btn.just-icon {
+  min-height: 2.5rem!important;
+}
+
+.wallet-group-btn.just-icon i {
+  margin-right: 0;
+}
+</style>

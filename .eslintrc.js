@@ -19,6 +19,7 @@ module.exports = {
     ContactFindOptions: true,
     jest: true,
     sms: true,
+    QRScanner: true,
   },
   rules: {
     'vue/require-default-prop': 0,

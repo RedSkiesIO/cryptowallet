@@ -75,7 +75,6 @@ export default {
     closeModal() {
       this.$emit('closeNodeModal');
     },
-
     /**
      * Updates the account
      */

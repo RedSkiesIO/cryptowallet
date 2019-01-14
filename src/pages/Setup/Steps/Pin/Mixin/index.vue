@@ -2,13 +2,6 @@
 import { mapState } from 'vuex';
 
 export default {
-
-  data() {
-    return {
-      pin: [],
-    };
-  },
-
   computed: {
     ...mapState({
       salt: state => state.setup.salt,
@@ -17,12 +10,9 @@ export default {
       pinHashConfirm: state => state.setup.pinHashConfirm,
     }),
   },
-
   created() {
-    this.pin.length = 0;
     this.pinInputListener();
   },
-
   methods: {
     /**
      * adds or removes pin input event to pin arr.

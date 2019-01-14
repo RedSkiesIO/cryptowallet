@@ -54,7 +54,6 @@ export default {
     languages() {
       return Object.keys(this.$i18n.messages).map(key => key);
     },
-
     /**
      * Updates the database on locale change
      */

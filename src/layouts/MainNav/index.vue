@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <section
     class="main-nav"
   >
@@ -7,24 +8,27 @@
         class="main-nav-link"
         to="/wallet"
       >
-        <i class="svg-icon">
+        <q-icon name="account_balance_wallet" />
+
+        <!-- <i class="svg-icon">
           <img src="~assets/icons/Wallet.svg">
-        </i>
+        </i> -->
         <div>{{ $t('wallet') }}</div>
       </router-link>
     </div>
-    <div class="">
+<!--     <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/analytics"
       >
+        <q-icon name="show_chart" />
         <i class="svg-icon">
           <img src="~assets/icons/Analytics.svg">
         </i>
         <div>{{ $t('analytics') }}</div>
       </router-link>
-    </div>
-    <div class="">
+    </div> -->
+<!--     <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/payments"
@@ -34,19 +38,32 @@
         </i>
         <div>{{ $t('payments') }}</div>
       </router-link>
-    </div>
+    </div> -->
     <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/exchange"
       >
-        <i class="svg-icon">
+        <q-icon name="cached" />
+        <!-- <i class="svg-icon">
           <img src="~assets/icons/Exchange.svg">
-        </i>
+        </i> -->
         <div>{{ $t('exchange') }}</div>
       </router-link>
     </div>
     <div class="">
+      <router-link
+        class="main-nav-link"
+        to="/settings"
+      >
+        <q-icon name="settings" />
+        <!-- <i class="svg-icon">
+          <img src="~assets/icons/Exchange.svg">
+        </i> -->
+        <div>{{ $t('settings') }}</div>
+      </router-link>
+    </div>
+<!--     <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/more"
@@ -57,7 +74,7 @@
         <div>{{ $t('more') }}</div>
       </router-link>
 
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -75,11 +92,12 @@ export default {
 <style scoped>
   .main-nav {
     width: 100%;
-    height: 6rem;
-    background: white;
-    background: #f3f3f3;
+    height: 5rem;
+    background: #1e3c57;
     display: flex;
     justify-content: space-between;
+    border-top: 0.3rem solid #4e677d;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
   }
 
   .main-nav > div {
@@ -91,23 +109,30 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: black;
+    color: white;
     width: 100%;
-    font-family: 'Montserrat-Regular';
+    font-family: 'Montserrat-Medium';
     height: 100%;
+    text-decoration: none;
   }
 
   .main-nav-link i {
-    font-size: 2.5rem;
+    font-size: 2em;
+    margin-bottom: 0.2em;
   }
 
   .main-nav-link > div {
     font-size: 0.8rem;
   }
 
-  .router-link-active {
-    background: #eaeaea;
+  .router-link-exact-active {
+    color: #fabc57;
+    font-family: 'Montserrat-Medium';
   }
+
+/*  .router-link-active i {
+    color: #de4662;
+  }*/
 
   .svg-icon {
     width: 100%;

@@ -1,43 +1,32 @@
 <template>
   <div>
-    <div id="pinTitle_id">enter your pin</div>
-    <astrix />
-    <pin-pad />
+    <h1 class="setup">Pin Setup</h1>
+    <h4 class="setup">Choose your pin</h4>
+    <pin-pad mode="pin-setup"/>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
-import Astrix from '@/components/Auth/Astrix';
-import mixin from '@/pages/Setup/Steps/Pin/Mixin';
 
 export default {
-
   components: {
     PinPad,
-    Astrix,
   },
-
-  mixins: [mixin],
-
-  methods: {
-    validate() {
-      if (this.pin.length >= this.minLength) {
-        this.$store.dispatch('setup/setPinHash', this.$CWCrypto.bcryptHashString(this.pin.join(''), this.salt));
-      } else {
-        this.$toast.create(10, this.$t('pinLengthError'), 500);
-        return false;
-      }
-      return true;
-    },
+  computed: {
+    ...mapState({
+      pin: state => state.setup.pinArray,
+      pinConfirm: state => state.setup.pinConfirmArray,
+      salt: state => state.setup.salt,
+      minLength: state => state.settings.pin.minLength,
+      pinHash: state => state.setup.pinHash,
+      pinHashConfirm: state => state.setup.pinHashConfirm,
+    }),
   },
 };
 </script>
 
 <style scoped>
- #pinTitle_id {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
- }
+
 </style>

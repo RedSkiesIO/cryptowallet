@@ -1,0 +1,267 @@
+<template>
+  <div>
+    <q-modal
+      v-model="confirmSendModalOpened"
+      class="light-modal modal"
+    >
+      <div
+        :class="{ active: loading }"
+        class="sending-spinner-overlay"
+      >
+        <Spinner/>
+      </div>
+
+      <div class="header-section">
+        <div class="header-back-button-wrapper">
+          <q-btn
+            icon="arrow_back"
+            size="lg"
+            class="icon-btn back-arrow-btn"
+            flat
+            @click.prevent="goBack"
+          />
+        </div>
+        <h1 class="header-h1">Confirm</h1>
+      </div>
+      <div
+        v-if="wallet && txData"
+        class="modal-layout-wrapper"
+      >
+        <CoinHeader :wallet="wallet"/>
+
+        <div class="send-modal-heading">
+          <h3>To</h3>
+          <span class="h3-line"/>
+        </div>
+
+        <div class="small-text">{{ txData.transaction.receiver[0] }}</div>
+
+        <div class="send-modal-heading">
+          <h3>Amount</h3>
+          <span class="h3-line"/>
+        </div>
+
+        <div class="small-text">
+          {{ txData.transaction.value }} {{ coinSymbol }}
+          ({{ coinToCurrency(txData.transaction.value) }})
+        </div>
+
+        <div class="send-modal-heading">
+          <h3>Fee</h3>
+          <span class="h3-line"/>
+        </div>
+
+        <div class="small-text">
+          {{ txData.transaction.fee }} {{ coinSymbol }}
+          ({{ coinToCurrency(txData.transaction.fee) }})
+        </div>
+
+        <div class="send-modal-heading">
+          <h3>New Balance</h3>
+          <span class="h3-line"/>
+        </div>
+
+        <div class="small-text">
+          {{ newBalance }} {{ coinSymbol }}
+          ({{ coinToCurrency(newBalance) }})
+        </div>
+
+        <div class="send">
+          <q-btn
+            :label="$t('Confirm')"
+            color="blueish"
+            size="md"
+            @click="confirm"
+          />
+        </div>
+      </div>
+    </q-modal>
+  </div>
+</template>
+
+<script>
+/* eslint-disable */
+import { mapState } from 'vuex';
+import CoinHeader from '@/components/Wallet/CoinHeader';
+import Amount from '@/components/Wallet/Amount';
+import Spinner from '@/components/Spinner';
+import { AmountFormatter } from '@/helpers';
+import Address from '@/store/wallet/entities/address';
+import Wallet from '@/store/wallet/entities/wallet';
+import Tx from '@/store/wallet/entities/tx';
+import Utxo from '@/store/wallet/entities/utxo';
+
+export default {
+  name: 'ConfirmSend',
+  components: {
+    CoinHeader,
+    Spinner,
+  },
+  data() {
+    return {
+      confirmSendModalOpened: false,
+      txData: null,
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState({
+      id: state => state.route.params.id,
+      authenticatedAccount: state => state.settings.authenticatedAccount,
+    }),
+    wallet() {
+      return this.$store.getters['entities/wallet/find'](this.id);
+    },
+    supportedCoins() {
+      return this.$store.state.settings.supportedCoins;
+    },
+    selectedCurrency() {
+      return this.$store.state.settings.selectedCurrency;
+    },
+    coinSymbol() {
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+    },
+    newBalance() {
+      return this.wallet.confirmedBalance - this.txData.transaction.value - this.txData.transaction.fee;
+    },
+  },
+  mounted() {
+    this.$root.$on('confirmSendModalOpened', (value, txData) => {
+      this.confirmSendModalOpened = value;
+      this.txData = txData;
+    });
+  },
+  methods: {
+    broadcastTx() {
+      console.log('broadcastTx');
+
+      const {
+        hexTx,
+        transaction,
+        utxo,
+        changeAddresses,
+      } = this.txData;
+
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+
+
+      console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
+      console.log('network', this.wallet.network);
+
+      coinSDK.broadcastTx(hexTx, this.wallet.network)
+        .then(async (result) => {
+          if (!result) {
+            console.error('transaction broadcast failure');
+            return false;
+          }
+
+          transaction.account_id = this.authenticatedAccount;
+          transaction.wallet_id = this.wallet.id;
+          transaction.isChange = false;
+          transaction.sent = true;
+
+          await Tx.$insert({ data: transaction });
+
+          utxo.forEach((usedUtxo) => {
+            const whereUtxo = (record, item) => (
+              record.txid === item.txid
+              && record.vout === item.vout
+              && record.wallet_id === this.wallet.id
+            );
+
+            console.log('update pending !!!!!!!!!!!!!!!');
+
+            Utxo.$update({
+              where: record => whereUtxo(record, usedUtxo),
+              data: { pending: true },
+            });
+          });
+
+          changeAddresses.forEach(async (address, i) => {
+            await Address.$insert({
+              data: {
+                address,
+                account_id: this.authenticatedAccount,
+                wallet_id: this.wallet.id,
+                chain: 'internal',
+                index: this.wallet.internalChainAddressIndex + i,
+              },
+            });
+          });
+
+          const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
+
+          Wallet.$update({
+            where: record => record.id === this.wallet.id,
+            data: { internalChainAddressIndex: newInternalIndex },
+          });
+
+          setTimeout(() => {
+            this.completeTransaction();
+          }, 1000);
+          return false;
+        })
+        .catch((err) => {
+          alert(err);
+          console.log(err);
+        });
+    },
+    coinToCurrency(amount) {
+      const formattedAmount = new AmountFormatter({
+        amount,
+        format: '0.00',
+        coin: this.wallet.name,
+        prependPlusOrMinus: false,
+        currency: this.selectedCurrency,
+        toCurrency: true,
+        withCurrencySymbol: true,
+      });
+
+      return formattedAmount.getFormatted();
+    },
+    goBack() {
+      this.confirmSendModalOpened = false;
+    },
+    confirm() {
+      console.log('confirm click')
+      this.loading = true;
+      setTimeout(() => {
+        this.broadcastTx();
+      }, 250);
+    },
+    completeTransaction() {
+      this.$root.$emit('sendSuccessModalOpened', true, this.txData);
+
+      setTimeout(() => {
+        console.log('completeTransaction')
+        this.loading = false;
+        this.confirmSendModalOpened = false;
+      }, 250);
+    },
+  },
+};
+</script>
+
+<style scoped>
+.small-text {
+  font-size: 0.8rem;
+}
+
+.sending-spinner-overlay {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.9);
+  opacity: 0;
+  transition: all ease-in-out 250ms;
+}
+
+.sending-spinner-overlay.active{
+  opacity: 1;
+  z-index: 2;
+}
+</style>

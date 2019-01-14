@@ -1,61 +1,34 @@
 <template>
   <div>
-    <div>{{ $t('repeatPin') }}</div>
-    <astrix />
-    <pin-pad />
+    <h1 class="setup">Pin Confirmation</h1>
+    <h4 class="setup">Confirm your pin</h4>
+    <pin-pad mode="pin-confirm"/>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
-import Astrix from '@/components/Auth/Astrix';
-import mixin from '@/pages/Setup/Steps/Pin/Mixin';
 
 export default {
-
   components: {
     PinPad,
-    Astrix,
   },
-
-  mixins: [mixin],
-
+  computed: {
+    ...mapState({
+      pin: state => state.setup.pinArray,
+      pinConfirm: state => state.setup.pinConfirmArray,
+      salt: state => state.setup.salt,
+      minLength: state => state.settings.pin.minLength,
+      pinHash: state => state.setup.pinHash,
+      pinHashConfirm: state => state.setup.pinHashConfirm,
+      id: state => parseInt(state.route.params.id, 10),
+    }),
+  },
   methods: {
-
-    validate() {
-      try {
-        this.validatePinLength(this.pin);
-      } catch (error) {
-        this.$toast.create(10, this.$t('pinLengthError'), 500);
-        return false;
-      }
-
-      const pinHashConfirm = this.$CWCrypto.bcryptHashString(this.pin.join(''), this.salt);
-
-      try {
-        this.validateHashedPinsMatch(this.pinHash, pinHashConfirm);
-      } catch (error) {
-        this.$toast.create(10, this.$t('pinMatch'), 500);
-        return false;
-      }
-
-      return true;
-    },
-
-    validatePinLength(pin) {
-      if (pin.length < 6) {
-        throw new Error();
-      } else {
-        return true;
-      }
-    },
-
-    validateHashedPinsMatch(pinHash, pinHashConfirm) {
-      if (pinHash !== pinHashConfirm) {
-        throw new Error();
-      } else {
-        return true;
-      }
+    validatePin() {
+      const pinHashConfirm = this.$CWCrypto.bcryptHashString(this.pinConfirm.join(''), this.salt);
+      if (this.pinHash === pinHashConfirm) this.$router.push({ path: `/setup/${this.id + 1}` });
     },
   },
 };

@@ -18,3 +18,10 @@ export function setSelectedAccount(context, payload) {
 export function setAuthenticatedAccount(context, payload) {
   context.commit('SET_AUTHENTICATED_ACCOUNT', payload);
 }
+
+/*
+* Action setLayout
+*/
+export function setLayout(context, payload) {
+  context.commit('SET_LAYOUT', payload);
+}

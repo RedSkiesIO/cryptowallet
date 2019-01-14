@@ -1,8 +1,15 @@
 <template>
   <section class="scroll-area">
-    <h1 v-if="wallets.length === 0">
-      {{ $t('noWallets') }}
-    </h1>
+    <div v-if="wallets.length === 0">
+      <q-btn
+        icon="add_circle_outline"
+        label="add"
+        color="primary"
+        size="xl"
+        class="large-cloud-btn"
+        @click.prevent="openWalletsModal"
+      />
+    </div>
 
     <q-scroll-area
       v-if="wallets.length > 0"
@@ -10,7 +17,7 @@
     >
       <WalletItem
         v-for="wallet in wallets"
-        :key="wallet.name"
+        :key="wallet.displayName"
         :wallet="wallet"
         :currency="currency"
         :click-item-action="clickItemAction"
@@ -24,11 +31,9 @@ import WalletItem from '@/components/Wallet/WalletItem';
 
 export default {
   name: 'WalletsList',
-
   components: {
     WalletItem,
   },
-
   props: {
     wallets: {
       type: Array,
@@ -45,15 +50,37 @@ export default {
       required: true,
     },
   },
+  methods: {
+    openWalletsModal() {
+      this.$root.$emit('walletsModalOpened', true);
+    },
+  },
 };
 </script>
 
-<style scoped>
+<style>
 .scroll-area {
   position: absolute;
   height: 100%;
   width: 100%;
   left: 0;
   top: 0;
+}
+
+.large-cloud-btn {
+  width: 100%;
+  height: 3em;
+  border-radius: 0.3em;
+  font-size: 3em;
+  padding: 0em;
+  color: #1e3c57;
+}
+
+.large-cloud-btn i {
+  color: #1e3c57;
+}
+
+.large-cloud-btn .q-btn-inner{
+  color: #1e3c57;
 }
 </style>

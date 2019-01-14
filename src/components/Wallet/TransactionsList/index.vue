@@ -32,6 +32,7 @@
 
 <script>
 import SingleTransaction from '@/components/Wallet/SingleTransaction';
+import Tx from '@/store/wallet/entities/tx';
 
 export default {
   name: 'TransactionsList',
@@ -44,7 +45,10 @@ export default {
     filter: {
       type: String,
       default: '',
-
+    },
+    wallet: {
+      type: Object,
+      required: true,
     },
   },
 
@@ -52,23 +56,39 @@ export default {
     return {
       page: 1,
       perPage: 10,
-
     };
   },
-
   computed: {
     transactions() {
-      return this.$store.state.payments.transactions;
+      const txs = Tx.query()
+        .where('wallet_id', this.wallet.id)
+        .where('isChange', false)
+        .get();
+
+
+      txs.sort((a, b) => {
+        if (this.wallet.sdk === 'Ethereum') {
+          return new Date(b.confirmedTime * 1000) - new Date(a.confirmedTime * 1000);
+        }
+
+        if (this.wallet.sdk === 'Bitcoin') {
+          return new Date(b.receivedTime * 1000) - new Date(a.receivedTime * 1000);
+        }
+
+        return 0;
+      });
+
+      return txs;
     },
 
     /**
-     * Filters transactions array from all/sent/received
+     * Filters transactions array from all / sent / received
      * @return {Array}
      */
     filtered() {
       return this.transactions.filter((transaction) => {
-        if (this.filter === 'sent') return transaction.to;
-        if (this.filter === 'received') return transaction.from;
+        if (this.filter === 'sent') return transaction.sent === true;
+        if (this.filter === 'received') return transaction.sent === false;
         return true;
       });
     },

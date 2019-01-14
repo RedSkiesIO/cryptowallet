@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h1>{{ $t('newAccount') }}</h1>
+      <h1 class="setup">{{ $t('newAccount') }}</h1>
     </div>
     <div class="account-name-input-wrapper">
       <q-input
@@ -12,10 +12,19 @@
         color="blueish"
       />
     </div>
+    <div class="btns-wrapper">
+      <q-btn
+        color="secondary"
+        label="Next"
+        @click="validate"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: 'AccountName',
   data() {
@@ -23,22 +32,15 @@ export default {
       accountName: '',
     };
   },
-  watch: {
-    accountName: {
-      handler(value) {
-        if (value.length > 0) {
-          this.$root.$emit('showNext');
-        } else {
-          this.$root.$emit('hideNext');
-        }
-      },
-    },
+  computed: {
+    ...mapState({
+      id: state => parseInt(state.route.params.id, 10),
+    }),
   },
   methods: {
     validate() {
       if (this.accountName.length === 0) return false;
       const accounts = this.$store.getters['entities/account/query']().get();
-
       const nameAlreadyInUse = accounts.find(account => account.name === this.accountName);
 
       if (nameAlreadyInUse) {
@@ -47,6 +49,7 @@ export default {
       }
 
       this.$store.dispatch('setup/setAccountName', this.accountName);
+      this.$router.push({ path: `/setup/${this.id + 1}` });
       return true;
     },
   },
@@ -57,6 +60,6 @@ export default {
 <style scoped>
 .account-name-input-wrapper {
   margin-top: 1rem;
+  padding: 0 1em;
 }
-
 </style>

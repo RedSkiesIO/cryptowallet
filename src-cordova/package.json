@@ -10,12 +10,14 @@
     "author": "Apache Cordova Team",
     "license": "Apache-2.0",
     "dependencies": {
-        "cordova-android": "^7.1.1",
+        "cordova-android": "^7.1.4",
+        "cordova-clipboard": "^1.2.1",
         "cordova-ios": "^4.5.5",
         "cordova-plugin-android-permissions": "^1.0.0",
         "cordova-plugin-contacts": "3.0.1",
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-email-composer": "^0.8.15",
+        "cordova-plugin-qrscanner": "^2.6.0",
         "cordova-plugin-whitelist": "^1.3.3",
         "cordova-sms-plugin": "0.1.13"
     },
@@ -26,7 +28,9 @@
             "cordova-plugin-android-permissions": {},
             "cordova-plugin-device": {},
             "cordova-plugin-email-composer": {},
-            "cordova-sms-plugin": {}
+            "cordova-sms-plugin": {},
+            "cordova-clipboard": {},
+            "cordova-plugin-qrscanner": {}
         },
         "platforms": [
             "ios",
