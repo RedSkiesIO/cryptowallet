@@ -15,6 +15,10 @@ export default {
     },
   },
   data() {
+    return {
+      // eslint-disable-next-line vue/no-reserved-keys
+      _chart: '',
+    };
   },
   computed: {
     gradient() {

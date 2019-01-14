@@ -59,7 +59,7 @@ export default {
   methods: {
     validate() {
       if (Object.keys(this.seed).join('') === this.pipSeq.join('')) {
-        this.$router.push({ path: `/setup/${this.id + 1}` });
+        this.$router.push({ path: `/setup/${this.id + 2}` });
       } else {
         this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
         this.reset();

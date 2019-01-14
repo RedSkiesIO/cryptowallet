@@ -11,9 +11,11 @@ import { FormWizard, TabContent } from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Language from '@/pages/Setup/Steps/Language/index.vue';
 import AccountName from '@/pages/Setup/Steps/AccountName/index.vue';
+import AccountType from '@/pages/Setup/Steps/AccountType/index.vue';
 import Pin from '@/pages/Setup/Steps/Pin';
 import PinConfirm from '@/pages/Setup/Steps/Pin/Confirm';
 import Network from '@/pages/Setup/Steps/Network';
+import Restore from '@/pages/Setup/Steps/Restore';
 import Seed from '@/pages/Setup/Steps/Seed';
 import SeedConfirm from '@/pages/Setup/Steps/Seed/Confirm';
 import Node from '@/pages/Setup/Steps/Node';
@@ -26,9 +28,11 @@ export default {
     TabContent,
     Language,
     AccountName,
+    AccountType,
     Pin,
     PinConfirm,
     Network,
+    Restore,
     Seed,
     SeedConfirm,
     Node,
@@ -40,11 +44,13 @@ export default {
       steps: [
         Language,
         AccountName,
+        AccountType,
         Pin,
         PinConfirm,
         /*Network,*/
         Seed,
         SeedConfirm,
+        Restore,
         Node,
         Complete,
       ],

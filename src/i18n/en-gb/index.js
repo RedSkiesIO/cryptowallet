@@ -82,6 +82,8 @@ export default {
   default: 'Default',
   switch: 'Switch',
   accountName: 'Account Name',
+  restoreAccount: 'Restore Account',
+  enterSeed: 'Enter your 12 word seed',
   newAccount: 'New Account',
   language: 'Language',
   node: 'Node',

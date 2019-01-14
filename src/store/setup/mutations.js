@@ -67,6 +67,13 @@ export function SET_ACCOUNT_NAME(state, payload) {
 }
 
 /**
+ * SET ACCOUNT TYPE
+ */
+export function SET_ACCOUNT_TYPE(state, payload) {
+  state.accountType = payload;
+}
+
+/**
  * SET ACCOUNT LOCALE
  */
 export function SET_ACCOUNT_LOCALE(state, payload) {
