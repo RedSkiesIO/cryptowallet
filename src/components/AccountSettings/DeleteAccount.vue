@@ -79,7 +79,6 @@ export default {
       Object.assign(this.$data, this.$options.data.apply(this));
       this.$emit('closePinModal');
     },
-
     /**
      * Validates PIN and displays delete confirmation dialog
      */
@@ -104,11 +103,6 @@ export default {
 
       return false;
     },
-
-    /**
-     * Deletes account
-     * @param  {Number} id
-     */
     deleteAccount(id) {
       const wasDefault = this.account.default;
       Account.$delete(id);

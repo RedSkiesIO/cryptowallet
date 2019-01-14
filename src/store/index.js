@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
@@ -7,9 +9,12 @@ import VuexORM from '@vuex-orm/core';
 import Account from './wallet/entities/account';
 import Address from './wallet/entities/address';
 import Tx from './wallet/entities/tx';
+import Utxo from './wallet/entities/utxo';
 import Wallet from './wallet/entities/wallet';
 import Coin from './wallet/entities/coin';
 import KeyPair from './wallet/entities/keyPair';
+import Prices from './prices';
+import LatestPrice from './latestPrice';
 
 // import modules.
 import payments from './payments';
@@ -28,9 +33,18 @@ const database = new VuexORM.Database();
 database.register(Account, {});
 database.register(Address, {});
 database.register(Tx, {});
+database.register(Utxo, {});
 database.register(Wallet, {});
 database.register(Coin, {});
 database.register(KeyPair, {});
+database.register(Prices, {});
+database.register(LatestPrice, {});
+
+window.Tx = Tx;
+window.Utxo = Utxo;
+window.Address = Address;
+window.Wallet = Wallet;
+window.LatestPrice = LatestPrice;
 
 // Setup persistant storage.
 const vuexLocal = new VuexPersistence({
@@ -39,20 +53,6 @@ const vuexLocal = new VuexPersistence({
   modules: [settings],
 });
 
-/**
- * Create CryptoWallet Vuex store obj.
- * @type {Store<any>}
- */
-const store = new Vuex.Store({
-  modules: {
-    payments,
-    search,
-    settings,
-    setup,
-    contacts,
-  },
-  plugins: [vuexLocal.plugin, VuexORM.install(database)],
-});
 
 const options = {
   env: 'browser',
@@ -66,5 +66,26 @@ const options = {
 };
 
 VuexORM.use(VuexORMLoki, { database, options });
+
+
+/**
+ * Create CryptoWallet Vuex store obj.
+ * @type {Store<any>}
+ */
+const store = new Vuex.Store({
+  modules: {
+    payments,
+    search,
+    settings,
+    setup,
+    contacts,
+  },
+  plugins: [VuexORM.install(database)],
+});
+
+Vue.prototype.activeWallets = {};
+
+// @todo remove line below (used for development purposes only)
+window.store = store;
 
 export default store;

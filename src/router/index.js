@@ -19,7 +19,7 @@ export default new VueRouter({
       ],
     },
     {
-      path: '/setup',
+      path: '/setup/:id',
       component: () => import('layouts/UnAuthed'),
       children: [
         { path: '', component: () => import('pages/Setup') },
@@ -36,14 +36,42 @@ export default new VueRouter({
       path: '/wallet',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Wallet') },
+        { name: 'wallet', path: '', component: () => import('pages/Wallet') },
       ],
     },
     {
-      path: '/wallet/balance/:uid',
+      path: '/wallet/single/:id',
       component: () => import('layouts/Authed'),
       children: [
         { path: '', component: () => import('pages/Balance') },
+      ],
+    },
+    {
+      path: '/wallet/send/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'sendCoin', path: '', component: () => import('pages/Wallet') },
+      ],
+    },
+    {
+      path: '/wallet/receive/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'receiveCoin', path: '', component: () => import('pages/Wallet') },
+      ],
+    },
+    {
+      path: '/wallet/history/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'coinHistory', path: '', component: () => import('pages/Wallet') },
+      ],
+    },
+    {
+      path: '/wallet/prices/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'coinPrices', path: '', component: () => import('pages/Wallet') },
       ],
     },
     {

@@ -21,6 +21,14 @@ export default {
       type: Object,
       required: false,
     },
+    toCurrency: {
+      type: Boolean,
+      required: false,
+    },
+    toCoin: {
+      type: Boolean,
+      required: false,
+    },
     coin: {
       type: String,
       required: false,
@@ -42,6 +50,8 @@ export default {
         coin,
         prependPlusOrMinus,
         currency,
+        toCurrency,
+        toCoin,
       } = this;
 
       const formattedAmount = new AmountFormatter({
@@ -50,6 +60,9 @@ export default {
         coin,
         prependPlusOrMinus,
         currency,
+        toCurrency,
+        toCoin,
+        withCurrencySymbol: true,
       });
 
       return formattedAmount.getFormatted();

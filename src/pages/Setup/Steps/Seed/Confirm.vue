@@ -1,75 +1,88 @@
 <template>
-  <section>
-    <div>
-      <h1 id="title_id">{{ $t('setupTitle') }}</h1>
-      <span id="subtitle_id">
-        {{ $t('pressSeed') }}
-      </span>
-      <div class="randomSeedContainer">
-        <q-btn
-          v-for="(word, i) in shuffledSeed"
-          :key="`word${i}`"
-          :label="`${word}`"
-          style="color: goldenrod;"
-          outline
-          @click="addToSequence(word)"
-        />
-      </div>
+  <div>
+    <h1 class="setup">{{ $t('confirmSeed') }}</h1>
+    <p class="setup">
+      {{ $t('pressSeed') }}
+    </p>
+    <div class="randomSeedContainer">
+      <q-btn
+        v-for="(word, i) in shuffledSeed"
+        :key="`word${i}`"
+        :label="`${word}`"
+        color="secondary"
+        @click="addToSequence(word)"
+      />
     </div>
-  </section>
+    <div class="btns-wrapper">
+      <q-btn
+        :disabled="resetDisabled"
+        color="secondary"
+        label="Reset"
+        @click="reset"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 
 export default {
-
   data() {
     return {
       pipSeq: [],
     };
   },
-
   computed: {
     shuffledSeed() {
       return this.$store.getters['setup/getShuffledSeed'];
     },
-
     ...mapState({
       seed: state => state.setup.seed,
+      id: state => parseInt(state.route.params.id, 10),
     }),
-  },
 
+    resetDisabled() {
+      return this.pipSeq.length === 0;
+    },
+  },
   watch: {
     pipSeq() {
       if (this.pipSeq.length === 12) {
-        this.$root.$emit('showNext');
+        this.validate();
       }
     },
   },
-
+  mounted() {
+    this.reset();
+  },
   methods: {
     validate() {
-      return this.arraysEqual(Object.keys(this.seed), this.pipSeq);
-    },
-
-    /**
-     * Checks two arrays are the same.
-     */
-    arraysEqual(a, b) {
-      const equal = a.join('') === b.join('');
-      if (!equal) {
-        this.pipSeq = [];
+      if (Object.keys(this.seed).join('') === this.pipSeq.join('')) {
+        this.$router.push({ path: `/setup/${this.id + 1}` });
+      } else {
         this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
+        this.reset();
       }
-      return equal;
     },
-
     addToSequence(pip) {
       this.pipSeq.push(pip);
+    },
+    reset() {
+      this.pipSeq = [];
     },
   },
 };
 
 </script>
 
+<style>
+.randomSeedContainer {
+  margin-top: 1em;
+}
+
+.randomSeedContainer button {
+  width: 20%!important;
+  margin: 2.5%;
+}
+</style>

@@ -7,17 +7,37 @@
 import numeral from 'numeral';
 
 const exchangeRates = {
-  BTC: [
+  Bitcoin: [
     {
       currency: 'USD',
       rate: 6431.14,
     },
     {
       currency: 'GBP',
-      rate: 4977.06,
+      rate: 3000.00,
     },
   ],
-  ETH: [
+  Litecoin: [
+    {
+      currency: 'USD',
+      rate: 32.68,
+    },
+    {
+      currency: 'GBP',
+      rate: 25.95,
+    },
+  ],
+  Dash: [
+    {
+      currency: 'USD',
+      rate: 81.40,
+    },
+    {
+      currency: 'GBP',
+      rate: 64.77,
+    },
+  ],
+  Ethereum: [
     {
       currency: 'USD',
       rate: 201.76,
@@ -43,10 +63,13 @@ export default class AmountFormatter {
   constructor(options) {
     this.amount = options.amount;
     this.coin = options.coin;
+    this.toCoin = options.toCoin;
+    this.toCurrency = options.toCurrency;
     this.currency = options.currency;
     this.format = options.format;
     this.withCurrencySymbol = options.withCurrencySymbol;
     this.prependPlusOrMinus = options.prependPlusOrMinus;
+    this.removeTrailingZeros = options.removeTrailingZeros;
   }
 
   /**
@@ -55,12 +78,21 @@ export default class AmountFormatter {
    */
   getFormatted() {
     let { amount } = this;
-    if (this.coin && this.currency) {
+
+    if (this.coin && this.currency && this.toCurrency) {
       amount = this.coinToCurrency(this.amount, this.coin, this.currency);
     }
 
+    if (this.coin && this.currency && this.toCoin) {
+      amount = this.currencyToCoin(this.amount, this.coin, this.currency);
+    }
+
     let formatted = `${numeral(Math.abs(amount)).format(this.format)}`;
-    if (this.currency) formatted = `${this.currency.symbol}${formatted}`;
+    if (this.removeTrailingZeros) formatted = parseFloat(formatted).toString();
+
+    if (this.currency && this.withCurrencySymbol) {
+      formatted = `${this.currency.symbol}${formatted}`;
+    }
 
     if (this.prependPlusOrMinus) {
       if (amount < 0) return `- ${formatted}`;
@@ -71,12 +103,22 @@ export default class AmountFormatter {
   }
 
   /**
-   * Converts a coin into a currency
+   * Converts a coin into currency
    * @return {Number}
    */
   coinToCurrency() {
     const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency.code);
     if (rate) return this.amount * rate;
+    return this.amount;
+  }
+
+  /**
+   * Converts currency into coin
+   * @return {[type]} [description]
+   */
+  currencyToCoin() {
+    const { rate } = exchangeRates[this.coin].find(item => item.currency === this.currency.code);
+    if (rate) return this.amount / rate;
     return this.amount;
   }
 }

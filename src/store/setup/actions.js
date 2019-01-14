@@ -1,4 +1,17 @@
 /**
+ * Action to set language.
+ * @param {*} context
+ */
+export function setLanguage(context, language) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      context.commit('SET_LANGUAGE', language);
+      resolve();
+    }, 1000);
+  });
+}
+
+/**
  * Action to set salt.
  * @param {*} context
  */
@@ -87,4 +100,32 @@ export function setAccountLocale(context, payload) {
 
 export function setAccountIpNode(context, payload) {
   context.commit('SET_ACCOUNT_IP_NODE', payload);
+}
+
+/**
+ * Action setPin
+ */
+export function setPin(context, payload) {
+  context.commit('SET_PIN', payload);
+}
+
+/**
+ * Action setPinConfirm
+ */
+export function setPinConfirm(context, payload) {
+  context.commit('SET_PIN_CONFIRM', payload);
+}
+
+/**
+ * Action resetPin
+ */
+export function resetPin(context) {
+  context.commit('RESET_PIN');
+}
+
+/**
+ * Action resetPinConfirm
+ */
+export function resetPinConfirm(context) {
+  context.commit('RESET_PIN_CONFIRM');
 }

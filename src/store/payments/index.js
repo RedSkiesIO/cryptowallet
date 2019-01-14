@@ -1,6 +1,10 @@
+/* eslint-disable */
+
+
 const state = {
-  balance: 74.15,
-  transactions: [
+  balance: 0,
+  transactions: [],
+ /* transactions: [
     {
       ts: 1539522543102,
       amount: -4.97,
@@ -231,7 +235,7 @@ const state = {
       status: 2,
       tx_fee: '0.000000012',
     },
-  ],
+  ],*/
 };
 
 export default {

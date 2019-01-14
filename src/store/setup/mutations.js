@@ -1,4 +1,15 @@
 /**
+ * State mutation for language
+ * @param state
+ * @param language
+ * @constructor
+ */
+
+export function SET_LANGUAGE(state, language) {
+  state.language = language;
+}
+
+/**
  * State mutation for salt.
  * @param state
  * @param salt
@@ -67,5 +78,39 @@ export function SET_ACCOUNT_LOCALE(state, payload) {
  */
 export function SET_ACCOUNT_IP_NODE(state, payload) {
   state.accountIpNode = payload;
+}
+
+/**
+ * State mutation for pin array
+ */
+export function SET_PIN(state, payload) {
+  if (!Array.isArray(state.pinArray)) state.pinArray = [];
+  const pinArray = state.pinArray.slice();
+  pinArray.push(payload.value);
+  state.pinArray = pinArray;
+}
+
+/**
+ * State mutation for pin confirmation array
+ */
+export function SET_PIN_CONFIRM(state, payload) {
+  if (!Array.isArray(state.pinConfirmArray)) state.pinConfirmArray = [];
+  const pinConfirmArray = state.pinConfirmArray.slice();
+  pinConfirmArray.push(payload.value);
+  state.pinConfirmArray = pinConfirmArray;
+}
+
+/**
+ * Reset pin array
+ */
+export function RESET_PIN(state) {
+  state.pinArray = [];
+}
+
+/**
+ * Reset pin confirm array
+ */
+export function RESET_PIN_CONFIRM(state) {
+  state.pinConfirmArray = [];
 }
 

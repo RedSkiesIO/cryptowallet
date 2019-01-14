@@ -1,47 +1,50 @@
 <template>
   <div>
-    <div>
-      <div>
-        <h1>{{ $t("nodeTitle") }}</h1>
-      </div>
-      <div>
-        {{ $t("nodeSubtitle") }}
-      </div>
-      <q-input v-model="nodeIp" />
+    <h1 class="setup">{{ $t("nodeTitle") }}</h1>
+    <p class="setup">{{ $t("nodeSubtitle") }}</p>
+
+    <div class="ip-input">
+      <q-input
+        :float-label="$t('IPAddress')"
+        v-model="nodeIp"
+        inverted
+        clearable
+        color="blueish"
+      />
+    </div>
+
+    <div class="btns-wrapper">
+      <q-btn
+        color="secondary"
+        label="Skip"
+        @click="skip"
+      />
+
+      <q-btn
+        color="secondary"
+        label="Done"
+        @click="done"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-
+/*eslint-disable*/
 export default {
-
   data() {
     return {
       nodeIp: null,
     };
   },
-
-  ...mapState({
-    spvModeState: state => state.setup.spvMode,
-  }),
-
-  watch: {
-    nodeIp(ip) {
-      if (this.validIp(ip)) {
-        this.$store.dispatch('setup/setAccountIpNode', ip);
-        this.$root.$emit('showNext');
-      }
-    },
+  computed: {
+    ...mapState({
+      spvModeState: state => state.setup.spvMode,
+      id: state => parseInt(state.route.params.id, 10),
+    }),
   },
-
   methods: {
-    validate() {
-      // @TODO run a socket check to make sure the node is availble
-      return true;
-    },
-
     validIp(ip) {
       if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)) {
         return true;
@@ -54,8 +57,27 @@ export default {
       const win = window.open('https://atlascity.io/run-a-node/', '_blank');
       win.focus();
     },
+
+    done() {
+      if (this.validIp(this.nodeIp)) {
+        this.$router.push({ path: `/setup/${this.id + 1}` });
+      } else {
+        this.$toast.create(10, this.$t('invalidIpAddress'), 500);
+      }
+    },
+
+    skip() {
+       this.$router.push({ path: `/setup/${this.id + 1}` });
+    },
   },
 
 };
 
 </script>
+
+<style>
+.ip-input {
+  margin-top: 1em;
+  padding: 0 1em;
+}
+</style>

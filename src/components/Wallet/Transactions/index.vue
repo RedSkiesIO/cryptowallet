@@ -18,13 +18,19 @@
         name="tab-3"
       />
       <q-tab-pane name="tab-1">
-        <TransactionsList/>
+        <TransactionsList :wallet="wallet"/>
       </q-tab-pane>
       <q-tab-pane name="tab-2">
-        <TransactionsList filter="sent"/>
+        <TransactionsList
+          :wallet="wallet"
+          filter="sent"
+        />
       </q-tab-pane>
       <q-tab-pane name="tab-3">
-        <TransactionsList filter="received"/>
+        <TransactionsList
+          :wallet="wallet"
+          filter="received"
+        />
       </q-tab-pane>
     </q-tabs>
   </section>
@@ -38,40 +44,45 @@ export default {
   components: {
     TransactionsList,
   },
+  props: {
+    wallet: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 
 <style>
-  .recent-payments-scroll-area {
-    width: auto;
-    height: 100%;
-  }
+.recent-payments-scroll-area {
+  width: auto;
+  height: 100%;
+}
 
-  .recent-transactions {
-    height: calc(100vh - 25vh - 6rem - 2.5rem);
-    border-top: 2px solid #09233a;
-    position: relative;
-    background: #16324a;
-  }
+.recent-transactions {
+  height: calc(100vh - 23vh - 5rem - 2.5rem);
+  border-top: 2px solid #09233a;
+  position: relative;
+  background: #16324a;
+}
 
-  .scroll-content {
-    overflow: hidden;
-    padding: 0 1rem;
-  }
+.scroll-content {
+  overflow: hidden;
+  padding: 0 1rem;
+}
 
-  .q-tabs {
-    height: 100%;
-    display: flex;
-  }
+.q-tabs {
+  height: 100%;
+  display: flex;
+}
 
-  .q-tabs-panes {
-    flex: 1;
-    display: flex;
-  }
+.q-tabs-panes {
+  flex: 1;
+  display: flex;
+}
 
-  .q-tab-pane {
-    flex: 1;
-    font-size: 0.75rem;
-  }
-
+.q-tab-pane {
+  flex: 1;
+  font-size: 0.75rem;
+}
 </style>

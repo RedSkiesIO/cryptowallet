@@ -5,17 +5,21 @@ import { Model } from '@vuex-orm/core';
  */
 export default class Wallet extends Model {
   static entity = 'wallet';
-
-  /**
-   * Sets entity attributes.
-   * @returns {{id: increment, account_id: attr, name: attr, wallet: attr}}
-   */
   static fields() {
     return {
       id: this.increment(),
       account_id: this.attr(''),
       name: this.attr(''),
-      wallet: this.attr(''),
+      displayName: this.attr(''),
+      sdk: this.attr(''),
+      network: this.attr(''),
+      internalChainAddressIndex: this.attr(0),
+      externalChainAddressIndex: this.attr(0),
+      externalAddress: this.attr(null),
+      confirmedBalance: this.attr(0),
+      unconfirmedBalance: this.attr(0),
+      imported: this.attr(false),
+      lastBlockHeight: this.attr(0),
     };
   }
 }
