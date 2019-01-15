@@ -1,5 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout
+    :class="{ 'no-balance': !isBalanceVisible }"
+    view="lHh Lpr lFf"
+  >
     <q-layout-header>
       <Header/>
     </q-layout-header>
@@ -7,7 +10,7 @@
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
         :handler="refresher"
-        :disable="isPullDisabled"
+        :disable="isPullDisabled || isPullTempDisabled"
         color="cyan"
       >
 
@@ -15,13 +18,16 @@
         <div
           :class="{ 'no-footer': !isMainNavVisible }"
           class="layout-wrapper"
+          @touchmove="prevent"
         >
 
-          <div
-            v-if="showTotalBalance"
-            class="total-balance"
-          >
-            <div>{{ totalBalance }}</div>
+          <div class="total-balance-wrapper">
+            <div
+              v-if="showTotalBalance"
+              class="total-balance"
+            >
+              <div>{{ totalBalance }}</div>
+            </div>
           </div>
 
           <div class="layout-shape">
@@ -64,7 +70,9 @@ export default {
     return {
       isMainNavVisible: false,
       isPullDisabled: false,
+      isPullTempDisabled: false,
       transitionName: 'slide-left',
+      isBalanceVisible: true,
     };
   },
 
@@ -142,7 +150,22 @@ export default {
     this.updateMainNavVisibility();
     this.updateIsPullDisabled();
   },
+  /* eslint-disable */
+  mounted() {
+    this.$root.$on('isHomeBalanceVisible', (value) => {
+      this.isBalanceVisible = value;
+
+      // if (!value) this.isPullTempDisabled = true;
+      // if (value) setTimeout(() => { this.isPullTempDisabled = false }, 0);
+    });
+  },
+
   methods: {
+    prevent(event) {
+      if (!this.isBalanceVisible) event.stopPropagation();
+      return false;
+    },
+
     /**
      * Decide if the MainNav component should be visible
      * Update MainNav component visibility
@@ -155,7 +178,7 @@ export default {
         this.isMainNavVisible = true;
       }
     },
-
+    /*eslint-disable*/
     updateIsPullDisabled() {
       this.isPullDisabled = this.$route.name !== 'wallet';
     },
@@ -252,11 +275,56 @@ export default {
   font-size: 2rem;
   line-height: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-  height: 6rem!important;
+  height: 5rem!important;
 }
 
 .total-balance > div {
   margin-top: 0.2em;
+}
+
+.total-balance-wrapper {
+  transition: all ease-in-out 300ms;
+  position: relative;
+  top: 0;
+  display: block!important;
+  height: 5rem!important;
+  position: absolute;
+  width: 100%;
+}
+
+.no-balance .total-balance-wrapper {
+  top: -5rem;
+  height: 0rem!important;
+}
+
+.no-balance .scroll-area.extended {
+  height: calc(100%);
+}
+
+.pull-to-refresh-message {
+  transition: all ease-in-out 300ms;
+  top: 0;
+}
+
+.no-balance .pull-to-refresh-message {
+  top: -5rem!important;
+}
+
+.layout-shape .layout {
+  height: calc(100vh - 5rem - 2.5rem);
+}
+
+.no-balance .layout-shape {
+  background: #e4e9ef;
+}
+
+.background {
+  transition: all ease-in-out 300ms;
+}
+
+.no-balance .background {
+  /*height: 21rem;*/
+  /*background-position: 0 10000000000000px;*/
 }
 
 .q-pull-to-refresh-wrapper {

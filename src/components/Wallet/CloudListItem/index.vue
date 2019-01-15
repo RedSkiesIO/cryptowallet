@@ -135,9 +135,8 @@ export default {
   background: white;
   color: #1e3c57;
   /* border: 1px solid rgba(0, 0, 0, 0.03); */
-  margin-bottom: 0.2em;
-  margin-top: 0.3em;
-  box-shadow: inset -2px -2px 0px 2px #1d3b5659;
+  margin-bottom: 0.5em;
+  box-shadow: inset -2px -2px 0px 2px rgba(29, 59, 86, 0.35);
 }
 
 .cloud-top-row {
@@ -169,7 +168,7 @@ export default {
 }
 
 .wallet-buttons .q-btn-inner {
-  font-size: 1em;
+  font-size: 1.1em;
   color: #1e3c57;
   display: flex;
   flex-direction: row;
