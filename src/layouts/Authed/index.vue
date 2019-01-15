@@ -1,6 +1,6 @@
 <template>
   <q-layout
-    :class="{ 'no-balance': !isBalanceVisible }"
+    :class="{ 'no-balance': !isBalanceVisible, 'short-top': shortTop }"
     view="lHh Lpr lFf"
   >
     <q-layout-header>
@@ -30,8 +30,13 @@
             </div>
           </div>
 
-          <div class="layout-shape">
-            <router-view/>
+          <div
+            :class="{ white: layoutShapeWhite }"
+            class="layout-shape"
+          >
+            <keep-alive>
+              <router-view/>
+            </keep-alive>
           </div>
         </div>
 
@@ -124,6 +129,14 @@ export default {
              this.$route.name === 'receiveCoin' ||
              this.$route.name === 'coinHistory' ||
              this.$route.name === 'coinPrices';
+    },
+    layoutShapeWhite() {
+      return this.$route.name === 'settings' ||
+             this.$route.name === 'exchange';
+    },
+    shortTop() {
+      return this.$route.name === 'settings' ||
+             this.$route.name === 'exchange';
     },
   },
 
@@ -263,7 +276,7 @@ export default {
 
 <style>
 .animated {
-  animation-duration: 250ms;
+  animation-duration: 150ms;
 }
 
 .total-balance {
@@ -283,18 +296,21 @@ export default {
 }
 
 .total-balance-wrapper {
-  transition: all ease-in-out 300ms;
+  transition: all ease-in-out 150ms;
   position: relative;
   top: 0;
   display: block!important;
   height: 5rem!important;
   position: absolute;
   width: 100%;
+  opacity: 1;
 }
 
-.no-balance .total-balance-wrapper {
+.no-balance .total-balance-wrapper,
+.short-top .total-balance-wrapper {
   top: -5rem;
   height: 0rem!important;
+  opacity: 0;
 }
 
 .no-balance .scroll-area.extended {
@@ -302,7 +318,7 @@ export default {
 }
 
 .pull-to-refresh-message {
-  transition: all ease-in-out 300ms;
+  transition: all ease-in-out 150ms;
   top: 0;
 }
 
@@ -314,17 +330,21 @@ export default {
   height: calc(100vh - 5rem - 2.5rem);
 }
 
+.layout-shape.white {
+  background: white!important;
+}
+
 .no-balance .layout-shape {
   background: #e4e9ef;
 }
 
 .background {
-  transition: all ease-in-out 300ms;
+  transition: all ease-in-out 150ms;
 }
 
-.no-balance .background {
-  /*height: 21rem;*/
-  /*background-position: 0 10000000000000px;*/
+.no-balance .background,
+.short-top .background {
+  height: 21rem;
 }
 
 .q-pull-to-refresh-wrapper {

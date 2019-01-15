@@ -3,27 +3,39 @@
     v-model="open"
     class="dark-modal"
   >
-    <div class="close-button-wrapper">
-      <q-btn
-        :label="$t('close')"
-        color="secondary"
-        size="sm"
-        @click="closeModal()"
-      />
+    <div class="header-section">
+      <div class="header-back-button-wrapper">
+        <q-btn
+          icon="arrow_back"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="closeModal"
+        />
+      </div>
+      <h1 class="header-h1">Atlas Node</h1>
     </div>
 
-    <div>
-      <q-input v-model="newNodeIp" />
-    </div>
+    <div class="modal-layout-wrapper">
+      <div class="ip-input">
+        <q-input
+          :float-label="$t('IPAddress')"
+          v-model="newNodeIp"
+          inverted
+          clearable
+          color="blueish"
+        />
+      </div>
 
-    <div>
-      <q-btn
-        :disabled="!ip"
-        :label="$t('update')"
-        color="secondary"
-        size="sm"
-        @click="updateNode()"
-      />
+      <div class="btns-wrapper">
+        <q-btn
+          :disabled="!ip"
+          :label="$t('update')"
+          color="primary"
+          text-color="blueish"
+          @click="updateNode()"
+        />
+      </div>
     </div>
   </q-modal>
 </template>

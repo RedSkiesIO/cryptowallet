@@ -372,6 +372,16 @@ body > div {
   overflow: scroll;
 }
 
+.modal-layout-wrapper.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-layout-wrapper.no-padding {
+  padding: 0;
+}
+
 .light-modal .modal-layout-wrapper {
   color: #1e3c57;
 }

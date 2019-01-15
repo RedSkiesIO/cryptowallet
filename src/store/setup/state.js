@@ -1,6 +1,5 @@
 export default {
   accountName: null,
-  language: [],
   pinArray: [],
   pinConfirmArray: [],
   salt: null,
@@ -10,4 +9,5 @@ export default {
   spvMode: null,
   accountLocale: null,
   accountIpNode: null,
+  accountCurrency: null,
 };

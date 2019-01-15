@@ -1,70 +1,114 @@
 <template>
   <div>
-    <div class="settings-row">
-      <div>
-        {{ account.name }}
-      </div>
-      <div>
-        <q-btn
-          :label="$t('logout')"
-          color="secondary"
-          size="sm"
-          @click="logout"
-        />
-      </div>
-    </div>
-
-    <div class="settings-row">
+    <div
+      class="settings-row"
+      @click="changeLanguage"
+    >
       <div>
         {{ $t('language') }}
       </div>
       <div>
         <q-btn
-          :label="$t(account.locale)"
-          color="secondary"
-          size="sm"
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
           @click="changeLanguage"
         />
       </div>
     </div>
 
-    <div class="settings-row">
+    <div
+      class="settings-row"
+      @click="changeCurrency"
+    >
       <div>
-        {{ $t('node') }}
+        {{ $t('currency') }}
       </div>
       <div>
         <q-btn
-          :label="account.node"
-          color="secondary"
-          size="sm"
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
+          @click="changeCurrency"
+        />
+      </div>
+    </div>
+
+    <div
+      class="settings-row"
+      @click="changeNodeIP"
+    >
+      <div>
+        Atlas Node
+      </div>
+      <div>
+        <q-btn
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
           @click="changeNodeIP"
         />
       </div>
     </div>
 
-    <div class="settings-row">
+    <div
+      class="settings-row"
+      @click="changePin"
+    >
       <div>
         {{ $t('pinCode') }}
       </div>
       <div>
         <q-btn
-          :label="$t('change')"
-          color="secondary"
-          size="sm"
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
           @click="changePin"
         />
       </div>
     </div>
 
-    <div class="settings-row">
+    <div
+      class="settings-row"
+      @click="logout"
+    >
+      <div>
+        Logout
+      </div>
+      <div>
+        <q-btn
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
+          @click="logout"
+        />
+      </div>
+    </div>
+
+    <div
+      class="settings-row"
+      @click="deleteAccount"
+    >
       <div>
         {{ $t('deleteAccount') }}
       </div>
       <div>
         <q-btn
-          :label="$t('delete')"
-          color="secondary"
-          size="sm"
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
           @click="deleteAccount"
         />
       </div>
@@ -76,29 +120,38 @@
       @closeLanguageModal="languageOpen=false"
     />
 
-    <Node
-      :open="nodeOpen"
-      :current="account.node"
-      @closeNodeModal="nodeOpen=false"
+    <SelectCurrency
+      :open="currencyOpen"
+      :current-currency="account.currency"
+      @closeCurrencyModal="currencyOpen=false"
     />
 
-    <Pin
+    <Node
+      :open="nodeOpen"
+      :current="nodeIp"
+      @closeNodeModal="nodeOpen=false"
+    />
+    <!-- eslint-disable -->
+
+     <Pin
       :open="pinOpen"
       :pin-hash="account.pinHash"
       @closePinModal="pinOpen=false"
     />
 
+    <!--
     <DeleteAccount
       :open="deleteAccountOpen"
       :pin-hash="account.pinHash"
       @closePinModal="deleteAccountOpen=false"
-    />
+    /> -->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
+import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Node from '@/components/AccountSettings/Node';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
@@ -107,6 +160,7 @@ export default {
   name: 'AccountSettings',
   components: {
     SelectLanguage,
+    SelectCurrency,
     Node,
     Pin,
     DeleteAccount,
@@ -117,6 +171,7 @@ export default {
       nodeOpen: false,
       pinOpen: false,
       deleteAccountOpen: false,
+      currencyOpen: false,
     };
   },
   computed: {
@@ -125,6 +180,9 @@ export default {
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    nodeIp() {
+      return this.account.node || '';
     },
   },
   methods: {
@@ -144,15 +202,36 @@ export default {
     deleteAccount() {
       this.deleteAccountOpen = true;
     },
+    changeCurrency() {
+      this.currencyOpen = true;
+    },
   },
 };
 </script>
 
-<style lang="scss">
+<style>
 .settings-row {
-  padding: 1rem;;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid whitesmoke;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  font-family: 'Montserrat-Medium';
 }
+
+.settings-chevron {
+  height: 2em!important;
+  min-height: auto;
+  padding: 0;
+  padding-left: 2em;
+  position: relative;
+  right: -0.25em;
+}
+
+.settings-chevron .q-btn-inner {
+  justify-content: flex-end;
+}
+
 </style>

@@ -92,6 +92,11 @@ export default {
           this.$root.$emit('inputPin', pin);
           this.$parent.attemptUnlock();
         }
+
+        if (this.mode === 'access') {
+          this.$emit('inputPin', pin);
+          this.$emit('attemptUnlock');
+        }
       }, 25);
     },
     clearPinArray() {
@@ -99,6 +104,7 @@ export default {
       if (this.mode === 'pin-setup') this.$store.dispatch('setup/resetPin');
       if (this.mode === 'pin-confirm') this.$store.dispatch('setup/resetPinConfirm');
       if (this.mode === 'auth') this.$parent.resetPin();
+      if (this.mode === 'access') this.$emit('resetPin');
     },
     done() {
       this.$router.push({ path: `/setup/${this.id + 1}` });
@@ -108,7 +114,7 @@ export default {
      * Resets PinPad internal state
      */
     resetState() {
-      this.pin = [];
+      this.input = [];
     },
   },
 };

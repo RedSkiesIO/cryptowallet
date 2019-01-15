@@ -39,7 +39,7 @@ export default {
      */
     selectLang(language) {
       this.$i18n.locale = language;
-      this.$store.dispatch('setup/setLanguage', language);
+      this.$store.dispatch('setup/setAccountLocale', language);
       this.$router.push({ path: `/setup/${this.id + 1}` });
     },
   },

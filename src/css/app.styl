@@ -17,6 +17,10 @@
     src url(/assets/fonts/Montserrat/Montserrat-Medium.ttf)
 
 @font-face
+    font-family Montserrat-Semibold
+    src url(/assets/fonts/Montserrat/Montserrat-SemiBold.ttf)
+
+@font-face
     font-family Montserrat-Bold
     src url(/assets/fonts/Montserrat/Montserrat-Bold.ttf)
 
@@ -193,7 +197,7 @@ p.setup {
   margin: 0 .5em;
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
-  color: black;
+  color: #252525;
 }
 
 .layout-shape > div {
@@ -314,3 +318,7 @@ code
 
 .lead
     font-size scale * 1rem
+
+.q-btn:not(.disabled):not(.q-btn-flat):not(.q-btn-outline):not(.q-btn-push):active:before, .q-btn:not(.disabled):not(.q-btn-flat):not(.q-btn-outline):not(.q-btn-push).active:before {
+    box-shadow: none;
+}

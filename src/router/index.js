@@ -29,7 +29,7 @@ export default new VueRouter({
       path: '/settings',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Settings') },
+        { name: 'settings', path: '', component: () => import('pages/Settings') },
       ],
     },
     {
@@ -92,7 +92,7 @@ export default new VueRouter({
       path: '/wallet/exchange',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Exchange') },
+        { name: 'exchange', path: '', component: () => import('pages/Exchange') },
       ],
     },
     {

@@ -11,10 +11,9 @@
       />
     </div>
     <q-scroll-area
-      v-scroll="scrolled"
       v-if="wallets.length > 0"
       ref="scrollArea"
-      class="scroll-area extended"
+      class="scroll-area extended cloud-scroll"
     >
       <div class="scroll-offset"/>
 
@@ -38,6 +37,11 @@ export default {
   name: 'CloudList',
   components: {
     CloudListItem,
+  },
+  data() {
+    return {
+      scrollPosition: 0,
+    };
   },
   computed: {
     ...mapState({
@@ -64,6 +68,7 @@ export default {
     },
     /* eslint-disable */
     scrolled(data) {
+      this.scrollPosition = data.position;
       if (data.position > 100 && data.direction === 'down') {
         this.$root.$emit('isHomeBalanceVisible', false);
       }
@@ -71,6 +76,11 @@ export default {
         this.$root.$emit('isHomeBalanceVisible', true);
       }
     },
+  },
+  activated() {
+    if (document.querySelectorAll('.cloud-scroll .scroll')[0]) {
+      document.querySelectorAll('.cloud-scroll .scroll')[0].scrollTop = this.scrollPosition;
+    }
   },
 };
 </script>
@@ -95,7 +105,8 @@ export default {
   font-size: 3em;
   padding: 0em;
   color: #1e3c57;
-  margin-top: 0.2em;
+  margin-top: 5rem;
+
 }
 
 .large-cloud-btn i {

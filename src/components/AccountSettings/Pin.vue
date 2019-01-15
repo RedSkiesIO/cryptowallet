@@ -3,29 +3,32 @@
     v-model="open"
     class="dark-modal"
   >
-    <div class="close-button-wrapper">
-      <q-btn
-        :label="$t('close')"
-        color="secondary"
-        size="sm"
-        @click="closeModal()"
-      />
+    <div class="header-section">
+      <div class="header-back-button-wrapper">
+        <q-btn
+          icon="arrow_back"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="closeModal"
+        />
+      </div>
+      <h1 class="header-h1">PIN Code</h1>
     </div>
 
-    <div>
-      <h1 class="over-pinpad-message">
+    <div class="modal-layout-wrapper center">
+      <h1 class="setup with-margin">
         <span v-if="!authorized">{{ $t('enterPin') }}</span>
         <span v-if="authorized && !newPinConfirmed">{{ $t('enterNewPin') }}</span>
         <span v-if="authorized && newPinConfirmed">{{ $t('repeatNewPin') }}</span>
       </h1>
 
-      <PinPad ref="PinPad"/>
-
-      <q-btn
-        :label="$t('confirm')"
-        color="secondary"
-        size="sm"
-        @click="confirmPin()"
+      <PinPad
+        ref="PinPad"
+        :mode="mode"
+        @inputPin="pinInputListener"
+        @attemptUnlock="attemptUnlock"
+        @resetPin="resetPin"
       />
     </div>
 
@@ -33,6 +36,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
 import PinPad from '@/components/Auth/PinPad';
@@ -55,24 +59,46 @@ export default {
   },
   data() {
     return {
-      pin: null,
+      pin: [],
       authorized: false,
       newPinConfirmed: false,
       newPinHash: null,
       salt: null,
+      mode: 'access',
     };
   },
   computed: {
     ...mapState({
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
   },
-  created() {
+/*  created() {
     this.$root.$on('inputPin', (pinArr) => {
       this.pin = pinArr.join('');
     });
-  },
+  },*/
   methods: {
+    resetPin() {
+      this.pin = [];
+    },
+    /**
+     * Adds or removes pin input event to pin arr.
+     */
+    pinInputListener(pin) {
+      this.pin.push(pin);
+    },
+    /**
+     * Compares bcrypt pin string to try and unlock an account
+     */
+    attemptUnlock() {
+      if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
+        this.authorized = true;
+        this.$refs.PinPad.resetState();
+      }
+    },
     /**
      * Closes the modal and resets the state
      */
@@ -164,10 +190,7 @@ export default {
 </script>
 
 <style>
-.over-pinpad-message {
-  color: white;
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 1rem;
+.setup.with-margin {
+  margin: 2rem auto;
 }
 </style>

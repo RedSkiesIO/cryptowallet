@@ -3,13 +3,17 @@
     v-model="open"
     class="dark-modal"
   >
-    <div class="close-button-wrapper">
-      <q-btn
-        :label="$t('close')"
-        color="secondary"
-        size="sm"
-        @click="closeModal()"
-      />
+    <div class="header-section">
+      <div class="header-back-button-wrapper">
+        <q-btn
+          icon="arrow_back"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="close"
+        />
+      </div>
+      <h1 class="header-h1">Language</h1>
     </div>
 
     <div>
