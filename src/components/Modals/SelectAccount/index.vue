@@ -54,6 +54,15 @@
           @click="createAccount"
         />
       </div>
+      <div class="btns-wrapper">
+        <q-btn
+          :label="$t('importAccount')"
+          icon="get_app"
+          color="primary"
+          text-color="blueish"
+          @click="importAccount"
+        />
+      </div>
     </q-modal>
   </div>
 </template>
@@ -88,7 +97,11 @@ export default {
     },
     createAccount() {
       this.$root.$emit('selectAccountModalOpened', false);
-      this.$router.push({ path: '/setup/0' });
+      this.$router.push({ path: '/setup/2' });
+    },
+    importAccount() {
+      this.$root.$emit('selectAccountModalOpened', false);
+      this.$router.push({ path: '/setup/1' });
     },
     selectAccount(name) {
       this.$store.dispatch('settings/setSelectedAccount', name);

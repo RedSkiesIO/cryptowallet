@@ -90,6 +90,7 @@ module.exports = (ctx) => {
         'QModalLayout',
         'QToggle',
         'QRadio',
+        'QSelect',
         'QSlider',
       ],
       directives: ['Ripple', 'CloseOverlay'],

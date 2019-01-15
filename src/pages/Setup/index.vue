@@ -43,14 +43,14 @@ export default {
       showNext: false,
       steps: [
         Language,
+        Restore,
         AccountName,
-        AccountType,
+        // AccountType,
         Pin,
         PinConfirm,
         /*Network,*/
         Seed,
         SeedConfirm,
-        Restore,
         Node,
         Complete,
       ],
