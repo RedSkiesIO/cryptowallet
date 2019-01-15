@@ -11,16 +11,20 @@
       />
     </div>
     <q-scroll-area
+      v-scroll="scrolled"
       v-if="wallets.length > 0"
       ref="scrollArea"
-      class="scroll-area"
+      class="scroll-area extended"
     >
+      <div class="scroll-offset"/>
+
       <CloudListItem
         v-for="wallet in wallets"
         :key="wallet.displayName"
         :wallet="wallet"
         :currency="selectedCurrency"
       />
+      <q-scroll-observable @scroll="scrolled" />
     </q-scroll-area>
   </div>
 </template>
@@ -58,6 +62,15 @@ export default {
       }
       return false;
     },
+    /* eslint-disable */
+    scrolled(data) {
+      if (data.position > 100 && data.direction === 'down') {
+        this.$root.$emit('isHomeBalanceVisible', false);
+      }
+      if (data.position <= 100 && data.direction === 'up') {
+        this.$root.$emit('isHomeBalanceVisible', true);
+      }
+    },
   },
 };
 </script>
@@ -91,5 +104,9 @@ export default {
 
 .large-cloud-btn .q-btn-inner{
   color: #1e3c57;
+}
+
+.scroll-offset {
+  height: 5rem;
 }
 </style>

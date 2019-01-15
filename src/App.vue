@@ -313,6 +313,7 @@ body > div {
 .shrinked .background {
   height: 27rem;
   top: -15rem;
+  border-bottom: 0.3rem solid #4e677d;
 }
 
 .new-wallet-btn-wrapper {

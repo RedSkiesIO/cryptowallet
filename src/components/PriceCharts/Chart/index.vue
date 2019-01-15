@@ -1,5 +1,3 @@
-
-
 <script>
 import { Line, mixins } from 'vue-chartjs';
 
@@ -15,6 +13,10 @@ export default {
     },
   },
   data() {
+    return {
+      /* eslint-disable-next-line */
+      _chart: '',
+    };
   },
   computed: {
     gradient() {

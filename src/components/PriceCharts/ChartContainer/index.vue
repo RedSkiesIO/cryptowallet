@@ -47,7 +47,6 @@ export default {
       legendMarkup: '',
       newChart: 'test',
       gradient: '',
-
     };
   },
   computed: {

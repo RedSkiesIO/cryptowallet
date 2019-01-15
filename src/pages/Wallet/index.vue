@@ -24,7 +24,7 @@ export default {
 .layout {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 6rem - 2.5rem - 4rem);
+  height: calc(100vh - 2.5rem - 5rem);
 }
 
 .list {
