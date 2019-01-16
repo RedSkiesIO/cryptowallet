@@ -1,9 +1,37 @@
 <template>
-  <div>
+  <div :class="{ simple: simple }">
     <div class="wrapper">
-      <div class="wallet-name">
-        <img :src="coinLogo">
-        {{ wallet.displayName }}
+      <div>
+        <div class="wallet-name">
+          <img :src="coinLogo">
+          {{ wallet.displayName }}
+        </div>
+
+        <div
+          v-if="simple"
+          class="quick-coin-actions"
+        >
+          <q-btn-group>
+            <q-btn
+              icon="send"
+              size="md"
+              color="primary"
+              label="Send"
+              class="wallet-group-btn"
+              flat
+              @click.stop="send"
+            />
+            <q-btn
+              icon="call_received"
+              size="md"
+              color="primary"
+              label="Receive"
+              class="wallet-group-btn"
+              flat
+              @click.stop="receive"
+            />
+          </q-btn-group>
+        </div>
       </div>
       <div class="wallet-prices">
         <Amount
@@ -14,7 +42,7 @@
           :coin="wallet.name"
           format="0.00"
         />
-        <div>{{ balanceInCoin }} {{ coinSymbol }}</div>
+        <div class="in-coin">{{ balanceInCoin }} {{ coinSymbol }}</div>
       </div>
     </div>
   </div>
@@ -34,6 +62,10 @@ export default {
     wallet: {
       type: Object,
       required: true,
+    },
+    simple: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -68,6 +100,14 @@ export default {
       return balanceInCoin.getFormatted();
     },
   },
+  methods: {
+    send() {
+      this.$router.push({ path: `/wallet/send/${this.wallet.id}` });
+    },
+    receive() {
+      this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
+    },
+  },
 };
 </script>
 
@@ -84,6 +124,10 @@ export default {
   font-family: 'Montserrat-Medium';
 }
 
+.simple .wallet-name {
+  display: none;
+}
+
 .wallet-name img {
   margin-right: 0.5em;
 }
@@ -96,7 +140,36 @@ export default {
   flex-direction: column;
 }
 
+.simple .wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column-reverse;
+}
+
+.simple .wallet-prices {
+  font-size: 1.8rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
 .wallet-prices > div {
   margin-left: auto;
+}
+
+.simple .wallet-prices > div {
+  margin: 0 auto;
+}
+
+.simple .in-coin {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.quick-coin-actions {
+  margin-top: 0.2rem 0;
 }
 </style>

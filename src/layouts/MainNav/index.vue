@@ -13,7 +13,7 @@
         <!-- <i class="svg-icon">
           <img src="~assets/icons/Wallet.svg">
         </i> -->
-        <div>{{ $t('wallet') }}</div>
+        <div>{{ $t('wallets') }}</div>
       </router-link>
     </div>
 <!--     <div class="">

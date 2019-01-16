@@ -11,7 +11,17 @@
         @click.prevent="goBack"
       />
     </div>
-    <h1 class="header-h1">{{ heading }}</h1>
+
+    <div v-if="coinHeading">
+      <img
+        :src="coinLogo"
+        class="coin-logo"
+      >
+      {{ wallet.displayName }}
+    </div>
+    <div v-else>
+      <h1 class="header-h1">{{ heading }}</h1>
+    </div>
 
     <div
       v-if="displaySettings"
@@ -87,8 +97,12 @@ export default {
   },
   computed: {
     ...mapState({
+      id: state => state.route.params.id,
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
+    wallet() {
+      return this.$store.getters['entities/wallet/find'](this.id);
+    },
     displaySettings() {
       // if (this.authenticatedAccount) return true;
       return false;
@@ -100,12 +114,27 @@ export default {
       return this.$route.path === '/wallet';
     },
     displayPriceChart() {
-      return this.$route.matched[0].path === '/wallet/balance/:id';
+      return this.$route.name === 'walletSingle';
+    },
+    supportedCoins() {
+      return this.$store.state.settings.supportedCoins;
     },
     heading() {
       if (this.$route.name === 'exchange') return 'Exchange';
       if (this.$route.name === 'settings') return 'Settings';
       return 'CryptoWallet';
+    },
+    coinHeading() {
+      if (this.$route.name === 'walletSingle' ||
+          this.$route.name === 'coinSinglePrices') {
+        return true;
+      }
+      return false;
+    },
+    coinLogo() {
+      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      /* eslint-disable-next-line */
+      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
     },
   },
   watch: {
@@ -134,7 +163,7 @@ export default {
       this.$root.$emit('walletsModalOpened', true);
     },
     openChartModal() {
-      this.$root.$emit('priceChartModalOpened', true);
+      this.$router.push({ path: `/wallet/single/prices/${this.wallet.id}` });
     },
   },
 };
@@ -199,5 +228,12 @@ export default {
 
 .back-arrow-btn .q-focus-helper {
   display: none;
+}
+
+.coin-logo {
+  height: 1.25rem;
+  margin-right: 0.2rem;
+  position: relative;
+  top: 0.2em;
 }
 </style>

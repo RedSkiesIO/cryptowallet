@@ -1,6 +1,10 @@
 <template>
   <q-layout
-    :class="{ 'no-balance': !isBalanceVisible, 'short-top': shortTop }"
+    :class="{
+      'no-balance': !isBalanceVisible,
+      'short-top': shortTop,
+      'single-wallet-top': singleWalletTop,
+    }"
     view="lHh Lpr lFf"
   >
     <q-layout-header>
@@ -10,7 +14,7 @@
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
         :handler="refresher"
-        :disable="isPullDisabled || isPullTempDisabled"
+        :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
       >
 
@@ -20,6 +24,16 @@
           class="layout-wrapper"
           @touchmove="prevent"
         >
+
+          <div
+            v-if="showCoinHeader"
+            class="coin-header-wrapper"
+          >
+            <CoinHeader
+              :wallet="wallet"
+              :simple="true"
+            />
+          </div>
 
           <div class="total-balance-wrapper">
             <div
@@ -60,7 +74,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
-
+import CoinHeader from '@/components/Wallet/CoinHeader';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
 
@@ -69,12 +83,13 @@ export default {
   components: {
     MainNav,
     Header,
+    CoinHeader,
   },
 
   data() {
     return {
       isMainNavVisible: false,
-      isPullDisabled: false,
+      isPullEnabled: true,
       isPullTempDisabled: false,
       transitionName: 'slide-left',
       isBalanceVisible: true,
@@ -83,19 +98,21 @@ export default {
 
   computed: {
     ...mapState({
+      id: state => state.route.params.id,
       isSearchingContacts: state => state.search.isSearchingContacts,
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
     wallets() {
       return Wallet.query().where('account_id', this.authenticatedAccount).get();
     },
+    wallet() {
+      return this.$store.getters['entities/wallet/find'](this.id);
+    },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
     totalBalance() {
       let balance = 0;
-
-      console.log('totalBalance', this.wallets);
 
       this.wallets.forEach((wallet) => {
         const formattedAmount = new AmountFormatter({
@@ -132,11 +149,21 @@ export default {
     },
     layoutShapeWhite() {
       return this.$route.name === 'settings' ||
-             this.$route.name === 'exchange';
+             this.$route.name === 'exchange' ||
+             this.$route.name === 'walletSingle' ||
+             this.$route.name === 'coinSinglePrices';
     },
     shortTop() {
       return this.$route.name === 'settings' ||
              this.$route.name === 'exchange';
+    },
+    showCoinHeader() {
+      return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'coinSinglePrices' && this.wallet);
+    },
+    singleWalletTop() {
+      return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
   },
 
@@ -147,7 +174,7 @@ export default {
     '$route.path': {
       handler() {
         this.updateMainNavVisibility();
-        this.updateIsPullDisabled();
+        this.updateisPullEnabled();
       },
     },
 
@@ -161,7 +188,7 @@ export default {
    */
   beforeMount() {
     this.updateMainNavVisibility();
-    this.updateIsPullDisabled();
+    this.updateisPullEnabled();
   },
   /* eslint-disable */
   mounted() {
@@ -192,12 +219,19 @@ export default {
       }
     },
     /*eslint-disable*/
-    updateIsPullDisabled() {
-      this.isPullDisabled = this.$route.name !== 'wallet';
+    updateisPullEnabled() {
+      this.isPullEnabled = this.$route.name === 'wallet' || this.$route.name === 'walletSingle';
     },
 
     refresher(done) {
-      if (this.$route.name === 'wallet') this.updateBalances(done);
+      if (this.$route.name === 'wallet') {
+        this.updateBalances(done);
+        return false;
+      }
+
+      setTimeout(() => {
+        done();
+      }, 2000)
     },
 
     async getUtxos(combinedAddresses, wallet) {
@@ -284,7 +318,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: white;
-  font-family: 'CooperHewitt-SemiboldItalic';
+  font-family: 'CooperHewitt-BoldItalic';
   font-size: 2rem;
   line-height: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
@@ -304,6 +338,7 @@ export default {
   position: absolute;
   width: 100%;
   opacity: 1;
+  padding: 0 0.5rem;
 }
 
 .no-balance .total-balance-wrapper,
@@ -347,6 +382,10 @@ export default {
   height: 21rem;
 }
 
+.single-wallet-top .background {
+  height: 28.5rem;
+}
+
 .q-pull-to-refresh-wrapper {
   padding-top: 2.5rem;
 }
@@ -354,6 +393,19 @@ export default {
 .q-pull-to-refresh-wrapper .pull-to-refresh-message {
   position: relative;
   z-index: 2
+}
+
+.coin-header-wrapper {
+  height: 8rem!important;
+  padding: 1rem 0.5rem;
+}
+
+.single-wallet-top .coin-header-wrapper {
+  height: 10rem!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0rem;
 }
 
 </style>
