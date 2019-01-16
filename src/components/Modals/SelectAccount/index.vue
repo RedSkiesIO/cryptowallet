@@ -4,55 +4,62 @@
       v-model="selectAccountModalOpened"
       class="dark-modal"
     >
-      <div class="close-button-wrapper">
-        <q-btn
-          icon="clear"
-          color="primary"
-          size="lg"
-          class="icon-btn close-btn"
-          flat
-          @click.prevent="closeModal()"
-        />
-      </div>
-      <div
-        v-for="(account, index) in accounts"
-        :key="index"
-        class="account-item"
-      >
-        <div>
-          {{ account.name }}
-        </div>
-        <div class="default-switch">
-          <q-toggle
-            v-model="account.default"
-            :disabled="account.default"
-            :label="$t('default')"
-            @input="defualtAccountChange({
-              val: account.default,
-              name: account.name
-            })"
-          />
-        </div>
-        <div>
+
+      <div class="header-section">
+        <div class="header-back-button-wrapper">
           <q-btn
-            icon="chevron_right"
+            icon="arrow_back"
             size="lg"
-            color="primary"
-            class="list-chevron"
+            class="icon-btn back-arrow-btn"
             flat
-            @click="selectAccount(account.name)"
+            @click.prevent="closeModal"
           />
         </div>
+        <h1 class="header-h1">Accounts</h1>
       </div>
 
-      <div class="btns-wrapper">
-        <q-btn
-          :label="$t('createAccount')"
-          icon="add_box"
-          color="primary"
-          text-color="blueish"
-          @click="createAccount"
-        />
+      <div class="modal-layout-wrapper no-padding">
+        <div
+          v-for="(account, index) in accounts"
+          :key="index"
+          class="account-item"
+          @click="selectAccount(account.name)"
+        >
+          <div>
+            {{ account.name }}
+          </div>
+          <div class="default-switch">
+            <q-toggle
+              v-model="account.default"
+              :disabled="account.default"
+              :label="$t('default')"
+              @input="defualtAccountChange({
+                val: account.default,
+                name: account.name
+              })"
+            />
+          </div>
+          <div>
+            <q-btn
+              icon="chevron_right"
+              size="lg"
+              color="primary"
+              class="list-chevron"
+              flat
+              @click="selectAccount(account.name)"
+            />
+          </div>
+        </div>
+
+        <div class="btns-wrapper">
+          <q-btn
+            :label="$t('createAccount')"
+            icon="add_box"
+            color="primary"
+            text-color="blueish"
+            @click="createAccount"
+          />
+        </div>
       </div>
     </q-modal>
   </div>
@@ -147,7 +154,6 @@ export default {
 }
 
 .list-chevron {
-  height: 2em!important;
   min-height: auto;
   padding: 0;
   padding-left: 2em;

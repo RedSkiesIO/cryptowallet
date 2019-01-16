@@ -33,6 +33,7 @@ export default {
         locale: this.setup.accountLocale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
+        currency: 'GBP',
         //seed: 'domain bunker surround uncle cotton day giraffe kiss mutual bean onion few'.split(),
         // seed: 'calm steel soccer pulse polar depend bar bargain give pave ancient member'.split(),
         //seed: 'nut mixture license bean page mimic iron spice rail uncover then warfare'.split(' '),

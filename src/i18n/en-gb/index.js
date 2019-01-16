@@ -84,6 +84,7 @@ export default {
   accountName: 'Account Name',
   newAccount: 'New Account',
   language: 'Language',
+  currency: 'Currency',
   node: 'Node',
   update: 'Update',
   notValidIpAddress: 'Please enter a valid IP address',

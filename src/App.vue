@@ -295,11 +295,14 @@ body > div {
 }
 
 .app-loading {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0!important;
+  height: 100%!important;
+  z-index: 999;
 }
 
 .background {
@@ -370,6 +373,16 @@ body > div {
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
+}
+
+.modal-layout-wrapper.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-layout-wrapper.no-padding {
+  padding: 0;
 }
 
 .light-modal .modal-layout-wrapper {

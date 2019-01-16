@@ -11,7 +11,7 @@
         @click.prevent="goBack"
       />
     </div>
-    <h1 class="header-h1">CryptoWallet</h1>
+    <h1 class="header-h1">{{ heading }}</h1>
 
     <div
       v-if="displaySettings"
@@ -101,6 +101,11 @@ export default {
     },
     displayPriceChart() {
       return this.$route.matched[0].path === '/wallet/balance/:id';
+    },
+    heading() {
+      if (this.$route.name === 'exchange') return 'Exchange';
+      if (this.$route.name === 'settings') return 'Settings';
+      return 'CryptoWallet';
     },
   },
   watch: {
