@@ -108,7 +108,7 @@ export default {
       Object.assign(this.$data, this.$options.data.apply(this));
       this.$emit('closePinModal');
     },
-    /* eslint-disable */
+
     deleteAccount(id) {
       this.$store.dispatch('settings/setLoading', true);
       const wasDefault = this.account.default;
