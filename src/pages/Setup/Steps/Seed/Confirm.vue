@@ -5,6 +5,17 @@
       {{ $t('pressSeed') }}
     </p>
     <div class="randomSeedContainer">
+      <q-input
+        v-for="(word, i) in shuffledSeed"
+        :key="`holder${i}`"
+        v-model.trim="seedPhrase[i]"
+        :prefix="(i+1)+'. '"
+        class="seed-input"
+        color="secondary"
+        readonly
+      />
+    </div>
+    <div class="randomSeedContainer">
       <q-btn
         v-for="(word, i) in shuffledSeed"
         :key="`word${i}`"
@@ -26,11 +37,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import { setTimeout } from 'timers';
 
 export default {
   data() {
     return {
       pipSeq: [],
+      seedPhrase: [],
     };
   },
   computed: {
@@ -49,7 +62,9 @@ export default {
   watch: {
     pipSeq() {
       if (this.pipSeq.length === 12) {
-        this.validate();
+        setTimeout(() => {
+          this.validate();
+        }, 500);
       }
     },
   },
@@ -67,9 +82,11 @@ export default {
     },
     addToSequence(pip) {
       this.pipSeq.push(pip);
+      this.seedPhrase.push(pip);
     },
     reset() {
       this.pipSeq = [];
+      this.seedPhrase = [];
     },
   },
 };
@@ -84,5 +101,28 @@ export default {
 .randomSeedContainer button {
   width: 20%!important;
   margin: 2.5%;
+}
+.randomSeedContainer .q-input {
+  width: 20%!important;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  margin-bottom: 2.5%;
+  display: inline-flex;
+}
+.seed-input{
+    margin-right: 1em;
+    margin-bottom: 1em;
+    font-size: 'small';
+}
+
+.seed-input .q-if-addon{
+    font-size: small;
+    color: #c7c7c7;
+}
+
+.seed-input .q-input-target{
+    font-size: small;
+    color: white;
+    padding-left: 2px;
 }
 </style>

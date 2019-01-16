@@ -1,5 +1,6 @@
 export default {
   'en-gb': 'English',
+  'el-gr': 'Greek',
   setupTitle: 'CryptoWallet Setup!',
   continue: 'Continue',
   profile: 'Profile',
@@ -88,7 +89,7 @@ export default {
   restoreAccount: 'Enter Backup Phrase',
   restoreDescription: 'Type in your 12-word Backup Phrase in the correct order to restore your CryptoWallet',
   enterSeed: 'Enter your 12 word seed',
-  newAccount: 'Enter your Account Name',
+  newAccount: 'Enter Account Name',
   language: 'Language',
   node: 'Node',
   update: 'Update',

@@ -20,6 +20,7 @@ module.exports = (ctx) => {
       'WalletDiscovery',
       'CoinFormatter',
       'VueTrend',
+      'VueSelect',
     ],
     css: ['app.styl'],
     extras: [

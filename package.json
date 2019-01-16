@@ -39,6 +39,7 @@
     "vue-i18n": "^7.3.3",
     "vue-keyboard": "git://github.com/dufia/vue-keyboard.git",
     "vue-router": "^3.0.1",
+    "vue-select": "^2.5.1",
     "vuetrend": "^0.3.2",
     "vuex": "^3.0.1",
     "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/jamesK/plugin-lokijs.git#add-insert-method-on-model-and-hydrate-vuex-orm",

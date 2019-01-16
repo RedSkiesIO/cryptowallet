@@ -35,7 +35,7 @@
     <div class="btns-wrapper">
       <q-btn
         color="secondary"
-        label="Restore Wallet"
+        label="Next"
         @click="validate"
       />
     </div>

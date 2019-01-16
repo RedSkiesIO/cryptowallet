@@ -1,7 +1,10 @@
 <template>
   <div class="container">
+    <div class="done-msg-wrapper">
+      <h1>THE REVOLUTION WILL NOT BE CENTRALISED</h1>
+    </div>
     <h1 class="setup">{{ $t("welcome") }}</h1>
-    <!-- <h4 class="setup">{{ $t("selectLang") }}</h4> -->
+    <h4 class="setup"/>
 
     <div class="btns-wrapper">
       <q-btn
@@ -38,15 +41,47 @@
       />
     </div> -->
       <div class="flags">
-        <q-select
+        <!-- <q-select
           v-model="selectedLang"
           :options="languageArray"
           :display-text="languageArray[0].label"
           float-label="Select your language"
           dark
-        />
-      </div>
-    <!-- <div
+        /> -->
+        <div class="row bg-blueish">
+          <div class="col-2 flag-icon">
+            <img
+              :src="selectedLang.icon"
+              class="select-icon">
+          </div>
+          <div class="col-10 input-field">
+            <v-select
+              v-model="selectedLang"
+              :options="languageArray"
+              :searchable="false"
+              :clear-search-on-select="false"
+              :filterable="false"
+              class="lang-select"
+              label="label">
+              <template
+                slot="option"
+                slot-scope="option">
+                <div class="row">
+                  <div class="col-2">
+                    <img
+                      :src="option.icon"
+                      class="input-icon">
+                  </div>
+                  <div class="label col-10">
+                    {{ option.label }}
+                  </div>
+                </div>
+              </template>
+            </v-select>
+          </div>
+        </div>
+
+        <!-- <div
         v-for="(message, i) in $i18n.messages"
         :key="`message${i}`"
         class="flag-wrapper"
@@ -58,18 +93,25 @@
           @click="selectLang(`${i}`)"
         >
       </div> -->
+      </div>
     </div>
-</div></template>
+  </div>
+</template>
 
 <script>
 import { mapState } from 'vuex';
 
 export default {
+
   data() {
     return {
       locale: this.$i18n.locale,
       $i18n: '',
-      selectedLang: '',
+      selectedLang: {
+        label: 'English',
+        value: 'en-gb',
+        icon: '/assets/flags/en-gb.svg',
+      },
     };
   },
   computed: {
@@ -81,17 +123,30 @@ export default {
       return Object.keys(this.$i18n.messages);
     },
     languageArray() {
-      return this.languages.map(x => ({
-        label: this.$t(x),
-        value: x,
-      }));
+      // return this.languages.map(x => ({
+      //   label: this.$t(x),
+      //   value: x,
+      //   icon: `/assets/flags/${x}.svg`,
+      // }));
+      return [
+        {
+          label: 'English',
+          value: 'en-gb',
+          icon: '/assets/flags/en-gb.svg',
+        },
+        {
+          label: 'Greek',
+          value: 'en-gb',
+          icon: '/assets/flags/el-gr.svg',
+        },
+      ];
     },
   },
   methods: {
     selection(type) {
       console.log('type, this.selectedLang :', type, this.selectedLang);
       if (this.selectedLang) {
-        this.$i18n.locale = this.selectedLang;
+        this.$i18n.locale = this.selectedLang.value;
       } else {
         this.$i18n.locale = this.languageArray[0].value;
       }
@@ -101,7 +156,7 @@ export default {
         this.$router.push({ path: `/setup/${this.id + 2}` });
         return true;
       }
-      this.$store.dispatch('setup/setAccountLocale', this.selectedLang);
+      this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: `/setup/${this.id + 1}` });
       return true;
@@ -112,7 +167,15 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
+
+.done-msg-wrapper {
+  text-align: center;
+  font-family: 'CooperHewitt-SemiboldItalic';
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2em;
+}
+
 .flags {
   display: flex;
   justify-content: space-around;
@@ -128,4 +191,56 @@ export default {
   height: 60px;
   width: 60px;
 }
+
+.lang-select{
+  min-width: 40vw;
+  padding-bottom: 3px;
+}
+
+.lang-select .selected-tag{
+  color:white;
+  padding-left: 10px;
+}
+.lang-select .dropdown-toggle .clear{
+    border:none;
+  }
+.lang-select .dropdown-toggle .clear{
+    display:none;
+  }
+
+  .input-icon{
+    width: 1.5em;
+    margin-left: -4px;
+  }
+  .select-icon{
+    width: 1.5em;
+    margin-left: 15px;
+    margin-top: 5px;
+  }
+ .lang-select .dropdown-menu {
+   background-color: darkslategrey;
+   color: white;
+   width: 125%;
+   margin-left: -21%;
+ }
+ .lang-select .label {
+   color: white;
+   padding-left: 0.3em;
+   padding-top: 0.19em;
+ }
+ .lang-select .open-indicator:before {
+   border-color: white;
+ }
+ .lang-select .form-control {
+   display: none;
+ }
+ .flag-icon{
+   padding-top: 2px;
+ }
+
+ .input-field{
+   padding-top: 3px;
+   padding-right: 5px;
+ }
+
 </style>
