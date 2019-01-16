@@ -10,24 +10,21 @@
           size="lg"
           class="icon-btn back-arrow-btn"
           flat
-          @click.prevent="close"
+          @click.prevent="closeModal"
         />
       </div>
-      <h1 class="header-h1">Language</h1>
+      <h1 class="header-h1">Delete Account</h1>
     </div>
 
-    <div>
-      <h1 class="over-pinpad-message">
+    <div class="modal-layout-wrapper center">
+      <h1 class="setup with-margin">
         <span>{{ $t('enterPin') }}</span>
       </h1>
-
-      <PinPad ref="PinPad"/>
-
-      <q-btn
-        :label="$t('confirm')"
-        color="secondary"
-        size="sm"
-        @click="confirmPin()"
+      <PinPad
+        ref="PinPad"
+        mode="access"
+        @inputPin="pinInputListener"
+        @attemptUnlock="attemptUnlock"
       />
     </div>
   </q-modal>
@@ -55,7 +52,7 @@ export default {
   },
   data() {
     return {
-      pin: null,
+      pin: [],
     };
   },
   computed: {
@@ -69,48 +66,54 @@ export default {
       return this.$store.getters['entities/account/query']().get();
     },
   },
-  created() {
-    this.$root.$on('inputPin', (pinArr) => {
-      this.pin = pinArr.join('');
-    });
-  },
   methods: {
-    /**
-     * Closes the modal and resets state
-     */
-    closeModal() {
-      this.$refs.PinPad.resetState();
-      Object.assign(this.$data, this.$options.data.apply(this));
-      this.$emit('closePinModal');
+    resetPin() {
+      this.pin = [];
     },
     /**
-     * Validates PIN and displays delete confirmation dialog
+     * Adds or removes pin input event to pin arr.
      */
-    confirmPin() {
-      if (!this.pin) {
-        this.$toast.create(10, this.$t('wrongPin'), 500);
-        return false;
-      }
+    pinInputListener(pin) {
+      this.pin.push(pin);
+    },
+    /**
+     * Compares bcrypt pin string to try and unlock an account
+     */
+    attemptUnlock() {
+      if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
+        this.authorized = true;
+        this.$refs.PinPad.resetState();
+        this.resetPin();
 
-      if (this.$CWCrypto.bcryptCompareString(this.pin, this.pinHash) === true) {
         this.$q.dialog({
           title: 'Confirm',
           message: `Are you sure you want to delete the account "${this.account.name}"`,
           ok: 'Yes',
           cancel: 'No',
+          color: 'blueish',
         }).then(() => {
           this.deleteAccount(this.account.id);
         }).catch(() => {
           this.closeModal();
         });
       }
-
-      return false;
     },
+
+    /**
+     * Closes the modal and resets state
+     */
+    closeModal() {
+      this.$refs.PinPad.resetState();
+      this.resetPin();
+      Object.assign(this.$data, this.$options.data.apply(this));
+      this.$emit('closePinModal');
+    },
+    /* eslint-disable */
     deleteAccount(id) {
+      this.$store.dispatch('settings/setLoading', true);
       const wasDefault = this.account.default;
-      Account.$delete(id);
       this.$store.dispatch('settings/setSelectedAccount', null);
+      this.$store.dispatch('settings/setAuthenticatedAccount', null);
 
       if (wasDefault && this.accounts.length > 0) {
         Account.$update({
@@ -119,11 +122,20 @@ export default {
         });
       }
 
+      this.closeModal();
+
       if (this.accounts.length === 0) {
-        this.$router.push({ path: '/setup' });
+        this.$router.push({ path: '/setup/0' });
       } else {
         this.$router.push({ path: '/' });
       }
+
+      this.$store.dispatch('settings/setLayout', 'dark');
+
+      setTimeout(() => {
+        Account.$delete(id);
+        this.$store.dispatch('settings/setLoading', false);
+      }, 1000);
 
       return false;
     },

@@ -131,20 +131,18 @@
       :current="nodeIp"
       @closeNodeModal="nodeOpen=false"
     />
-    <!-- eslint-disable -->
 
-     <Pin
+    <Pin
       :open="pinOpen"
       :pin-hash="account.pinHash"
       @closePinModal="pinOpen=false"
     />
 
-    <!--
     <DeleteAccount
       :open="deleteAccountOpen"
       :pin-hash="account.pinHash"
       @closePinModal="deleteAccountOpen=false"
-    /> -->
+    />
   </div>
 </template>
 
@@ -187,8 +185,13 @@ export default {
   },
   methods: {
     logout() {
+      this.$store.dispatch('settings/setLoading', true);
+      this.$store.dispatch('settings/setLayout', 'dark');
       this.$router.push({ path: '/' });
       this.$store.dispatch('settings/setAuthenticatedAccount', null);
+      setTimeout(() => {
+        this.$store.dispatch('settings/setLoading', false);
+      }, 250);
     },
     changeLanguage() {
       this.languageOpen = true;

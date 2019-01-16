@@ -295,11 +295,14 @@ body > div {
 }
 
 .app-loading {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0!important;
+  height: 100%!important;
+  z-index: 999;
 }
 
 .background {
