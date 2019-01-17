@@ -203,6 +203,8 @@ export default {
   justify-content: space-around;
   max-width: 80%;
   margin: 1em auto 2em auto;
+  opacity: 0;
+  height: 0;
 }
 
 .flag-wrapper {

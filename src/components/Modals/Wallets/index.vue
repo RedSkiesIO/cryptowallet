@@ -74,12 +74,6 @@ export default {
   },
   methods: {
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
-
-      console.log('wallet', wallet);
-
-      return false;
-
-
       const {
         txHistory,
         externalAccountDiscovery,
