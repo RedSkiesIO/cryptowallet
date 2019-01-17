@@ -167,10 +167,6 @@ export default {
 </script>
 
 <style>
-.header-back-button-wrapper {
-  display: none;
-}
-
 .done-msg-wrapper {
   text-align: center;
   font-family: 'CooperHewitt-HeavyItalic';

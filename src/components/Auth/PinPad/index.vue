@@ -137,7 +137,7 @@ export default {
 <style>
 .vue-keyboard-key,
 .vue-keyboard-key:hover {
-  background: transparent;
+  background: rgba(0,0,0,0);
   border-radius: 100%;
   border: 1px solid white;
   color: white;
@@ -147,6 +147,11 @@ export default {
   height: 2.5em;
   margin: 0.25em 0.5em;
   line-height: 1.8;
+  transition: all ease-in-out 200ms;
+}
+
+.vue-keyboard-key:active {
+  background: rgba(255,255,255,0.1);
 }
 
 .dots-wrapper {
@@ -158,7 +163,7 @@ export default {
 }
 
 .dot {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.3);
   width: .75em;
   height: .75em;
   border-radius: 100%;

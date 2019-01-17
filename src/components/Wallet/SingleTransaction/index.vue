@@ -8,10 +8,10 @@
       :class="{ 'positive-amount': !data.sent, 'negative-amount': data.sent }"
     >
       <div>
-        <p>
+        <!-- <p>
           {{ $t('received') }}:
           <span class="received">{{ to }}</span>
-        </p>
+        </p> -->
         <p>
           TX Hash:
           <span class="tx-hash">{{ data.hash }}</span>

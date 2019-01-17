@@ -60,15 +60,16 @@
             @click="createAccount"
           />
         </div>
-      </div>
-      <div class="btns-wrapper">
-        <q-btn
-          :label="$t('importAccount')"
-          icon="get_app"
-          color="primary"
-          text-color="blueish"
-          @click="importAccount"
-        />
+
+        <div class="btns-wrapper">
+          <q-btn
+            :label="$t('importAccount')"
+            icon="get_app"
+            color="primary"
+            text-color="blueish"
+            @click="importAccount"
+          />
+        </div>
       </div>
     </q-modal>
   </div>
