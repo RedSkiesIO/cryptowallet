@@ -164,46 +164,58 @@ export default {
           [this.coinSymbol],
           [this.selectedCurrency.code],
         );
+        const wherePrice = (record, item) => (
+          record.coin === item.coin
+             && record.currency === item.currency
+             && record.period === item.period
+        );
 
-        Prices.$insert({
-          data:
-            {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'day',
-              updated: +new Date(),
-              data: dayData,
-            },
+        Prices.$update({
+          where: record => wherePrice(record, {
+            coin: this.coinSymbol,
+            currency: this.selectedCurrency.code,
+            period: 'day',
+          }),
+          data: {
+            updated: +new Date(),
+            data: dayData,
+          },
         });
-        Prices.$insert({
-          data:
-            {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'week',
-              updated: +new Date(),
-              data: weekData,
-            },
+        Prices.$update({
+          where: record => wherePrice(record, {
+            coin: this.coinSymbol,
+            currency: this.selectedCurrency.code,
+            period: 'week',
+          }),
+          data: {
+            updated: +new Date(),
+            data: weekData,
+          },
         });
-        Prices.$insert({
-          data:
-            {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'month',
-              updated: +new Date(),
-              data: monthData,
-            },
+        Prices.$update({
+          where: record => wherePrice(record, {
+            coin: this.coinSymbol,
+            currency: this.selectedCurrency.code,
+            period: 'month',
+          }),
+          data: {
+            updated: +new Date(),
+            data: monthData,
+          },
         });
-        Latest.$insert({
-          data:
-            {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              updated: +new Date(),
-              data: latestPrice[this.coinSymbol][this.selectedCurrency.code],
-            },
-
+        const whereLatest = (record, item) => (
+          record.coin === item.coin
+             && record.currency === item.currency
+        );
+        Latest.$update({
+          where: record => whereLatest(record, {
+            coin: this.coinSymbol,
+            currency: this.selectedCurrency.code,
+          }),
+          data: {
+            updated: +new Date(),
+            data: latestPrice[this.coinSymbol][this.selectedCurrency.code],
+          },
         });
       } catch (e) {
         console.log(e);

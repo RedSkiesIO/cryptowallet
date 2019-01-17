@@ -53,6 +53,13 @@ export function setAccountName(context, payload) {
   context.commit('SET_ACCOUNT_NAME', payload);
 }
 
+/*
+ * Action setAccountType
+ */
+export function setAccountType(context, payload) {
+  context.commit('SET_ACCOUNT_TYPE', payload);
+}
+
 /**
  * Action setAccountLanguage
  */

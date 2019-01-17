@@ -184,36 +184,67 @@ export default {
           const weekData = await coinSDK.getHistoricalData(coin, this.selectedCurrency.code, 'week');
           const monthData = await coinSDK.getHistoricalData(coin, this.selectedCurrency.code, 'month');
 
-          Prices.$insert({
-            data:
-            {
-              coin,
-              currency: this.selectedCurrency.code,
-              period: 'day',
-              updated: +new Date(),
-              data: dayData,
-            },
-          });
-          Prices.$insert({
-            data:
-            {
-              coin,
-              currency: this.selectedCurrency.code,
-              period: 'week',
-              updated: +new Date(),
-              data: weekData,
-            },
-          });
-          Prices.$insert({
-            data:
-            {
-              coin,
-              currency: this.selectedCurrency.code,
-              period: 'month',
-              updated: +new Date(),
-              data: monthData,
-            },
-          });
+          const checkExists = (period, data) => {
+            const price = Prices.find([`${coin}_${this.selectedCurrency.code}_${period}`]);
+            if (!price) {
+              Prices.$insert({
+                data: {
+                  coin,
+                  currency: this.selectedCurrency.code,
+                  period,
+                  updated: +new Date(),
+                  data,
+                },
+              });
+              return false;
+            }
+            return true;
+          };
+
+          const wherePrice = (record, item) => (
+            record.coin === item.coin
+             && record.currency === item.currency
+             && record.period === item.period
+          );
+          if (checkExists('day', dayData)) {
+            Prices.$update({
+              where: record => wherePrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+                period: 'day',
+              }),
+              data: {
+                updated: +new Date(),
+                data: dayData,
+              },
+            });
+          }
+          if (checkExists('week', weekData)) {
+            Prices.$update({
+              where: record => wherePrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+                period: 'week',
+              }),
+              data: {
+                updated: +new Date(),
+                data: weekData,
+              },
+            });
+          }
+          if (checkExists('month', monthData)) {
+            Prices.$update({
+              where: record => wherePrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+                period: 'month',
+              }),
+              data: {
+                updated: +new Date(),
+                data: monthData,
+              },
+            });
+          }
           resolve();
         } catch (e) {
           reject(e);
@@ -242,42 +273,112 @@ export default {
 
         console.log('prices :', prices);
 
-        Latest.$insert({
-          data:
-            {
+        const checkExists = (coin, data) => {
+          const price = Latest.find([`${coin}_${this.selectedCurrency.code}`]);
+          if (!price) {
+            console.log('inserting');
+            Latest.$insert({
+              data: {
+                coin,
+                currency: this.selectedCurrency.code,
+                updated: +new Date(),
+                data,
+              },
+            });
+            return false;
+          }
+          return true;
+        };
+
+        const wherePrice = (record, item) => (
+          record.coin === item.coin
+             && record.currency === item.currency
+        );
+        if (checkExists('BTC', prices.BTC[this.selectedCurrency.code])) {
+          Latest.$update({
+            where: record => wherePrice(record, {
               coin: 'BTC',
-              currency: 'GBP',
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
               updated: +new Date(),
-              data: prices.BTC.GBP,
+              data: prices.BTC[this.selectedCurrency.code],
             },
-        });
-        Latest.$insert({
-          data:
-            {
+          });
+        }
+        if (checkExists('ETH', prices.ETH[this.selectedCurrency.code])) {
+          Latest.$update({
+            where: record => wherePrice(record, {
               coin: 'ETH',
-              currency: 'GBP',
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
               updated: +new Date(),
-              data: prices.ETH.GBP,
+              data: prices.ETH[this.selectedCurrency.code],
             },
-        });
-        Latest.$insert({
-          data:
-            {
+          });
+        }
+        if (checkExists('LTC', prices.LTC[this.selectedCurrency.code])) {
+          Latest.$update({
+            where: record => wherePrice(record, {
               coin: 'LTC',
-              currency: 'GBP',
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
               updated: +new Date(),
-              data: prices.LTC.GBP,
+              data: prices.LTC[this.selectedCurrency.code],
             },
-        });
-        Latest.$insert({
-          data:
-            {
+          });
+        }
+        if (checkExists('DASH', prices.DASH[this.selectedCurrency.code])) {
+          Latest.$update({
+            where: record => wherePrice(record, {
               coin: 'DASH',
-              currency: 'GBP',
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
               updated: +new Date(),
-              data: prices.DASH.GBP,
+              data: prices.DASH[this.selectedCurrency.code],
             },
-        });
+          });
+        }
+
+        // Latest.$insert({
+        //   data:
+        //     {
+        //       coin: 'BTC',
+        //       currency: 'GBP',
+        //       updated: +new Date(),
+        //       data: prices.BTC.GBP,
+        //     },
+        // });
+        // Latest.$insert({
+        //   data:
+        //     {
+        //       coin: 'ETH',
+        //       currency: 'GBP',
+        //       updated: +new Date(),
+        //       data: prices.ETH.GBP,
+        //     },
+        // });
+        // Latest.$insert({
+        //   data:
+        //     {
+        //       coin: 'LTC',
+        //       currency: 'GBP',
+        //       updated: +new Date(),
+        //       data: prices.LTC.GBP,
+        //     },
+        // });
+        // Latest.$insert({
+        //   data:
+        //     {
+        //       coin: 'DASH',
+        //       currency: 'GBP',
+        //       updated: +new Date(),
+        //       data: prices.DASH.GBP,
+        //     },
+        // });
         const newPrice = Latest.find(['BTC_GBP']);
         console.log('newPrice :', newPrice);
       } catch (e) {

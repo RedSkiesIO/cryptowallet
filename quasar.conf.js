@@ -20,6 +20,7 @@ module.exports = (ctx) => {
       'WalletDiscovery',
       'CoinFormatter',
       'VueTrend',
+      'VueSelect',
     ],
     css: ['app.styl'],
     extras: [
@@ -90,6 +91,7 @@ module.exports = (ctx) => {
         'QModalLayout',
         'QToggle',
         'QRadio',
+        'QSelect',
         'QSlider',
         'QScrollObservable',
         'QAlert',

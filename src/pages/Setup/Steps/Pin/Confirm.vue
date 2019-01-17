@@ -22,13 +22,17 @@ export default {
       minLength: state => state.settings.pin.minLength,
       pinHash: state => state.setup.pinHash,
       pinHashConfirm: state => state.setup.pinHashConfirm,
+      accountType: state => state.setup.accountType,
       id: state => parseInt(state.route.params.id, 10),
     }),
   },
   methods: {
     validatePin() {
       const pinHashConfirm = this.$CWCrypto.bcryptHashString(this.pinConfirm.join(''), this.salt);
-      if (this.pinHash === pinHashConfirm) this.$router.push({ path: `/setup/${this.id + 1}` });
+      if (this.pinHash === pinHashConfirm) {
+        if (this.accountType === 'restored') this.$router.push({ path: `/setup/${this.id + 2}` });
+        this.$router.push({ path: `/setup/${this.id + 1}` });
+      }
     },
   },
 };

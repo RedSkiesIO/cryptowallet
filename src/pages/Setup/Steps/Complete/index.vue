@@ -30,7 +30,7 @@ export default {
         salt: this.setup.salt,
         pinHash: this.setup.pinHash,
         default: accounts.length === 0,
-        locale: this.setup.accountLocale,
+        locale: this.setup.accountLocale || this.$i18n.locale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
         currency: 'GBP',
