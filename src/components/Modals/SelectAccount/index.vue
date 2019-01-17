@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account.js';
 
 export default {
@@ -78,6 +79,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      id: state => parseInt(state.route.params.id, 10),
+    }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
     },
@@ -97,10 +101,12 @@ export default {
     },
     createAccount() {
       this.$root.$emit('selectAccountModalOpened', false);
+      this.$store.dispatch('setup/setAccountType', 'new');
       this.$router.push({ path: '/setup/2' });
     },
     importAccount() {
       this.$root.$emit('selectAccountModalOpened', false);
+      this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: '/setup/1' });
     },
     selectAccount(name) {

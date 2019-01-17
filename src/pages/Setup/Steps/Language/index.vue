@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <div class="done-msg-wrapper">
-      <h1>THE REVOLUTION WILL NOT BE CENTRALISED</h1>
+    <!-- <div class="done-msg-wrapper">
+      <h1>THE REVOLUTION <span class="hollow-text">WILL NOT BE CENTRALISED</span></h1>
     </div>
-    <h1 class="setup">{{ $t("welcome") }}</h1>
-    <h4 class="setup"/>
+     -->
 
     <div class="btns-wrapper">
       <q-btn
@@ -171,9 +170,19 @@ export default {
 
 .done-msg-wrapper {
   text-align: center;
-  font-family: 'CooperHewitt-SemiboldItalic';
+  font-family: 'CooperHewitt-HeavyItalic';
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
   margin-bottom: 2em;
+}
+.done-msg-wrapper h1 {
+  font-size: xx-large;
+  letter-spacing: 0.1em;
+  line-height: initial;
+}
+
+.hollow-text{
+  -webkit-text-stroke: 1px white;
+  -webkit-text-fill-color: rgb(47, 59, 82);
 }
 
 .flags {

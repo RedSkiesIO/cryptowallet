@@ -165,29 +165,32 @@ export default {
     },
 
     async getUtxos(combinedAddresses, wallet) {
-      const coinSDK = this.coinSDKS[wallet.sdk];
-      const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network);
+      if (wallet.sdk) {
+        const coinSDK = this.coinSDKS[wallet.sdk];
+        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network);
 
-      let balance = 0;
-      utxos.forEach((utxo) => {
-        balance += utxo.amount;
-        const found = Utxo.query()
-          .where('txid', utxo.txid)
-          .where('vout', utxo.vout)
-          .where('wallet_id', wallet.id)
-          .get();
+        let balance = 0;
+        utxos.forEach((utxo) => {
+          balance += utxo.amount;
+          const found = Utxo.query()
+            .where('txid', utxo.txid)
+            .where('vout', utxo.vout)
+            .where('wallet_id', wallet.id)
+            .get();
 
-        if (!found[0]) {
-          utxo.account_id = this.authenticatedAccount;
-          utxo.wallet_id = wallet.id;
-          Utxo.$insert({ data: utxo });
-        }
-      });
+          if (!found[0]) {
+            utxo.account_id = this.authenticatedAccount;
+            utxo.wallet_id = wallet.id;
+            Utxo.$insert({ data: utxo });
+          }
+        });
 
-      return {
-        utxos,
-        balance,
-      };
+        return {
+          utxos,
+          balance,
+        };
+      }
+      return {};
     },
 
     updateBalances(done) {
