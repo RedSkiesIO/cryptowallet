@@ -92,6 +92,7 @@ module.exports = (ctx) => {
         'QRadio',
         'QSlider',
         'QScrollObservable',
+        'QAlert',
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins

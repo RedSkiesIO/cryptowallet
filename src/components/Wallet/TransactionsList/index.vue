@@ -20,6 +20,19 @@
             :key="transaction.ts"
             :data="transaction"
           />
+
+          <div
+            v-if="filteredPaginated.length === 0"
+            class="no-tx-alert"
+          >
+            <q-alert
+              color="info"
+              icon="info"
+            >
+              Transaction history is empty.
+            </q-alert>
+          </div>
+
         </q-timeline>
         <q-spinner-dots
           slot="message"
@@ -155,5 +168,13 @@ export default {
 
 .scroll-area.static {
   position: static!important;
+}
+
+.no-tx-alert {
+  padding: 0.5rem;
+}
+
+.no-tx-alert .q-alert-content {
+  font-size: 0.8rem;
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div v-if="wallet">
     <Transactions :wallet="wallet"/>
   </div>
@@ -25,6 +26,12 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+  },
+  mounted() {
+    this.$root.$on('updateWalletSingle', (done) => {
+      console.log('update me', this.wallet.name);
+      this.refresher(done);
+    });
   },
   methods: {
     /**
@@ -161,7 +168,10 @@ export default {
         data: { confirmedBalance: parseFloat(newBalance, 10) },
       });
 
-      done();
+      setTimeout(() => {
+        done();
+      }, 500);
+
       return false;
     },
   },

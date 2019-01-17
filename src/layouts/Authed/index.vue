@@ -24,7 +24,6 @@
           class="layout-wrapper"
           @touchmove="prevent"
         >
-
           <div
             v-if="showCoinHeader"
             class="coin-header-wrapper"
@@ -48,7 +47,7 @@
             :class="{ white: layoutShapeWhite }"
             class="layout-shape"
           >
-            <keep-alive>
+            <keep-alive include="Wallet">
               <router-view/>
             </keep-alive>
           </div>
@@ -225,13 +224,19 @@ export default {
 
     refresher(done) {
       if (this.$route.name === 'wallet') {
-        this.updateBalances(done);
+        setTimeout(() => {
+          this.updateBalances(done);
+        }, 1000)
         return false;
       }
 
-      setTimeout(() => {
-        done();
-      }, 2000)
+      if (this.$route.name === 'walletSingle') {
+        setTimeout(() => {
+          this.$root.$emit('updateWalletSingle', done)
+        }, 1000)
+      }
+
+
     },
 
     async getUtxos(combinedAddresses, wallet) {
