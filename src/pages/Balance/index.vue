@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <q-pull-to-refresh :handler="refresher">
-      <UserBalance :wallet="wallet"/>
-      <Transactions :wallet="wallet"/>
-      <SendReceive :wallet="wallet"/>
-    </q-pull-to-refresh>
+  <!-- eslint-disable -->
+  <div v-if="wallet">
+    <Transactions :wallet="wallet"/>
   </div>
 </template>
 
 <script>
-import UserBalance from '@/components/Wallet/Balance';
 import Transactions from '@/components/Wallet/Transactions';
-import SendReceive from '@/components/Wallet/SendReceive';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
@@ -20,13 +15,9 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Balance',
-
   components: {
-    UserBalance,
     Transactions,
-    SendReceive,
   },
-
   computed: {
     ...mapState({
       id: state => state.route.params.id,
@@ -36,7 +27,12 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
   },
-
+  mounted() {
+    this.$root.$on('updateWalletSingle', (done) => {
+      console.log('update me', this.wallet.name);
+      this.refresher(done);
+    });
+  },
   methods: {
     /**
      * Fetches and updates the UTXOs
@@ -172,7 +168,10 @@ export default {
         data: { confirmedBalance: parseFloat(newBalance, 10) },
       });
 
-      done();
+      setTimeout(() => {
+        done();
+      }, 500);
+
       return false;
     },
   },

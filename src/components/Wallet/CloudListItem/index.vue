@@ -23,7 +23,7 @@
       <q-btn-group>
         <q-btn
           icon="send"
-          size="sm"
+          size="md"
           color="primary"
           label="Send"
           class="wallet-group-btn"
@@ -32,7 +32,7 @@
         />
         <q-btn
           icon="call_received"
-          size="sm"
+          size="md"
           color="primary"
           label="Receive"
           class="wallet-group-btn"
@@ -192,5 +192,11 @@ export default {
 
 .wallet-group-btn.just-icon i {
   margin-right: 0;
+  font-size: 2rem;
+  text-align: right;
+}
+
+.wallet-group-btn .q-btn-inner {
+  font-size: 0.8rem;
 }
 </style>

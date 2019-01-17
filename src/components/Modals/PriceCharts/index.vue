@@ -22,7 +22,15 @@
             @click.prevent="goBack"
           />
         </div>
-        <h1 class="header-h1">{{ wallet.name }} ({{ coinSymbol }})</h1>
+
+        <div>
+          <img
+            :src="coinLogo"
+            class="coin-logo"
+          >
+          {{ wallet.displayName }}
+        </div>
+
         <div
           class="header-settings-button-wrapper"
         >
@@ -116,11 +124,16 @@ export default {
       }
       return '#de4662';
     },
+    coinLogo() {
+      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      /* eslint-disable-next-line */
+      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+    },
   },
   watch: {
     $route: {
       handler(to) {
-        if (to.name === 'coinPrices') {
+        if (to.name === 'coinPrices' || to.name === 'coinSinglePrices') {
           this.priceChartModalOpened = true;
         } else {
           this.priceChartModalOpened = false;
