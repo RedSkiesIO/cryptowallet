@@ -104,6 +104,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Tx from '@/store/wallet/entities/tx';
@@ -304,7 +305,7 @@ export default {
         return false;
       }
 
-      this.sendingModalOpened = true;
+      // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
@@ -319,7 +320,15 @@ export default {
         hexTx,
       } = await coinSDK.createEthTx(keypair, this.address, this.amount, fee);
 
-      coinSDK.broadcastTx(hexTx, this.wallet.network)
+      console.log('????', transaction);
+
+      this.$root.$emit('confirmSendModalOpened', true, {
+        hexTx,
+        transaction,
+      });
+
+
+      /*coinSDK.broadcastTx(hexTx, this.wallet.network)
         .then(async (result) => {
           if (!result) {
             console.error('transaction broadcast failure');
@@ -340,7 +349,7 @@ export default {
           alert(err);
           console.log(err);
         });
-
+*/
       return false;
     },
 

@@ -33,6 +33,9 @@
 <script>
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
+import Address from '@/store/wallet/entities/address';
+import Tx from '@/store/wallet/entities/tx';
+import Utxo from '@/store/wallet/entities/utxo';
 import PinPad from '@/components/Auth/PinPad';
 
 export default {
@@ -117,7 +120,7 @@ export default {
 
       if (wasDefault && this.accounts.length > 0) {
         Account.$update({
-          where: record => record.id === this.accounts[0].id,
+          where: record => record.id === id,
           data: { default: true },
         });
       }
@@ -134,6 +137,23 @@ export default {
 
       setTimeout(() => {
         Account.$delete(id);
+
+        const transactions = Tx.query().where('account_id', id).get();
+        transactions.forEach((tx) => {
+          Tx.$delete(tx.id);
+        });
+
+        const utxos = Utxo.query().where('account_id', id).get();
+        utxos.forEach((tx) => {
+          Utxo.$delete(tx.id);
+        });
+
+        const addresses = Address.query().where('account_id', id).get();
+        addresses.forEach((address) => {
+          Address.$delete(address.id);
+        });
+
+
         this.$store.dispatch('settings/setLoading', false);
       }, 1000);
 

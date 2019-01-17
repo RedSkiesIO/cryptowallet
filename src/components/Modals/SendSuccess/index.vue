@@ -36,7 +36,7 @@
             <div class="tx-details-row">
               <div class="detail">Tx hash</div>
               <div class="break">
-                {{ txData.transaction.hash }}
+                <span class="tx-hash-span">{{ txData.transaction.hash }}</span>
                 <q-btn
                   :label="$t('copy')"
                   color="blueish"
@@ -49,7 +49,7 @@
 
             <div class="tx-details-row">
               <div class="detail">Recipient</div>
-              <div class="break">{{ txData.transaction.receiver[0] }}</div>
+              <div class="break">{{ recipient }}</div>
             </div>
 
             <div class="tx-details-row">
@@ -104,6 +104,12 @@ export default {
     amount() {
       const inCurrency = this.coinToCurrency(this.txData.transaction.value);
       return `${this.txData.transaction.value} ${this.coinSymbol} (${inCurrency})`;
+    },
+    recipient() {
+      if (Array.isArray(this.txData.transaction.receiver)) {
+        return this.txData.transaction.receiver[0];
+      }
+      return this.txData.transaction.receiver;
     },
   },
   mounted() {
@@ -241,8 +247,11 @@ export default {
   height: 0.9rem;
   line-height: 0;
   min-height: auto;
-  margin-left: 0.3rem;
   position: relative;
   top: -1px;
+}
+
+.tx-hash-span {
+  margin-right: 0.5rem;
 }
 </style>

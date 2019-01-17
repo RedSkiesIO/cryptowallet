@@ -34,7 +34,7 @@
           <span class="h3-line"/>
         </div>
 
-        <div class="small-text">{{ txData.transaction.receiver[0] }}</div>
+        <div class="small-text">{{ to }}</div>
 
         <div class="send-modal-heading">
           <h3>Amount</h3>
@@ -124,6 +124,12 @@ export default {
     newBalance() {
       return this.wallet.confirmedBalance - this.txData.transaction.value - this.txData.transaction.fee;
     },
+    to() {
+      if (Array.isArray(this.txData.transaction.receiver)) {
+        return this.txData.transaction.receiver[0];
+      }
+      return this.txData.transaction.receiver;
+    },
   },
   mounted() {
     this.$root.$on('confirmSendModalOpened', (value, txData) => {
@@ -148,63 +154,92 @@ export default {
       console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
       console.log('network', this.wallet.network);
 
-      coinSDK.broadcastTx(hexTx, this.wallet.network)
-        .then(async (result) => {
-          if (!result) {
-            console.error('transaction broadcast failure');
+      if (this.wallet.sdk === 'Bitcoin') {
+
+        coinSDK.broadcastTx (hexTx, this.wallet.network)
+          .then(async (result) => {
+            if (!result) {
+              console.error('transaction broadcast failure');
+              return false;
+            }
+
+            transaction.account_id = this.authenticatedAccount;
+            transaction.wallet_id = this.wallet.id;
+            transaction.isChange = false;
+            transaction.sent = true;
+
+            await Tx.$insert({ data: transaction });
+
+            utxo.forEach((usedUtxo) => {
+              const whereUtxo = (record, item) => (
+                record.txid === item.txid
+                && record.vout === item.vout
+                && record.wallet_id === this.wallet.id
+              );
+
+              console.log('update pending !!!!!!!!!!!!!!!');
+
+              Utxo.$update({
+                where: record => whereUtxo(record, usedUtxo),
+                data: { pending: true },
+              });
+            });
+
+            changeAddresses.forEach(async (address, i) => {
+              await Address.$insert({
+                data: {
+                  address,
+                  account_id: this.authenticatedAccount,
+                  wallet_id: this.wallet.id,
+                  chain: 'internal',
+                  index: this.wallet.internalChainAddressIndex + i,
+                },
+              });
+            });
+
+            const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
+
+            Wallet.$update({
+              where: record => record.id === this.wallet.id,
+              data: { internalChainAddressIndex: newInternalIndex },
+            });
+
+            setTimeout(() => {
+              this.completeTransaction();
+            }, 1000);
             return false;
-          }
-
-          transaction.account_id = this.authenticatedAccount;
-          transaction.wallet_id = this.wallet.id;
-          transaction.isChange = false;
-          transaction.sent = true;
-
-          await Tx.$insert({ data: transaction });
-
-          utxo.forEach((usedUtxo) => {
-            const whereUtxo = (record, item) => (
-              record.txid === item.txid
-              && record.vout === item.vout
-              && record.wallet_id === this.wallet.id
-            );
-
-            console.log('update pending !!!!!!!!!!!!!!!');
-
-            Utxo.$update({
-              where: record => whereUtxo(record, usedUtxo),
-              data: { pending: true },
-            });
+          })
+          .catch((err) => {
+            alert(err);
+            console.log(err);
           });
+      }
 
-          changeAddresses.forEach(async (address, i) => {
-            await Address.$insert({
-              data: {
-                address,
-                account_id: this.authenticatedAccount,
-                wallet_id: this.wallet.id,
-                chain: 'internal',
-                index: this.wallet.internalChainAddressIndex + i,
-              },
-            });
-          });
+      if (this.wallet.sdk === 'Ethereum') {
+        coinSDK.broadcastTx(hexTx, this.wallet.network)
+          .then(async (result) => {
+            if (!result) {
+              console.error('transaction broadcast failure');
+              return false;
+            }
 
-          const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
+            transaction.account_id = this.authenticatedAccount;
+            transaction.wallet_id = this.wallet.id;
+            transaction.isChange = false;
+            transaction.sent = true;
 
-          Wallet.$update({
-            where: record => record.id === this.wallet.id,
-            data: { internalChainAddressIndex: newInternalIndex },
-          });
+            await Tx.$insert({ data: transaction });
 
-          setTimeout(() => {
             this.completeTransaction();
-          }, 1000);
-          return false;
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err);
-        });
+            return false;
+          })
+          .catch((err) => {
+            alert(err);
+            console.log(err);
+          });
+      }
+
+
     },
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
