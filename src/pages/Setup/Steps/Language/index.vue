@@ -167,6 +167,9 @@ export default {
 </script>
 
 <style>
+.header-back-button-wrapper {
+  display: none;
+}
 
 .done-msg-wrapper {
   text-align: center;
@@ -210,16 +213,17 @@ export default {
   color:white;
   padding-left: 10px;
 }
-.lang-select .dropdown-toggle .clear{
+.lang-select .dropdown-toggle{
     border:none;
   }
 .lang-select .dropdown-toggle .clear{
+    border:none;
     display:none;
   }
 
   .input-icon{
     width: 1.5em;
-    margin-left: -4px;
+    margin-left: -5px;
   }
   .select-icon{
     width: 1.5em;
