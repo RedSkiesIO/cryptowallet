@@ -125,4 +125,19 @@ export default {
     color: white;
     padding-left: 2px;
 }
+
+.randomSeedContainer .text-secondary {
+    color: rgba(0, 0, 0, 0)!important;
+}
+
+.randomSeedContainer
+.q-if:not(.q-if-disabled):not(.q-if-error):not(.q-if-warning):hover:before,
+.q-if.q-if-readonly:not(.q-if-error):not(.q-if-warning):after {
+    color: #bdbdbd!important;
+    border-bottom: 1px solid;
+}
+
+.randomSeedContainer .q-if-focused{
+  border: none;
+}
 </style>

@@ -64,6 +64,7 @@
 <script>
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
+// import Prices from '@/store/prices';
 
 export default {
   name: 'CloudListItem',
@@ -105,6 +106,7 @@ export default {
   async mounted() {
     const coinSDK = this.coinSDKS[this.wallet.sdk];
     const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+    // const dataset = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
     this.chartData = dataset.map(item => item.y);
   },
   methods: {
