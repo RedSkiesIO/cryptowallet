@@ -365,9 +365,9 @@ export default {
   top: 0;
 }
 
-.no-balance .pull-to-refresh-message {
+/* .no-balance .pull-to-refresh-message {
   top: -5rem!important;
-}
+} */
 
 .layout-shape .layout {
   height: calc(100vh - 5rem - 2.5rem);

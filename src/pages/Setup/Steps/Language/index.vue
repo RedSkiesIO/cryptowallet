@@ -47,7 +47,7 @@
           float-label="Select your language"
           dark
         /> -->
-        <div class="row bg-blueish">
+        <div class="row q-input bg-blueish">
           <div class="col-2 flag-icon">
             <img
               :src="selectedLang.icon"
@@ -134,8 +134,18 @@ export default {
           icon: '/assets/flags/en-gb.svg',
         },
         {
+          label: 'French',
+          value: 'fr-fr',
+          icon: '/assets/flags/fr-fr.svg',
+        },
+        {
+          label: 'Spanish',
+          value: 'es-es',
+          icon: '/assets/flags/es-es.svg',
+        },
+        {
           label: 'Greek',
-          value: 'en-gb',
+          value: 'el-gr',
           icon: '/assets/flags/el-gr.svg',
         },
       ];
@@ -167,9 +177,6 @@ export default {
 </script>
 
 <style>
-.header-back-button-wrapper {
-  display: none;
-}
 
 .done-msg-wrapper {
   text-align: center;
