@@ -60,7 +60,6 @@
             @click="createAccount"
           />
         </div>
-
         <div class="btns-wrapper">
           <q-btn
             :label="$t('importAccount')"
