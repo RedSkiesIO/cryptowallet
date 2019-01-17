@@ -1,15 +1,4 @@
 /**
- * State mutation for language
- * @param state
- * @param language
- * @constructor
- */
-
-export function SET_LANGUAGE(state, language) {
-  state.language = language;
-}
-
-/**
  * State mutation for salt.
  * @param state
  * @param salt

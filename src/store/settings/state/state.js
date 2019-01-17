@@ -1,6 +1,7 @@
 import coins from './coins.js';
 import currencies from './currencies.js';
 import supportedCoins from '../state/supportedCoins.js';
+import supportedCurrencies from '../state/supportedCurrencies.js';
 
 export default {
   pin: {
@@ -10,6 +11,7 @@ export default {
   coins,
   currencies,
   supportedCoins,
+  supportedCurrencies,
   selectedCurrency: currencies.GBP,
   loading: true,
   selectedAccount: null,

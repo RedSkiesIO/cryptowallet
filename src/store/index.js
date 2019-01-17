@@ -45,6 +45,7 @@ window.Utxo = Utxo;
 window.Address = Address;
 window.Wallet = Wallet;
 window.LatestPrice = LatestPrice;
+window.Account = Account;
 
 // Setup persistant storage.
 const vuexLocal = new VuexPersistence({

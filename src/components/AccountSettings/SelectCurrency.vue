@@ -14,12 +14,12 @@
             @click.prevent="closeModal"
           />
         </div>
-        <h1 class="header-h1">Language</h1>
+        <h1 class="header-h1">Currency</h1>
       </div>
 
       <div class="modal-layout-wrapper no-padding">
         <div
-          v-for="key in languages"
+          v-for="key in currencies"
           :key="key"
           class="account-item"
         >
@@ -42,13 +42,13 @@ import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
 
 export default {
-  name: 'SelectLanguage',
+  name: 'SelectCurrency',
   props: {
     open: {
       type: Boolean,
       required: true,
     },
-    currentLocale: {
+    currentCurrency: {
       type: String,
       required: true,
     },
@@ -57,39 +57,28 @@ export default {
     ...mapState({
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
-    languages() {
-      return Object.keys(this.$i18n.messages).map(key => key);
+    currencies() {
+      return this.$store.state.settings.supportedCurrencies.map(item => item.code);
     },
-    /**
-     * Updates the database on locale change
-     */
     selectedLocale: {
       get() {
-        return this.currentLocale;
+        return this.currentCurrency;
       },
-      set(newLocale) {
+      set(newCurrency) {
         Account.$update({
           where: record => record.id === this.authenticatedAccount,
-          data: { locale: newLocale },
+          data: { currency: newCurrency },
         });
-        this.$i18n.locale = newLocale;
       },
     },
   },
   methods: {
     closeModal() {
-      this.$emit('closeLanguageModal');
+      this.$emit('closeCurrencyModal');
     },
   },
 };
 </script>
 
 <style>
-.lang-item {
-  padding: 1rem 0.5rem;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid black;
-}
 </style>

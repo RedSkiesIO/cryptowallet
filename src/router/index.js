@@ -29,7 +29,7 @@ export default new VueRouter({
       path: '/settings',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Settings') },
+        { name: 'settings', path: '', component: () => import('pages/Settings') },
       ],
     },
     {
@@ -43,7 +43,14 @@ export default new VueRouter({
       path: '/wallet/single/:id',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Balance') },
+        { name: 'walletSingle', path: '', component: () => import('pages/Balance') },
+      ],
+    },
+    {
+      path: '/wallet/single/prices/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'coinSinglePrices', path: '', component: () => import('pages/Balance') },
       ],
     },
     {
@@ -92,7 +99,7 @@ export default new VueRouter({
       path: '/wallet/exchange',
       component: () => import('layouts/Authed'),
       children: [
-        { path: '', component: () => import('pages/Exchange') },
+        { name: 'exchange', path: '', component: () => import('pages/Exchange') },
       ],
     },
     {

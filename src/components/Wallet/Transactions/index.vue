@@ -1,6 +1,9 @@
 <template>
   <section class="recent-transactions">
-    <q-tabs color="secondary">
+    <q-tabs
+      color="blueish"
+      inverted
+    >
       <q-tab
         slot="title"
         :label="$t('all')"
@@ -60,10 +63,8 @@ export default {
 }
 
 .recent-transactions {
-  height: calc(100vh - 23vh - 5rem - 2.5rem);
-  border-top: 2px solid #09233a;
+  height: 100%;
   position: relative;
-  background: #16324a;
 }
 
 .scroll-content {
@@ -83,6 +84,19 @@ export default {
 
 .q-tab-pane {
   flex: 1;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  padding: 0 0.2rem;
+}
+
+.q-tab-label {
+  font-family: Montserrat-SemiBold;
+}
+
+.q-tabs-head {
+  background: whitesmoke;
+}
+
+.q-timeline {
+  margin: 0;
 }
 </style>

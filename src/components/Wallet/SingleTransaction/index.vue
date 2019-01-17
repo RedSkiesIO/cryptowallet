@@ -1,24 +1,23 @@
 <template>
   <q-timeline-entry
-    :title="paymentDirection"
+    :title="date"
     side="left"
   >
     <q-collapsible
-      :label="date"
       :sublabel="amount"
       :class="{ 'positive-amount': !data.sent, 'negative-amount': data.sent }"
     >
       <div>
         <p>
-          {{ $t('received') }}:<br>
+          {{ $t('received') }}:
           <span class="received">{{ to }}</span>
         </p>
         <p>
-          TX Hash:<br>
+          TX Hash:
           <span class="tx-hash">{{ data.hash }}</span>
         </p>
         <p>
-          {{ $t('status') }}:<br>
+          {{ $t('status') }}:
           <span
             :class="{
               'unconfirmed-tx': data.confirmations < 6,
@@ -30,15 +29,15 @@
           </span>
         </p>
         <p>
-          {{ $t('confirmations') }}:<br>
+          {{ $t('confirmations') }}:
           <span class="confirmations">{{ data.confirmations }}</span>
         </p>
         <p>
-          TX {{ $t('fee') }}:<br>
+          TX {{ $t('fee') }}:
           <span class="tx-fee">{{ feeFormated }}</span>
         </p>
         <p>
-          {{ $t('blockHeight') }}:<br>
+          {{ $t('blockHeight') }}:
           <span class="tx-height">{{ data.blockHeight }}</span>
         </p>
       </div>
@@ -190,7 +189,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
   .positive-amount .q-item-sublabel, .confirmed-tx  {
     color: green;
   }
@@ -198,4 +197,55 @@ export default {
   .negative-amount .q-item-sublabel, .unconfirmed-tx {
     color: red;
   }
+
+  .q-timeline-entry {
+    padding-left: 1.5rem;
+  }
+
+  .q-item {
+    padding: 0;
+  }
+
+  .q-timeline-content {
+    padding-bottom: 0.5rem;
+  }
+
+  .q-timeline-title {
+    margin-bottom: 0rem;
+  }
+
+  .q-timeline-dot:after {
+    opacity: 0.1;
+    left: 7px;
+  }
+
+  .q-timeline-dot:before, .q-timeline-dot:after {
+      content: '';
+      background: #4e677d;
+      display: block;
+      position: absolute;
+  }
+
+  .q-timeline-dot:before {
+      border: 3px solid transparent;
+      border-radius: 100%;
+      height: 12px;
+      width: 12px;
+      top: 5px;
+      left: 2px;
+      transition: background 0.3s ease-in-out, border 0.3s ease-in-out;
+  }
+
+  .q-collapsible-sub-item {
+    padding: 0;
+    word-break: break-all;
+  }
+
+  .q-collapsible-sub-item p {
+    margin: 0;
+    padding: 0.5rem;
+    border-top: 1px solid whitesmoke;
+  }
+
+
 </style>

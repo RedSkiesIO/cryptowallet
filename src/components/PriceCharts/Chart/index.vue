@@ -1,5 +1,3 @@
-
-
 <script>
 import { Line, mixins } from 'vue-chartjs';
 
@@ -16,7 +14,7 @@ export default {
   },
   data() {
     return {
-      // eslint-disable-next-line vue/no-reserved-keys
+      /* eslint-disable-next-line */
       _chart: '',
     };
   },

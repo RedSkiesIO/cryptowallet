@@ -23,7 +23,7 @@
       <q-btn-group>
         <q-btn
           icon="send"
-          size="sm"
+          size="md"
           color="primary"
           label="Send"
           class="wallet-group-btn"
@@ -32,7 +32,7 @@
         />
         <q-btn
           icon="call_received"
-          size="sm"
+          size="md"
           color="primary"
           label="Receive"
           class="wallet-group-btn"
@@ -135,9 +135,8 @@ export default {
   background: white;
   color: #1e3c57;
   /* border: 1px solid rgba(0, 0, 0, 0.03); */
-  margin-bottom: 0.2em;
-  margin-top: 0.3em;
-  box-shadow: inset -2px -2px 0px 2px #1d3b5659;
+  margin-bottom: 0.5em;
+  box-shadow: inset -2px -2px 0px 2px rgba(29, 59, 86, 0.35);
 }
 
 .cloud-top-row {
@@ -169,7 +168,7 @@ export default {
 }
 
 .wallet-buttons .q-btn-inner {
-  font-size: 1em;
+  font-size: 1.1em;
   color: #1e3c57;
   display: flex;
   flex-direction: row;
@@ -193,5 +192,11 @@ export default {
 
 .wallet-group-btn.just-icon i {
   margin-right: 0;
+  font-size: 2rem;
+  text-align: right;
+}
+
+.wallet-group-btn .q-btn-inner {
+  font-size: 0.8rem;
 }
 </style>

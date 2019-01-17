@@ -1,27 +1,9 @@
 /**
- * Action to set language.
- * @param {*} context
- */
-export function setLanguage(context, language) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      context.commit('SET_LANGUAGE', language);
-      resolve();
-    }, 1000);
-  });
-}
-
-/**
  * Action to set salt.
  * @param {*} context
  */
 export function setSalt(context, salt) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      context.commit('SET_SALT', salt);
-      resolve();
-    }, 1000);
-  });
+  context.commit('SET_SALT', salt);
 }
 
 /**
@@ -29,12 +11,7 @@ export function setSalt(context, salt) {
  * @param {*} context
  */
 export function setSeed(context, seed) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      context.commit('SET_SEED', seed);
-      resolve();
-    }, 1000);
-  });
+  context.commit('SET_SEED', seed);
 }
 
 /**
@@ -43,12 +20,7 @@ export function setSeed(context, seed) {
  * @param pinHash String
  */
 export function setPinHash(context, pinHash) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      context.commit('SET_PIN_HASH', pinHash);
-      resolve();
-    }, 1000);
-  });
+  context.commit('SET_PIN_HASH', pinHash);
 }
 
 /**
@@ -57,12 +29,7 @@ export function setPinHash(context, pinHash) {
  * @param pinHashConfirm String
  */
 export function setPinHashConfirm(context, pinHashConfirm) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      context.commit('SET_PIN_HASH_CONFIRM', pinHashConfirm);
-      resolve();
-    }, 1000);
-  });
+  context.commit('SET_PIN_HASH_CONFIRM', pinHashConfirm);
 }
 
 /*

@@ -19,6 +19,7 @@ export default class Account extends Model {
       pinHash: this.attr(''),
       name: this.attr(''),
       locale: this.attr(''),
+      currency: this.attr(''),
       node: this.attr(''),
       default: this.attr(false),
       seed: this.attr(''),

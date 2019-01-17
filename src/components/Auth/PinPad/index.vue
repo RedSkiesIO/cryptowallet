@@ -21,7 +21,7 @@
       />
 
       <q-btn
-        v-if="mode === 'pin-setup'"
+        v-if="mode === 'pin-setup' || mode === 'new-pin'"
         :disabled="canProceed"
         color="secondary"
         label="Done"
@@ -59,7 +59,7 @@ export default {
       id: state => parseInt(state.route.params.id, 10),
     }),
     canProceed() {
-      return this.pin.length < this.minLength;
+      return this.input.length < this.minLength;
     },
     resetDisabled() {
       return this.input.length === 0;
@@ -92,6 +92,21 @@ export default {
           this.$root.$emit('inputPin', pin);
           this.$parent.attemptUnlock();
         }
+
+        if (this.mode === 'access') {
+          this.$emit('inputPin', pin);
+          this.$emit('attemptUnlock');
+        }
+
+        if (this.mode === 'new-pin') {
+          this.$emit('inputPin', pin);
+        }
+
+        if (this.mode === 'confirm-new-pin') {
+          console.log('wtf');
+          this.$emit('inputPin', pin);
+          this.$emit('attemptConfirm');
+        }
       }, 25);
     },
     clearPinArray() {
@@ -99,16 +114,20 @@ export default {
       if (this.mode === 'pin-setup') this.$store.dispatch('setup/resetPin');
       if (this.mode === 'pin-confirm') this.$store.dispatch('setup/resetPinConfirm');
       if (this.mode === 'auth') this.$parent.resetPin();
+      if (this.mode === 'access') this.$emit('resetPin');
+      if (this.mode === 'new-pin') this.$emit('resetPin');
+      if (this.mode === 'confirm-new-pin') this.$emit('resetPin');
     },
     done() {
-      this.$router.push({ path: `/setup/${this.id + 1}` });
+      if (this.mode === 'pin-setup') this.$router.push({ path: `/setup/${this.id + 1}` });
+      if (this.mode === 'new-pin') this.$emit('newPinSet');
     },
 
     /**
      * Resets PinPad internal state
      */
     resetState() {
-      this.pin = [];
+      this.input = [];
     },
   },
 };

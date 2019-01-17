@@ -1,5 +1,12 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout
+    :class="{
+      'no-balance': !isBalanceVisible,
+      'short-top': shortTop,
+      'single-wallet-top': singleWalletTop,
+    }"
+    view="lHh Lpr lFf"
+  >
     <q-layout-header>
       <Header/>
     </q-layout-header>
@@ -7,7 +14,7 @@
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
         :handler="refresher"
-        :disable="isPullDisabled"
+        :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
       >
 
@@ -15,17 +22,34 @@
         <div
           :class="{ 'no-footer': !isMainNavVisible }"
           class="layout-wrapper"
+          @touchmove="prevent"
         >
-
           <div
-            v-if="showTotalBalance"
-            class="total-balance"
+            v-if="showCoinHeader"
+            class="coin-header-wrapper"
           >
-            <div>{{ totalBalance }}</div>
+            <CoinHeader
+              :wallet="wallet"
+              :simple="true"
+            />
           </div>
 
-          <div class="layout-shape">
-            <router-view/>
+          <div class="total-balance-wrapper">
+            <div
+              v-if="showTotalBalance"
+              class="total-balance"
+            >
+              <div>{{ totalBalance }}</div>
+            </div>
+          </div>
+
+          <div
+            :class="{ white: layoutShapeWhite }"
+            class="layout-shape"
+          >
+            <keep-alive include="Wallet">
+              <router-view/>
+            </keep-alive>
           </div>
         </div>
 
@@ -49,7 +73,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
-
+import CoinHeader from '@/components/Wallet/CoinHeader';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
 
@@ -58,31 +82,36 @@ export default {
   components: {
     MainNav,
     Header,
+    CoinHeader,
   },
 
   data() {
     return {
       isMainNavVisible: false,
-      isPullDisabled: false,
+      isPullEnabled: true,
+      isPullTempDisabled: false,
       transitionName: 'slide-left',
+      isBalanceVisible: true,
     };
   },
 
   computed: {
     ...mapState({
+      id: state => state.route.params.id,
       isSearchingContacts: state => state.search.isSearchingContacts,
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
     wallets() {
       return Wallet.query().where('account_id', this.authenticatedAccount).get();
     },
+    wallet() {
+      return this.$store.getters['entities/wallet/find'](this.id);
+    },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
     totalBalance() {
       let balance = 0;
-
-      console.log('totalBalance', this.wallets);
 
       this.wallets.forEach((wallet) => {
         const formattedAmount = new AmountFormatter({
@@ -117,6 +146,24 @@ export default {
              this.$route.name === 'coinHistory' ||
              this.$route.name === 'coinPrices';
     },
+    layoutShapeWhite() {
+      return this.$route.name === 'settings' ||
+             this.$route.name === 'exchange' ||
+             this.$route.name === 'walletSingle' ||
+             this.$route.name === 'coinSinglePrices';
+    },
+    shortTop() {
+      return this.$route.name === 'settings' ||
+             this.$route.name === 'exchange';
+    },
+    showCoinHeader() {
+      return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'coinSinglePrices' && this.wallet);
+    },
+    singleWalletTop() {
+      return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'coinSinglePrices' && this.wallet);
+    },
   },
 
   watch: {
@@ -126,7 +173,7 @@ export default {
     '$route.path': {
       handler() {
         this.updateMainNavVisibility();
-        this.updateIsPullDisabled();
+        this.updateisPullEnabled();
       },
     },
 
@@ -140,9 +187,24 @@ export default {
    */
   beforeMount() {
     this.updateMainNavVisibility();
-    this.updateIsPullDisabled();
+    this.updateisPullEnabled();
   },
+  /* eslint-disable */
+  mounted() {
+    this.$root.$on('isHomeBalanceVisible', (value) => {
+      this.isBalanceVisible = value;
+
+      // if (!value) this.isPullTempDisabled = true;
+      // if (value) setTimeout(() => { this.isPullTempDisabled = false }, 0);
+    });
+  },
+
   methods: {
+    prevent(event) {
+      if (!this.isBalanceVisible) event.stopPropagation();
+      return false;
+    },
+
     /**
      * Decide if the MainNav component should be visible
      * Update MainNav component visibility
@@ -155,13 +217,26 @@ export default {
         this.isMainNavVisible = true;
       }
     },
-
-    updateIsPullDisabled() {
-      this.isPullDisabled = this.$route.name !== 'wallet';
+    /*eslint-disable*/
+    updateisPullEnabled() {
+      this.isPullEnabled = this.$route.name === 'wallet' || this.$route.name === 'walletSingle';
     },
 
     refresher(done) {
-      if (this.$route.name === 'wallet') this.updateBalances(done);
+      if (this.$route.name === 'wallet') {
+        setTimeout(() => {
+          this.updateBalances(done);
+        }, 1000)
+        return false;
+      }
+
+      if (this.$route.name === 'walletSingle') {
+        setTimeout(() => {
+          this.$root.$emit('updateWalletSingle', done)
+        }, 1000)
+      }
+
+
     },
 
     async getUtxos(combinedAddresses, wallet) {
@@ -243,7 +318,7 @@ export default {
 
 <style>
 .animated {
-  animation-duration: 250ms;
+  animation-duration: 150ms;
 }
 
 .total-balance {
@@ -251,15 +326,72 @@ export default {
   align-items: center;
   justify-content: center;
   color: white;
-  font-family: 'CooperHewitt-SemiboldItalic';
+  font-family: 'CooperHewitt-BoldItalic';
   font-size: 2rem;
   line-height: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-  height: 6rem!important;
+  height: 5rem!important;
 }
 
 .total-balance > div {
   margin-top: 0.2em;
+}
+
+.total-balance-wrapper {
+  transition: all ease-in-out 150ms;
+  position: relative;
+  top: 0;
+  display: block!important;
+  height: 5rem!important;
+  position: absolute;
+  width: 100%;
+  opacity: 1;
+  padding: 0 0.5rem;
+}
+
+.no-balance .total-balance-wrapper,
+.short-top .total-balance-wrapper {
+  top: -5rem;
+  height: 0rem!important;
+  opacity: 0;
+}
+
+.no-balance .scroll-area.extended {
+  height: calc(100%);
+}
+
+.pull-to-refresh-message {
+  transition: all ease-in-out 150ms;
+  top: 0;
+}
+
+.no-balance .pull-to-refresh-message {
+  top: -5rem!important;
+}
+
+.layout-shape .layout {
+  height: calc(100vh - 5rem - 2.5rem);
+}
+
+.layout-shape.white {
+  background: white!important;
+}
+
+.no-balance .layout-shape {
+  background: #e4e9ef;
+}
+
+.background {
+  transition: all ease-in-out 150ms;
+}
+
+.no-balance .background,
+.short-top .background {
+  height: 21rem;
+}
+
+.single-wallet-top .background {
+  height: 28.5rem;
 }
 
 .q-pull-to-refresh-wrapper {
@@ -269,6 +401,19 @@ export default {
 .q-pull-to-refresh-wrapper .pull-to-refresh-message {
   position: relative;
   z-index: 2
+}
+
+.coin-header-wrapper {
+  height: 8rem!important;
+  padding: 1rem 0.5rem;
+}
+
+.single-wallet-top .coin-header-wrapper {
+  height: 10rem!important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0rem;
 }
 
 </style>

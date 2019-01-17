@@ -17,6 +17,10 @@
     src url(/assets/fonts/Montserrat/Montserrat-Medium.ttf)
 
 @font-face
+    font-family Montserrat-Semibold
+    src url(/assets/fonts/Montserrat/Montserrat-SemiBold.ttf)
+
+@font-face
     font-family Montserrat-Bold
     src url(/assets/fonts/Montserrat/Montserrat-Bold.ttf)
 
@@ -68,8 +72,12 @@ button.q-btn[disabled] {
   color: #1e3c57;
 }
 
-.bg-blueish {
+.q-input.bg-blueish {
   background: #33597b;
+}
+
+.bg-blueish {
+  backgroud: #1e3c57;
 }
 
 .text-cyan {
@@ -194,11 +202,10 @@ p.setup {
 
 .layout-shape {
   height: 100%;
-  background #e4e9ef;
   margin: 0 .5em;
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
-  color: black;
+  color: #252525;
 }
 
 .layout-shape > div {
@@ -207,14 +214,11 @@ p.setup {
 }
 
 .shrinked .layout-shape {
-  background #e4e9ef;
   overflow: hidden;
   /* padding: .25rem .25rem .25rem .25rem */
 }
 
 .shrinked .layout-shape .layout {
-  padding: 0 0.2em 0rem 0.3em;
-
 }
 
 /*! Typebase.less v0.1.0 | MIT License */
@@ -322,3 +326,11 @@ code
 
 .lead
     font-size scale * 1rem
+
+.q-btn:not(.disabled):not(.q-btn-flat):not(.q-btn-outline):not(.q-btn-push):active:before, .q-btn:not(.disabled):not(.q-btn-flat):not(.q-btn-outline):not(.q-btn-push).active:before {
+    box-shadow: none;
+}
+
+.q-alert {
+  box-shadow: none;
+}

@@ -1,11 +1,11 @@
 <template>
   <section
-    class="scroll-area"
+    class="scroll-area static"
     @touchmove="prevent"
   >
     <q-scroll-area
       ref="scrollArea"
-      class="scroll-area"
+      class="scroll-area static"
     >
       <q-infinite-scroll
         :handler="loadMore"
@@ -13,13 +13,26 @@
       >
         <q-timeline
           responsive
-          color="secondary"
+          color="blueish"
         >
           <SingleTransaction
             v-for="transaction in filteredPaginated"
             :key="transaction.ts"
             :data="transaction"
           />
+
+          <div
+            v-if="filteredPaginated.length === 0"
+            class="no-tx-alert"
+          >
+            <q-alert
+              color="info"
+              icon="info"
+            >
+              Transaction history is empty.
+            </q-alert>
+          </div>
+
         </q-timeline>
         <q-spinner-dots
           slot="message"
@@ -151,5 +164,17 @@ export default {
 <style>
 .scroll-area {
   height: 100%
+}
+
+.scroll-area.static {
+  position: static!important;
+}
+
+.no-tx-alert {
+  padding: 0.5rem;
+}
+
+.no-tx-alert .q-alert-content {
+  font-size: 0.8rem;
 }
 </style>
