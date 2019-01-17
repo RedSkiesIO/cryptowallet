@@ -1,51 +1,53 @@
 <template>
-  <div
-    class="wallet selectWallet"
-    @click="clickHandler(wallet.id)"
-  >
-    <div class="details">
-      <div class="icon">
-        <img :src="coinLogo">
-      </div>
-      <div class="name">{{ wallet.displayName }}</div>
-    </div>
+  <div class="account-item">
     <div
-      v-if="wallet.confirmedBalance"
-      class="balance"
+      class="wallet selectWallet"
+      @click="clickHandler(wallet.id)"
     >
-      <Amount
-        :amount="wallet.confirmedBalance"
-        :prepend-plus-or-minus="false"
-        :currency="currency"
-        :to-currency="true"
-        :coin="wallet.name"
-        format="0.00"
-      />
-    </div>
-    <div>
-      <div v-if="clickItemAction === 'selectWallet'">
-        <q-icon name="chevron_right"/>
+      <div class="details">
+        <div class="icon">
+          <img :src="coinLogo">
+        </div>
+        <div class="name">{{ wallet.displayName }}</div>
       </div>
-
-      <div v-if="clickItemAction === 'addWallet'">
-        <q-toggle
-          v-model="isEnabled"
+      <div
+        v-if="wallet.confirmedBalance"
+        class="balance"
+      >
+        <Amount
+          :amount="wallet.confirmedBalance"
+          :prepend-plus-or-minus="false"
+          :currency="currency"
+          :to-currency="true"
+          :coin="wallet.name"
+          format="0.00"
         />
       </div>
-    </div>
+      <div>
+        <div v-if="clickItemAction === 'selectWallet'">
+          <q-icon name="chevron_right"/>
+        </div>
 
-    <q-modal
-      v-model="initializingModalOpened"
-      minimized
-      @show="enableWallet()"
-    >
-
-      <div class="initialize-wallet-modal">
-        <Spinner/>
-        <span>Enabling wallet</span>
+        <div v-if="clickItemAction === 'addWallet'">
+          <q-toggle
+            v-model="isEnabled"
+          />
+        </div>
       </div>
-    </q-modal>
 
+      <q-modal
+        v-model="initializingModalOpened"
+        minimized
+        @show="enableWallet()"
+      >
+
+        <div class="initialize-wallet-modal">
+          <Spinner/>
+          <span>Enabling wallet</span>
+        </div>
+      </q-modal>
+
+    </div>
   </div>
 </template>
 
@@ -81,6 +83,7 @@ export default {
   data() {
     return {
       initializingModalOpened: false,
+      walletsState: [],
     };
   },
   computed: {
@@ -96,7 +99,11 @@ export default {
         return this.isWalletEnabled();
       },
       set(val) {
-        if (val) this.initializingModalOpened = true;
+        if (val) {
+          this.enableWallet();
+          // walletsState
+          // this.initializingModalOpened = true;
+        }
         if (!val) this.disableWallet();
       },
     },
@@ -125,7 +132,7 @@ export default {
         .where('account_id', this.authenticatedAccount)
         .where('displayName', this.wallet.displayName)
         .where('name', this.wallet.name)
-        .where('imported', true)
+        .where('enabled', true)
         .get();
       return result.length > 0;
     },
@@ -265,6 +272,8 @@ export default {
     },
 
     async enableWallet() {
+      console.log('enable wallet');
+
       const data = {
         name: this.wallet.name,
         displayName: this.wallet.displayName,
@@ -273,21 +282,21 @@ export default {
         network: this.wallet.network,
       };
 
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      /*const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), this.wallet.network);
-      this.activeWallets[this.authenticatedAccount][this.wallet.name] = wallet;
+      this.activeWallets[this.authenticatedAccount][this.wallet.name] = wallet;*/
 
       const newWalletResult = await Wallet.$insert({ data });
       const newWalletId = newWalletResult.wallet[0].id;
 
-      if (this.wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, wallet, newWalletId);
-      if (this.wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, wallet, newWalletId);
+      /*if (this.wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, wallet, newWalletId);
+      if (this.wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, wallet, newWalletId);*/
 
-      this.initializingModalOpened = false;
+      //this.initializingModalOpened = false;
 
       Wallet.$update({
         where: record => record.id === newWalletId,
-        data: { imported: true },
+        data: { imported: false, enabled: true },
       });
     },
 
@@ -300,6 +309,12 @@ export default {
 
       const walletId = wallets[0].id;
       Wallet.$delete(walletId);
+
+
+      Wallet.$update({
+        where: record => record.id === walletId,
+        data: { imported: false, enabled: false },
+      });
 
       const transactions = Tx.query().where('wallet_id', walletId).get();
       transactions.forEach((tx) => {
@@ -325,9 +340,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: #f9f9f9;
-  margin-bottom: 2px;
+  width: 100%;
 }
 
 .selectWallet .details {

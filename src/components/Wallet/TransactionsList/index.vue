@@ -25,10 +25,7 @@
             v-if="filteredPaginated.length === 0"
             class="no-tx-alert"
           >
-            <q-alert
-              color="info"
-              icon="info"
-            >
+            <q-alert color="info">
               Transaction history is empty.
             </q-alert>
           </div>

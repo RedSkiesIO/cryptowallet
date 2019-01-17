@@ -19,6 +19,7 @@ export default class Wallet extends Model {
       confirmedBalance: this.attr(0),
       unconfirmedBalance: this.attr(0),
       imported: this.attr(false),
+      enabled: this.attr(false),
       lastBlockHeight: this.attr(0),
     };
   }
