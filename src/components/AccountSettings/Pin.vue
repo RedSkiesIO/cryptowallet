@@ -167,5 +167,6 @@ export default {
 <style>
 .setup.with-margin {
   margin: 2rem auto;
+  margin-bottom: 1rem;
 }
 </style>

@@ -177,7 +177,10 @@ export default {
 </script>
 
 <style>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0380340eac688fc4c1644bab9981a509a4e23408
 .done-msg-wrapper {
   text-align: center;
   font-family: 'CooperHewitt-HeavyItalic';

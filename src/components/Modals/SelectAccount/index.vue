@@ -70,7 +70,6 @@
           />
         </div>
       </div>
-
     </q-modal>
   </div>
 </template>

@@ -47,7 +47,7 @@
             :class="{ white: layoutShapeWhite }"
             class="layout-shape"
           >
-            <keep-alive include="Wallet">
+            <keep-alive>
               <router-view/>
             </keep-alive>
           </div>
@@ -201,7 +201,7 @@ export default {
 
   methods: {
     prevent(event) {
-      if (!this.isBalanceVisible) event.stopPropagation();
+      //if (!this.isBalanceVisible) event.stopPropagation();
       return false;
     },
 
@@ -365,9 +365,9 @@ export default {
   top: 0;
 }
 
-/* .no-balance .pull-to-refresh-message {
+/*.no-balance .pull-to-refresh-message {
   top: -5rem!important;
-} */
+}*/
 
 .layout-shape .layout {
   height: calc(100vh - 5rem - 2.5rem);

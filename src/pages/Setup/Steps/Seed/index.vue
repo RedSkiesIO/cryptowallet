@@ -68,7 +68,7 @@ export default {
 
 <style scoped>
 .seed-box {
-  padding: 1em;
+  padding: 0em 0;
   line-height: 2;
 }
 

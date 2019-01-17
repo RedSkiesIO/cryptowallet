@@ -1,5 +1,6 @@
+/*eslint-disable*/
 export default [
-  {
+/*  {
     displayName: 'Bitcoin',
     name: 'Bitcoin',
     sdk: 'Bitcoin',
@@ -7,8 +8,8 @@ export default [
     symbol: 'BTC',
     network: 'BITCOIN',
     denomination: '0.00000000',
-  },
-  {
+  },*/
+/*  {
     displayName: 'Bitcoin T.N.',
     name: 'Bitcoin',
     sdk: 'Bitcoin',
@@ -16,9 +17,9 @@ export default [
     symbol: 'BTC',
     network: 'BITCOIN_TESTNET',
     denomination: '0.00000000',
-  },
+  },*/
   {
-    displayName: 'Litecoin Testnet',
+    displayName: 'Litecoin',
     name: 'Litecoin',
     sdk: 'Bitcoin',
     coinType: 1,
@@ -27,7 +28,7 @@ export default [
     denomination: '0.00000000',
   },
   {
-    displayName: 'Dash Testnet',
+    displayName: 'Dash',
     name: 'Dash',
     sdk: 'Bitcoin',
     coinType: 1,
@@ -36,7 +37,7 @@ export default [
     denomination: '0.00000000',
   },
   {
-    displayName: 'BC Regtest',
+    displayName: 'Bitcoin', // regtest
     name: 'Bitcoin',
     sdk: 'Bitcoin',
     coinType: 0,
@@ -44,7 +45,7 @@ export default [
     network: 'REGTEST',
     denomination: '0.00000000',
   },
-  {
+/*  {
     displayName: 'Ethereum',
     name: 'Ethereum',
     sdk: 'Ethereum',
@@ -52,9 +53,9 @@ export default [
     symbol: 'ETH',
     network: 'ETHEREUM',
     denomination: '0.000000000000000000',
-  },
+  },*/
   {
-    displayName: 'Ethereum Ropsten',
+    displayName: 'Ethereum',
     name: 'Ethereum',
     sdk: 'Ethereum',
     coinType: 60,

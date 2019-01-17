@@ -403,7 +403,7 @@ body > div {
   justify-content: center;
   top: 0!important;
   height: 100%!important;
-  z-index: 999;
+  z-index: 999999;
 }
 
 .background {
