@@ -124,17 +124,27 @@ export default {
         },
         scales: {
           xAxes: [{
-            display: false,
             type: 'time',
+            // time: {
+            //   stepSize: 4,
+            // },
+            ticks: {
+              minRotation: '45',
+              fontColor: '#78d2e6',
+              padding: 15,
+
+            },
             gridLines: {
               display: false,
             },
           }],
           yAxes: [{
-            position: 'right',
+            position: 'left',
             color: '#78d2e6',
             ticks: {
               fontColor: '#78d2e6',
+              // eslint-disable-next-line no-unused-vars
+              callback: (value, index, values) => `£${value}`,
             },
           }],
         },
@@ -205,7 +215,7 @@ export default {
     min-height: 1.75em;
 }
 .chart-container{
-    margin: -0.5rem;
+    margin: 0;
 }
 
 </style>
