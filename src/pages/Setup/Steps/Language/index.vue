@@ -94,6 +94,15 @@
       </div> -->
       </div>
     </div>
+
+    <div class="loading-footer">
+      <!-- <div class="developed-by">Designed and Developed by</div> -->
+      <img
+        class="logo-loading"
+        src="~/assets/logo-white-horizontal.png"
+      >
+    </div>
+
   </div>
 </template>
 

@@ -126,7 +126,7 @@ export default {
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
-        format: '0.00',
+        format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
         currency: this.selectedCurrency,

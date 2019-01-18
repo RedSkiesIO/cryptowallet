@@ -40,7 +40,7 @@
           :currency="selectedCurrency"
           :to-currency="true"
           :coin="wallet.name"
-          format="0.00"
+          format="0,0[.]00"
         />
         <div class="in-coin">{{ balanceInCoin }} {{ coinSymbol }}</div>
       </div>

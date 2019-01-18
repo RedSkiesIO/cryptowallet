@@ -4,7 +4,7 @@
     <div class="controls-box">
       <q-btn
         :label="$t('cancel')"
-        color="primary"
+        color="blueish"
         size="md"
         @click="cancel()"
       />
