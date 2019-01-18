@@ -21,7 +21,8 @@
       />
 
       <q-btn
-        color="secondary"
+        color="yellow"
+        text-color="blueish"
         label="Done"
         @click="done"
       />
@@ -68,8 +69,9 @@ export default {
 
 <style scoped>
 .seed-box {
-  padding: 0em 0;
+  padding: 1em 0;
   line-height: 2;
+  font-size: 1.2rem;
 }
 
 .word-span {

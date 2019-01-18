@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="setup">Pin Setup</h1>
-    <h4 class="setup">Choose your pin</h4>
+    <h4 class="setup">Set your pin. Minimum 6 digits.</h4>
     <pin-pad mode="pin-setup"/>
   </div>
 </template>

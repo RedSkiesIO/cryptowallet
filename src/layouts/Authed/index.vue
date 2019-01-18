@@ -130,7 +130,7 @@ export default {
 
       const formattedBalance = new AmountFormatter({
         amount: balance,
-        format: '0.00',
+        format: '0,0[.]00',
         currency: this.selectedCurrency,
         toCurrency: false,
         toCoin: false,

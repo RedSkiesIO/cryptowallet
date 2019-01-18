@@ -61,6 +61,7 @@ export default [
     coinType: 60,
     symbol: 'ETH',
     network: 'ETHEREUM_ROPSTEN',
-    denomination: '0.000000000000000000',
+    // denomination: '0.000000000000000000',
+    denomination: '0.00000000',
   },
 ];

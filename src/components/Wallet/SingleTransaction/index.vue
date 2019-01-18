@@ -135,7 +135,7 @@ export default {
 
       const amountInCurrency = new AmountFormatter({
         amount: inCoin,
-        format: '0.00',
+        format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
         currency: this.selectedCurrency,
@@ -164,7 +164,7 @@ export default {
 
       const amountInCurrency = new AmountFormatter({
         amount: feeInCoin.getFormatted(),
-        format: '0.00',
+        format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
         currency: this.selectedCurrency,

@@ -14,7 +14,8 @@
     </div>
     <div class="btns-wrapper">
       <q-btn
-        color="secondary"
+        color="yellow"
+        text-color="blueish"
         label="Next"
         @click="validate"
       />

@@ -106,7 +106,7 @@ export default {
   width: 20%!important;
   margin-left: 2.5%;
   margin-right: 2.5%;
-  margin-bottom: 2.5%;
+  margin-bottom: 0%;
   display: inline-flex;
 }
 .seed-input{
@@ -139,5 +139,9 @@ export default {
 
 .randomSeedContainer .q-if-focused{
   border: none;
+}
+
+.randomSeedContainer .q-if-standard {
+  padding-bottom: 0px!important;
 }
 </style>

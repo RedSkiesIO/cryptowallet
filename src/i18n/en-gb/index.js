@@ -89,7 +89,7 @@ export default {
   restoreAccount: 'Enter Backup Phrase',
   restoreDescription: 'Type in your 12-word Backup Phrase in the correct order to restore your CryptoWallet',
   enterSeed: 'Enter your 12 word seed',
-  newAccount: 'Enter Account Name',
+  newAccount: 'Set Account Name',
   language: 'Language',
   currency: 'Currency',
   node: 'Node',

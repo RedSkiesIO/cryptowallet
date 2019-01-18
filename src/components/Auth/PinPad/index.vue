@@ -23,7 +23,8 @@
       <q-btn
         v-if="mode === 'pin-setup' || mode === 'new-pin'"
         :disabled="canProceed"
-        color="secondary"
+        color="yellow"
+        text-color="blueish"
         label="Done"
         @click="done"
       />
@@ -159,7 +160,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: .75em;
+  margin-top: .5rem;
 }
 
 .dot {
