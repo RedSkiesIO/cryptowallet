@@ -76,9 +76,17 @@ export default {
         .get();
 
 
+      console.log('!!!', txs);
+
       txs.sort((a, b) => {
         if (this.wallet.sdk === 'Ethereum') {
-          return new Date(b.confirmedTime * 1000) - new Date(a.confirmedTime * 1000);
+          let b1 = new Date(b.confirmedTime * 1000);
+          if (!b.confirmedTime) b1 = new Date(b.receivedTime.toString() * 1000);
+
+          let a1 = new Date(a.confirmedTime * 1000);
+          if (!a.confirmedTime) a1 = new Date(a.receivedTime.toString() * 1000);
+
+          return b1 - a1;
         }
 
         if (this.wallet.sdk === 'Bitcoin') {
