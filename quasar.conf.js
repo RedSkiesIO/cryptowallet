@@ -50,6 +50,9 @@ module.exports = (ctx) => {
           '@': path.resolve(__dirname, './src/'),
         };
       },
+      uglifyOptions: {
+        mangle: false,
+      },
     },
     devServer: {
       // https: true,

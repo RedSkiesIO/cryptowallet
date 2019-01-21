@@ -21,7 +21,6 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="ios" spec="^4.5.5" />
     <plugin name="cordova-plugin-contacts" spec="3.0.1" />
     <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
@@ -30,5 +29,6 @@
     <plugin name="cordova-sms-plugin" spec="0.1.13" />
     <plugin name="cordova-clipboard" spec="^1.2.1" />
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
-    <engine name="android" spec="~7.1.4" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.1.4" />
 </widget>
