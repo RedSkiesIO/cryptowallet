@@ -23,9 +23,9 @@
     >
 
       <div v-if="!settings.loading">
-
         <router-view/>
         <SelectAccountModal/>
+        <NewAccountModal/>
 
         <div v-if="settings.authenticatedAccount">
           <WalletsModal/>
@@ -52,6 +52,7 @@ import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
 import PriceChartModal from '@/components/Modals/PriceCharts';
 import SelectAccountModal from '@/components/Modals/SelectAccount';
+import NewAccountModal from '@/components/Modals/NewAccount';
 import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import CoinHistoryModal from '@/components/Modals/CoinHistory';
@@ -66,6 +67,7 @@ export default {
     WalletsModal,
     PriceChartModal,
     SelectAccountModal,
+    NewAccountModal,
     SendCoinModal,
     ReceiveCoinModal,
     CoinHistoryModal,
@@ -518,6 +520,12 @@ body > div {
 
 .modal-layout-wrapper.no-padding {
   padding: 0;
+}
+
+.modal-layout-wrapper.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .light-modal .modal-layout-wrapper {
