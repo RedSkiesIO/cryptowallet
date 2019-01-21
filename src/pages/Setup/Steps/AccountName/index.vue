@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h1 class="setup">{{ $t('newAccount') }}</h1>
+      <h1 class="setup">{{ $t('setAccountName') }}</h1>
     </div>
     <div class="account-name-input-wrapper">
       <q-input

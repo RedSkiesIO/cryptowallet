@@ -15,7 +15,19 @@
             @click.prevent="closeModal"
           />
         </div>
-        <h1 class="header-h1">Accounts</h1>
+        <h1 class="header-h1">{{ $t('accounts') }}</h1>
+        <div
+          class="header-settings-button-wrapper"
+        >
+          <q-btn
+            icon="add"
+            color="primary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click="newAccount"
+          />
+        </div>
       </div>
 
       <div class="modal-layout-wrapper no-padding">
@@ -49,25 +61,6 @@
               @click="selectAccount(account.name)"
             />
           </div>
-        </div>
-
-        <div class="btns-wrapper">
-          <q-btn
-            :label="$t('createAccount')"
-            icon="add_box"
-            color="primary"
-            text-color="blueish"
-            @click="createAccount"
-          />
-        </div>
-        <div class="btns-wrapper">
-          <q-btn
-            :label="$t('importAccount')"
-            icon="get_app"
-            color="primary"
-            text-color="blueish"
-            @click="importAccount"
-          />
         </div>
       </div>
     </q-modal>
@@ -120,6 +113,9 @@ export default {
       this.$store.dispatch('settings/setSelectedAccount', name);
       this.$root.$emit('selectAccountModalOpened', false);
     },
+    newAccount() {
+      this.$root.$emit('newAccountModalOpened', true);
+    },
     defualtAccountChange(data) {
       if (data.val) {
         Account.$update({
@@ -146,12 +142,6 @@ export default {
 .close-button-wrapper {
   padding: 0.5rem;
   height: 2.7rem;
-}
-
-.dark-modal {
-  .modal-content {
-    background: #1e3c57;
-  }
 }
 
 .account-item {
