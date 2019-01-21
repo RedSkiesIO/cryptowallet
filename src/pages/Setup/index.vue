@@ -5,13 +5,9 @@
 </template>
 
 <script>
-/* eslint-disable */
 import bcrypt from 'bcryptjs';
-import { FormWizard, TabContent } from 'vue-form-wizard';
-import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Language from '@/pages/Setup/Steps/Language/index.vue';
 import AccountName from '@/pages/Setup/Steps/AccountName/index.vue';
-import AccountType from '@/pages/Setup/Steps/AccountType/index.vue';
 import Pin from '@/pages/Setup/Steps/Pin';
 import PinConfirm from '@/pages/Setup/Steps/Pin/Confirm';
 import Network from '@/pages/Setup/Steps/Network';
@@ -24,11 +20,8 @@ import { mapState } from 'vuex';
 
 export default {
   components: {
-    FormWizard,
-    TabContent,
     Language,
     AccountName,
-    AccountType,
     Pin,
     PinConfirm,
     Network,
@@ -45,10 +38,9 @@ export default {
         Language,
         Restore,
         AccountName,
-        // AccountType,
         Pin,
         PinConfirm,
-        /*Network,*/
+        /* Network, */
         Seed,
         SeedConfirm,
         Node,
@@ -62,28 +54,9 @@ export default {
     }),
   },
   created() {
-    /**
-     * @todo
-     */
     if (this.$store.state.setup.salt) return false;
     this.$store.dispatch('setup/setSalt', bcrypt.genSaltSync(10));
-  },
-  methods: {
-/*    afterChange(prevIndex, nextIndex) {
-      this.showNext = false;
-      if (nextIndex === 1) this.$store.dispatch('setup/resetPin', {value: []});
-      if (nextIndex === 2) this.$store.dispatch('setup/resetPinConfirm', {value: []});
-      if (nextIndex === 3) this.showNext = true;
-    },
-
-    validateStep(name) {
-      if (this.$refs[name].validate() === true) {
-        this.validStep = true;
-      } else {
-        return false;
-      }
-      return true;
-    },*/
+    return true;
   },
 };
 

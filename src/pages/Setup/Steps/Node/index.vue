@@ -8,7 +8,6 @@
         :float-label="$t('IPAddress')"
         v-model="nodeIp"
         inverted
-        clearable
         color="blueish"
       />
     </div>
@@ -21,7 +20,8 @@
       />
 
       <q-btn
-        color="secondary"
+        color="yellow"
+        text-color="blueish"
         label="Done"
         @click="done"
       />
@@ -31,7 +31,7 @@
 
 <script>
 import { mapState } from 'vuex';
-/*eslint-disable*/
+
 export default {
   data() {
     return {
@@ -67,7 +67,7 @@ export default {
     },
 
     skip() {
-       this.$router.push({ path: `/setup/${this.id + 1}` });
+      this.$router.push({ path: `/setup/${this.id + 1}` });
     },
   },
 
