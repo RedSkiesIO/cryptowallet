@@ -59,6 +59,13 @@ export default {
         }
       },
     },
+    receiveCoinModalOpened: {
+      handler(newVal, oldVal) {
+        if (oldVal === true && newVal === false) {
+          if (this.$store.state.route.name === 'receiveCoin') this.$router.go(-1);
+        }
+      },
+    },
   },
   mounted() {
     this.$root.$on('receiveCoinModalOpened', (value) => {

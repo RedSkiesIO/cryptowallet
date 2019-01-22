@@ -172,6 +172,13 @@ export default {
         this.hidden = false;
       }, 1000);
     });
+
+    /* if (cordova) {
+      document.addEventListener('backbutton', () => {
+        console.log('back');
+        this.$router.go(-1);
+      }, false);
+    } */
   },
 
   beforeMount() {

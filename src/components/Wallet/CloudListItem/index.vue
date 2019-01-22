@@ -111,6 +111,7 @@ export default {
   },
   methods: {
     send() {
+      console.log('route change');
       this.$router.push({ path: `/wallet/send/${this.wallet.id}` });
     },
     receive() {
