@@ -3,6 +3,7 @@
     <q-modal
       v-model="sendCoinModalOpened"
       class="light-modal modal"
+      no-route-dismiss
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -71,11 +72,18 @@ export default {
         }
       },
     },
+    sendCoinModalOpened: {
+      handler(newVal, oldVal) {
+        if (oldVal === true && newVal === false) {
+          if (this.$store.state.route.name === 'sendCoin') this.$router.go(-1);
+        }
+      },
+    },
   },
   mounted() {
-    this.$root.$on('sendCoinModalOpened', (value) => {
+    /* this.$root.$on('sendCoinModalOpened', (value) => {
       this.sendCoinModalOpened = value;
-    });
+    }); */
   },
   methods: {
     goBack() {

@@ -140,6 +140,14 @@ export default {
         }
       },
     },
+    priceChartModalOpened: {
+      handler(newVal, oldVal) {
+        if (oldVal === true && newVal === false) {
+          if (this.$store.state.route.name === 'coinPrices' ||
+              this.$store.state.route.name === 'coinSinglePrices') this.$router.go(-1);
+        }
+      },
+    },
   },
   async mounted() {
     this.$root.$on('priceChartModalOpened', (value) => {
