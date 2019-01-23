@@ -111,6 +111,10 @@ export default {
       }
       return this.txData.transaction.receiver;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
   },
   mounted() {
     this.$root.$on('sendSuccessModalOpened', (value, txData) => {
@@ -126,6 +130,7 @@ export default {
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,

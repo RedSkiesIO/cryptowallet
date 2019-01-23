@@ -51,7 +51,7 @@
         <div class="price-info justify-center">
 
           <div class="row labels">
-            <div class="col-6">1{{ coinSymbol }} / {{ selectedCurrency.code }}</div>
+            <div class="col-6">1 {{ coinSymbol }} / {{ selectedCurrency.code }}</div>
             <div class="col-6">Volume 24h {{ selectedCurrency.code }}</div>
           </div>
           <div class="row price">
@@ -115,6 +115,10 @@ export default {
     },
     latestPrice() {
       // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if (!prices) {
+        this.loadData();
+      }
       return this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
     },
     percentColor() {
@@ -155,7 +159,10 @@ export default {
     async loadData() {
       this.loading = true;
 
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      let coinSDK = this.coinSDKS[this.wallet.sdk];
+      if (this.wallet.sdk === 'ERC20') {
+        coinSDK = this.coinSDKS[this.wallet.parentSdk];
+      }
       try {
         const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
         const weekData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
