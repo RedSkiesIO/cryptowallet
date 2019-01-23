@@ -104,7 +104,12 @@ export default {
     },
   },
   async mounted() {
-    const coinSDK = this.coinSDKS[this.wallet.sdk];
+    let coinSDK = this.coinSDKS[this.wallet.sdk];
+    if (this.wallet.sdk === 'ERC20') {
+      coinSDK = this.coinSDKS[this.wallet.parentSdk];
+      console.log('this.wallet.sdk :', this.wallet.parentSdk);
+    }
+    console.log('this.wallet.sdk :', this.wallet.sdk);
     const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
     // const dataset = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
     this.chartData = dataset.map(item => item.y);
