@@ -1,23 +1,23 @@
 /*eslint-disable*/
 export default [
-/*  {
-    displayName: 'Bitcoin',
-    name: 'Bitcoin',
-    sdk: 'Bitcoin',
-    coinType: 0,
-    symbol: 'BTC',
-    network: 'BITCOIN',
-    denomination: '0.00000000',
-  },*/
-/*  {
-    displayName: 'Bitcoin T.N.',
-    name: 'Bitcoin',
-    sdk: 'Bitcoin',
-    coinType: 0,
-    symbol: 'BTC',
-    network: 'BITCOIN_TESTNET',
-    denomination: '0.00000000',
-  },*/
+  /*  {
+      displayName: 'Bitcoin',
+      name: 'Bitcoin',
+      sdk: 'Bitcoin',
+      coinType: 0,
+      symbol: 'BTC',
+      network: 'BITCOIN',
+      denomination: '0.00000000',
+    },*/
+  /*  {
+      displayName: 'Bitcoin T.N.',
+      name: 'Bitcoin',
+      sdk: 'Bitcoin',
+      coinType: 0,
+      symbol: 'BTC',
+      network: 'BITCOIN_TESTNET',
+      denomination: '0.00000000',
+    },*/
   {
     displayName: 'Litecoin',
     name: 'Litecoin',
@@ -45,21 +45,34 @@ export default [
     network: 'REGTEST',
     denomination: '0.00000000',
   },
-/*  {
-    displayName: 'Ethereum',
-    name: 'Ethereum',
-    sdk: 'Ethereum',
-    coinType: 60,
-    symbol: 'ETH',
-    network: 'ETHEREUM',
-    denomination: '0.000000000000000000',
-  },*/
+  /*  {
+      displayName: 'Ethereum',
+      name: 'Ethereum',
+      sdk: 'Ethereum',
+      coinType: 60,
+      symbol: 'ETH',
+      network: 'ETHEREUM',
+      denomination: '0.000000000000000000',
+    },*/
   {
     displayName: 'Ethereum',
     name: 'Ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',
+    network: 'ETHEREUM_ROPSTEN',
+    // denomination: '0.000000000000000000',
+    denomination: '0.00000000',
+  },
+  {
+    displayName: 'AtlasCity',
+    name: 'AtlasCity',
+    sdk: 'ERC20',
+    parentSdk: 'Ethereum',
+    symbol: 'ACT',
+    contractAddress: '0x26705403968a8c73656a2fed0f89245698718f3f',
+    decimals: 3,
+    networkName: 'Ethereum',
     network: 'ETHEREUM_ROPSTEN',
     // denomination: '0.000000000000000000',
     denomination: '0.00000000',

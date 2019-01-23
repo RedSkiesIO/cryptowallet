@@ -102,14 +102,48 @@ export default {
             return false;
           }
 
-          function generate(wallet, vm, mnemonic) {
+          async function generate(wallet, vm, mnemonic) {
             initializedWallets[wallet.name] = vm.coinSDKS[wallet.sdk].generateHDWallet(
               mnemonic,
               wallet.network,
             );
           }
+          async function generateErc20(keyPair, wallet, vm) {
+            initializedWallets[wallet.name] = vm.coinSDKS[wallet.sdk].generateERC20Wallet(
+              keyPair,
+              wallet.name,
+              wallet.symbol,
+              wallet.contractAddress,
+              wallet.decimals,
+            );
+          }
 
-          wallets.forEach(wallet => generate(wallet, this, this.account.seed.join(' ').trim()));
+          const erc20Promises = [];
+          const promises = [];
+          wallets.forEach((wallet) => {
+            if (wallet.sdk !== 'ERC20') {
+              promises.push(new Promise(async (res) => {
+                await generate(wallet, this, this.account.seed.join(' ').trim());
+                res();
+              }));
+            }
+          });
+          Promise.all(promises);
+
+          wallets.forEach((wallet) => {
+            if (wallet.sdk === 'ERC20') {
+              erc20Promises.push(new Promise(async (res) => {
+                const parentSDK = this.coinSDKS[wallet.parentSdk];
+                const parentWallet = initializedWallets[wallet.parentName];
+                const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
+                await generateErc20(keyPair, wallet, this);
+                res();
+              }));
+            }
+          });
+
+          Promise.all(erc20Promises);
+
           resolve();
 
           this.$nextTick(() => {

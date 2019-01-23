@@ -47,7 +47,7 @@ const exchangeRates = {
       rate: 156.14,
     },
   ],
-  ATL: [
+  AtlasCity: [
     {
       currency: 'USD',
       rate: 22222,

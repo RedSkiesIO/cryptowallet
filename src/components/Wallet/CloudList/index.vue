@@ -51,7 +51,10 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     wallets() {
-      return Wallet.query().where('account_id', this.authenticatedAccount).get();
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('imported', true)
+        .get();
     },
   },
   methods: {

@@ -155,14 +155,14 @@ export default {
       const { fee } = this.data;
       const inCoin = fee;
 
-      const feeInCoin = new AmountFormatter({
+      let feeInCoin = new AmountFormatter({
         amount: inCoin,
         format: this.coinDenomination,
         prependPlusOrMinus: false,
         removeTrailingZeros: true,
       });
 
-      const amountInCurrency = new AmountFormatter({
+      let amountInCurrency = new AmountFormatter({
         amount: feeInCoin.getFormatted(),
         format: '0,0[.]00',
         coin: this.wallet.name,
@@ -172,6 +172,29 @@ export default {
         toCoin: false,
         withCurrencySymbol: true,
       });
+
+      if (this.wallet.sdk === 'ERC20') {
+        const parent = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+
+        feeInCoin = new AmountFormatter({
+          amount: inCoin,
+          format: parent.denomination,
+          prependPlusOrMinus: false,
+          removeTrailingZeros: true,
+        });
+
+        amountInCurrency = new AmountFormatter({
+          amount: feeInCoin.getFormatted(),
+          format: '0,0[.]00',
+          coin: this.wallet.parentName,
+          prependPlusOrMinus: false,
+          currency: this.selectedCurrency,
+          toCurrency: true,
+          toCoin: false,
+          withCurrencySymbol: true,
+        });
+        return `${fee} ${parent.symbol} (${amountInCurrency.getFormatted()})`;
+      }
 
       return `${fee} ${this.coinSymbol} (${amountInCurrency.getFormatted()})`;
     },

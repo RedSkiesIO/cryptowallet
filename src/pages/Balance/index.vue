@@ -90,77 +90,121 @@ export default {
         newBalance = balance;
       } else if (this.wallet.sdk === 'Ethereum') {
         newBalance = await coinSDK.getBalance(addressesRaw, this.wallet.network);
+      } else if (this.wallet.sdk === 'ERC20') {
+        // eslint-disable-next-line max-len
+        newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][this.wallet.name]);
       }
 
       const { network } = this.wallet;
-      const txHistory = await coinSDK.getTransactionHistory(addressesRaw, network, 0, 50);
+      let txHistory;
+      if (this.wallet.sdk === 'ERC20') {
+        // eslint-disable-next-line max-len
+        txHistory = await coinSDK.getTransactionHistory(this.activeWallets[this.authenticatedAccount][this.wallet.name], 0);
+      } else {
+        txHistory = await coinSDK.getTransactionHistory(addressesRaw, network, 0, 50);
+      }
+
 
       if (!txHistory) {
         done();
         return false;
       }
 
-      txHistory.txs.forEach((tx) => {
-        const result = Tx.query()
-          .where('hash', tx.hash)
-          .where('wallet_id', this.wallet.id)
-          .get();
+      if (this.wallet.sdk === 'ERC20') {
+        txHistory.forEach((tx) => {
+          const result = Tx.query()
+            .where('hash', tx.hash)
+            .where('wallet_id', this.wallet.id)
+            .get();
 
-        if (result[0]) {
-          const foundTx = result[0];
-          if (foundTx.sent) {
+          if (result[0]) {
+            const foundTx = result[0];
+            if (foundTx.sent) {
             // update the tx
-            Tx.$update({
-              where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
-              data: tx,
-            });
-
-            if (this.wallet.sdk === 'Bitcoin') {
-              // delete utxo that were used for that transaction
-              tx.sender.forEach((inputAddress) => {
-                const pendingUtxo = Utxo.query().where('address', inputAddress).where('pending', true).get();
-                pendingUtxo.forEach((pending) => {
-                  Utxo.$delete(pending.id);
-                });
+              Tx.$update({
+                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                data: tx,
               });
-
-              // find change address that were used and mark them as used
-              tx.receiver.forEach((changeAddress) => {
-                Address.$update({
-                  where: record => record.chain === 'internal' && record.address === changeAddress,
-                  data: { used: true },
-                });
+            } else { // update found received
+              Tx.$update({
+                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                data: tx,
               });
             }
-          } else { // update found received
-            Tx.$update({
-              where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
-              data: tx,
-            });
-          }
-        } else {
+          } else {
           // insert tx
-          Tx.$insert({
-            data: {
-              account_id: this.authenticatedAccount,
-              wallet_id: this.wallet.id,
-              ...tx,
-            },
-          });
-          // update external address
-          if (this.wallet.sdk === 'Bitcoin') {
-            if (tx.receiver.includes(this.wallet.externalAddress)) {
-              Wallet.$update({
-                where: record => record.id === this.wallet.id,
-                data: {
-                  externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1,
-                  externalAddress: null,
-                },
+            Tx.$insert({
+              data: {
+                account_id: this.authenticatedAccount,
+                wallet_id: this.wallet.id,
+                ...tx,
+              },
+            });
+          }
+        });
+      } else {
+        txHistory.txs.forEach((tx) => {
+          const result = Tx.query()
+            .where('hash', tx.hash)
+            .where('wallet_id', this.wallet.id)
+            .get();
+
+          if (result[0]) {
+            const foundTx = result[0];
+            if (foundTx.sent) {
+            // update the tx
+              Tx.$update({
+                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                data: tx,
+              });
+
+              if (this.wallet.sdk === 'Bitcoin') {
+              // delete utxo that were used for that transaction
+                tx.sender.forEach((inputAddress) => {
+                  const pendingUtxo = Utxo.query().where('address', inputAddress).where('pending', true).get();
+                  pendingUtxo.forEach((pending) => {
+                    Utxo.$delete(pending.id);
+                  });
+                });
+
+                // find change address that were used and mark them as used
+                tx.receiver.forEach((changeAddress) => {
+                  Address.$update({
+                    where: record => record.chain === 'internal' && record.address === changeAddress,
+                    data: { used: true },
+                  });
+                });
+              }
+            } else { // update found received
+              Tx.$update({
+                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                data: tx,
               });
             }
+          } else {
+          // insert tx
+            Tx.$insert({
+              data: {
+                account_id: this.authenticatedAccount,
+                wallet_id: this.wallet.id,
+                ...tx,
+              },
+            });
+            // update external address
+            if (this.wallet.sdk === 'Bitcoin') {
+              if (tx.receiver.includes(this.wallet.externalAddress)) {
+                Wallet.$update({
+                  where: record => record.id === this.wallet.id,
+                  data: {
+                    externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1,
+                    externalAddress: null,
+                  },
+                });
+              }
+            }
           }
-        }
-      });
+        });
+      }
 
       // update balance
       Wallet.$update({
