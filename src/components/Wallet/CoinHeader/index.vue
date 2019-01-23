@@ -36,6 +36,7 @@
       <div class="wallet-prices">
         <Amount
           :amount="wallet.confirmedBalance"
+          :rate="latestPrice"
           :prepend-plus-or-minus="false"
           :currency="selectedCurrency"
           :to-currency="true"
@@ -89,9 +90,14 @@ export default {
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
     balanceInCoin() {
       const balanceInCoin = new AmountFormatter({
         amount: this.wallet.confirmedBalance,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         prependPlusOrMinus: false,
         removeTrailingZeros: true,

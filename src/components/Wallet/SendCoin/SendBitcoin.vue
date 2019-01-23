@@ -151,6 +151,10 @@ export default {
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
   },
   watch: {
     amount(val) {
@@ -396,6 +400,7 @@ export default {
 
         const formattedFee = new AmountFormatter({
           amount: transaction.fee,
+          rate: this.latestPrice,
           format: '0.00',
           coin: this.wallet.name,
           currency: this.selectedCurrency,
@@ -591,6 +596,7 @@ export default {
     amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -607,6 +613,7 @@ export default {
     currencyToAmount(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         coin: this.wallet.name,
         prependPlusOrMinus: false,

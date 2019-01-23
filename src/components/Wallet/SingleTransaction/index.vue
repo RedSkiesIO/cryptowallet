@@ -83,6 +83,10 @@ export default {
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
 
     /**
      * Prepends "To: " or "From: " into transaction title
@@ -128,6 +132,7 @@ export default {
 
       const amountInCoin = new AmountFormatter({
         amount: inCoin,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         prependPlusOrMinus: true,
         removeTrailingZeros: true,
@@ -135,6 +140,7 @@ export default {
 
       const amountInCurrency = new AmountFormatter({
         amount: inCoin,
+        rate: this.latestPrice,
         format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -157,6 +163,7 @@ export default {
 
       let feeInCoin = new AmountFormatter({
         amount: inCoin,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         prependPlusOrMinus: false,
         removeTrailingZeros: true,
@@ -164,6 +171,7 @@ export default {
 
       let amountInCurrency = new AmountFormatter({
         amount: feeInCoin.getFormatted(),
+        rate: this.latestPrice,
         format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -178,6 +186,7 @@ export default {
 
         feeInCoin = new AmountFormatter({
           amount: inCoin,
+          rate: this.latestPrice,
           format: parent.denomination,
           prependPlusOrMinus: false,
           removeTrailingZeros: true,
@@ -185,6 +194,7 @@ export default {
 
         amountInCurrency = new AmountFormatter({
           amount: feeInCoin.getFormatted(),
+          rate: this.latestPrice,
           format: '0,0[.]00',
           coin: this.wallet.parentName,
           prependPlusOrMinus: false,

@@ -110,12 +110,17 @@ export default {
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/all'];
+      return prices;
+    },
     totalBalance() {
       let balance = 0;
-
       this.wallets.forEach((wallet) => {
+        const prices = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
         const formattedAmount = new AmountFormatter({
           amount: wallet.confirmedBalance,
+          rate: prices.data.PRICE,
           format: '0.00',
           coin: wallet.name,
           prependPlusOrMinus: false,
