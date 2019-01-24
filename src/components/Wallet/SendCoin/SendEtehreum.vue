@@ -4,6 +4,12 @@
       <div class="send-modal-heading">
         <h3>Recipient</h3>
         <span class="h3-line"/>
+        <q-btn
+          :label="$t('paste')"
+          size="sm"
+          class="send-heading-btn"
+          @click="paste"
+        />
       </div>
 
       <div class="to">
@@ -13,12 +19,6 @@
           class="sm-input grey-input"
           inverted
         />
-        <!-- <q-btn
-          :label="$t('paste')"
-          color="primary"
-          size="sm"
-          @click="paste"
-        /> -->
         <div
           class="side-content qr-code-wrapper"
           @click="scan"
@@ -32,12 +32,20 @@
       <div class="send-modal-heading">
         <h3>Amount</h3>
         <span class="h3-line"/>
+        <q-btn
+          :label="$t('max')"
+          :class="{ active: maxed }"
+          size="sm"
+          class="send-heading-btn"
+          @click="max"
+        />
       </div>
 
       <div class="amount">
         <div class="amount-div-wrapper">
           <q-input
             v-model="inCoin"
+            :disable="maxed"
             type="number"
             placeholder="0"
             class="sm-input grey-input"
@@ -50,6 +58,7 @@
         <div class="amount-div-wrapper">
           <q-input
             v-model="inCurrency"
+            :disable="maxed"
             type="number"
             placeholder="0"
             class="sm-input grey-input"
@@ -78,7 +87,7 @@
             label-always
             snap
             markers
-            @input="getFee"
+            @input="feeChange"
           />
         </div>
         <div class="estimated-fee">
@@ -128,7 +137,9 @@ export default {
       sendingModalOpened: false,
       sendingModalOpened: false,
       feeSetting: 1,
+      rawFee: 0,
       estimatedFee: 'N/A',
+      maxed: false,
     };
   },
   computed: {
@@ -196,7 +207,7 @@ export default {
     /**
      * Converts currency to coin as user types
      */
-    currencyToAmount(amount) {
+    currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
         format: this.coinDenomination,
@@ -218,16 +229,27 @@ export default {
       return 'high';
     },
 
+
+    async feeChange() {
+      this.getFee();
+      if(this.maxed) this.updateMax();
+    },
+
     /**
      * Fetches and sets an estimated fee
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      /*const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;
+      if (this.feeSetting === 2) fee = fees.txHigh;*/
+
+      let fee = 0.00021;
+      if (this.feeSetting === 0) fee = 0.00004;
+      if (this.feeSetting === 2) fee = 0.0013;
+
 
       const formattedFee = new AmountFormatter({
         amount: fee,
@@ -238,91 +260,8 @@ export default {
         withCurrencySymbol: true,
       });
 
+      this.rawFee = fee;
       this.estimatedFee = formattedFee.getFormatted();
-    },
-
-    /**
-     * Once transaction was broadcasted successfully
-     * resets the state and displays a toast
-     */
-    completeTransaction() {
-      const initialState = this.$options.data.apply(this);
-      initialState.amount = '';
-      initialState.inCurrency = '';
-      initialState.sendingModalOpened = true;
-      Object.assign(this.$data, initialState);
-
-      setTimeout(() => {
-        this.sendingModalOpened = false;
-        this.$toast.create(0, this.$t('madeTransaction'), 200);
-      }, 250);
-    },
-
-    /**
-     * Creates a raw transaction and updates the fee
-     * @param  {Array<Object>} accounts
-     * @param  {Array<String>} changeAddresses
-     * @param  {Array<Object>} filteredUtxos
-     * @param  {Object} wallet
-     * @param  {String} address
-     * @param  {Number} amount
-     * @return {Object}
-     */
-    async createRawTx(accounts, changeAddresses, filteredUtxos, wallet, address, amount) {
-      if (!address || !amount) return false;
-
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
-
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
-      fee = Math.round(fee);
-
-      /* console.log(accounts);
-      console.log(changeAddresses);
-      console.log(filteredUtxos);
-      console.log(wallet);
-      console.log(address);
-      console.log(amount);
-      console.log(fee); */
-
-      try {
-        const {
-          hexTx,
-          transaction,
-          utxo,
-        } = await coinSDK.createRawTx(
-          accounts,
-          changeAddresses,
-          filteredUtxos,
-          wallet,
-          address,
-          amount,
-          fee,
-        );
-
-        const formattedFee = new AmountFormatter({
-          amount: transaction.fee,
-          format: '0.00',
-          coin: this.wallet.name,
-          currency: this.selectedCurrency,
-          toCurrency: true,
-          withCurrencySymbol: true,
-        });
-
-        this.estimatedFee = formattedFee.getFormatted();
-
-        return {
-          hexTx,
-          transaction,
-          utxo,
-        };
-      } catch (err) {
-        this.$toast.create(10, err.message, 500);
-      }
-
-      return false;
     },
 
     /**
@@ -365,36 +304,11 @@ export default {
         hexTx,
       } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
 
-      console.log('????', transaction);
-
       this.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
         transaction,
       });
 
-
-      /*coinSDK.broadcastTx(hexTx, this.wallet.network)
-        .then(async (result) => {
-          if (!result) {
-            console.error('transaction broadcast failure');
-            return false;
-          }
-
-          transaction.account_id = this.authenticatedAccount;
-          transaction.wallet_id = this.wallet.id;
-          transaction.isChange = false;
-          transaction.sent = true;
-
-          await Tx.$insert({ data: transaction });
-
-          this.completeTransaction();
-          return false;
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err);
-        });
-*/
       return false;
     },
 
@@ -405,6 +319,22 @@ export default {
       cordova.plugins.clipboard.paste((text) => {
         this.address = text;
       });
+    },
+
+    async max() {
+      if (this.maxed) {
+        this.maxed = false;
+        this.inCoin = '';
+        this.inCurrency = '';
+        return false;
+      }
+
+      this.maxed = true;
+      this.updateMax();
+    },
+
+    updateMax() {
+      this.inCoin = this.wallet.confirmedBalance - this.rawFee;
     },
 
     /**

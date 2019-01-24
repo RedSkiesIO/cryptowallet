@@ -143,7 +143,6 @@ export default {
       inCurrencyFocus: false,
       sendingModalOpened: false,
       feeSetting: 1,
-      rawFee: 0,
       estimatedFee: 'N/A',
       utxos: [],
       maxed: false,
@@ -460,7 +459,6 @@ export default {
           withCurrencySymbol: true,
         });
 
-        this.rawFee = transaction.fee;
         this.estimatedFee = formattedFee.getFormatted();
 
         return {
@@ -609,7 +607,6 @@ export default {
         withCurrencySymbol: true,
       });
 
-      this.rawFee = transaction.fee;
       this.estimatedFee = formattedFee.getFormatted();
       this.inCoin = transaction.value;
       this.$refs.inCoin.focus();
