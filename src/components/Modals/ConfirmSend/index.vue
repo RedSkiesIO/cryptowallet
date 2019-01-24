@@ -122,7 +122,7 @@ export default {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     newBalance() {
-      return this.wallet.confirmedBalance - this.txData.transaction.value - this.txData.transaction.fee;
+      return this.wallet.confirmedBalance - (this.txData.transaction.value + this.txData.transaction.fee);
     },
     to() {
       if (Array.isArray(this.txData.transaction.receiver)) {

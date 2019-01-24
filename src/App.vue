@@ -32,7 +32,6 @@
           <PriceChartModal/>
           <SendCoinModal/>
           <ReceiveCoinModal/>
-          <CoinHistoryModal/>
           <ConfirmSendModal/>
           <SendSuccessModal/>
         </div>
@@ -55,7 +54,6 @@ import SelectAccountModal from '@/components/Modals/SelectAccount';
 import NewAccountModal from '@/components/Modals/NewAccount';
 import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
-import CoinHistoryModal from '@/components/Modals/CoinHistory';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
 
@@ -70,7 +68,6 @@ export default {
     NewAccountModal,
     SendCoinModal,
     ReceiveCoinModal,
-    CoinHistoryModal,
     ConfirmSendModal,
     SendSuccessModal,
   },
@@ -121,18 +118,7 @@ export default {
         if (this.accounts.length < 1) this.$router.push({ path: '/setup/0' });
         return true;
       },
-
-      'settings.selectedAccount': {
-        handler(value) {
-          if (!value) this.$router.push({ path: '/' });
-        },
-      },
     },
-  },
-
-
-  beforeCreate() {
-
   },
 
   mounted() {
@@ -181,25 +167,6 @@ export default {
     } */
   },
 
-  beforeMount() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
-  },
   methods: {
     storePriceData(coin) {
       const coinSDK = this.coinSDKS.Bitcoin;
@@ -296,7 +263,7 @@ export default {
 
         await Promise.all(promises);
 
-        console.log('prices :', prices);
+        // console.log('prices :', prices);
 
         const checkExists = (coin, data) => {
           const price = Latest.find([`${coin}_${this.selectedCurrency.code}`]);
@@ -367,47 +334,10 @@ export default {
             },
           });
         }
-
-        // Latest.$insert({
-        //   data:
-        //     {
-        //       coin: 'BTC',
-        //       currency: 'GBP',
-        //       updated: +new Date(),
-        //       data: prices.BTC.GBP,
-        //     },
-        // });
-        // Latest.$insert({
-        //   data:
-        //     {
-        //       coin: 'ETH',
-        //       currency: 'GBP',
-        //       updated: +new Date(),
-        //       data: prices.ETH.GBP,
-        //     },
-        // });
-        // Latest.$insert({
-        //   data:
-        //     {
-        //       coin: 'LTC',
-        //       currency: 'GBP',
-        //       updated: +new Date(),
-        //       data: prices.LTC.GBP,
-        //     },
-        // });
-        // Latest.$insert({
-        //   data:
-        //     {
-        //       coin: 'DASH',
-        //       currency: 'GBP',
-        //       updated: +new Date(),
-        //       data: prices.DASH.GBP,
-        //     },
-        // });
-        const newPrice = Latest.find(['BTC_GBP']);
-        console.log('newPrice :', newPrice);
+        // const newPrice = Latest.find(['BTC_GBP']);
+        // console.log('newPrice :', newPrice);
       } catch (e) {
-        console.log('error :', e);
+        // console.log('error :', e);
       }
     },
 
