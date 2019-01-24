@@ -37,11 +37,13 @@
       <div class="amount">
         <div class="amount-div-wrapper">
           <q-input
-            v-model="amount"
+            v-model="inCoin"
             type="number"
             placeholder="0"
             class="sm-input grey-input"
             inverted
+            @focus="updateInCoinFocus(true)"
+            @blur="updateInCoinFocus(false)"
           />
           <div class="side-content">{{ coinSymbol }}</div>
         </div>
@@ -52,6 +54,8 @@
             placeholder="0"
             class="sm-input grey-input"
             inverted
+            @focus="updateInCurrencyFocus(true)"
+            @blur="updateInCurrencyFocus(false)"
           />
           <div class="side-content">{{ selectedCurrency.code }}</div>
         </div>
@@ -118,8 +122,10 @@ export default {
   data() {
     return {
       address: '',
-      amount: '',
+      inCoin: '',
       inCurrency: '',
+      inCurrencyFocus: false,
+      sendingModalOpened: false,
       sendingModalOpened: false,
       feeSetting: 1,
       estimatedFee: 'N/A',
@@ -146,15 +152,16 @@ export default {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
     },
   },
+
   watch: {
-    amount(val) {
+    inCoin(val) {
       if (val === null || val === '') return false;
-      this.amountToCurrency(val);
+      if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
       return false;
     },
     inCurrency(val) {
       if (val === null || val === '') return false;
-      this.currencyToAmount(val);
+      if (!this.inCoinFocus) this.inCoin = this.currencyToCoin(val);
       return false;
     },
   },
@@ -164,6 +171,44 @@ export default {
   },
 
   methods: {
+    updateInCoinFocus(val) {
+      this.inCoinFocus = val;
+    },
+    updateInCurrencyFocus(val) {
+      this.inCurrencyFocus = val;
+    },
+    /**
+     * Converts coins to currency as user types
+     */
+    amountToCurrency(amount) {
+      const formattedAmount = new AmountFormatter({
+        amount,
+        format: '0.00',
+        coin: this.wallet.name,
+        prependPlusOrMinus: false,
+        currency: this.selectedCurrency,
+        toCurrency: true,
+      });
+
+      return formattedAmount.getFormatted();
+    },
+
+    /**
+     * Converts currency to coin as user types
+     */
+    currencyToAmount(amount) {
+      const formattedAmount = new AmountFormatter({
+        amount,
+        format: this.coinDenomination,
+        coin: this.wallet.name,
+        prependPlusOrMinus: false,
+        currency: this.selectedCurrency,
+        toCoin: true,
+      });
+
+      return parseFloat(formattedAmount.getFormatted());
+    },
+
     /**
      * Allows to display a custom fee label on Quasar component
      */
@@ -286,7 +331,7 @@ export default {
      */
     isValid() {
       if (!this.address) return false;
-      if (!this.amount) return false;
+      if (!this.inCoin) return false;
       if (!this.inCurrency) return false;
       return true;
     },
@@ -300,7 +345,7 @@ export default {
         return false;
       }
 
-      if (this.wallet.confirmedBalance < this.amount) {
+      if (this.wallet.confirmedBalance < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), 500);
         return false;
       }
@@ -318,7 +363,7 @@ export default {
       const {
         transaction,
         hexTx,
-      } = await coinSDK.createEthTx(keypair, this.address, this.amount, fee);
+      } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
 
       console.log('????', transaction);
 
@@ -381,37 +426,6 @@ export default {
           });
         }, 500);
       }
-    },
-    /**
-     * Converts coins to currency as user types
-     */
-    amountToCurrency(amount) {
-      const formattedAmount = new AmountFormatter({
-        amount,
-        format: '0.00',
-        coin: this.wallet.name,
-        prependPlusOrMinus: false,
-        currency: this.selectedCurrency,
-        toCurrency: true,
-      });
-
-      this.inCurrency = formattedAmount.getFormatted();
-    },
-
-    /**
-     * Converts currency to coin as user types
-     */
-    currencyToAmount(amount) {
-      const formattedAmount = new AmountFormatter({
-        amount,
-        format: this.coinDenomination,
-        coin: this.wallet.name,
-        prependPlusOrMinus: false,
-        currency: this.selectedCurrency,
-        toCoin: true,
-      });
-
-      this.amount = parseFloat(formattedAmount.getFormatted());
     },
   },
 };

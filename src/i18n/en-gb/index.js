@@ -115,6 +115,7 @@ export default {
   copyFail: 'Failed to copy',
   paste: 'Paste',
   scan: 'Scan',
+  max: 'Max',
   yourCurrent: 'Your current',
   addressIs: 'address is:',
   share: 'Share',

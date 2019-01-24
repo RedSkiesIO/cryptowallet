@@ -14,7 +14,6 @@
         :data="chartData"
         :gradient="['#fabc57']"
         :stroke-width="5"
-
         auto-draw
         smooth
       />
@@ -39,15 +38,6 @@
           flat
           @click.stop="receive"
         />
-        <!-- <q-btn
-          icon="list"
-          size="sm"
-          color="primary"
-          label="History"
-          class="wallet-group-btn"
-          flat
-          @click="history"
-        /> -->
         <q-btn
           size="lg"
           color="primary"
@@ -64,7 +54,6 @@
 <script>
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-// import Prices from '@/store/prices';
 
 export default {
   name: 'CloudListItem',
@@ -96,9 +85,6 @@ export default {
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
     },
-    coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
-    },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
@@ -111,14 +97,10 @@ export default {
   },
   methods: {
     send() {
-      console.log('route change');
       this.$router.push({ path: `/wallet/send/${this.wallet.id}` });
     },
     receive() {
       this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
-    },
-    history() {
-      this.$router.push({ path: `/wallet/history/${this.wallet.id}` });
     },
     prices() {
       this.$router.push({ path: `/wallet/prices/${this.wallet.id}` });

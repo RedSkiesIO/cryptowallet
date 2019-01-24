@@ -84,7 +84,7 @@ export default {
       return this.$store.state.settings.supportedCoins;
     },
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denominationShortened;
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
