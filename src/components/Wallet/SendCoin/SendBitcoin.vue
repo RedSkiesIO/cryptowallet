@@ -178,7 +178,7 @@ export default {
     },
     inCurrency(val) {
       if (val === null || val === '') return false;
-      if (!this.inCoinFocus) this.inCoin = this.currencyToCoin(val);
+      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
       this.updateFee(this.feeSetting, this);
       return false;
     },

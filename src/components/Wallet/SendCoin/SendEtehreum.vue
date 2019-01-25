@@ -138,6 +138,7 @@ export default {
       sendingModalOpened: false,
       feeSetting: 1,
       rawFee: 0,
+      feeData: null,
       estimatedFee: 'N/A',
       maxed: false,
     };
@@ -172,7 +173,7 @@ export default {
     },
     inCurrency(val) {
       if (val === null || val === '') return false;
-      if (!this.inCoinFocus) this.inCoin = this.currencyToCoin(val);
+      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
       return false;
     },
   },
@@ -240,16 +241,15 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      /*const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;*/
+      if (this.feeSetting === 2) fee = fees.txHigh;
 
-      let fee = 0.00021;
-      if (this.feeSetting === 0) fee = 0.00004;
-      if (this.feeSetting === 2) fee = 0.0013;
-
+      let rawFee = fees.medium;
+      if (this.feeSetting === 0) rawFee = fees.low;
+      if (this.feeSetting === 2) rawFee = fees.high;
 
       const formattedFee = new AmountFormatter({
         amount: fee,
@@ -260,7 +260,9 @@ export default {
         withCurrencySymbol: true,
       });
 
-      this.rawFee = fee;
+
+      this.rawFee = rawFee * 21000;
+      this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
     },
 
@@ -293,16 +295,16 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
+      let fee = this.feeData.medium;
+      if (this.feeSetting === 0) fee = this.feeData.low;
+      if (this.feeSetting === 2) fee = this.feeData.high;
 
       const {
         transaction,
         hexTx,
       } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
+
 
       this.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
@@ -334,7 +336,8 @@ export default {
     },
 
     updateMax() {
-      this.inCoin = this.wallet.confirmedBalance - this.rawFee;
+      console.log('balance', this.wallet.confirmedBalance);
+      this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
     },
 
     /**

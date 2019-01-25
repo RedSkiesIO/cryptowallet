@@ -296,6 +296,7 @@ export default {
             newBalance = balance;
           } else if (wallet.sdk === 'Ethereum') {
             newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
+            newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
           }
 
           // update balance

@@ -20,7 +20,12 @@
       {{ wallet.displayName }}
     </div>
     <div v-else>
-      <h1 class="header-h1">{{ heading }}</h1>
+      <div v-if="heading === 'CryptoWallet'">
+        <h1 class="header-h1 logo">{{ heading }}</h1>
+      </div>
+      <div v-else>
+        <h1 class="header-h1">{{ heading }}</h1>
+      </div>
     </div>
 
     <div
@@ -181,10 +186,14 @@ export default {
 }
 
 .header-h1 {
-  letter-spacing: 0.03em;
+  letter-spacing: normal;
   font-size: 1em;
   margin-top: 0.3em;
   position: relative;
+}
+
+.header-h1.logo {
+  font-family: 'CooperHewitt-BoldItalic';
 }
 
 .header-back-button-wrapper {
