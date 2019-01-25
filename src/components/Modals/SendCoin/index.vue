@@ -252,4 +252,14 @@ export default {
 .send-heading-btn.active {
   border: 1px solid #de4662;
 }
+
+.send-modal-heading .help-icon {
+  background: white;
+  z-index: 2;
+  position: relative;
+  top: -0.1rem;
+  margin-left: 0.1rem;
+  color: #e49ebe;
+}
+
 </style>

@@ -71,7 +71,15 @@
       </div>
 
       <div class="send-modal-heading">
-        <h3>Fee</h3>
+        <h3>
+          Fee
+          <q-icon
+            name="help_outline"
+            size="1.1rem"
+            class="help-icon"
+            @click.native="helpFee"
+          />
+        </h3>
         <span class="h3-line"/>
       </div>
 
@@ -183,6 +191,14 @@ export default {
   },
 
   methods: {
+    helpFee() {
+      this.$q.dialog({
+        title: 'Fees',
+        message: this.$t('helpFeesEtheruem'),
+        ok: 'OK',
+        color: 'blueish',
+      });
+    },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
     },
@@ -225,9 +241,9 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return 'small';
-      if (feeSetting === 1) return 'recommended';
-      return 'high';
+      if (feeSetting === 0) return 'slow';
+      if (feeSetting === 1) return 'fast';
+      return 'fastest';
     },
 
 

@@ -131,4 +131,5 @@ export default {
   seed: 'Seed',
   confirmSeed: 'Confirm Your Seed',
   IPAddress: 'IP Address',
+  helpFeesEtheruem: 'Explenation what are Ethereum fees and how to use them goes here.',
 };
