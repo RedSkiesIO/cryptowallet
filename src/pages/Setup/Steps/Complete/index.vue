@@ -15,7 +15,11 @@ export default {
     }),
   },
   mounted() {
-    this.complete();
+    // this.$root.$emit('termsAndConditionsModalOpened', )
+
+    this.$root.$on('completeSetup' , () => {
+      this.complete();
+    });
   },
   methods: {
     /**

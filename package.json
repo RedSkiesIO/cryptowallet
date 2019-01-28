@@ -42,7 +42,7 @@
     "vue-select": "^2.5.1",
     "vuetrend": "^0.3.2",
     "vuex": "^3.0.1",
-    "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/jamesK/plugin-lokijs.git#add-insert-method-on-model-and-hydrate-vuex-orm",
+    "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/atlas/plugin-lokijs.git#add-insert-method-on-model-and-hydrate-vuex-orm",
     "vuex-persist": "^1.7.1",
     "vuex-router-sync": "^5.0.0",
     "web3": "^1.0.0-beta.34"

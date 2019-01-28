@@ -25,6 +25,10 @@
     src url(./fonts/Montserrat/Montserrat-Bold.ttf)
 
 @font-face
+    font-family CooperHewitt-Semibold
+    src url(./fonts/CooperHewitt/CooperHewitt-Semibold.otf)
+
+@font-face
     font-family CooperHewitt-SemiboldItalic
     src url(./fonts/CooperHewitt/CooperHewitt-SemiboldItalic.otf)
 
@@ -104,7 +108,8 @@ button.q-btn[disabled] {
 }
 
 .modal-header {
-  color: #4a4a4a;
+  font-family: Montserrat-Medium;
+  color: #252525;
 }
 
 .q-notifications > div.column {
@@ -180,7 +185,7 @@ button.q-btn[disabled] {
 
 h1.setup {
   text-align: center;
-  font-weight: bold;
+  font-family: CooperHewitt-Semibold;
   margin-top: 0;
   font-size: 1.8rem;
 }
@@ -194,7 +199,7 @@ h4.setup {
 p.setup {
   text-align: center;
   margin: 0.5em auto;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   line-height: 1.5;
 }
 
@@ -380,4 +385,8 @@ div.q-input {
 
 .q-slider-handle.dragging {
   transform: translate3d(-50%, -50%, 0)!important;
+}
+
+.modal-buttons.row .q-btn {
+    background: rgba(0, 0, 0, 0.05);
 }

@@ -1,5 +1,8 @@
 <template>
-  <section class="header-section">
+  <section
+    v-if="!hideHeader"
+    class="header-section"
+  >
     <div class="header-back-button-wrapper">
       <q-btn
         :disable="!isBackButtonEnabled"
@@ -125,6 +128,7 @@ export default {
       return this.$store.state.settings.supportedCoins;
     },
     heading() {
+      if (this.$route.name === 'setup') return '';
       if (this.$route.name === 'exchange') return 'Exchange';
       if (this.$route.name === 'settings') return 'Settings';
       return 'CryptoWallet';
@@ -134,6 +138,10 @@ export default {
           this.$route.name === 'coinSinglePrices') {
         return true;
       }
+      return false;
+    },
+    hideHeader() {
+      if (this.$route.path === '/setup/0') return true;
       return false;
     },
     coinLogo() {

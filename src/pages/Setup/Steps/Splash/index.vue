@@ -1,25 +1,31 @@
 <template>
-  <div class="container">
+  <div class="container splash">
     <!-- <div class="done-msg-wrapper">
       <h1>THE REVOLUTION <span class="hollow-text">WILL NOT BE CENTRALISED</span></h1>
     </div>
      -->
 
+    <div class="splash-logo">
+      <h1>CryptoWallet</h1>
+      <p>All your Coins and Tokens in one place</p>
+    </div>
+
     <div class="btns-wrapper">
       <q-btn
-        :label="$t('createAccount')"
-        icon="add_box"
+        label="Get Started"
         color="primary"
         text-color="blueish"
-        @click="selection('new')"
+        class="splash-btn"
+        @click="getStarted"
       />
     </div>
     <div class="btns-wrapper">
       <q-btn
         :label="$t('importAccount')"
         icon="get_app"
-        color="primary"
-        text-color="blueish"
+        color="blueish"
+        class="splash-btn"
+        text-color="primary"
         @click="selection('restored')"
       />
     </div>
@@ -95,7 +101,10 @@
       </div>
     </div>
 
-    <div class="loading-footer">
+    <div
+      :class="{ emphasised: emphasised }"
+      class="loading-footer"
+    >
       <!-- <div class="developed-by">Designed and Developed by</div> -->
       <img
         class="logo-loading"
@@ -129,6 +138,10 @@ export default {
     languages() {
       console.log('object :', Object.keys(this.$i18n.messages));
       return Object.keys(this.$i18n.messages);
+    },
+    emphasised() {
+      if (this.$route.path === '/setup/0') return true;
+      return false;
     },
     languageArray() {
       // return this.languages.map(x => ({
@@ -180,16 +193,16 @@ export default {
       return true;
     },
 
+    getStarted() {
+      this.$root.$emit('getStartedModalOpened', true);
+    },
+
   },
 };
 
 </script>
 
 <style>
-<<<<<<< HEAD
-
-=======
->>>>>>> 0380340eac688fc4c1644bab9981a509a4e23408
 .done-msg-wrapper {
   text-align: center;
   font-family: 'CooperHewitt-HeavyItalic';
@@ -202,7 +215,7 @@ export default {
   line-height: initial;
 }
 
-.hollow-text{
+.hollow-text {
   -webkit-text-stroke: 1px white;
   -webkit-text-fill-color: rgb(47, 59, 82);
 }
@@ -225,56 +238,92 @@ export default {
   width: 60px;
 }
 
-.lang-select{
+.lang-select {
   min-width: 40vw;
   padding-bottom: 3px;
 }
 
-.lang-select .selected-tag{
+.lang-select .selected-tag {
   color:white;
   padding-left: 10px;
 }
-.lang-select .dropdown-toggle{
-    border:none;
-  }
-.lang-select .dropdown-toggle .clear{
-    border:none;
-    display:none;
-  }
 
-  .input-icon{
-    width: 1.5em;
-    margin-left: -5px;
-  }
-  .select-icon{
-    width: 1.5em;
-    margin-left: 15px;
-    margin-top: 5px;
-  }
- .lang-select .dropdown-menu {
-   background-color: darkslategrey;
-   color: white;
-   width: 125%;
-   margin-left: -21%;
- }
- .lang-select .label {
-   color: white;
-   padding-left: 0.3em;
-   padding-top: 0.19em;
- }
- .lang-select .open-indicator:before {
-   border-color: white;
- }
- .lang-select .form-control {
-   display: none;
- }
- .flag-icon{
-   padding-top: 2px;
- }
+.lang-select .dropdown-toggle {
+    border:none;
+}
 
- .input-field{
-   padding-top: 3px;
-   padding-right: 5px;
- }
+.lang-select .dropdown-toggle .clear {
+  border:none;
+  display:none;
+}
+
+.input-icon {
+  width: 1.5em;
+  margin-left: -5px;
+}
+.select-icon {
+  width: 1.5em;
+  margin-left: 15px;
+  margin-top: 5px;
+}
+.lang-select .dropdown-menu {
+  background-color: darkslategrey;
+  color: white;
+  width: 125%;
+  margin-left: -21%;
+}
+.lang-select .label {
+  color: white;
+  padding-left: 0.3em;
+  padding-top: 0.19em;
+}
+.lang-select .open-indicator:before {
+  border-color: white;
+}
+.lang-select .form-control {
+  display: none;
+}
+.flag-icon {
+  padding-top: 2px;
+}
+
+.input-field {
+  padding-top: 3px;
+  padding-right: 5px;
+}
+
+.splash-btn {
+  width: 15rem;
+  height: 3rem;
+}
+
+.splash-logo {
+
+}
+
+.splash-logo h1 {
+  font-family: 'CooperHewitt-BoldItalic';
+  letter-spacing: normal;
+  text-align: center;
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.splash-logo p {
+  font-family: CooperHewitt-Semibold;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+  margin-bottom: 0rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.splash-logo {
+  margin-bottom: 2rem;
+}
+
+.splash .btns-wrapper {
+  margin-top: 0.5rem;
+}
 
 </style>
