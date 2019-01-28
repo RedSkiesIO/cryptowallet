@@ -72,7 +72,15 @@
       </div>
 
       <div class="send-modal-heading">
-        <h3>Fee</h3>
+        <h3>
+          Fee
+          <q-icon
+            name="help_outline"
+            size="1.1rem"
+            class="help-icon"
+            @click.native="helpFee"
+          />
+        </h3>
         <span class="h3-line"/>
       </div>
 
@@ -178,7 +186,7 @@ export default {
     },
     inCurrency(val) {
       if (val === null || val === '') return false;
-      if (!this.inCoinFocus) this.inCoin = this.currencyToCoin(val);
+      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
       this.updateFee(this.feeSetting, this);
       return false;
     },
@@ -191,10 +199,17 @@ export default {
 
   mounted() {
     this.fetchUTXOs();
-    window.x = this;
   },
 
   methods: {
+    helpFee() {
+      this.$q.dialog({
+        title: 'Fees',
+        message: this.$t('helpFeesBitcoin'),
+        ok: 'OK',
+        color: 'blueish',
+      });
+    },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
     },

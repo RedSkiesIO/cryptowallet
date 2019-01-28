@@ -90,7 +90,9 @@ export default {
         newBalance = balance;
       } else if (this.wallet.sdk === 'Ethereum') {
         newBalance = await coinSDK.getBalance(addressesRaw, this.wallet.network);
+        newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
       }
+
 
       const { network } = this.wallet;
       const txHistory = await coinSDK.getTransactionHistory(addressesRaw, network, 0, 50);

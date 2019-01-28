@@ -71,7 +71,15 @@
       </div>
 
       <div class="send-modal-heading">
-        <h3>Fee</h3>
+        <h3>
+          Fee
+          <q-icon
+            name="help_outline"
+            size="1.1rem"
+            class="help-icon"
+            @click.native="helpFee"
+          />
+        </h3>
         <span class="h3-line"/>
       </div>
 
@@ -138,6 +146,7 @@ export default {
       sendingModalOpened: false,
       feeSetting: 1,
       rawFee: 0,
+      feeData: null,
       estimatedFee: 'N/A',
       maxed: false,
     };
@@ -172,7 +181,7 @@ export default {
     },
     inCurrency(val) {
       if (val === null || val === '') return false;
-      if (!this.inCoinFocus) this.inCoin = this.currencyToCoin(val);
+      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
       return false;
     },
   },
@@ -182,6 +191,14 @@ export default {
   },
 
   methods: {
+    helpFee() {
+      this.$q.dialog({
+        title: 'Fees',
+        message: this.$t('helpFeesEtheruem'),
+        ok: 'OK',
+        color: 'blueish',
+      });
+    },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
     },
@@ -224,9 +241,9 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return 'small';
-      if (feeSetting === 1) return 'recommended';
-      return 'high';
+      if (feeSetting === 0) return 'slow';
+      if (feeSetting === 1) return 'fast';
+      return 'fastest';
     },
 
 
@@ -240,16 +257,15 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      /*const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;*/
+      if (this.feeSetting === 2) fee = fees.txHigh;
 
-      let fee = 0.00021;
-      if (this.feeSetting === 0) fee = 0.00004;
-      if (this.feeSetting === 2) fee = 0.0013;
-
+      let rawFee = fees.medium;
+      if (this.feeSetting === 0) rawFee = fees.low;
+      if (this.feeSetting === 2) rawFee = fees.high;
 
       const formattedFee = new AmountFormatter({
         amount: fee,
@@ -260,7 +276,9 @@ export default {
         withCurrencySymbol: true,
       });
 
-      this.rawFee = fee;
+
+      this.rawFee = rawFee * 21000;
+      this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
     },
 
@@ -293,16 +311,16 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
+      let fee = this.feeData.medium;
+      if (this.feeSetting === 0) fee = this.feeData.low;
+      if (this.feeSetting === 2) fee = this.feeData.high;
 
       const {
         transaction,
         hexTx,
       } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
+
 
       this.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
@@ -334,7 +352,7 @@ export default {
     },
 
     updateMax() {
-      this.inCoin = this.wallet.confirmedBalance - this.rawFee;
+      this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
     },
 
     /**

@@ -6,7 +6,7 @@
       <h3>Your Address</h3>
       <span class="h3-line"/>
     </div>
-    <div class="address">{{ getAddress() }}</div>
+    <div class="address break">{{ getAddress() }}</div>
 
     <q-btn
       :label="$t('copy')"
@@ -136,8 +136,12 @@ export default {
 <style scoped>
 
 .address {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   margin: 1rem 0;
+}
+
+.break {
+  word-break: break-all;
 }
 
 .to-copy-input {
