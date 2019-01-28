@@ -352,7 +352,6 @@ export default {
     },
 
     updateMax() {
-      console.log('balance', this.wallet.confirmedBalance);
       this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
     },
 
