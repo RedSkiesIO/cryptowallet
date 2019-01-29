@@ -79,8 +79,10 @@ async function discoverErc20(wallet, coinSDK) {
   }]
   const txHistory = await coinSDK.getTransactionHistory(wallet, 0);
   console.log(txHistory);
-  const balance = await coinSDK.getBalance(wallet);
-
+  let balance = await coinSDK.getBalance(wallet);
+  if (!balance) {
+    balance = 0;
+  }
   return {
     txHistory,
     accounts,

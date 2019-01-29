@@ -36,6 +36,7 @@
 <script>
 import { mapState } from 'vuex';
 import WalletsList from '@/components/Wallet/WalletsList';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'AddWallet',
@@ -49,8 +50,10 @@ export default {
   },
   computed: {
     ...mapState({
-      supportedCoins: state => state.settings.supportedCoins,
     }),
+    supportedCoins() {
+      return Coin.all();
+    },
   },
   methods: {
     addWallet() {

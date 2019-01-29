@@ -53,6 +53,7 @@
 import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
 import { AmountFormatter } from '@/helpers';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'CoinHeader',
@@ -82,12 +83,13 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
     },
     coinSymbol() {
+      console.log(this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol);
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     latestPrice() {

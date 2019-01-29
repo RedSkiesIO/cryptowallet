@@ -15,6 +15,7 @@
       v-if="wallets.length > 0"
       class="scroll-area"
     >
+
       <WalletItem
         v-for="wallet in wallets"
         :key="wallet.displayName"
@@ -28,6 +29,7 @@
 
 <script>
 import WalletItem from '@/components/Wallet/WalletItem';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'WalletsList',
@@ -35,10 +37,10 @@ export default {
     WalletItem,
   },
   props: {
-    wallets: {
-      type: Array,
-      required: true,
-    },
+    // wallets: {
+    //   type: Array,
+    //   required: true,
+    // },
 
     currency: {
       type: Object,
@@ -48,6 +50,12 @@ export default {
     clickItemAction: {
       type: String,
       required: true,
+    },
+  },
+  computed: {
+    wallets() {
+      console.log('Coin.all() :', Coin.all());
+      return Coin.all();
     },
   },
   methods: {

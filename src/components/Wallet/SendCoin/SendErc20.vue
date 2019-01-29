@@ -112,7 +112,7 @@ import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
 export default {
-  name: 'SendEthereum',
+  name: 'SendErc20',
   components: {
     Spinner,
   },
@@ -150,6 +150,10 @@ export default {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       return prices.data.PRICE;
     },
+    parentPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`ETH_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
   },
   watch: {
     amount(val) {
@@ -182,19 +186,20 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      const coinSDK = this.coinSDKS[this.wallet.parentSdk];
+      // const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
-      let fee = fees.txMedium;
-      if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;
-      console.log('fee :', fee);
+      // let fee = fees.txMedium;
+      // if (this.feeSetting === 0) fee = fees.txLow;
+      // if (this.feeSetting === 2) fee = fees.txHigh;
 
-
+      let fee = 0.00021
+      if (this.feeSetting === 0) fee = 0.00004;
+      if (this.feeSetting === 2) fee = 0.0013;
 
       const formattedFee = new AmountFormatter({
         amount: fee,
-        rate: this.latestPrice,
+        rate: this.parentPrice,
         format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,
@@ -220,74 +225,6 @@ export default {
         this.sendingModalOpened = false;
         this.$toast.create(0, this.$t('madeTransaction'), 200);
       }, 250);
-    },
-
-    /**
-     * Creates a raw transaction and updates the fee
-     * @param  {Array<Object>} accounts
-     * @param  {Array<String>} changeAddresses
-     * @param  {Array<Object>} filteredUtxos
-     * @param  {Object} wallet
-     * @param  {String} address
-     * @param  {Number} amount
-     * @return {Object}
-     */
-    async createRawTx(accounts, changeAddresses, filteredUtxos, wallet, address, amount) {
-      if (!address || !amount) return false;
-
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
-
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
-      fee = Math.round(fee);
-
-      /* console.log(accounts);
-      console.log(changeAddresses);
-      console.log(filteredUtxos);
-      console.log(wallet);
-      console.log(address);
-      console.log(amount);
-      console.log(fee); */
-
-      try {
-        const {
-          hexTx,
-          transaction,
-          utxo,
-        } = await coinSDK.createRawTx(
-          accounts,
-          changeAddresses,
-          filteredUtxos,
-          wallet,
-          address,
-          amount,
-          fee,
-        );
-
-        const formattedFee = new AmountFormatter({
-          amount: transaction.fee,
-          rate: this.latestPrice,
-          format: '0.00',
-          coin: this.wallet.name,
-          currency: this.selectedCurrency,
-          toCurrency: true,
-          withCurrencySymbol: true,
-        });
-
-        this.estimatedFee = formattedFee.getFormatted();
-
-        return {
-          hexTx,
-          transaction,
-          utxo,
-        };
-      } catch (err) {
-        this.$toast.create(10, err.message, 500);
-      }
-
-      return false;
     },
 
     /**
@@ -317,18 +254,23 @@ export default {
 
       // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const parentSDK = this.coinSDKS[this.wallet.parentSdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
-      const keypair = coinSDK.generateKeyPair(wallet, 0);
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      // const keypair = coinSDK.generateKeyPair(wallet, 0);
+      // const fees = await parentSDK.getTransactionFee(this.wallet.network);
 
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
+      // let fee = fees.medium;
+      // if (this.feeSetting === 0) fee = fees.low;
+      // if (this.feeSetting === 2) fee = fees.high;
+
+      let fee = 0.00021
+      if (this.feeSetting === 0) fee = 0.00004;
+      if (this.feeSetting === 2) fee = 0.0013;
 
       const {
         transaction,
         hexTx,
-      } = await coinSDK.createEthTx(keypair, this.address, this.amount, fee);
+      } = await coinSDK.transfer(wallet, this.address, this.amount, fee);
 
       console.log('????', transaction);
 

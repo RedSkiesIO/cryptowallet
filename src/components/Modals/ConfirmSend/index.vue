@@ -90,6 +90,7 @@ import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'ConfirmSend',
@@ -113,7 +114,7 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -219,7 +220,7 @@ export default {
           });
       }
 
-      if (this.wallet.sdk === 'Ethereum') {
+      if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
         coinSDK.broadcastTx(hexTx, this.wallet.network)
           .then(async (result) => {
             if (!result) {

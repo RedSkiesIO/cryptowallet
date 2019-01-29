@@ -35,6 +35,7 @@
 import Chart from '@/components/PriceCharts/Chart';
 import { mapState } from 'vuex';
 import Prices from '@/store/prices';
+import Coin from '@/store/wallet/entities/coin';
 
 // import Spinner from '@/components/Spinner';
 
@@ -61,7 +62,7 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;

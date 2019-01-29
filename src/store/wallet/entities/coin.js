@@ -6,14 +6,20 @@ import { Model } from '@vuex-orm/core';
 export default class Coin extends Model {
   static entity = 'coin';
 
-  /**
-   * Sets entity attributes.
-   * @returns {{id: Increment, name: Attr}}
-   */
+  static primaryKey = 'name';
+
   static fields() {
     return {
-      id: this.increment(),
       name: this.attr(''),
+      displayName: this.attr(''),
+      sdk: this.attr(''),
+      symbol: this.attr(''),
+      network: this.attr(''),
+      denomination: this.attr(''),
+      parentName: this.attr(''),
+      parentSdk: this.attr(''),
+      contractAddress: this.attr(''),
+      decimals: this.attr(''),
     };
   }
 }

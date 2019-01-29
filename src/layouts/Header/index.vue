@@ -84,6 +84,7 @@
 <script>
 import { mapState } from 'vuex';
 import SelectAccount from '@/components/Modals/SelectAccount';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'Header',
@@ -117,7 +118,7 @@ export default {
       return this.$route.name === 'walletSingle';
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     heading() {
       if (this.$route.name === 'exchange') return 'Exchange';

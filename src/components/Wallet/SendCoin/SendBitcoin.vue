@@ -114,6 +114,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendCoin',
@@ -143,7 +144,7 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;

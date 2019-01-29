@@ -29,6 +29,10 @@
         <div v-if="wallet.sdk === 'Ethereum'">
           <SendEtehreum/>
         </div>
+
+        <div v-if="wallet.sdk === 'ERC20'">
+          <SendErc20/>
+        </div>
       </div>
     </q-modal>
   </div>
@@ -39,12 +43,14 @@ import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import SendBitcoin from '@/components/Wallet/SendCoin/SendBitcoin.vue';
 import SendEtehreum from '@/components/Wallet/SendCoin/SendEtehreum.vue';
+import SendErc20 from '@/components/Wallet/SendCoin/SendErc20.vue';
 
 export default {
   name: 'SendCoin',
   components: {
     SendBitcoin,
     SendEtehreum,
+    SendErc20,
     CoinHeader,
   },
   data() {

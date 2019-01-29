@@ -34,10 +34,11 @@ export default {
     chartData: {
       handler() {
         console.log('changed');
-        this.chartData.datasets[0].backgroundColor = this.gradient;
-        this.chartData.datasets[1].backgroundColor = this.gradient;
-        this.chartData.datasets[2].backgroundColor = this.gradient;
-        this.renderChart(this.chartData, this.options);
+        const chart = this.chartData;
+        chart.datasets[0].backgroundColor = this.gradient;
+        chart.datasets[1].backgroundColor = this.gradient;
+        chart.datasets[2].backgroundColor = this.gradient;
+        this.renderChart(chart, this.options);
         // eslint-disable-next-line no-underscore-dangle
         this.chart = this.$data._chart;
         this.newLegend();
@@ -45,10 +46,11 @@ export default {
     },
   },
   mounted() {
-    this.chartData.datasets[0].backgroundColor = this.gradient;
-    this.chartData.datasets[1].backgroundColor = this.gradient;
-    this.chartData.datasets[2].backgroundColor = this.gradient;
-    this.renderChart(this.chartData, this.options);
+    const chart = this.chartData;
+    chart.datasets[0].backgroundColor = this.gradient;
+    chart.datasets[1].backgroundColor = this.gradient;
+    chart.datasets[2].backgroundColor = this.gradient;
+    this.renderChart(chart, this.options);
     // eslint-disable-next-line no-underscore-dangle
     this.chart = this.$data._chart;
     this.newLegend();

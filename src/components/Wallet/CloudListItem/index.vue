@@ -64,7 +64,8 @@
 <script>
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-// import Prices from '@/store/prices';
+import Prices from '@/store/prices';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'CloudListItem',
@@ -94,7 +95,7 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
@@ -104,15 +105,45 @@ export default {
     },
   },
   async mounted() {
+    const wherePrice = (record, item) => (
+      record.coin === item.coin
+      && record.currency === item.currency
+      && record.period === item.period
+    );
+
     let coinSDK = this.coinSDKS[this.wallet.sdk];
     if (this.wallet.sdk === 'ERC20') {
       coinSDK = this.coinSDKS[this.wallet.parentSdk];
-      console.log('this.wallet.sdk :', this.wallet.parentSdk);
     }
-    console.log('this.wallet.sdk :', this.wallet.sdk);
     const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+    const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
+    if (!price && dataset) {
+      Prices.$insert({
+        data: {
+          coin: this.coinSymbol,
+          currency: this.selectedCurrency.code,
+          period: 'day',
+          updated: +new Date(),
+          dataset,
+        },
+      });
+    } else if (dataset) {
+      Prices.$update({
+        where: record => wherePrice(record, {
+          coin: this.coinSymbol,
+          currency: this.selectedCurrency.code,
+          period: 'day',
+        }),
+        data: {
+          updated: +new Date(),
+          data: dataset,
+        },
+      });
+      this.chartData = dataset.map(item => item.y);
+    } else if (price && !dataset) {
+      this.chartData = price;
+    }
     // const dataset = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
-    this.chartData = dataset.map(item => item.y);
   },
   methods: {
     send() {

@@ -42,6 +42,7 @@ import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'WalletItem',
@@ -71,7 +72,6 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: state => state.settings.authenticatedAccount,
-      supportedCoins: state => state.settings.supportedCoins,
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -89,10 +89,13 @@ export default {
         if (!val) this.disableWallet();
       },
     },
+    supportedCoins() {
+      return Coin.all();
+    },
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      return require(`@/assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`);
     },
   },
   methods: {
@@ -264,9 +267,7 @@ export default {
 
     async enableWallet() {
       console.log('enable wallet');
-    
-    if(this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.networkName)){
-
+    if(this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)){
       const eth = this.supportedCoins.find(coin => coin.name === this.wallet.networkName);
 
       const data = {
@@ -285,7 +286,7 @@ export default {
         data: { imported: false, enabled: true },
       });
     }
-
+  
       const data = {
         name: this.wallet.name,
         displayName: this.wallet.displayName,
@@ -294,7 +295,7 @@ export default {
         network: this.wallet.network,
         symbol: this.wallet.symbol,
       };
-
+      
       /*const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), this.wallet.network);
       this.activeWallets[this.authenticatedAccount][this.wallet.name] = wallet;*/
@@ -312,7 +313,7 @@ export default {
         data: { imported: false, enabled: true },
       });
       if(this.wallet.sdk === 'ERC20'){
-        const eth = this.supportedCoins.find(coin => coin.name === this.wallet.networkName);
+        const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
         await Wallet.$update({
         where: record => record.id === newWalletId,
         data: { parentSdk: eth.sdk, 
