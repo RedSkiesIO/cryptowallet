@@ -21,6 +21,7 @@ module.exports = (ctx) => {
       'CoinFormatter',
       'VueTrend',
       'VueSelect',
+      'Vuelidate',
     ],
     css: ['app.styl'],
     extras: [

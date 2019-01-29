@@ -37,9 +37,10 @@
           <q-search
             v-model="searchName"
             placeholder="Start typing a token name">
-            <!-- <q-autocomplete
-              @search="search"
-              @selected="selected" /> -->
+            <q-autocomplete
+              :static-data="tokens"
+              :value-field="v => ` ${ v.label } (${ v.symbol })`"
+              @selected="selected" />
           </q-search>
         </q-tab-pane>
         <q-tab-pane name="custom">
@@ -54,10 +55,12 @@
 
               <div class="to">
                 <q-input
-                  v-model="tokenContract"
+                  v-model="form.tokenContract"
+                  :error="$v.form.tokenContract.$error"
                   placeholder="token coontract address"
                   class="sm-input grey-input"
                   inverted
+                  @blur="$v.form.tokenContract.$touch && validate"
                 />
 
                 <div
@@ -75,10 +78,12 @@
               </div>
               <div class="to">
                 <q-input
-                  v-model="tokenName"
+                  v-model="form.tokenName"
+                  :error="$v.form.tokenName.$error"
                   placeholder="name"
                   class="sm-input grey-input"
                   inverted
+                  @blur="$v.form.tokenName.$touch"
                 />
               </div>
 
@@ -88,10 +93,13 @@
               </div>
               <div class="to">
                 <q-input
-                  v-model="tokenSymbol"
+                  v-model="form.tokenSymbol"
+                  :error="$v.form.tokenSymbol.$error"
                   placeholder="symbol"
                   class="sm-input grey-input"
                   inverted
+                  upper-case
+                  @blur="$v.form.tokenSymbol.$touch"
                 />
               </div>
 
@@ -101,10 +109,13 @@
               </div>
               <div class="to">
                 <q-input
-                  v-model="tokenDecimals"
+                  v-model="form.tokenDecimals"
+                  :error="$v.form.tokenDecimals.$error"
                   placeholder="decimals"
                   class="sm-input grey-input"
+                  type="number"
                   inverted
+                  @blur="$v.form.tokenDecimals.$touch"
                 />
               </div>
 
@@ -128,9 +139,11 @@
 
 <script>
 import { mapState } from 'vuex';
+import { required, alphaNum, numeric, between, minLength, maxLength } from 'vuelidate/lib/validators';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
+import tokens from '@/statics/tokens.json';
 
 export default {
   name: 'AddErc20',
@@ -140,13 +153,29 @@ export default {
   data() {
     return {
       addErc20ModalOpened: false,
-      tokenContract: '',
-      tokenName: '',
-      tokenSymbol: '',
-      tokenDecimals: '',
+      form: {
+        tokenContract: '',
+        tokenName: '',
+        tokenSymbol: '',
+        tokenDecimals: '',
+      },
+      selected: '',
       tokenNetwork: 'ETHEREUM_ROPSTEN',
       searchName: '',
+      tokens,
     };
+  },
+  validations: {
+    form: {
+      tokenContract: {
+        required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+      },
+      tokenName: { required, alphaNum },
+      tokenSymbol: {
+        required, alphaNum, between: minLength(1), maxLength: maxLength(11),
+      },
+      tokenDecimals: { required, numeric, between: between(0, 36) },
+    },
   },
   computed: {
     ...mapState({
@@ -178,8 +207,28 @@ export default {
       return result.length > 0;
     },
     async validate() {
+      this.$v.form.$touch();
+      if (this.$v.form.$error) {
+        if (this.$v.form.tokenContract.$error) {
+          this.$q.notify('The contract address must be 42 characters in length.');
+        }
+        if (this.$v.form.tokenName.$error) {
+          this.$q.notify('Token name is required.');
+        }
+        if (this.$v.form.tokenSymbol.$error) {
+          this.$q.notify('Token Symbol must be between 0 and 12 characters.');
+        }
+        if (this.$v.form.tokenDecimals.$error) {
+          this.$q.notify('Token Decimals must be at least 0, and not over 36.');
+        }
+        return false;
+      }
+      const coinSDK = this.coinSDKS.Ethereum;
+      const valid = await coinSDK.validateAddress(this.tokenContract, 'ETHEREUM_ROPSTEN');
+      if (!valid || !this.tokenName || !this.tokenSymbol || !this.tokenNetwork) return false;
       await this.enableWallet();
       this.goBack();
+      return true;
     },
     async enableWallet() {
       if (!this.isEthEnabled('Ethereum')) {
@@ -202,21 +251,21 @@ export default {
         });
       }
 
-      const isThere = Coin.find([this.tokenName]);
+      const isThere = Coin.find([this.form.tokenName]);
 
       if (!isThere) {
         console.log('adding coin');
         const data = {
-          name: this.tokenName,
-          displayName: this.tokenName,
+          name: this.form.tokenName,
+          displayName: this.form.tokenName,
           sdk: 'ERC20',
-          symbol: this.tokenSymbol,
-          network: this.tokenNetwork,
+          symbol: this.form.tokenSymbol,
+          network: this.form.tokenNetwork,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
           parentName: 'Ethereum',
-          contractAddress: this.tokenContract,
-          decimals: this.tokenDecimals,
+          contractAddress: this.form.tokenContract,
+          decimals: this.form.tokenDecimals,
         };
         Coin.$insert({
           data,
