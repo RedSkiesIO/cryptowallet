@@ -48,6 +48,7 @@
 <script>
 import { mapState } from 'vuex';
 import { dateTranslater, AmountFormatter } from '@/helpers';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SingleTransaction',
@@ -73,7 +74,7 @@ export default {
     },
 
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
 
     coinDenomination() {
@@ -183,10 +184,11 @@ export default {
 
       if (this.wallet.sdk === 'ERC20') {
         const parent = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+        const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
 
         feeInCoin = new AmountFormatter({
           amount: inCoin,
-          rate: this.latestPrice,
+          rate: price,
           format: parent.denomination,
           prependPlusOrMinus: false,
           removeTrailingZeros: true,
@@ -194,7 +196,7 @@ export default {
 
         amountInCurrency = new AmountFormatter({
           amount: feeInCoin.getFormatted(),
-          rate: this.latestPrice,
+          rate: price,
           format: '0,0[.]00',
           coin: this.wallet.parentName,
           prependPlusOrMinus: false,

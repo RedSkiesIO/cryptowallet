@@ -29,7 +29,6 @@ export default {
   },
   mounted() {
     this.$root.$on('updateWalletSingle', (done) => {
-      console.log('update me', this.wallet.name);
       this.refresher(done);
     });
   },

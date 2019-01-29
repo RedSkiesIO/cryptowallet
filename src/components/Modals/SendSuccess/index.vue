@@ -75,6 +75,7 @@
 <script>
 import { mapState } from 'vuex';
 import { AmountFormatter } from '@/helpers';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendSuccess',
@@ -93,7 +94,7 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;

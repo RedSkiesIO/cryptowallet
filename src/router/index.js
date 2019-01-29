@@ -127,14 +127,6 @@ export default new VueRouter({
       name: 'editProfile',
     },
     {
-      path: '/TxDetails',
-      component: () => import('layouts/UnAuthed'),
-      children: [
-        { path: '', component: () => import('pages/TxDetails') },
-      ],
-      name: 'TxDetails',
-    },
-    {
       path: '*',
       component: () => import('layouts/UnAuthed'),
       children: [

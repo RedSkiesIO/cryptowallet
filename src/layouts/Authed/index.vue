@@ -117,10 +117,10 @@ export default {
     totalBalance() {
       let balance = 0;
       this.wallets.forEach((wallet) => {
-        const prices = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
+        const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
         const formattedAmount = new AmountFormatter({
           amount: wallet.confirmedBalance,
-          rate: prices.data.PRICE,
+          rate: price.data.PRICE,
           format: '0.00',
           coin: wallet.name,
           prependPlusOrMinus: false,
@@ -301,6 +301,10 @@ export default {
             newBalance = balance;
           } else if (wallet.sdk === 'Ethereum') {
             newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
+          }
+          else if (wallet.sdk === 'ERC20') {
+            console.log('wallet.name :', wallet.name);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
           }
 
           // update balance

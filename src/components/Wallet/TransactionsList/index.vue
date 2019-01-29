@@ -79,7 +79,7 @@ export default {
       console.log('!!!', txs);
 
       txs.sort((a, b) => {
-        if (this.wallet.sdk === 'Ethereum') {
+        if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
           let b1 = new Date(b.confirmedTime * 1000);
           if (!b.confirmedTime) b1 = new Date(b.receivedTime.toString() * 1000);
 
