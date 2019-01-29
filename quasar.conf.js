@@ -101,6 +101,7 @@ module.exports = (ctx) => {
         'QCarousel',
         'QCarouselSlide',
         'QCarouselControl',
+        'QCheckbox',
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins

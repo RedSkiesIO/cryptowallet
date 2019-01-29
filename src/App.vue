@@ -30,6 +30,8 @@
         <TermsModal/>
 
         <div v-if="settings.authenticatedAccount">
+          <OfflineNotice/>
+
           <WalletsModal/>
           <PriceChartModal/>
           <SendCoinModal/>
@@ -60,6 +62,7 @@ import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
+import OfflineNotice from '@/components/OfflineNotice';
 
 export default {
   name: 'App',
@@ -76,6 +79,7 @@ export default {
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
+    OfflineNotice,
   },
 
   data() {
@@ -129,6 +133,8 @@ export default {
 
   mounted() {
     window.store = this.$store;
+    window.app = this;
+
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
     this.fetchPrices();
     // if (!this.settings.selectedAccount) this.$router.push({ path: '/setup/0' });
@@ -274,7 +280,6 @@ export default {
         const checkExists = (coin, data) => {
           const price = Latest.find([`${coin}_${this.selectedCurrency.code}`]);
           if (!price) {
-            console.log('inserting');
             Latest.$insert({
               data: {
                 coin,

@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div>
     <q-modal
       v-model="getStartedModalOpened"
@@ -31,7 +32,17 @@
               <h1 class="setup">Coins & Tokens</h1>
             </div>
             <div class="slide-wrapper">
-              Explain what coins are, what tokens are.
+              <div class="slide-illustration">
+                <q-icon
+                  name="monetization_on"
+                  size="10rem"
+                  color="white"
+                  class="temp-ill"
+                />
+              </div>
+              <p>
+                Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+              </p>
             </div>
           </q-carousel-slide>
 
@@ -40,7 +51,17 @@
               <h1 class="setup">Wallets</h1>
             </div>
             <div class="slide-wrapper">
-              Explain the use of digital wallets.
+              <div class="slide-illustration">
+                <q-icon
+                  name="account_balance_wallet"
+                  size="10rem"
+                  color="white"
+                  class="temp-ill"
+                />
+              </div>
+              <p>
+                Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+              </p>
             </div>
           </q-carousel-slide>
 
@@ -49,7 +70,28 @@
               <h1 class="setup">Backup & Security</h1>
             </div>
             <div class="slide-wrapper">
-              Explain the significance of the seed.
+              <div>
+                <div>
+                  <div class="slide-illustration">
+                    <q-icon
+                      name="lock"
+                      size="10rem"
+                      color="white"
+                      class="temp-ill"
+                    />
+                  </div>
+                  <p>
+                    Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+                  </p>
+                </div>
+
+                <div :class="{ offline: !online }">
+                  <q-alert type="negative">
+                    Please disable your Internet connection or enable
+                    the Airplane Mode before continuing
+                  </q-alert>
+                </div>
+              </div>
             </div>
           </q-carousel-slide>
 
@@ -71,6 +113,7 @@
 
             <q-btn
               v-if="slide === 2"
+              :disabled="online"
               color="yellow"
               text-color="blueish"
               label="Create Wallet"
@@ -86,15 +129,29 @@
 </template>
 
 <script>
+import { Network } from '@/helpers';
+
 export default {
-  name: 'NewAccount',
+  name: 'GetStarted',
   data() {
     return {
       getStartedModalOpened: false,
       slide: 0,
+      online: null,
     };
   },
   mounted() {
+    this.network = new Network();
+    this.online = this.network.isOnline();
+
+    this.network
+      .on('offline', () => {
+        this.online = false;
+      })
+      .on('online', () => {
+        this.online = true;
+      });
+
     this.$root.$on('getStartedModalOpened', (value) => {
       this.getStartedModalOpened = value;
     });
@@ -140,9 +197,49 @@ export default {
   width: 100%;
   height: calc(100% - 12rem);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0 .5rem;
+}
+
+.slide-wrapper .q-alert-content {
+  font-size: 0.8rem;
+}
+
+.slide-wrapper .q-alert {
+  margin-top: 1rem;
+  transition: all ease-in-out 150ms;
+  opacity: 1;
+  position: absolute;
+  z-index: 100;
+  width: calc(100vw - 1rem);
+  bottom: 2.4rem;
+}
+
+.slide-wrapper .offline .q-alert {
+  display: none;
+}
+
+.slide-wrapper .temp-ill {
+  height: 10rem;
+  margin-top: 0rem;
+}
+
+.slide-wrapper .slide-illustration {
+  text-align: center;
+}
+
+/*.slide-wrapper .q-carousel-inner {
+  z-index: 1;
+}*/
+
+.slide-wrapper p {
+  padding: 1rem;
+  padding-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.5rem;
 }
 
 .next-button-wrapper {
@@ -156,6 +253,6 @@ export default {
 }
 
 .slide-btn {
-  width: 12rem;
+  width: 10rem;
 }
 </style>

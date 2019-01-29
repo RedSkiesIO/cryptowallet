@@ -7,7 +7,7 @@
 
     <div class="splash-logo">
       <h1>CryptoWallet</h1>
-      <p>All your Coins and Tokens in one place</p>
+      <p>All your Coins and Tokens in one place. Secured.</p>
     </div>
 
     <div class="btns-wrapper">
