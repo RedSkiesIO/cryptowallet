@@ -57,12 +57,12 @@
                 <q-input
                   v-model="form.tokenContract"
                   :error="$v.form.tokenContract.$error"
-                  placeholder="token coontract address"
+                  placeholder="token contract address"
                   class="sm-input grey-input"
                   inverted
-                  @blur="$v.form.tokenContract.$touch && validate"
+                  clearable
+                  @blur="checkField('contract')"
                 />
-
                 <div
                   class="side-content qr-code-wrapper"
                 >
@@ -70,8 +70,9 @@
                   <div class="ver-line"/>
                   <img src="~assets/QR.svg">
                 </div>
-              </div>
 
+              </div>
+              <span class="error">{{ contractError }}</span>
               <div class="send-modal-heading">
                 <h4>Name</h4>
                 <span class="h3-line"/>
@@ -83,9 +84,12 @@
                   placeholder="name"
                   class="sm-input grey-input"
                   inverted
-                  @blur="$v.form.tokenName.$touch"
+                  clearable
+                  @blur="checkField('name')"
                 />
+
               </div>
+              <span class="error">{{ nameError }}</span>
 
               <div class="send-modal-heading">
                 <h4>Symbol</h4>
@@ -98,11 +102,13 @@
                   placeholder="symbol"
                   class="sm-input grey-input"
                   inverted
+                  clearable
                   upper-case
-                  @blur="$v.form.tokenSymbol.$touch"
+                  @blur="checkField('symbol')"
                 />
-              </div>
 
+              </div>
+              <span class="error">{{ symbolError }}</span>
               <div class="send-modal-heading">
                 <h4>Decimals</h4>
                 <span class="h3-line"/>
@@ -115,10 +121,12 @@
                   class="sm-input grey-input"
                   type="number"
                   inverted
-                  @blur="$v.form.tokenDecimals.$touch"
+                  clearable
+                  @blur="checkField('decimals')"
                 />
-              </div>
 
+              </div>
+              <span class="error">{{ decimalsError }}</span>
               <div class="send">
                 <q-btn
                   label="add"
@@ -143,7 +151,9 @@ import { required, alphaNum, numeric, between, minLength, maxLength } from 'vuel
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
-import tokens from '@/statics/tokens.json';
+import tokens from '@/statics/contractMeta/contract-map.json';
+// import tokens from '@/statics/tokens.json';
+
 
 export default {
   name: 'AddErc20',
@@ -163,6 +173,10 @@ export default {
       tokenNetwork: 'ETHEREUM_ROPSTEN',
       searchName: '',
       tokens,
+      contractError: '',
+      nameError: '',
+      symbolError: '',
+      decimalsError: '',
     };
   },
   validations: {
@@ -205,6 +219,49 @@ export default {
         .where('enabled', true)
         .get();
       return result.length > 0;
+    },
+    async checkField(field) {
+      if (field === 'contract') {
+        this.$v.form.tokenContract.$touch();
+        if (this.$v.form.tokenContract.$error) {
+          this.contractError = 'The contract address must be 42 characters in length.';
+          return;
+        }
+
+        this.contractError = ' ';
+
+        const coinSDK = this.coinSDKS.ERC20;
+        const info = await coinSDK.getTokenData(this.form.tokenContract, 'ETHEREUM');
+        this.form.tokenName = info.name;
+        this.form.tokenSymbol = info.symbol;
+        this.form.tokenDecimals = info.decimals;
+      }
+      if (field === 'name') {
+        this.$v.form.tokenName.$touch();
+        console.log('name');
+        if (this.$v.form.tokenName.$error) {
+          console.log('name error');
+          this.nameError = 'Token name is required';
+          return;
+        }
+        this.nameError = ' ';
+      }
+      if (field === 'symbol') {
+        this.$v.form.tokenSymbol.$touch();
+        if (this.$v.form.tokenSymbol.$error) {
+          this.symbolError = 'Token Symbol must be between 0 and 12 characters';
+          return;
+        }
+        this.symbolError = ' ';
+      }
+      if (field === 'decimals') {
+        this.$v.form.tokenDecimals.$touch();
+        if (this.$v.form.tokenDecimals.$error) {
+          this.decimalsError = 'Token Decimals must be at least 0, and not over 36.';
+          return;
+        }
+        this.decimalsError = ' ';
+      }
     },
     async validate() {
       this.$v.form.$touch();
@@ -346,7 +403,15 @@ export default {
   padding-top: 1rem;
   justify-content: center;
 }
+.to .q-if-inverted .q-if-control {
+  color: #ccc;
+}
 
+/* .send button.q-btn {
+    border: 1px solid;
+    border-color: #475876;
+    background: white;
+} */
 .send-modal-heading {
   position: relative;
   margin: 1rem 0 .5rem 0;
@@ -429,5 +494,9 @@ export default {
 
 .grey-input.q-if-inverted:not(.q-if-inverted-light) .q-input-target::-webkit-input-placeholder {
   color: #afafaf !important;
+}
+
+.error {
+  color: red;
 }
 </style>
