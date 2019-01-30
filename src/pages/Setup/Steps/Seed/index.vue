@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="setup">{{ $t('seed') }}</h1>
+    <h1 class="setup">Seed Phrase</h1>
     <p class="setup">{{ $t('writeSeed') }}</p>
     <h4 class="setup seed-box">
       <span

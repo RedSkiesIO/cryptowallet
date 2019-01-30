@@ -61,7 +61,7 @@
                 />
               </div>
               <p>
-                A Crypto currency wallet is used to hold and transfer your digital money.
+                A crypto currency wallet is used to hold and transfer your digital money.
                 A single wallet can contain various types of Coins and Tokens. You are the only one with access to it.
               </p>
             </div>
@@ -81,7 +81,7 @@
                 />
               </div>
               <p>
-                A list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, only the Seed can be used to regain access to your money.
+                A random list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, only the Seed can be used to regain access to your money.
               </p>
             </div>
           </q-carousel-slide>
@@ -109,8 +109,7 @@
 
                 <div :class="{ offline: !online }">
                   <q-alert type="negative">
-                    Please disable your Internet connection or enable
-                    the Airplane Mode before continuing
+                    Please enable the Airplane Mode or disable your Internet connection before continuing
                   </q-alert>
                 </div>
               </div>
