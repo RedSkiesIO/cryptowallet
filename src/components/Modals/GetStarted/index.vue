@@ -41,7 +41,8 @@
                 />
               </div>
               <p>
-                Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+                Digital currencies that are encrypted (secured) using cryptography and stored on a blockchain.
+                It's digital money. Used by millions world wide.
               </p>
             </div>
           </q-carousel-slide>
@@ -60,14 +61,34 @@
                 />
               </div>
               <p>
-                Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+                A Crypto currency wallet is used to hold and transfer your digital money.
+                A single wallet can contain various types of Coins and Tokens. You are the only one with access to it.
               </p>
             </div>
           </q-carousel-slide>
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Backup & Security</h1>
+              <h1 class="setup">Backup Seed Phrase</h1>
+            </div>
+            <div class="slide-wrapper">
+              <div class="slide-illustration">
+                <q-icon
+                  name="storage"
+                  size="10rem"
+                  color="white"
+                  class="temp-ill"
+                />
+              </div>
+              <p>
+                A list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, the Seed can be used to recover your money.
+              </p>
+            </div>
+          </q-carousel-slide>
+
+          <q-carousel-slide class="full-slide">
+            <div class="slide-header">
+              <h1 class="setup">Security</h1>
             </div>
             <div class="slide-wrapper">
               <div>
@@ -81,7 +102,8 @@
                     />
                   </div>
                   <p>
-                    Next level banh mi VHS swag XOXO bitters lumbersexual whatever flannel taiyaki lomo yuccie pork belly letterpress. +1 pabst franzen hella, artisan subway tile church-key.
+                    You are about to create the wallet and some security precautions have to be made. Please make sure no one is watching you.
+                    Please disconnect from the Internet.
                   </p>
                 </div>
 
@@ -103,7 +125,7 @@
             class="next-button-wrapper"
           >
             <q-btn
-              v-if="slide !== 2"
+              v-if="slide !== 3"
               color="yellow"
               text-color="blueish"
               label="next"
@@ -112,7 +134,7 @@
             />
 
             <q-btn
-              v-if="slide === 2"
+              v-if="slide === 3"
               :disabled="online"
               color="yellow"
               text-color="blueish"
@@ -195,7 +217,7 @@ export default {
 
 .slide-wrapper {
   width: 100%;
-  height: calc(100% - 12rem);
+  height: calc(100% - 7rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -214,7 +236,16 @@ export default {
   position: absolute;
   z-index: 100;
   width: calc(100vw - 1rem);
-  bottom: 2.4rem;
+  bottom: -3rem;
+}
+
+.q-carousel-inner {
+  height: calc(100% - 5.5rem);
+  z-index: 2;
+}
+
+.q-carousel-slide {
+  overflow: visible;
 }
 
 .slide-wrapper .offline .q-alert {
