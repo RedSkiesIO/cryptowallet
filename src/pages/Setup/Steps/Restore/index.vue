@@ -66,7 +66,7 @@ export default {
         return false;
       }
       this.$store.dispatch('setup/setSeed', seedPhrase);
-      this.$router.push({ path: `/setup/${this.id + 1}` });
+      this.$router.push({ path: '/setup/4' });
       return true;
     },
   },

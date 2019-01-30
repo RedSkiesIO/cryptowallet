@@ -32,4 +32,5 @@
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.4" />
+    <preference name="Orientation" value="portrait" /
 </widget>

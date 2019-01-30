@@ -35,6 +35,8 @@ export default {
         currency: 'GBP',
       };
 
+      console.log('inserting account', data);
+
       this.$store.dispatch('settings/setSelectedAccount', data.name);
 
       const result = await Account.$insert({ data });

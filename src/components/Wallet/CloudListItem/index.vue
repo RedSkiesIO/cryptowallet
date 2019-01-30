@@ -21,6 +21,7 @@
     <div class="wallet-buttons">
       <q-btn-group>
         <q-btn
+          :disabled="cantSend"
           icon="send"
           size="md"
           color="primary"
@@ -87,6 +88,9 @@ export default {
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+    },
+    cantSend() {
+      return this.wallet.confirmedBalance === 0;
     },
   },
   async mounted() {
