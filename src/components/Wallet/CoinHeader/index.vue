@@ -13,6 +13,7 @@
         >
           <q-btn-group>
             <q-btn
+              :disabled="cantSend"
               icon="send"
               size="md"
               color="primary"
@@ -98,6 +99,9 @@ export default {
       });
 
       return balanceInCoin.getFormatted();
+    },
+    cantSend() {
+      return this.wallet.confirmedBalance === 0;
     },
   },
   methods: {

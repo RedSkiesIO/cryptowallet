@@ -3,7 +3,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { uid } from 'quasar';
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
@@ -21,7 +20,7 @@ export default {
     /**
      * complete setup and store account entity.
      */
-    complete() {
+    async complete() {
       const accounts = this.$store.getters['entities/account/query']().get();
 
       const data = {
@@ -34,52 +33,22 @@ export default {
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
         currency: 'GBP',
-        //seed: 'domain bunker surround uncle cotton day giraffe kiss mutual bean onion few'.split(),
-        // seed: 'calm steel soccer pulse polar depend bar bargain give pave ancient member'.split(),
-        //seed: 'nut mixture license bean page mimic iron spice rail uncover then warfare'.split(' '),
       };
 
-
-/*
-
-0: "pioneer"
-​
-1: "silent"
-​
-2: "bacon"
-​
-3: "verify"
-​
-4: "walk"
-​
-5: "tiger"
-​
-6: "congress"
-​
-7: "alert"
-​
-8: "fox"
-​
-9: "antenna"
-​
-10: "execute"
-​
-11: "diamond"
-
- */
-
+      console.log('inserting account', data);
 
       this.$store.dispatch('settings/setSelectedAccount', data.name);
 
-      Account.$insert({ data })
-        .then(() => {
-          this.$router.push({ path: '/' });
-        });
+      const result = await Account.$insert({ data });
+      this.$store.dispatch('settings/setAuthenticatedAccount', result.account[0].id);
+      this.$store.dispatch('settings/setLayout', 'light');
+      this.$router.push({ path: '/wallet' });
     },
 
   },
 };
 </script>
 
-<style scoped>
+<style>
+
 </style>

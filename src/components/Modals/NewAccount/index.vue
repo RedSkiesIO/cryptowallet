@@ -52,7 +52,6 @@ export default {
   },
   mounted() {
     this.$root.$on('newAccountModalOpened', (value) => {
-      window.a = this;
       this.newAccountModalOpened = value;
     });
   },

@@ -19,6 +19,7 @@
         v-for="(word, i) in shuffledSeed"
         :key="`word${i}`"
         :label="`${word}`"
+        :disabled="wasUsed(word)"
         color="yellow"
         text-color="blueish"
         class="seed-btn"
@@ -88,6 +89,9 @@ export default {
     reset() {
       this.pipSeq = [];
       this.seedPhrase = [];
+    },
+    wasUsed(pip) {
+      return this.pipSeq.indexOf(pip) >= 0;
     },
   },
 };
@@ -165,7 +169,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  border: 1px solid #1a3248;
+  font-family: 'Montserrat-Semibold';
 }
 
 .seed-input-preview-box span {

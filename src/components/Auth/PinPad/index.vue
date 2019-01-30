@@ -75,6 +75,12 @@ export default {
       * @param {*} pin
      */
     inputPin(pin) {
+      const btn = document.querySelectorAll(`[data-text='${pin}']`)[0];
+      btn.className += ' active';
+      setTimeout(() => {
+        btn.classList.remove('active');
+      }, 200);
+
       this.input.push(Math.random());
 
       setTimeout(() => {
@@ -148,10 +154,10 @@ export default {
   height: 2.5em;
   margin: 0.25em 0.5em;
   line-height: 1.8;
-  transition: all ease-in-out 200ms;
+  transition: all ease-in-out 100ms;
 }
 
-.vue-keyboard-key:active {
+.vue-keyboard-key.active {
   background: rgba(255,255,255,0.1);
 }
 

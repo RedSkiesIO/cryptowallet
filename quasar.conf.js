@@ -21,6 +21,7 @@ module.exports = (ctx) => {
       'CoinFormatter',
       'VueTrend',
       'VueSelect',
+      'Particles',
     ],
     css: ['app.styl'],
     extras: [
@@ -98,6 +99,10 @@ module.exports = (ctx) => {
         'QSlider',
         'QScrollObservable',
         'QAlert',
+        'QCarousel',
+        'QCarouselSlide',
+        'QCarouselControl',
+        'QCheckbox',
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins

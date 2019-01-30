@@ -26,8 +26,12 @@
         <router-view/>
         <SelectAccountModal/>
         <NewAccountModal/>
+        <GetStartedModal/>
+        <TermsModal/>
 
         <div v-if="settings.authenticatedAccount">
+          <OfflineNotice/>
+
           <WalletsModal/>
           <PriceChartModal/>
           <SendCoinModal/>
@@ -52,10 +56,13 @@ import WalletsModal from '@/components/Modals/Wallets';
 import PriceChartModal from '@/components/Modals/PriceCharts';
 import SelectAccountModal from '@/components/Modals/SelectAccount';
 import NewAccountModal from '@/components/Modals/NewAccount';
+import GetStartedModal from '@/components/Modals/GetStarted';
+import TermsModal from '@/components/Modals/Terms';
 import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
+import OfflineNotice from '@/components/OfflineNotice';
 
 export default {
   name: 'App',
@@ -66,10 +73,13 @@ export default {
     PriceChartModal,
     SelectAccountModal,
     NewAccountModal,
+    GetStartedModal,
+    TermsModal,
     SendCoinModal,
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
+    OfflineNotice,
   },
 
   data() {
@@ -123,6 +133,8 @@ export default {
 
   mounted() {
     window.store = this.$store;
+    window.app = this;
+
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
     this.fetchPrices();
     // if (!this.settings.selectedAccount) this.$router.push({ path: '/setup/0' });
@@ -268,7 +280,6 @@ export default {
         const checkExists = (coin, data) => {
           const price = Latest.find([`${coin}_${this.selectedCurrency.code}`]);
           if (!price) {
-            console.log('inserting');
             Latest.$insert({
               data: {
                 coin,
@@ -478,15 +489,19 @@ body > div {
 }
 
 .loading-footer {
-    position: absolute;
-    width: 10rem;
-    height: 5rem;
-    bottom: 0;
-    opacity: 0.2;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    text-align: center;
+  position: absolute;
+  width: 10rem;
+  height: 5rem;
+  bottom: 0;
+  opacity: 0.2;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.loading-footer.emphasised {
+  opacity: 1;
 }
 
 .developed-by {

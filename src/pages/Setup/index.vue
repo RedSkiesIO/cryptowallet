@@ -6,7 +6,7 @@
 
 <script>
 import bcrypt from 'bcryptjs';
-import Language from '@/pages/Setup/Steps/Language/index.vue';
+import Splash from '@/pages/Setup/Steps/Splash/index.vue';
 import AccountName from '@/pages/Setup/Steps/AccountName/index.vue';
 import Pin from '@/pages/Setup/Steps/Pin';
 import PinConfirm from '@/pages/Setup/Steps/Pin/Confirm';
@@ -20,7 +20,7 @@ import { mapState } from 'vuex';
 
 export default {
   components: {
-    Language,
+    Splash,
     AccountName,
     Pin,
     PinConfirm,
@@ -35,15 +35,15 @@ export default {
     return {
       showNext: false,
       steps: [
-        Language,
+        Splash,
         Restore,
-        AccountName,
+        Seed,
+        SeedConfirm,
         Pin,
         PinConfirm,
         /* Network, */
-        Seed,
-        SeedConfirm,
         Node,
+        AccountName,
         Complete,
       ],
     };

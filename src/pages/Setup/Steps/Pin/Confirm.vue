@@ -30,7 +30,6 @@ export default {
     validatePin() {
       const pinHashConfirm = this.$CWCrypto.bcryptHashString(this.pinConfirm.join(''), this.salt);
       if (this.pinHash === pinHashConfirm) {
-        if (this.accountType === 'restored') this.$router.push({ path: `/setup/${this.id + 2}` });
         this.$router.push({ path: `/setup/${this.id + 1}` });
       }
     },
