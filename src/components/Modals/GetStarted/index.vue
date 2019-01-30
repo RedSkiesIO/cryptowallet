@@ -81,7 +81,7 @@
                 />
               </div>
               <p>
-                A list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, the Seed can be used to recover your money.
+                A list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, only the Seed can be used to regain access to your money.
               </p>
             </div>
           </q-carousel-slide>
