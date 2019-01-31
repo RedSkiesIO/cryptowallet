@@ -22,7 +22,7 @@ export default new VueRouter({
       path: '/setup/:id',
       component: () => import('layouts/UnAuthed'),
       children: [
-        { path: '', component: () => import('pages/Setup') },
+        { name: 'setup', path: '', component: () => import('pages/Setup') },
       ],
     },
     {

@@ -1,5 +1,8 @@
 <template>
-  <section class="header-section">
+  <section
+    v-if="!hideHeader"
+    class="header-section"
+  >
     <div class="header-back-button-wrapper">
       <q-btn
         :disable="!isBackButtonEnabled"
@@ -20,7 +23,12 @@
       {{ wallet.displayName }}
     </div>
     <div v-else>
-      <h1 class="header-h1">{{ heading }}</h1>
+      <div v-if="heading === 'CryptoWallet'">
+        <h1 class="header-h1 logo">{{ heading }}</h1>
+      </div>
+      <div v-else>
+        <h1 class="header-h1">{{ heading }}</h1>
+      </div>
     </div>
 
     <div
@@ -120,6 +128,7 @@ export default {
       return this.$store.state.settings.supportedCoins;
     },
     heading() {
+      if (this.$route.name === 'setup') return '';
       if (this.$route.name === 'exchange') return 'Exchange';
       if (this.$route.name === 'settings') return 'Settings';
       return 'CryptoWallet';
@@ -129,6 +138,10 @@ export default {
           this.$route.name === 'coinSinglePrices') {
         return true;
       }
+      return false;
+    },
+    hideHeader() {
+      if (this.$route.path === '/setup/0') return true;
       return false;
     },
     coinLogo() {
@@ -181,10 +194,14 @@ export default {
 }
 
 .header-h1 {
-  letter-spacing: 0.03em;
+  letter-spacing: normal;
   font-size: 1em;
   margin-top: 0.3em;
   position: relative;
+}
+
+.header-h1.logo {
+  font-family: 'CooperHewitt-BoldItalic';
 }
 
 .header-back-button-wrapper {

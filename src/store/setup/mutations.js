@@ -37,7 +37,7 @@ export function SET_PIN_HASH_CONFIRM(state, pinHashConfirm) {
 export function SET_SEED(state, seed) {
   state.seed = {};
   for (let i = 0; i < seed.length; i += 1) {
-    state.seed[seed[i].substring(0, 4)] = seed[i];
+    state.seed[seed[i]] = seed[i];
   }
 }
 

@@ -213,6 +213,11 @@ export default {
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
+
+      if (!this.activeWallets[this.authenticatedAccount]) {
+        this.activeWallets[this.authenticatedAccount] = {}
+      }
+
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
 
       if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);

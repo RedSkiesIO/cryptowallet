@@ -10,11 +10,11 @@ const exchangeRates = {
   Bitcoin: [
     {
       currency: 'USD',
-      rate: 6431.14,
+      rate: 3550.69,
     },
     {
       currency: 'GBP',
-      rate: 3000.00,
+      rate: 2749.56,
     },
   ],
   Litecoin: [

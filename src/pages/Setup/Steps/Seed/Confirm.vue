@@ -5,22 +5,25 @@
       {{ $t('pressSeed') }}
     </p>
     <div class="randomSeedContainer">
-      <q-input
-        v-for="(word, i) in shuffledSeed"
-        :key="`holder${i}`"
-        v-model.trim="seedPhrase[i]"
-        :prefix="(i+1)+'. '"
-        class="seed-input"
-        color="secondary"
-        readonly
-      />
+      <div class="seed-input-preview-box">
+        <span
+          v-for="(word, i) in seedPhrase"
+          :key="`holder${i}`"
+        >
+          {{ word }}
+        </span>
+      </div>
     </div>
     <div class="randomSeedContainer">
       <q-btn
         v-for="(word, i) in shuffledSeed"
         :key="`word${i}`"
         :label="`${word}`"
-        color="secondary"
+        :disabled="wasUsed(word)"
+        color="yellow"
+        text-color="blueish"
+        class="seed-btn"
+        size="sm"
         @click="addToSequence(word)"
       />
     </div>
@@ -54,7 +57,6 @@ export default {
       seed: state => state.setup.seed,
       id: state => parseInt(state.route.params.id, 10),
     }),
-
     resetDisabled() {
       return this.pipSeq.length === 0;
     },
@@ -74,7 +76,7 @@ export default {
   methods: {
     validate() {
       if (Object.keys(this.seed).join('') === this.pipSeq.join('')) {
-        this.$router.push({ path: `/setup/${this.id + 2}` });
+        this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
         this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
         this.reset();
@@ -88,6 +90,9 @@ export default {
       this.pipSeq = [];
       this.seedPhrase = [];
     },
+    wasUsed(pip) {
+      return this.pipSeq.indexOf(pip) >= 0;
+    },
   },
 };
 
@@ -96,34 +101,27 @@ export default {
 <style>
 .randomSeedContainer {
   margin-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .randomSeedContainer button {
-  width: 20%!important;
-  margin: 2.5%;
+  width: 31%!important;
+  margin-bottom: 0.5rem;
 }
 .randomSeedContainer .q-input {
-  width: 20%!important;
-  margin-left: 2.5%;
-  margin-right: 2.5%;
-  margin-bottom: 0%;
-  display: inline-flex;
-}
-.seed-input{
-    margin-right: 1em;
-    margin-bottom: 1em;
-    font-size: 'small';
-}
-
-.seed-input .q-if-addon{
-    font-size: small;
-    color: #c7c7c7;
+  width: 31%!important;
+  margin: 0;
+  margin-bottom: 0.5rem;
 }
 
 .seed-input .q-input-target{
-    font-size: small;
+    font-size: 0.65rem;
     color: white;
-    padding-left: 2px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .randomSeedContainer .text-secondary {
@@ -143,5 +141,39 @@ export default {
 
 .randomSeedContainer .q-if-standard {
   padding-bottom: 0px!important;
+}
+
+.seed-confirm-input {
+  padding: 0;
+}
+
+.seed-input .q-if-inner {
+  padding: 0rem;
+  margin: 0!important;
+}
+
+.seed-btn .q-btn-inner {
+  font-size: 0.8rem;
+  padding: 0.3rem 0;
+  text-transform: none;
+}
+
+.seed-input-preview-box {
+  padding: 0.5rem;
+  background: #22405a;
+  font-size: 0.8rem;
+  width: 100%;
+  border-radius: 0.3rem;
+  text-align: center;
+  height: 5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: 'Montserrat-Semibold';
+}
+
+.seed-input-preview-box span {
+  margin: 0.3rem;
+  margin-bottom: 0;
 }
 </style>
