@@ -22,6 +22,7 @@ module.exports = (ctx) => {
       'VueTrend',
       'VueSelect',
       'Vuelidate',
+      'Particles',
     ],
     css: ['app.styl'],
     extras: [
@@ -101,6 +102,10 @@ module.exports = (ctx) => {
         'QAlert',
         'QSearch',
         'QAutocomplete',
+        'QCarousel',
+        'QCarouselSlide',
+        'QCarouselControl',
+        'QCheckbox',
       ],
       directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins

@@ -75,9 +75,6 @@ export default {
         .where('isChange', false)
         .get();
 
-
-      console.log('!!!', txs);
-
       txs.sort((a, b) => {
         if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
           let b1 = new Date(b.confirmedTime * 1000);

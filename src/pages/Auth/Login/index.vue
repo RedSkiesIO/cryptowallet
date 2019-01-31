@@ -168,7 +168,7 @@ export default {
 .account-name-h1 {
   font-size: 2.5em;
   text-align: center;
-  padding: 2rem;
+  padding: 1.5rem;
   padding-top: 1rem;
 }
 </style>

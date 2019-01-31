@@ -34,7 +34,7 @@
           <span class="h3-line"/>
         </div>
 
-        <div class="small-text">{{ to }}</div>
+        <div class="small-text break">{{ to }}</div>
 
         <div class="send-modal-heading">
           <h3>Amount</h3>
@@ -123,7 +123,14 @@ export default {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     newBalance() {
-      return this.wallet.confirmedBalance - this.txData.transaction.value - this.txData.transaction.fee;
+      if (this.wallet.sdk === 'Ethereum') {
+        const newBalance = this.wallet.confirmedBalance * 1000000000000000000 - (this.txData.transaction.value * 1000000000000000000 + parseFloat(this.txData.transaction.fee) * 1000000000000000000);;
+        return newBalance / 1000000000000000000;
+      }
+
+      if (this.wallet.sdk === 'Bitcoin') {
+        return this.wallet.confirmedBalance - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
+      }
     },
     to() {
       if (Array.isArray(this.txData.transaction.receiver)) {
@@ -144,8 +151,6 @@ export default {
   },
   methods: {
     broadcastTx() {
-      console.log('broadcastTx');
-
       const {
         hexTx,
         transaction,
@@ -153,11 +158,13 @@ export default {
         changeAddresses,
       } = this.txData;
 
+      console.log('broadcastTx', transaction);
+
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
 
-      console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
-      console.log('network', this.wallet.network);
+      /*console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
+      console.log('network', this.wallet.network);*/
 
       if (this.wallet.sdk === 'Bitcoin') {
 
@@ -215,8 +222,9 @@ export default {
             return false;
           })
           .catch((err) => {
-            alert(err);
-            console.log(err);
+            this.$toast.create(10, err.message, 500);
+            this.loading = false;
+            console.error(err);
           });
       }
 
@@ -239,8 +247,9 @@ export default {
             return false;
           })
           .catch((err) => {
-            alert(err);
-            console.log(err);
+            this.$toast.create(10, err.message, 500);
+            this.loading = false;
+            console.error(err);
           });
       }
 
@@ -304,5 +313,9 @@ export default {
 .sending-spinner-overlay.active{
   opacity: 1;
   z-index: 2;
+}
+
+.break {
+  word-break: break-all;
 }
 </style>

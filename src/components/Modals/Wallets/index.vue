@@ -277,6 +277,11 @@ export default {
       const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
       if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
+
+      if (!this.activeWallets[this.authenticatedAccount]) {
+        this.activeWallets[this.authenticatedAccount] = {}
+      }
+
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
 
       if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);

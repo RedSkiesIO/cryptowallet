@@ -14,7 +14,6 @@
         :data="chartData"
         :gradient="['#fabc57']"
         :stroke-width="5"
-
         auto-draw
         smooth
       />
@@ -22,6 +21,7 @@
     <div class="wallet-buttons">
       <q-btn-group>
         <q-btn
+          :disabled="cantSend"
           icon="send"
           size="md"
           color="primary"
@@ -39,15 +39,6 @@
           flat
           @click.stop="receive"
         />
-        <!-- <q-btn
-          icon="list"
-          size="sm"
-          color="primary"
-          label="History"
-          class="wallet-group-btn"
-          flat
-          @click="history"
-        /> -->
         <q-btn
           v-if="showChart"
           size="lg"
@@ -98,9 +89,6 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
-    coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
-    },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
@@ -110,6 +98,9 @@ export default {
         return true;
       }
       return false;
+    },
+    cantSend() {
+      return this.wallet.confirmedBalance === 0;
     },
   },
   async mounted() {
@@ -159,9 +150,6 @@ export default {
     },
     receive() {
       this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
-    },
-    history() {
-      this.$router.push({ path: `/wallet/history/${this.wallet.id}` });
     },
     prices() {
       this.$router.push({ path: `/wallet/prices/${this.wallet.id}` });

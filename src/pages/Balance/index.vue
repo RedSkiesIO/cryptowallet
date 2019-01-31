@@ -93,6 +93,8 @@ export default {
         // eslint-disable-next-line max-len
         newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][this.wallet.name]);
       }
+      newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
+
 
       const { network } = this.wallet;
       let txHistory;

@@ -3,6 +3,7 @@
     <q-modal
       v-model="sendCoinModalOpened"
       class="light-modal modal"
+      no-route-dismiss
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -77,11 +78,18 @@ export default {
         }
       },
     },
+    sendCoinModalOpened: {
+      handler(newVal, oldVal) {
+        if (oldVal === true && newVal === false) {
+          if (this.$store.state.route.name === 'sendCoin') this.$router.go(-1);
+        }
+      },
+    },
   },
   mounted() {
-    this.$root.$on('sendCoinModalOpened', (value) => {
+    /* this.$root.$on('sendCoinModalOpened', (value) => {
       this.sendCoinModalOpened = value;
-    });
+    }); */
   },
   methods: {
     goBack() {
@@ -93,7 +101,7 @@ export default {
 
 <style>
 .send-coin-box {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   width: 100%;
 }
 
@@ -124,7 +132,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 2rem;
+  padding: 0 1.5rem;
   overflow: hidden;
 }
 
@@ -152,7 +160,7 @@ export default {
 
 .send-modal-heading {
   position: relative;
-  margin: 1rem 0 .5rem 0;
+  margin: 1.5rem 0 .5rem 0;
   overflow: hidden;
 }
 
@@ -233,4 +241,31 @@ export default {
 .grey-input.q-if-inverted:not(.q-if-inverted-light) .q-input-target::-webkit-input-placeholder {
   color: #afafaf !important;
 }
+
+.send-heading-btn {
+  border: 1px solid #d4d4d4;
+  background: whitesmoke;
+  position: absolute;
+  right: 0;
+  padding: 0;
+  width: 3rem;
+  height: 0;
+  min-height: 1.5rem;
+  text-transform: none;
+  font-family: Montserrat-SemiBold!important;
+}
+
+.send-heading-btn.active {
+  border: 1px solid #de4662;
+}
+
+.send-modal-heading .help-icon {
+  background: white;
+  z-index: 2;
+  position: relative;
+  top: -0.1rem;
+  margin-left: 0.1rem;
+  color: #e49ebe;
+}
+
 </style>

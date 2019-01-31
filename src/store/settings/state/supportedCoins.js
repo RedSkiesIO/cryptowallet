@@ -26,6 +26,7 @@ export default [
     symbol: 'LTC',
     network: 'LITECOIN_TESTNET',
     denomination: '0.00000000',
+    denominationShortened: '0.00000000',
   },
   {
     displayName: 'Dash',
@@ -35,6 +36,7 @@ export default [
     symbol: 'DASH',
     network: 'DASH_TESTNET',
     denomination: '0.00000000',
+    denominationShortened: '0.00000000',
   },
   {
     displayName: 'Bitcoin', // regtest
@@ -44,6 +46,7 @@ export default [
     symbol: 'BTC',
     network: 'REGTEST',
     denomination: '0.00000000',
+    denominationShortened: '0.00000000',
   },
   /*  {
       displayName: 'Ethereum',
@@ -61,8 +64,8 @@ export default [
     coinType: 60,
     symbol: 'ETH',
     network: 'ETHEREUM_ROPSTEN',
-    // denomination: '0.000000000000000000',
-    denomination: '0.00000000',
+    denomination: '0.000000000000000000',
+    denominationShortened: '0.00000000',
   },
   {
     displayName: 'Atlas City',

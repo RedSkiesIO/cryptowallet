@@ -53,8 +53,7 @@ export default {
     wallets() {
       return Wallet.query()
         .where('account_id', this.authenticatedAccount)
-        .where('imported', true)
-        .get();
+        .where('imported', true).get();
     },
   },
   methods: {

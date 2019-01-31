@@ -23,16 +23,19 @@
     >
 
       <div v-if="!settings.loading">
-
         <router-view/>
         <SelectAccountModal/>
+        <NewAccountModal/>
+        <GetStartedModal/>
+        <TermsModal/>
 
         <div v-if="settings.authenticatedAccount">
+          <OfflineNotice/>
+
           <WalletsModal/>
           <PriceChartModal/>
           <SendCoinModal/>
           <ReceiveCoinModal/>
-          <CoinHistoryModal/>
           <ConfirmSendModal/>
           <SendSuccessModal/>
           <AddErc20Modal/>
@@ -54,12 +57,15 @@ import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
 import PriceChartModal from '@/components/Modals/PriceCharts';
 import SelectAccountModal from '@/components/Modals/SelectAccount';
+import NewAccountModal from '@/components/Modals/NewAccount';
+import GetStartedModal from '@/components/Modals/GetStarted';
+import TermsModal from '@/components/Modals/Terms';
 import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
-import CoinHistoryModal from '@/components/Modals/CoinHistory';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
 import AddErc20Modal from '@/components/Modals/AddErc20';
+import OfflineNotice from '@/components/OfflineNotice';
 
 export default {
   name: 'App',
@@ -69,12 +75,15 @@ export default {
     WalletsModal,
     PriceChartModal,
     SelectAccountModal,
+    NewAccountModal,
+    GetStartedModal,
+    TermsModal,
     SendCoinModal,
     ReceiveCoinModal,
-    CoinHistoryModal,
     ConfirmSendModal,
     SendSuccessModal,
     AddErc20Modal,
+    OfflineNotice,
   },
 
   data() {
@@ -125,22 +134,13 @@ export default {
         this.fetchPrices();
         return true;
       },
-
-      'settings.selectedAccount': {
-        handler(value) {
-          if (!value) this.$router.push({ path: '/' });
-        },
-      },
     },
-  },
-
-
-  beforeCreate() {
-
   },
 
   mounted() {
     window.store = this.$store;
+    window.app = this;
+
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
     // if (!this.settings.selectedAccount) this.$router.push({ path: '/setup/0' });
 
@@ -175,27 +175,15 @@ export default {
         this.hidden = false;
       }, 1000);
     });
+
+    /* if (cordova) {
+      document.addEventListener('backbutton', () => {
+        console.log('back');
+        this.$router.go(-1);
+      }, false);
+    } */
   },
 
-  beforeMount() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
-  },
   methods: {
     storeSupportedCoins() {
       this.supportedCoins.forEach((coin) => {
@@ -292,7 +280,7 @@ export default {
 
         await Promise.all(promises);
       } catch (e) {
-        console.log('error :', e);
+        // console.log('error :', e);
       }
     },
 
@@ -414,6 +402,12 @@ body > div {
   padding: 0;
 }
 
+.modal-layout-wrapper.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .light-modal .modal-layout-wrapper {
   color: #1e3c57;
 }
@@ -427,15 +421,19 @@ body > div {
 }
 
 .loading-footer {
-    position: absolute;
-    width: 10rem;
-    height: 5rem;
-    bottom: 0;
-    opacity: 0.2;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    text-align: center;
+  position: absolute;
+  width: 10rem;
+  height: 5rem;
+  bottom: 0;
+  opacity: 0.2;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.loading-footer.emphasised {
+  opacity: 1;
 }
 
 .developed-by {

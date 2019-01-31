@@ -13,6 +13,7 @@
         >
           <q-btn-group>
             <q-btn
+              :disabled="cantSend"
               icon="send"
               size="md"
               color="primary"
@@ -91,7 +92,7 @@ export default {
       return Coin.all();
     },
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denominationShortened;
     },
     coinSymbol() {
       console.log(this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol);
@@ -114,6 +115,9 @@ export default {
       });
 
       return balanceInCoin.getFormatted();
+    },
+    cantSend() {
+      return this.wallet.confirmedBalance === 0;
     },
   },
   methods: {

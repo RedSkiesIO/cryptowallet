@@ -25,6 +25,10 @@
     src url(./fonts/Montserrat/Montserrat-Bold.ttf)
 
 @font-face
+    font-family CooperHewitt-Semibold
+    src url(./fonts/CooperHewitt/CooperHewitt-Semibold.otf)
+
+@font-face
     font-family CooperHewitt-SemiboldItalic
     src url(./fonts/CooperHewitt/CooperHewitt-SemiboldItalic.otf)
 
@@ -49,7 +53,7 @@ body #q-app
     background #e4e9ef;
 
 .modal-backdrop {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -104,7 +108,8 @@ button.q-btn[disabled] {
 }
 
 .modal-header {
-  color: #4a4a4a;
+  font-family: Montserrat-Medium;
+  color: #252525;
 }
 
 .q-notifications > div.column {
@@ -136,6 +141,7 @@ button.q-btn[disabled] {
     height: 100%;
     display: flex;
     flex-direction: column;
+    z-index: 2;
 }
 
 .layout-wrapper > div > section:last-of-type {
@@ -180,9 +186,9 @@ button.q-btn[disabled] {
 
 h1.setup {
   text-align: center;
-  font-weight: bold;
+  font-family: CooperHewitt-Semibold;
   margin-top: 0;
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 h4.setup {
@@ -194,6 +200,8 @@ h4.setup {
 p.setup {
   text-align: center;
   margin: 0.5em auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 .btns-wrapper {
@@ -370,4 +378,16 @@ button.bg-secondary {
 
 div.q-input {
   box-shadow: none!important;
+}
+
+.q-slider-handle.dragging .q-slider-label {
+  transform: translateX(-50%) translateY(-139%) scale(1)!important;
+}
+
+.q-slider-handle.dragging {
+  transform: translate3d(-50%, -50%, 0)!important;
+}
+
+.modal-buttons.row .q-btn {
+    background: rgba(0, 0, 0, 0.05);
 }

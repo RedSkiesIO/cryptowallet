@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="setup">{{ $t('seed') }}</h1>
+    <h1 class="setup">Seed Phrase</h1>
     <p class="setup">{{ $t('writeSeed') }}</p>
     <h4 class="setup seed-box">
       <span
@@ -58,7 +58,17 @@ export default {
       this.$store.dispatch('setup/setSeed', this.seedPhrase);
     },
     done() {
-      this.$router.push({ path: `/setup/${this.id + 1}` });
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Have you stored your seed?',
+        ok: 'Yes',
+        cancel: 'No',
+        color: 'blueish',
+      }).then(() => {
+        this.$router.push({ path: `/setup/${this.id + 1}` });
+      }).catch(() => {
+        this.closeModal();
+      });
     },
     anotherSeed() {
       this.generateSeed();
