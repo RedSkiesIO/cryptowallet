@@ -40,6 +40,7 @@
             <q-autocomplete
               :static-data="tokens"
               :value-field="v => ` ${ v.label } (${ v.symbol })`"
+              class= "autocomplete"
               @selected="selected" />
           </q-search>
         </q-tab-pane>
@@ -81,6 +82,8 @@
                 <q-input
                   v-model="form.tokenName"
                   :error="$v.form.tokenName.$error"
+                  :disable="disableInputs"
+                  :loading="loadingInputs"
                   placeholder="name"
                   class="sm-input grey-input"
                   inverted
@@ -99,6 +102,8 @@
                 <q-input
                   v-model="form.tokenSymbol"
                   :error="$v.form.tokenSymbol.$error"
+                  :disable="disableInputs"
+                  :loading="loadingInputs"
                   placeholder="symbol"
                   class="sm-input grey-input"
                   inverted
@@ -117,6 +122,8 @@
                 <q-input
                   v-model="form.tokenDecimals"
                   :error="$v.form.tokenDecimals.$error"
+                  :disable="disableInputs"
+                  :loading="loadingInputs"
                   placeholder="decimals"
                   class="sm-input grey-input"
                   type="number"
@@ -129,6 +136,7 @@
               <span class="error">{{ decimalsError }}</span>
               <div class="send">
                 <q-btn
+                  :disable="disableButton"
                   label="add"
                   color="blueish"
                   size="md"
@@ -169,6 +177,9 @@ export default {
         tokenSymbol: '',
         tokenDecimals: '',
       },
+      disableInputs: true,
+      loadingInputs: false,
+      disableButton: true,
       selected: '',
       tokenNetwork: 'ETHEREUM_ROPSTEN',
       searchName: '',
@@ -184,7 +195,7 @@ export default {
       tokenContract: {
         required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
       },
-      tokenName: { required, alphaNum },
+      tokenName: { required },
       tokenSymbol: {
         required, alphaNum, between: minLength(1), maxLength: maxLength(11),
       },
@@ -224,23 +235,40 @@ export default {
       if (field === 'contract') {
         this.$v.form.tokenContract.$touch();
         if (this.$v.form.tokenContract.$error) {
+          this.disableInputs = true;
+          this.disableButton = true;
           this.contractError = 'The contract address must be 42 characters in length.';
           return;
         }
-
+        this.loadingInputs = true;
         this.contractError = ' ';
 
         const coinSDK = this.coinSDKS.ERC20;
-        const info = await coinSDK.getTokenData(this.form.tokenContract, 'ETHEREUM');
-        this.form.tokenName = info.name;
-        this.form.tokenSymbol = info.symbol;
-        this.form.tokenDecimals = info.decimals;
+        try {
+          const info = await coinSDK.getTokenData(this.form.tokenContract, 'ETHEREUM_ROPSTEN');
+          if (info) {
+            this.form.tokenName = info.name;
+            this.form.tokenSymbol = info.symbol;
+            this.form.tokenDecimals = info.decimals;
+            this.loadingInputs = false;
+            this.disableButton = false;
+            return;
+          }
+          this.loadingInputs = false;
+          this.disableInputs = false;
+          this.disableButton = false;
+        } catch (err) {
+          console.log('err :', err);
+          this.disableButton = true;
+          this.loadingInputs = false;
+          this.contractError = err.message;
+          return;
+        }
       }
       if (field === 'name') {
         this.$v.form.tokenName.$touch();
-        console.log('name');
+
         if (this.$v.form.tokenName.$error) {
-          console.log('name error');
           this.nameError = 'Token name is required';
           return;
         }
@@ -267,22 +295,24 @@ export default {
       this.$v.form.$touch();
       if (this.$v.form.$error) {
         if (this.$v.form.tokenContract.$error) {
-          this.$q.notify('The contract address must be 42 characters in length.');
+          this.contractError = 'The contract address must be 42 characters in length.';
         }
         if (this.$v.form.tokenName.$error) {
-          this.$q.notify('Token name is required.');
+          this.nameError = 'Token name is required';
         }
         if (this.$v.form.tokenSymbol.$error) {
-          this.$q.notify('Token Symbol must be between 0 and 12 characters.');
+          this.symbolError = 'Token Symbol must be between 0 and 12 characters';
         }
         if (this.$v.form.tokenDecimals.$error) {
-          this.$q.notify('Token Decimals must be at least 0, and not over 36.');
+          this.decimalsError = 'Token Decimals must be at least 0, and not over 36.';
         }
         return false;
       }
       const coinSDK = this.coinSDKS.Ethereum;
-      const valid = await coinSDK.validateAddress(this.tokenContract, 'ETHEREUM_ROPSTEN');
-      if (!valid || !this.tokenName || !this.tokenSymbol || !this.tokenNetwork) return false;
+      const valid = await coinSDK.validateAddress(this.form.tokenContract.toLowerCase(), 'ETHEREUM_ROPSTEN');
+      console.log('valid :', valid);
+      // eslint-disable-next-line max-len
+      if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) { return false; }
       await this.enableWallet();
       this.goBack();
       return true;
@@ -336,9 +366,19 @@ export default {
             account_id: this.authenticatedAccount, imported: false, enabled: true, parentName: 'Ethereum',
           },
         });
+      } else {
+        console.log('already exists');
+        this.$q.notify('This token has already been enabled');
       }
     },
+    getTokenIcon() {
+
+    },
+    clearFields() {
+      Object.keys(this.form).forEach((k) => { this.form[k] = ''; });
+    },
     goBack() {
+      this.clearFields();
       this.addErc20ModalOpened = false;
     },
   },
@@ -414,7 +454,7 @@ export default {
 } */
 .send-modal-heading {
   position: relative;
-  margin: 1rem 0 .5rem 0;
+  margin: 0.7rem 0 .5rem 0;
   overflow: hidden;
 }
 
@@ -498,5 +538,18 @@ export default {
 
 .error {
   color: red;
+  min-height: 0.5em;
+  display: inline-block;
+}
+
+.autocomplete .q-item{
+  margin: 0.5em;
+}
+.autocomplete .q-item-image{
+  min-width: 48px;
+  max-width: 48px;
+}
+.autocomplete .q-item-label{
+  color:black;
 }
 </style>

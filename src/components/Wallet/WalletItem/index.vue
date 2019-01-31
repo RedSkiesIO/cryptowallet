@@ -43,6 +43,7 @@ import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'WalletItem',
@@ -95,7 +96,10 @@ export default {
     coinLogo() {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return 'assets/cc-icons/color/generic.svg';
     },
   },
   methods: {

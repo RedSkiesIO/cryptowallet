@@ -118,19 +118,21 @@ export default {
       let balance = 0;
       this.wallets.forEach((wallet) => {
         const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
-        const formattedAmount = new AmountFormatter({
-          amount: wallet.confirmedBalance,
-          rate: price.data.PRICE,
-          format: '0.00',
-          coin: wallet.name,
-          prependPlusOrMinus: false,
-          currency: this.selectedCurrency,
-          toCurrency: true,
-          toCoin: false,
-          withCurrencySymbol: false,
-        });
+        if (price) {
+          const formattedAmount = new AmountFormatter({
+            amount: wallet.confirmedBalance,
+            rate: price.data.PRICE,
+            format: '0.00',
+            coin: wallet.name,
+            prependPlusOrMinus: false,
+            currency: this.selectedCurrency,
+            toCurrency: true,
+            toCoin: false,
+            withCurrencySymbol: false,
+          });
 
-        balance += parseFloat(formattedAmount.getFormatted());
+          balance += parseFloat(formattedAmount.getFormatted());
+        }
       });
 
       const formattedBalance = new AmountFormatter({
