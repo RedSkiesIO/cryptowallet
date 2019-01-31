@@ -85,6 +85,7 @@
 import { mapState } from 'vuex';
 import SelectAccount from '@/components/Modals/SelectAccount';
 import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'Header',
@@ -104,6 +105,9 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    selectedCurrency() {
+      return this.$store.state.settings.selectedCurrency;
+    },
     displaySettings() {
       // if (this.authenticatedAccount) return true;
       return false;
@@ -115,7 +119,13 @@ export default {
       return this.$route.path === '/wallet';
     },
     displayPriceChart() {
-      return this.$route.name === 'walletSingle';
+      if (this.wallet && this.selectedCurrency) {
+        const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
+        if (price) {
+          return this.$route.name === 'walletSingle';
+        }
+      }
+      return false;
     },
     supportedCoins() {
       return Coin.all();
@@ -133,9 +143,12 @@ export default {
       return false;
     },
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return 'assets/cc-icons/color/generic.svg';
     },
   },
   watch: {

@@ -49,6 +49,7 @@
           @click="history"
         /> -->
         <q-btn
+          v-if="showChart"
           size="lg"
           color="primary"
           icon="timeline"
@@ -102,6 +103,13 @@ export default {
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+    },
+    showChart() {
+      const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
+      if (price) {
+        return true;
+      }
+      return false;
     },
   },
   async mounted() {

@@ -45,7 +45,7 @@
         </div>
       </div>
       <div
-        v-if="wallet"
+        v-if="wallet && latestPrice"
         class="modal-layout-wrapper"
       >
         <div class="price-info justify-center">
@@ -82,6 +82,7 @@ import Spinner from '@/components/Spinner';
 import Prices from '@/store/prices';
 import Latest from '@/store/latestPrice';
 import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 
 export default {
@@ -123,6 +124,8 @@ export default {
       const month = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
       if (!prices || !day || !week || !month) {
         this.loadData();
+        const price = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+        if (!price) return null;
       }
       return this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
     },
@@ -134,9 +137,12 @@ export default {
       return '#de4662';
     },
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return 'assets/cc-icons/color/generic.svg';
     },
   },
   watch: {

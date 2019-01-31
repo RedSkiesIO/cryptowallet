@@ -187,15 +187,15 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.parentSdk];
-      // const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
-      // let fee = fees.txMedium;
-      // if (this.feeSetting === 0) fee = fees.txLow;
-      // if (this.feeSetting === 2) fee = fees.txHigh;
+      let fee = fees.txMedium;
+      if (this.feeSetting === 0) fee = fees.txLow;
+      if (this.feeSetting === 2) fee = fees.txHigh;
 
-      let fee = 0.00021
-      if (this.feeSetting === 0) fee = 0.00004;
-      if (this.feeSetting === 2) fee = 0.0013;
+      // let fee = 0.00021
+      // if (this.feeSetting === 0) fee = 0.00004;
+      // if (this.feeSetting === 2) fee = 0.0013;
 
       const formattedFee = new AmountFormatter({
         amount: fee,

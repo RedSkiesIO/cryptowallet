@@ -35,6 +35,7 @@
       </div>
       <div class="wallet-prices">
         <Amount
+          v-if="latestPrice"
           :amount="wallet.confirmedBalance"
           :rate="latestPrice"
           :prepend-plus-or-minus="false"
@@ -54,6 +55,7 @@ import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
 import { AmountFormatter } from '@/helpers';
 import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'CoinHeader',
@@ -75,9 +77,12 @@ export default {
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return 'assets/cc-icons/color/generic.svg';
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -94,7 +99,10 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      return prices.data.PRICE;
+      if (prices) {
+        return prices.data.PRICE;
+      }
+      return null;
     },
     balanceInCoin() {
       const balanceInCoin = new AmountFormatter({
