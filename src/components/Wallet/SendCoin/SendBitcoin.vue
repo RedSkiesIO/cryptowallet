@@ -612,10 +612,10 @@ export default {
       const changeAddresses = this.generateChangeAddresses(filteredUtxos, pendingCount);
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const accounts = this.getAccounts();
-
       let address = this.getAddresses()[0].address;
       if (this.address) address = this.address;
       let amount = this.wallet.confirmedBalance;
+     
 
       const { transaction } = await this.createRawTx(
         accounts,
