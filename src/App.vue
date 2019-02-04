@@ -153,6 +153,7 @@ export default {
     return true; */
 
     this.$root.$on('scanQRCode', () => {
+      this.$q.scanning = true;
       this.hidden = true;
       if (typeof QRScanner !== 'undefined') QRScanner.show(() => {});
     });
@@ -163,10 +164,12 @@ export default {
         QRScanner.destroy(() => {});
       }
       setTimeout(() => {
+        this.$q.scanning = false;
         this.$root.$emit('sendCoinModalOpened', true);
       }, 500);
 
       setTimeout(() => {
+        this.$q.scanning = false;
         this.hidden = false;
       }, 1000);
     });
