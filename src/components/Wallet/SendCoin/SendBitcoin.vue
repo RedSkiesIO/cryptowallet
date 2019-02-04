@@ -602,7 +602,7 @@ export default {
 
       let address = this.getAddresses()[0].address;
       if (this.address) address = this.address;
-      let amount = this.wallet.confirmedBalance / 2;
+      let amount = this.wallet.confirmedBalance;
 
       const { transaction } = await this.createRawTx(
         accounts,
