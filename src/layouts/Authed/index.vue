@@ -157,6 +157,7 @@ export default {
       return this.$route.name === 'settings' ||
              this.$route.name === 'exchange' ||
              this.$route.name === 'walletSingle' ||
+             this.$route.name === 'sendCoinSingle' ||
              this.$route.name === 'coinSinglePrices';
     },
     shortTop() {
@@ -165,10 +166,12 @@ export default {
     },
     showCoinHeader() {
       return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'sendCoinSingle' && this.wallet) ||
              (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
     singleWalletTop() {
       return (this.$route.name === 'walletSingle' && this.wallet) ||
+             (this.$route.name === 'sendCoinSingle' && this.wallet) ||
              (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
   },

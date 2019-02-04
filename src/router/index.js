@@ -54,6 +54,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/wallet/single/send/:id',
+      component: () => import('layouts/Authed'),
+      children: [
+        { name: 'sendCoinSingle', path: '', component: () => import('pages/Balance') },
+      ],
+    },
+    {
       path: '/wallet/send/:id',
       component: () => import('layouts/Authed'),
       children: [

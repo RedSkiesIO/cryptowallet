@@ -71,7 +71,7 @@ export default {
   watch: {
     $route: {
       handler(to) {
-        if (to.name === 'sendCoin') {
+        if (to.name === 'sendCoin' || to.name === 'sendCoinSingle') {
           this.sendCoinModalOpened = true;
         } else {
           this.sendCoinModalOpened = false;

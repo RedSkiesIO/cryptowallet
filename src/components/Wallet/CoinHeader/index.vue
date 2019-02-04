@@ -109,7 +109,7 @@ export default {
       const balanceInCoin = new AmountFormatter({
         amount: this.wallet.confirmedBalance,
         rate: this.latestPrice,
-        format: this.coinDenomination,
+        format: '0.00000000',
         prependPlusOrMinus: false,
         removeTrailingZeros: true,
       });
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     send() {
-      this.$router.push({ path: `/wallet/send/${this.wallet.id}` });
+      this.$router.push({ path: `/wallet/single/send/${this.wallet.id}` });
     },
     receive() {
       this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });

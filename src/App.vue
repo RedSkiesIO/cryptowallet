@@ -218,10 +218,10 @@ export default {
       this.supportedCoins.forEach((coin) => {
         const isThere = Coin.find([coin.name]);
 
-        console.log(isThere);
+        // console.log(isThere);
 
         if (!isThere) {
-          console.log('adding coin');
+          // console.log('adding coin');
           const data = {
             name: coin.name,
             displayName: coin.displayName,
