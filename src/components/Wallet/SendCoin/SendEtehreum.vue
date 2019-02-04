@@ -130,6 +130,7 @@ import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Tx from '@/store/wallet/entities/tx';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendEthereum',
@@ -163,13 +164,17 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+    },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
     },
   },
 
@@ -211,6 +216,7 @@ export default {
     amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -227,6 +233,7 @@ export default {
     currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -262,6 +269,9 @@ export default {
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
       if (this.feeSetting === 2) fee = fees.txHigh;
+      console.log('fee :', fee);
+
+
 
       let rawFee = fees.medium;
       if (this.feeSetting === 0) rawFee = fees.low;
@@ -269,6 +279,7 @@ export default {
 
       const formattedFee = new AmountFormatter({
         amount: fee,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,

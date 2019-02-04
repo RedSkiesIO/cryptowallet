@@ -10,23 +10,7 @@
         </div>
         <div class="name">{{ wallet.displayName }}</div>
       </div>
-      <div
-        v-if="wallet.confirmedBalance"
-        class="balance"
-      >
-        <Amount
-          :amount="wallet.confirmedBalance"
-          :prepend-plus-or-minus="false"
-          :currency="currency"
-          :to-currency="true"
-          :coin="wallet.name"
-          format="0.00"
-        />
-      </div>
       <div>
-        <div v-if="clickItemAction === 'selectWallet'">
-          <q-icon name="chevron_right"/>
-        </div>
 
         <div v-if="clickItemAction === 'addWallet'">
           <q-toggle
@@ -53,17 +37,17 @@
 
 <script>
 import { mapState } from 'vuex';
-import Amount from '@/components/Wallet/Amount';
 import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'WalletItem',
   components: {
-    Amount,
     Spinner,
   },
   props: {
@@ -89,7 +73,6 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: state => state.settings.authenticatedAccount,
-      supportedCoins: state => state.settings.supportedCoins,
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -107,10 +90,16 @@ export default {
         if (!val) this.disableWallet();
       },
     },
+    supportedCoins() {
+      return Coin.all();
+    },
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return './statics/cc-icons/color/generic.svg';
     },
   },
   methods: {
@@ -132,6 +121,15 @@ export default {
         .where('account_id', this.authenticatedAccount)
         .where('displayName', this.wallet.displayName)
         .where('name', this.wallet.name)
+        .where('enabled', true)
+        .get();
+      return result.length > 0;
+    },
+
+    isEthEnabled(network) {
+      const result = Wallet.query(network)
+        .where('account_id', this.authenticatedAccount)
+        .where('name', network)
         .where('enabled', true)
         .get();
       return result.length > 0;
@@ -273,15 +271,35 @@ export default {
 
     async enableWallet() {
       console.log('enable wallet');
+    if(this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)){
+      const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
 
+      const data = {
+        name: eth.name,
+        displayName: eth.displayName,
+        sdk: eth.sdk,
+        account_id: this.authenticatedAccount,
+        network: eth.network,
+        symbol: eth.symbol,
+      };
+      const ethWalletResult = await Wallet.$insert({ data });
+      const ethWalletId = ethWalletResult.wallet[0].id;
+
+      Wallet.$update({
+        where: record => record.id === ethWalletId,
+        data: { imported: false, enabled: true },
+      });
+    }
+  
       const data = {
         name: this.wallet.name,
         displayName: this.wallet.displayName,
         sdk: this.wallet.sdk,
         account_id: this.authenticatedAccount,
         network: this.wallet.network,
+        symbol: this.wallet.symbol,
       };
-
+      
       /*const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), this.wallet.network);
       this.activeWallets[this.authenticatedAccount][this.wallet.name] = wallet;*/
@@ -294,20 +312,46 @@ export default {
 
       //this.initializingModalOpened = false;
 
-      Wallet.$update({
+      await Wallet.$update({
         where: record => record.id === newWalletId,
         data: { imported: false, enabled: true },
       });
+      if(this.wallet.sdk === 'ERC20'){
+        const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+        await Wallet.$update({
+        where: record => record.id === newWalletId,
+        data: { parentSdk: eth.sdk, 
+                parentName: eth.name,
+                contractAddress: this.wallet.contractAddress,
+                decimals: this.wallet.decimals,
+              },
+      });
+      }
     },
 
     disableWallet() {
+      const walletIds = [];
+      if(this.wallet.sdk === 'Ethereum'){
+        const erc20Wallets = Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('sdk', 'ERC20')
+        .get();
+        
+        erc20Wallets.forEach((wallet) => {
+          walletIds.push(wallet.id)
+        })
+      }
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('displayName', this.wallet.displayName)
         .where('name', this.wallet.name)
         .get();
 
-      const walletId = wallets[0].id;
+      walletIds.push(wallets[0].id);
+
+      walletIds.forEach((walletId)=> {
+
+      
       Wallet.$delete(walletId);
 
 
@@ -329,6 +373,7 @@ export default {
       const addresses = Address.query().where('wallet_id', walletId).get();
       addresses.forEach((address) => {
         Address.$delete(address.id);
+      });
       });
     },
   },

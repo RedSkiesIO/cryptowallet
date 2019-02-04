@@ -36,7 +36,9 @@
       </div>
       <div class="wallet-prices">
         <Amount
+          v-if="latestPrice"
           :amount="wallet.confirmedBalance"
+          :rate="latestPrice"
           :prepend-plus-or-minus="false"
           :currency="selectedCurrency"
           :to-currency="true"
@@ -53,6 +55,8 @@
 import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
 import { AmountFormatter } from '@/helpers';
+import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'CoinHeader',
@@ -74,25 +78,37 @@ export default {
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return './statics/cc-icons/color/generic.svg';
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denominationShortened;
     },
     coinSymbol() {
+      console.log(this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol);
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+    },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if (prices) {
+        return prices.data.PRICE;
+      }
+      return null;
     },
     balanceInCoin() {
       const balanceInCoin = new AmountFormatter({
         amount: this.wallet.confirmedBalance,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         prependPlusOrMinus: false,
         removeTrailingZeros: true,

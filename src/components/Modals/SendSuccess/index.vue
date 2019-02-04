@@ -75,6 +75,7 @@
 <script>
 import { mapState } from 'vuex';
 import { AmountFormatter } from '@/helpers';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendSuccess',
@@ -93,7 +94,7 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -111,6 +112,10 @@ export default {
       }
       return this.txData.transaction.receiver;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
+    },
   },
   mounted() {
     this.$root.$on('sendSuccessModalOpened', (value, txData) => {
@@ -126,6 +131,7 @@ export default {
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,

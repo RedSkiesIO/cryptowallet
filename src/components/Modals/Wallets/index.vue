@@ -16,6 +16,18 @@
           />
         </div>
         <h1 class="header-h1">Wallets</h1>
+        <div
+          class="header-settings-button-wrapper"
+        >
+          <q-btn
+            icon="add"
+            color="secondary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click.prevent="openAddWalletModal"
+          />
+        </div>
       </div>
 
       <div class="modal-layout-wrapper no-padding">
@@ -44,6 +56,8 @@ import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
+import Latest from '@/store/latestPrice';
 /*eslint-disable*/
 
 export default {
@@ -60,9 +74,14 @@ export default {
   },
   computed: {
     ...mapState({
-      supportedCoins: state => state.settings.supportedCoins,
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
+    selectedCurrency() {
+      return this.$store.state.settings.selectedCurrency;
+    },
+    supportedCoins() {
+      return Coin.all();
+    },
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
@@ -73,6 +92,9 @@ export default {
     });
   },
   methods: {
+    openAddWalletModal() {
+      this.$root.$emit('erc20ModalOpened', true);
+    },
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
       const {
         txHistory,
@@ -206,12 +228,54 @@ export default {
 
 
     },
+    storePriceData(coin, latestPrice) {
+      // const coinSDK = this.coinSDKS.Bitcoin;
+      return new Promise(async (resolve, reject) => {
+        try {
+          const checkPriceExists = (symbol, data) => {
+            const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
+            if (!price) {
+              console.log('inserting');
+              Latest.$insert({
+                data: {
+                  coin,
+                  currency: this.selectedCurrency.code,
+                  updated: +new Date(),
+                  data,
+                },
+              });
+              return false;
+            }
+            return true;
+          };
+          const whereLatestPrice = (record, item) => (
+            record.coin === item.coin
+             && record.currency === item.currency
+          );
 
-
-
+          if (checkPriceExists(coin, latestPrice)) {
+            Latest.$update({
+              where: record => whereLatestPrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+              }),
+              data: {
+                updated: +new Date(),
+                data: latestPrice,
+              },
+            });
+          }
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+      });
+    },
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
+      const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
+      if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
 
       if (!this.activeWallets[this.authenticatedAccount]) {
@@ -222,6 +286,74 @@ export default {
 
       if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);
       if (wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, initializedWallet, wallet);
+
+      Wallet.$update({
+        where: record => record.id === wallet.id,
+        data: { imported: true, enabled: true },
+      });
+    },
+
+    async enableErc20Wallet(wallet) {
+      // const token = this.supportedCoins.find(coin => coin.name === wallet.name);
+      const coinSDK = this.coinSDKS[wallet.sdk];
+      const parentSDK = this.coinSDKS[wallet.parentSdk];
+      const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
+      console.log('prices :', prices);
+      if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
+      const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
+      const erc20Wallet = await coinSDK.generateERC20Wallet(keyPair, wallet.name, wallet.symbol, wallet.contractAddress, wallet.decimals);
+      this.activeWallets[this.authenticatedAccount][wallet.name] = erc20Wallet;
+      
+      const {
+        txHistory,
+        accounts,
+        balance,
+      } = await this.discoverWallet(erc20Wallet, coinSDK, wallet.network, wallet.sdk);
+        
+        Wallet.$update({
+        where: record => record.id === wallet.id,
+        data: {
+          externalChainAddressIndex: 0,
+          internalChainAddressIndex: 0,
+          confirmedBalance: balance,
+          externalAddress: keyPair.address,
+        },
+      });
+
+      const newAddress = {
+        account_id: this.authenticatedAccount,
+        wallet_id: wallet.id,
+        chain: 'external',
+        address: keyPair.address,
+        index: 0,
+      };
+
+      await Address.$insert({ data: newAddress });
+
+      const unconfirmedTx = [];
+      const confirmedTx = [];
+
+      txHistory.forEach((tx) => {
+        tx.account_id = this.authenticatedAccount;
+        tx.wallet_id = wallet.id;
+        if (tx.confirmed) confirmedTx.push(tx);
+        if (!tx.confirmed) unconfirmedTx.push(tx);
+      });
+
+      function createDate(timestamp) {
+        return new Date(timestamp * 1000).getTime();
+      }
+
+      const allTx = [...unconfirmedTx, ...confirmedTx];
+      allTx.sort((a, b) => createDate(b.confirmedTime) - createDate(a.confirmedTime));
+
+      allTx.forEach(async (tx) => {
+        await Tx.$insert({ data: tx });
+      });
+
+
+      console.log(txHistory, accounts, balance);
 
       Wallet.$update({
         where: record => record.id === wallet.id,
@@ -246,23 +378,33 @@ export default {
         this.loading = true;
 
         const promises = [];
+        const erc20Promises = [];
 
         setTimeout(() => {
 
           wallets.forEach((wallet) => {
+            if(wallet.sdk === 'ERC20'){
+              erc20Promises.push(new Promise(async (resolve) => {
+              await this.enableErc20Wallet(wallet);
+              resolve();
+            }));
+            }
+            else{
             promises.push(new Promise(async (resolve) => {
               await this.enableWallet(wallet);
               resolve();
             }));
+            }
           });
 
           Promise.all(promises).then(() => {
-            this.loading = false;
+            Promise.all(erc20Promises).then(() => {
+              this.loading = false;
 
             setTimeout(() => {
               this.addWalletModalOpened = false;
             }, 250);
-
+            })
           });
         }, 500);
 

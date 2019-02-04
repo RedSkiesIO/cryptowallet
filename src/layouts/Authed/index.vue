@@ -110,22 +110,29 @@ export default {
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/all'];
+      return prices;
+    },
     totalBalance() {
       let balance = 0;
-
       this.wallets.forEach((wallet) => {
-        const formattedAmount = new AmountFormatter({
-          amount: wallet.confirmedBalance,
-          format: '0.00',
-          coin: wallet.name,
-          prependPlusOrMinus: false,
-          currency: this.selectedCurrency,
-          toCurrency: true,
-          toCoin: false,
-          withCurrencySymbol: false,
-        });
+        const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
+        if (price) {
+          const formattedAmount = new AmountFormatter({
+            amount: wallet.confirmedBalance,
+            rate: price.data.PRICE,
+            format: '0.00',
+            coin: wallet.name,
+            prependPlusOrMinus: false,
+            currency: this.selectedCurrency,
+            toCurrency: true,
+            toCoin: false,
+            withCurrencySymbol: false,
+          });
 
-        balance += parseFloat(formattedAmount.getFormatted());
+          balance += parseFloat(formattedAmount.getFormatted());
+        }
       });
 
       const formattedBalance = new AmountFormatter({
@@ -297,6 +304,14 @@ export default {
           } else if (wallet.sdk === 'Ethereum') {
             newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
             newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
+          }
+          else if (wallet.sdk === 'ERC20') {
+            console.log('wallet.name :', wallet.name);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
+          }
+          else if (wallet.sdk === 'ERC20') {
+            console.log('wallet.name :', wallet.name);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
           }
 
           // update balance

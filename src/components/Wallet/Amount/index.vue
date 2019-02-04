@@ -13,6 +13,10 @@ export default {
       type: Number,
       required: true,
     },
+    rate: {
+      type: String,
+      required: false,
+    },
     prependPlusOrMinus: {
       type: Boolean,
       required: false,
@@ -46,6 +50,7 @@ export default {
     formattedAmount() {
       const {
         amount,
+        rate,
         format,
         coin,
         prependPlusOrMinus,
@@ -56,6 +61,7 @@ export default {
 
       const formattedAmount = new AmountFormatter({
         amount,
+        rate,
         format,
         coin,
         prependPlusOrMinus,

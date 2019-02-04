@@ -38,6 +38,7 @@
           <ReceiveCoinModal/>
           <ConfirmSendModal/>
           <SendSuccessModal/>
+          <AddErc20Modal/>
         </div>
       </div>
     </div>
@@ -48,7 +49,8 @@
 <script>
 import { mapState } from 'vuex';
 import Latest from '@/store/latestPrice';
-import Prices from '@/store/prices';
+import Coin from '@/store/wallet/entities/coin';
+// import Prices from '@/store/prices';
 import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
@@ -62,6 +64,7 @@ import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
+import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 
 export default {
@@ -79,12 +82,14 @@ export default {
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
+    AddErc20Modal,
     OfflineNotice,
   },
 
   data() {
     return {
       hidden: false,
+      qrOrigin: '',
     };
   },
 
@@ -126,6 +131,8 @@ export default {
       handler(value) {
         if (value) return false;
         if (this.accounts.length < 1) this.$router.push({ path: '/setup/0' });
+        this.storeSupportedCoins();
+        this.fetchPrices();
         return true;
       },
     },
@@ -136,7 +143,6 @@ export default {
     window.app = this;
 
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
-    this.fetchPrices();
     // if (!this.settings.selectedAccount) this.$router.push({ path: '/setup/0' });
 
     // @todo figure this bit out, salt is causing errors
@@ -152,7 +158,8 @@ export default {
 
     return true; */
 
-    this.$root.$on('scanQRCode', () => {
+    this.$root.$on('scanQRCode', (origin) => {
+      this.qrOrigin = origin;
       this.$q.scanning = true;
       this.hidden = true;
       if (typeof QRScanner !== 'undefined') QRScanner.show(() => {});
@@ -163,10 +170,18 @@ export default {
         QRScanner.hide(() => {});
         QRScanner.destroy(() => {});
       }
-      setTimeout(() => {
-        this.$q.scanning = false;
-        this.$root.$emit('sendCoinModalOpened', true);
-      }, 500);
+      if (this.qrOrigin === 'addErc20') {
+        setTimeout(() => {
+          this.$q.scanning = false;
+          this.$root.$emit('walletsModalOpened', true);
+          this.$root.$emit('erc20ModalOpened', true);
+        }, 500);
+      } else {
+        setTimeout(() => {
+          this.$q.scanning = false;
+          this.$root.$emit('sendCoinModalOpened', true);
+        }, 500);
+      }
 
       setTimeout(() => {
         this.$q.scanning = false;
@@ -174,6 +189,22 @@ export default {
       }, 1000);
     });
 
+    this.$root.$on('cancelAddErc20Scanning', () => {
+      if (typeof QRScanner !== 'undefined') {
+        QRScanner.hide(() => {});
+        QRScanner.destroy(() => {});
+      }
+      setTimeout(() => {
+        this.$q.scanning = false;
+        this.$root.$emit('walletsModalOpened', true);
+        this.$root.$emit('erc20ModalOpened', true);
+      }, 500);
+
+      setTimeout(() => {
+        this.$q.scanning = false;
+        this.hidden = false;
+      }, 1000);
+    });
     /* if (cordova) {
       document.addEventListener('backbutton', () => {
         console.log('back');
@@ -183,22 +214,48 @@ export default {
   },
 
   methods: {
-    storePriceData(coin) {
-      const coinSDK = this.coinSDKS.Bitcoin;
+    storeSupportedCoins() {
+      this.supportedCoins.forEach((coin) => {
+        const isThere = Coin.find([coin.name]);
+
+        console.log(isThere);
+
+        if (!isThere) {
+          console.log('adding coin');
+          const data = {
+            name: coin.name,
+            displayName: coin.displayName,
+            sdk: coin.sdk,
+            symbol: coin.symbol,
+            network: coin.network,
+            denomination: coin.denomination,
+          };
+          if (coin.sdk === 'ERC20') {
+            data.parentName = coin.parentName;
+            data.parentSdk = coin.parentSdk;
+            data.contractAddress = coin.contractAddress;
+            data.decimals = coin.decimals;
+          }
+          Coin.$insert({
+            data,
+          });
+        }
+      });
+    },
+
+
+    storePriceData(coin, latestPrice) {
+      // const coinSDK = this.coinSDKS.Bitcoin;
       return new Promise(async (resolve, reject) => {
         try {
-          const dayData = await coinSDK.getHistoricalData(coin, this.selectedCurrency.code, 'day');
-          const weekData = await coinSDK.getHistoricalData(coin, this.selectedCurrency.code, 'week');
-          const monthData = await coinSDK.getHistoricalData(coin, this.selectedCurrency.code, 'month');
-
-          const checkExists = (period, data) => {
-            const price = Prices.find([`${coin}_${this.selectedCurrency.code}_${period}`]);
+          const checkPriceExists = (symbol, data) => {
+            const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
             if (!price) {
-              Prices.$insert({
+              console.log('inserting');
+              Latest.$insert({
                 data: {
                   coin,
                   currency: this.selectedCurrency.code,
-                  period,
                   updated: +new Date(),
                   data,
                 },
@@ -207,48 +264,20 @@ export default {
             }
             return true;
           };
-
-          const wherePrice = (record, item) => (
+          const whereLatestPrice = (record, item) => (
             record.coin === item.coin
              && record.currency === item.currency
-             && record.period === item.period
           );
-          if (checkExists('day', dayData)) {
-            Prices.$update({
-              where: record => wherePrice(record, {
+
+          if (checkPriceExists(coin, latestPrice)) {
+            Latest.$update({
+              where: record => whereLatestPrice(record, {
                 coin,
                 currency: this.selectedCurrency.code,
-                period: 'day',
               }),
               data: {
                 updated: +new Date(),
-                data: dayData,
-              },
-            });
-          }
-          if (checkExists('week', weekData)) {
-            Prices.$update({
-              where: record => wherePrice(record, {
-                coin,
-                currency: this.selectedCurrency.code,
-                period: 'week',
-              }),
-              data: {
-                updated: +new Date(),
-                data: weekData,
-              },
-            });
-          }
-          if (checkExists('month', monthData)) {
-            Prices.$update({
-              where: record => wherePrice(record, {
-                coin,
-                currency: this.selectedCurrency.code,
-                period: 'month',
-              }),
-              data: {
-                updated: +new Date(),
-                data: monthData,
+                data: latestPrice,
               },
             });
           }
@@ -270,86 +299,15 @@ export default {
 
       try {
         const prices = await coinSDK.getPriceFeed(coins, ['GBP', 'USD', 'EUR']);
-
+        console.log('prices :', prices);
+        console.log('coins :', coins);
         const promises = [];
         coins.forEach((coin) => {
-          promises.push(new Promise(async res => res(this.storePriceData(coin))));
+          // eslint-disable-next-line max-len
+          promises.push(new Promise(async res => res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code]))));
         });
 
         await Promise.all(promises);
-
-        // console.log('prices :', prices);
-
-        const checkExists = (coin, data) => {
-          const price = Latest.find([`${coin}_${this.selectedCurrency.code}`]);
-          if (!price) {
-            Latest.$insert({
-              data: {
-                coin,
-                currency: this.selectedCurrency.code,
-                updated: +new Date(),
-                data,
-              },
-            });
-            return false;
-          }
-          return true;
-        };
-
-        const wherePrice = (record, item) => (
-          record.coin === item.coin
-             && record.currency === item.currency
-        );
-        if (checkExists('BTC', prices.BTC[this.selectedCurrency.code])) {
-          Latest.$update({
-            where: record => wherePrice(record, {
-              coin: 'BTC',
-              currency: this.selectedCurrency.code,
-            }),
-            data: {
-              updated: +new Date(),
-              data: prices.BTC[this.selectedCurrency.code],
-            },
-          });
-        }
-        if (checkExists('ETH', prices.ETH[this.selectedCurrency.code])) {
-          Latest.$update({
-            where: record => wherePrice(record, {
-              coin: 'ETH',
-              currency: this.selectedCurrency.code,
-            }),
-            data: {
-              updated: +new Date(),
-              data: prices.ETH[this.selectedCurrency.code],
-            },
-          });
-        }
-        if (checkExists('LTC', prices.LTC[this.selectedCurrency.code])) {
-          Latest.$update({
-            where: record => wherePrice(record, {
-              coin: 'LTC',
-              currency: this.selectedCurrency.code,
-            }),
-            data: {
-              updated: +new Date(),
-              data: prices.LTC[this.selectedCurrency.code],
-            },
-          });
-        }
-        if (checkExists('DASH', prices.DASH[this.selectedCurrency.code])) {
-          Latest.$update({
-            where: record => wherePrice(record, {
-              coin: 'DASH',
-              currency: this.selectedCurrency.code,
-            }),
-            data: {
-              updated: +new Date(),
-              data: prices.DASH[this.selectedCurrency.code],
-            },
-          });
-        }
-        // const newPrice = Latest.find(['BTC_GBP']);
-        // console.log('newPrice :', newPrice);
       } catch (e) {
         // console.log('error :', e);
       }

@@ -136,6 +136,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendCoin',
@@ -168,13 +169,17 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+    },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
     },
   },
   watch: {
@@ -222,6 +227,7 @@ export default {
     amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -238,6 +244,7 @@ export default {
     currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -472,6 +479,7 @@ export default {
 
         const formattedFee = new AmountFormatter({
           amount: transaction.fee,
+          rate: this.latestPrice,
           format: '0.00',
           coin: this.wallet.name,
           currency: this.selectedCurrency,
@@ -620,6 +628,7 @@ export default {
 
       const formattedFee = new AmountFormatter({
         amount: transaction.fee,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,
@@ -643,6 +652,7 @@ export default {
           QRScanner.scan((err, text) => {
             if (err) {
               // an error occurred, or the scan was canceled (error code `6`)
+              
             } else {
               this.address = text;
               this.$root.$emit('cancelScanning');

@@ -45,13 +45,13 @@
         </div>
       </div>
       <div
-        v-if="wallet"
+        v-if="wallet && latestPrice"
         class="modal-layout-wrapper"
       >
         <div class="price-info justify-center">
 
           <div class="row labels">
-            <div class="col-6">1{{ coinSymbol }} / {{ selectedCurrency.code }}</div>
+            <div class="col-6">1 {{ coinSymbol }} / {{ selectedCurrency.code }}</div>
             <div class="col-6">Volume 24h {{ selectedCurrency.code }}</div>
           </div>
           <div class="row price">
@@ -66,7 +66,7 @@
           </div>
         </div>
         <PriceChart
-          v-if="priceChartModalOpened"
+          v-if="priceChartModalOpened && (showChart || chartDataExists)"
           :gradient="gradientStroke"
         />
       </div>
@@ -81,6 +81,8 @@ import PriceChart from '@/components/PriceCharts/ChartContainer';
 import Spinner from '@/components/Spinner';
 import Prices from '@/store/prices';
 import Latest from '@/store/latestPrice';
+import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 
 
 export default {
@@ -94,6 +96,7 @@ export default {
       priceChartModalOpened: false,
       gradientStroke: '',
       loading: false,
+      showChart: false,
     };
   },
   computed: {
@@ -108,13 +111,22 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     latestPrice() {
       // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      if (!prices || !day || !week || !month) {
+        this.loadData();
+        const price = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+        if (!price) return null;
+      }
       return this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
     },
     percentColor() {
@@ -125,9 +137,21 @@ export default {
       return '#de4662';
     },
     coinLogo() {
-      const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
+      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      return require(`@/assets/cc-icons/color/${coin.symbol.toLowerCase()}.svg`);
+      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      }
+      return './statics/cc-icons/color/generic.svg';
+    },
+    chartDataExists() {
+      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      if (!day || !week || !month) {
+        return false;
+      }
+      return true;
     },
   },
   watch: {
@@ -153,6 +177,7 @@ export default {
     this.$root.$on('priceChartModalOpened', (value) => {
       if (value === true) {
         this.priceChartModalOpened = value;
+        this.loadData();
       }
     });
   },
@@ -161,74 +186,126 @@ export default {
       this.priceChartModalOpened = true;
     },
     async loadData() {
+      this.showChart = false;
       this.loading = true;
 
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      let coinSDK = this.coinSDKS[this.wallet.sdk];
+      if (this.wallet.sdk === 'ERC20') {
+        coinSDK = this.coinSDKS[this.wallet.parentSdk];
+      }
       try {
         const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+        console.log('daydata');
         const weekData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
+        console.log('weekdata');
         const monthData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'month');
+        console.log('monthdata');
         const latestPrice = await coinSDK.getPriceFeed(
           [this.coinSymbol],
           [this.selectedCurrency.code],
         );
+        console.log('latestprice');
+
+        const checkExists = (period, data) => {
+          const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_${period}`]);
+          if (!price) {
+            Prices.$insert({
+              data: {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+                period,
+                updated: +new Date(),
+                data,
+              },
+            });
+            return false;
+          }
+          return true;
+        };
+
         const wherePrice = (record, item) => (
           record.coin === item.coin
-             && record.currency === item.currency
-             && record.period === item.period
+            && record.currency === item.currency
+            && record.period === item.period
         );
+        if (checkExists('day', dayData)) {
+          Prices.$update({
+            where: record => wherePrice(record, {
+              coin: this.coinSymbol,
+              currency: this.selectedCurrency.code,
+              period: 'day',
+            }),
+            data: {
+              updated: +new Date(),
+              data: dayData,
+            },
+          });
+        }
+        if (checkExists('week', weekData)) {
+          Prices.$update({
+            where: record => wherePrice(record, {
+              coin: this.coinSymbol,
+              currency: this.selectedCurrency.code,
+              period: 'week',
+            }),
+            data: {
+              updated: +new Date(),
+              data: weekData,
+            },
+          });
+        }
+        if (checkExists('month', monthData)) {
+          Prices.$update({
+            where: record => wherePrice(record, {
+              coin: this.coinSymbol,
+              currency: this.selectedCurrency.code,
+              period: 'month',
+            }),
+            data: {
+              updated: +new Date(),
+              data: monthData,
+            },
+          });
+        }
+        const checkPriceExists = (symbol, data) => {
+          const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
+          if (!price) {
+            console.log('inserting');
+            Latest.$insert({
+              data: {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+                updated: +new Date(),
+                data,
+              },
+            });
+            return false;
+          }
+          return true;
+        };
 
-        Prices.$update({
-          where: record => wherePrice(record, {
-            coin: this.coinSymbol,
-            currency: this.selectedCurrency.code,
-            period: 'day',
-          }),
-          data: {
-            updated: +new Date(),
-            data: dayData,
-          },
-        });
-        Prices.$update({
-          where: record => wherePrice(record, {
-            coin: this.coinSymbol,
-            currency: this.selectedCurrency.code,
-            period: 'week',
-          }),
-          data: {
-            updated: +new Date(),
-            data: weekData,
-          },
-        });
-        Prices.$update({
-          where: record => wherePrice(record, {
-            coin: this.coinSymbol,
-            currency: this.selectedCurrency.code,
-            period: 'month',
-          }),
-          data: {
-            updated: +new Date(),
-            data: monthData,
-          },
-        });
         const whereLatest = (record, item) => (
           record.coin === item.coin
-             && record.currency === item.currency
+            && record.currency === item.currency
         );
-        Latest.$update({
-          where: record => whereLatest(record, {
-            coin: this.coinSymbol,
-            currency: this.selectedCurrency.code,
-          }),
-          data: {
-            updated: +new Date(),
-            data: latestPrice[this.coinSymbol][this.selectedCurrency.code],
-          },
-        });
+        // eslint-disable-next-line max-len
+        if (checkPriceExists(this.coinSymbol, latestPrice[this.coinSymbol][this.selectedCurrency.code])) {
+          Latest.$update({
+            where: record => whereLatest(record, {
+              coin: this.coinSymbol,
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
+              updated: +new Date(),
+              data: latestPrice[this.coinSymbol][this.selectedCurrency.code],
+            },
+          });
+        }
       } catch (e) {
         console.log(e);
       }
       this.loading = false;
+      this.showChart = true;
       return false;
     },
     goBack() {

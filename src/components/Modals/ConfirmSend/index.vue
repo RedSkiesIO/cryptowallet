@@ -90,6 +90,7 @@ import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'ConfirmSend',
@@ -113,7 +114,7 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
+      return Coin.all();
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -136,6 +137,10 @@ export default {
         return this.txData.transaction.receiver[0];
       }
       return this.txData.transaction.receiver;
+    },
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      return prices.data.PRICE;
     },
   },
   mounted() {
@@ -223,7 +228,7 @@ export default {
           });
       }
 
-      if (this.wallet.sdk === 'Ethereum') {
+      if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
         coinSDK.broadcastTx(hexTx, this.wallet.network)
           .then(async (result) => {
             if (!result) {
@@ -253,6 +258,7 @@ export default {
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0,0[.]00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,

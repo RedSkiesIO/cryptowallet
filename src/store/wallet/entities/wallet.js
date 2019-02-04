@@ -11,6 +11,7 @@ export default class Wallet extends Model {
       account_id: this.attr(''),
       name: this.attr(''),
       displayName: this.attr(''),
+      symbol: this.attr(''),
       sdk: this.attr(''),
       network: this.attr(''),
       internalChainAddressIndex: this.attr(0),
@@ -21,6 +22,11 @@ export default class Wallet extends Model {
       imported: this.attr(false),
       enabled: this.attr(false),
       lastBlockHeight: this.attr(0),
+      parentName: this.attr(''),
+      parentSdk: this.attr(''),
+      contractAddress: this.attr(''),
+      decimals: this.attr(''),
+
     };
   }
 }
