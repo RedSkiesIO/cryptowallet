@@ -423,6 +423,9 @@ export default {
       if (!address || !amount) return false;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+
+      console.log('getTransactionFee');
+
       const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
       let fee = fees.medium;
@@ -448,6 +451,8 @@ export default {
       console.log('???');
 */
 
+
+      console.log('maxed', this.maxed);
 
       try {
         const {
@@ -610,7 +615,7 @@ export default {
         filteredUtxos,
         wallet,
         address,
-        amount
+        amount,
       );
 
       const formattedFee = new AmountFormatter({
