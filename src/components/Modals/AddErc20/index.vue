@@ -493,7 +493,7 @@ export default {
   cursor: pointer;
 }
 
-.qr-code-wrapper img {
+.qr-code-wrapper {
   width: 90%;
   height: 90%;
   position: relative;

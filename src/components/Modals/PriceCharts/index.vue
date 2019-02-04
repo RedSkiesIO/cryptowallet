@@ -119,11 +119,11 @@ export default {
     latestPrice() {
       // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      const day = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
-      const week = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
-      const month = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
       if (!prices || !day || !week || !month) {
-        // this.loadData();
+        this.loadData();
         const price = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
         if (!price) return null;
       }
@@ -145,9 +145,9 @@ export default {
       return './statics/cc-icons/color/generic.svg';
     },
     chartDataExists() {
-      const day = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
-      const week = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
-      const month = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
       if (!day || !week || !month) {
         return false;
       }
@@ -225,8 +225,8 @@ export default {
 
         const wherePrice = (record, item) => (
           record.coin === item.coin
-             && record.currency === item.currency
-             && record.period === item.period
+            && record.currency === item.currency
+            && record.period === item.period
         );
         if (checkExists('day', dayData)) {
           Prices.$update({
@@ -286,7 +286,7 @@ export default {
 
         const whereLatest = (record, item) => (
           record.coin === item.coin
-             && record.currency === item.currency
+            && record.currency === item.currency
         );
         // eslint-disable-next-line max-len
         if (checkPriceExists(this.coinSymbol, latestPrice[this.coinSymbol][this.selectedCurrency.code])) {
