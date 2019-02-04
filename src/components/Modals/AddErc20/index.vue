@@ -52,12 +52,6 @@
               <div class="send-modal-heading">
                 <h4>Contract Address</h4>
                 <span class="h3-line"/>
-                <q-btn
-                  :label="$t('paste')"
-                  size="sm"
-                  class="send-heading-btn"
-                  @click="paste"
-                />
               </div>
 
               <div class="to">

@@ -309,6 +309,10 @@ export default {
             console.log('wallet.name :', wallet.name);
             newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
           }
+          else if (wallet.sdk === 'ERC20') {
+            console.log('wallet.name :', wallet.name);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
+          }
 
           // update balance
           Wallet.$update({

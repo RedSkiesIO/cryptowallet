@@ -89,6 +89,9 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
+    coinDenomination() {
+      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+    },
     coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
