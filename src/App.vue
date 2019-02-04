@@ -89,6 +89,7 @@ export default {
   data() {
     return {
       hidden: false,
+      qrOrigin: '',
     };
   },
 
@@ -157,7 +158,8 @@ export default {
 
     return true; */
 
-    this.$root.$on('scanQRCode', () => {
+    this.$root.$on('scanQRCode', (origin) => {
+      this.qrOrigin = origin;
       this.$q.scanning = true;
       this.hidden = true;
       if (typeof QRScanner !== 'undefined') QRScanner.show(() => {});
@@ -168,10 +170,18 @@ export default {
         QRScanner.hide(() => {});
         QRScanner.destroy(() => {});
       }
-      setTimeout(() => {
-        this.$q.scanning = false;
-        this.$root.$emit('sendCoinModalOpened', true);
-      }, 500);
+      if (this.qrOrigin === 'addErc20') {
+        setTimeout(() => {
+          this.$q.scanning = false;
+          this.$root.$emit('walletsModalOpened', true);
+          this.$root.$emit('erc20ModalOpened', true);
+        }, 500);
+      } else {
+        setTimeout(() => {
+          this.$q.scanning = false;
+          this.$root.$emit('sendCoinModalOpened', true);
+        }, 500);
+      }
 
       setTimeout(() => {
         this.$q.scanning = false;
@@ -179,6 +189,22 @@ export default {
       }, 1000);
     });
 
+    this.$root.$on('cancelAddErc20Scanning', () => {
+      if (typeof QRScanner !== 'undefined') {
+        QRScanner.hide(() => {});
+        QRScanner.destroy(() => {});
+      }
+      setTimeout(() => {
+        this.$q.scanning = false;
+        this.$root.$emit('walletsModalOpened', true);
+        this.$root.$emit('erc20ModalOpened', true);
+      }, 500);
+
+      setTimeout(() => {
+        this.$q.scanning = false;
+        this.hidden = false;
+      }, 1000);
+    });
     /* if (cordova) {
       document.addEventListener('backbutton', () => {
         console.log('back');

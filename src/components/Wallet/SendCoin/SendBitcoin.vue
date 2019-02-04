@@ -641,7 +641,7 @@ export default {
      */
     scan() {
       this.$root.$emit('scanQRCode');
-      this.$root.$emit('sendModalOpened', false);
+      this.$root.$emit('sendCoinModalOpened', false);
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -651,8 +651,7 @@ export default {
             } else {
               this.address = text;
               this.$root.$emit('cancelScanning');
-              console.log('cancelling')
-              this.$root.$emit('sendModalOpened', true);
+              this.$root.$emit('sendCoinModalOpened', true);
             }
           });
         }, 500);

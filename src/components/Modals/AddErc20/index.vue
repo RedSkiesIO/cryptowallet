@@ -17,7 +17,6 @@
         <h1 class="header-h1">Add Token</h1>
       </div>
       <q-tabs
-        animated
         swipeable
         color="secondary"
         inverted
@@ -66,6 +65,7 @@
                 />
                 <div
                   class="side-content qr-code-wrapper"
+                  @click="scan"
                 >
                   <div class="hor-line"/>
                   <div class="ver-line"/>
@@ -378,6 +378,29 @@ export default {
       cordova.plugins.clipboard.paste((text) => {
         this.form.tokenContract = text;
       });
+    },
+
+    /**
+     * Initiates the QR code scanner
+     */
+    scan() {
+      this.$root.$emit('scanQRCode', 'addErc20');
+      this.addErc20ModalOpened = false;
+      this.$root.$emit('walletsModalOpened', false);
+      if (typeof QRScanner !== 'undefined') {
+        setTimeout(() => {
+          QRScanner.scan((err, text) => {
+            if (err) {
+              // an error occurred, or the scan was canceled (error code `6`)
+            } else {
+              this.form.tokenContract = text;
+              this.$root.$emit('cancelScanning');
+              this.$root.$emit('walletsModalOpened', true);
+              this.addErc20ModalOpened = true;
+            }
+          });
+        }, 500);
+      }
     },
 
     clearFields() {
