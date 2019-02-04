@@ -81,15 +81,15 @@ export default {
     sendCoinModalOpened: {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
-          if (this.$store.state.route.name === 'sendCoin') this.$router.go(-1);
+          if (this.$store.state.route.name === 'sendCoin' && !this.$q.scanning) this.$router.go(-1);
         }
       },
     },
   },
   mounted() {
-    // this.$root.$on('sendModalOpened', (value) => {
-    //   this.sendCoinModalOpened = value;
-    // });
+    this.$root.$on('sendCoinModalOpened', (value) => {
+      this.sendCoinModalOpened = value;
+    });
   },
   methods: {
     goBack() {
