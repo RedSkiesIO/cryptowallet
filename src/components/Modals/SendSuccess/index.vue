@@ -126,7 +126,7 @@ export default {
   methods: {
     complete() {
       this.sendSuccessModalOpened = false;
-      this.$router.push({ path: '/wallet' });
+      this.$router.go(-1);
     },
     coinToCurrency(amount) {
       const formattedAmount = new AmountFormatter({

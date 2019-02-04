@@ -130,7 +130,8 @@ export default {
       if (this.wallet && this.selectedCurrency) {
         const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
-          return this.$route.name === 'walletSingle';
+          return this.$route.name === 'walletSingle' ||
+                 this.$route.name === 'sendCoinSingle';
         }
       }
       return false;
@@ -146,6 +147,7 @@ export default {
     },
     coinHeading() {
       if (this.$route.name === 'walletSingle' ||
+          this.$route.name === 'sendCoinSingle' ||
           this.$route.name === 'coinSinglePrices') {
         return true;
       }

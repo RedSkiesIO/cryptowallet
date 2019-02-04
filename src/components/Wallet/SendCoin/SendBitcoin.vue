@@ -431,7 +431,7 @@ export default {
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
-      console.log('getTransactionFee');
+      // console.log('getTransactionFee');
 
       const fees = await coinSDK.getTransactionFee(this.wallet.network);
 
@@ -459,7 +459,7 @@ export default {
 */
 
 
-      console.log('maxed', this.maxed);
+      // console.log('maxed', this.maxed);
 
       try {
         const {
@@ -652,7 +652,7 @@ export default {
           QRScanner.scan((err, text) => {
             if (err) {
               // an error occurred, or the scan was canceled (error code `6`)
-              
+
             } else {
               this.address = text;
               this.$root.$emit('cancelScanning');
