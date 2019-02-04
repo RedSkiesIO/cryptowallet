@@ -66,7 +66,7 @@
           </div>
         </div>
         <PriceChart
-          v-if="priceChartModalOpened && showChart"
+          v-if="priceChartModalOpened && (showChart || chartDataExists)"
           :gradient="gradientStroke"
         />
       </div>
@@ -96,7 +96,7 @@ export default {
       priceChartModalOpened: false,
       gradientStroke: '',
       loading: false,
-      showChart: true,
+      showChart: false,
     };
   },
   computed: {
@@ -123,7 +123,7 @@ export default {
       const week = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
       const month = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
       if (!prices || !day || !week || !month) {
-        this.loadData();
+        // this.loadData();
         const price = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
         if (!price) return null;
       }
@@ -140,9 +140,18 @@ export default {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
       if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
-        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
-      return 'assets/cc-icons/color/generic.svg';
+      return './statics/cc-icons/color/generic.svg';
+    },
+    chartDataExists() {
+      const day = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      const week = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      const month = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      if (!day || !week || !month) {
+        return false;
+      }
+      return true;
     },
   },
   watch: {
@@ -168,6 +177,7 @@ export default {
     this.$root.$on('priceChartModalOpened', (value) => {
       if (value === true) {
         this.priceChartModalOpened = value;
+        this.loadData();
       }
     });
   },
@@ -185,12 +195,16 @@ export default {
       }
       try {
         const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+        console.log('daydata');
         const weekData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
+        console.log('weekdata');
         const monthData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'month');
+        console.log('monthdata');
         const latestPrice = await coinSDK.getPriceFeed(
           [this.coinSymbol],
           [this.selectedCurrency.code],
         );
+        console.log('latestprice');
 
         const checkExists = (period, data) => {
           const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_${period}`]);

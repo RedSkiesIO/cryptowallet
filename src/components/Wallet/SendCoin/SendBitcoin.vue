@@ -227,6 +227,7 @@ export default {
     amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -243,6 +244,7 @@ export default {
     currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -621,6 +623,7 @@ export default {
 
       const formattedFee = new AmountFormatter({
         amount: transaction.fee,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,
@@ -638,16 +641,18 @@ export default {
      */
     scan() {
       this.$root.$emit('scanQRCode');
-      this.$root.$emit('sendCoinModalOpened', false);
+      this.$root.$emit('sendModalOpened', false);
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
             if (err) {
               // an error occurred, or the scan was canceled (error code `6`)
+              
             } else {
               this.address = text;
               this.$root.$emit('cancelScanning');
-              this.$root.$emit('sendCoinModalOpened', true);
+              console.log('cancelling')
+              this.$root.$emit('sendModalOpened', true);
             }
           });
         }, 500);

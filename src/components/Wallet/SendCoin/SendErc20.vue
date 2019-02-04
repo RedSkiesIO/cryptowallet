@@ -4,6 +4,12 @@
       <div class="send-modal-heading">
         <h3>Recipient</h3>
         <span class="h3-line"/>
+        <q-btn
+          :label="$t('paste')"
+          size="sm"
+          class="send-heading-btn"
+          @click="paste"
+        />
       </div>
 
       <div class="to">
@@ -32,6 +38,13 @@
       <div class="send-modal-heading">
         <h3>Amount</h3>
         <span class="h3-line"/>
+        <q-btn
+          :label="$t('max')"
+          :class="{ active: maxed }"
+          size="sm"
+          class="send-heading-btn"
+          @click="max"
+        />
       </div>
 
       <div class="amount">
@@ -45,7 +58,9 @@
           />
           <div class="side-content">{{ coinSymbol }}</div>
         </div>
-        <div class="amount-div-wrapper">
+        <div
+          v-if="latestPrice"
+          class="amount-div-wrapper">
           <q-input
             v-model="inCurrency"
             type="number"
@@ -124,6 +139,7 @@ export default {
       sendingModalOpened: false,
       feeSetting: 1,
       estimatedFee: 'N/A',
+      maxed: false,
     };
   },
   computed: {
@@ -148,6 +164,9 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if(!prices){
+        return null;
+      }
       return prices.data.PRICE;
     },
     parentPrice() {
@@ -256,16 +275,11 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const parentSDK = this.coinSDKS[this.wallet.parentSdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
-      // const keypair = coinSDK.generateKeyPair(wallet, 0);
-      // const fees = await parentSDK.getTransactionFee(this.wallet.network);
+      const fees = await parentSDK.getTransactionFee(this.wallet.network);
 
-      // let fee = fees.medium;
-      // if (this.feeSetting === 0) fee = fees.low;
-      // if (this.feeSetting === 2) fee = fees.high;
-
-      let fee = 0.00021
-      if (this.feeSetting === 0) fee = 0.00004;
-      if (this.feeSetting === 2) fee = 0.0013;
+      let fee = fees.medium;
+      if (this.feeSetting === 0) fee = fees.low;
+      if (this.feeSetting === 2) fee = fees.high;
 
       const {
         transaction,
@@ -278,31 +292,6 @@ export default {
         hexTx,
         transaction,
       });
-
-
-      /*coinSDK.broadcastTx(hexTx, this.wallet.network)
-        .then(async (result) => {
-          if (!result) {
-            console.error('transaction broadcast failure');
-            return false;
-          }
-
-          transaction.account_id = this.authenticatedAccount;
-          transaction.wallet_id = this.wallet.id;
-          transaction.isChange = false;
-          transaction.sent = true;
-
-          await Tx.$insert({ data: transaction });
-
-          this.completeTransaction();
-          return false;
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err);
-        });
-*/
-      return false;
     },
 
     /**
@@ -312,6 +301,18 @@ export default {
       cordova.plugins.clipboard.paste((text) => {
         this.address = text;
       });
+    },
+
+    async max() {
+      if (this.maxed) {
+        this.maxed = false;
+        this.amount = '';
+        this.inCurrency = '';
+        return false;
+      }
+
+      this.maxed = true;
+      this.amount = this.wallet.confirmedBalance;
     },
 
     /**
@@ -368,6 +369,12 @@ export default {
       this.amount = parseFloat(formattedAmount.getFormatted());
     },
   },
+
+  paste() {
+      cordova.plugins.clipboard.paste((text) => {
+        this.address = text;
+      });
+    },
 };
 </script>
 

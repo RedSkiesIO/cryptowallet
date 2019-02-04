@@ -52,6 +52,12 @@
               <div class="send-modal-heading">
                 <h4>Contract Address</h4>
                 <span class="h3-line"/>
+                <q-btn
+                  :label="$t('paste')"
+                  size="sm"
+                  class="send-heading-btn"
+                  @click="paste"
+                />
               </div>
 
               <div class="to">
@@ -176,12 +182,12 @@ export default {
         tokenName: '',
         tokenSymbol: '',
         tokenDecimals: '',
+        tokenNetwork: 'ETHEREUM_ROPSTEN',
       },
       disableInputs: true,
       loadingInputs: false,
       disableButton: true,
       selected: '',
-      tokenNetwork: 'ETHEREUM_ROPSTEN',
       searchName: '',
       tokens,
       contractError: '',
@@ -371,9 +377,15 @@ export default {
         this.$q.notify('This token has already been enabled');
       }
     },
-    getTokenIcon() {
-
+    /**
+     * Pastes in the text from the clipboard
+     */
+    paste() {
+      cordova.plugins.clipboard.paste((text) => {
+        this.form.tokenContract = text;
+      });
     },
+
     clearFields() {
       Object.keys(this.form).forEach((k) => { this.form[k] = ''; });
     },

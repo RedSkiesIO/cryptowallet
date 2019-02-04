@@ -167,9 +167,9 @@ export default {
         QRScanner.hide(() => {});
         QRScanner.destroy(() => {});
       }
-      setTimeout(() => {
-        this.$root.$emit('sendCoinModalOpened', true);
-      }, 500);
+      // setTimeout(() => {
+      //   this.$root.$emit('sendModalOpened', true);
+      // }, 500);
 
       setTimeout(() => {
         this.hidden = false;

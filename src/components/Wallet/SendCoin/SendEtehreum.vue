@@ -216,6 +216,7 @@ export default {
     amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
@@ -232,6 +233,7 @@ export default {
     currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
+        rate: this.latestPrice,
         format: this.coinDenomination,
         coin: this.wallet.name,
         prependPlusOrMinus: false,

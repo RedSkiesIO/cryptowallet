@@ -87,9 +87,9 @@ export default {
     },
   },
   mounted() {
-    /* this.$root.$on('sendCoinModalOpened', (value) => {
-      this.sendCoinModalOpened = value;
-    }); */
+    // this.$root.$on('sendModalOpened', (value) => {
+    //   this.sendCoinModalOpened = value;
+    // });
   },
   methods: {
     goBack() {
@@ -267,5 +267,6 @@ export default {
   margin-left: 0.1rem;
   color: #e49ebe;
 }
+
 
 </style>

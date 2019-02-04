@@ -97,9 +97,9 @@ export default {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
       if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
-        return `assets/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
-      return 'assets/cc-icons/color/generic.svg';
+      return './statics/cc-icons/color/generic.svg';
     },
   },
   methods: {
@@ -272,7 +272,7 @@ export default {
     async enableWallet() {
       console.log('enable wallet');
     if(this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)){
-      const eth = this.supportedCoins.find(coin => coin.name === this.wallet.networkName);
+      const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
 
       const data = {
         name: eth.name,
