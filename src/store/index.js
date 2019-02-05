@@ -40,6 +40,10 @@ database.register(KeyPair, {});
 database.register(Prices, {});
 database.register(LatestPrice, {});
 
+Vue.prototype.encryptedModels = [
+  Account,
+];
+
 window.Tx = Tx;
 window.Utxo = Utxo;
 window.Address = Address;

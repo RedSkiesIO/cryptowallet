@@ -110,3 +110,18 @@ export function RESET_PIN_CONFIRM(state) {
   state.pinConfirmArray = [];
 }
 
+
+/**
+ * Clear setup data
+ */
+export function CLEAR_SETUP_DATA(state) {
+  state.accountIpNode = null;
+  state.accountLocale = null;
+  state.accountName = null;
+  state.accountType = null;
+  state.pinArray = null;
+  state.pinConfirmArray = null;
+  state.salt = null;
+  state.seed = null;
+  state.spvMode = null;
+}
