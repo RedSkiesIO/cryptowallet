@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import AES from 'crypto-js/aes';
+import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 import Wallet from '@/store/wallet/entities/wallet';
@@ -75,10 +77,12 @@ export default {
     /**
      * Compares bcrypt pin string to try and unlock an account
      */
-    attemptUnlock() {
+    async attemptUnlock() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
         this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
         this.$i18n.locale = this.account.locale;
+
+        await this.decryptData(this.account.id, this.pin.join(''));
 
         this.initializeWallets(this.account.id)
           .then(() => {
@@ -86,6 +90,35 @@ export default {
           });
       }
     },
+
+    /**
+     * Decrypts and returns a piece of data
+     * @param  {Uint8Array} data
+     * @param  {String} password
+     * @return {Any}
+     */
+    decrypt(data, password) {
+      try {
+        const bytes = AES.decrypt(data, password);
+        return JSON.parse(bytes.toString(encUTF8));
+      } catch (exception) {
+        throw new Error(exception.message);
+      }
+    },
+
+    async decryptData(id, pass) {
+      this.encryptedModels.forEach((model) => {
+        if (model.name === 'Account') {
+          const result = model.query().where('id', id).get();
+          result.forEach((item) => {
+            model.AES.forEach((key) => {
+              item[key] = this.decrypt(item[key], pass);
+            });
+          });
+        }
+      });
+    },
+
     initializeWallets(accountId) {
       this.$store.dispatch('settings/setLoading', true);
 

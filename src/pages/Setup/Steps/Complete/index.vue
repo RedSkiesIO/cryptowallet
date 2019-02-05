@@ -38,13 +38,20 @@ export default {
       console.log('inserting account', data);
 
       this.$store.dispatch('settings/setSelectedAccount', data.name);
+      const password = this.setup.pinArray.join('');
 
-      const result = await Account.$insert({ data });
-      this.$store.dispatch('settings/setAuthenticatedAccount', result.account[0].id);
+      const result = await Account.$insert({
+        data,
+        password,
+      });
+
+      const { id } = result.account[0];
+
+      this.$store.dispatch('settings/setAuthenticatedAccount', id);
       this.$store.dispatch('settings/setLayout', 'light');
       this.$router.push({ path: '/wallet' });
+      this.$store.dispatch('settings/clearSetupData');
     },
-
   },
 };
 </script>

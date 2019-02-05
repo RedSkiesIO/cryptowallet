@@ -103,3 +103,10 @@ export function resetPin(context) {
 export function resetPinConfirm(context) {
   context.commit('RESET_PIN_CONFIRM');
 }
+
+/**
+ * Action clearSetupData
+ */
+export function clearSetupData(context) {
+  context.commit('CLEAR_SETUP_DATA');
+}
