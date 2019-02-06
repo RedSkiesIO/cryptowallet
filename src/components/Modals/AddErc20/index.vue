@@ -23,11 +23,12 @@
         align="justify">
         <q-tab
           slot="title"
-          default
+          disable
           name="search"
           label="Search" />
         <q-tab
           slot="title"
+          default
           name="custom"
           label="Custom Token" />
 

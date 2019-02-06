@@ -405,7 +405,9 @@ export default {
               this.addWalletModalOpened = false;
             }, 250);
             })
-          });
+            .catch((error) => this.$toast.create(10, error, 500));
+          })
+          .catch((error) => this.$toast.create(10, error, 500));
         }, 500);
 
 

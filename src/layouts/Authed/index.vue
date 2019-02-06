@@ -252,7 +252,7 @@ export default {
     async getUtxos(combinedAddresses, wallet) {
       if (wallet.sdk) {
         const coinSDK = this.coinSDKS[wallet.sdk];
-        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network);
+        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network).catch((error) => this.$toast.create(10, error, 500));
 
         let balance = 0;
         utxos.forEach((utxo) => {
@@ -301,20 +301,20 @@ export default {
 
           let newBalance;
           if (wallet.sdk === 'Bitcoin') {
-            const result = await this.getUtxos(addressesRaw, wallet);
+            const result = await this.getUtxos(addressesRaw, wallet).catch((error) => reject(new Error(error)));
             const { balance } = result;
             newBalance = balance;
           } else if (wallet.sdk === 'Ethereum') {
-            newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
+            newBalance = await coinSDK.getBalance(addressesRaw, wallet.network).catch((error) => reject(new Error(error)));
             newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
           }
           else if (wallet.sdk === 'ERC20') {
             console.log('wallet.name :', wallet.name);
-            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]).catch((error) => reject(new Error(error)));
           }
           else if (wallet.sdk === 'ERC20') {
             console.log('wallet.name :', wallet.name);
-            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
+            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]).catch((error) => reject(new Error(error)));
           }
 
           // update balance
@@ -329,7 +329,10 @@ export default {
 
       Promise.all(promises).then(() => {
         done();
-      });
+      })
+      .catch((error) => this.$toast.create(10, error, 500));
+        
+      
     },
   },
 };

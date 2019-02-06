@@ -117,7 +117,8 @@ export default {
     if (this.wallet.sdk === 'ERC20') {
       coinSDK = this.coinSDKS[this.wallet.parentSdk];
     }
-    const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+    const dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day').catch(() => null);
+    console.log('dataset :', dataset);
     const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
     if (!price && dataset) {
       Prices.$insert({

@@ -52,11 +52,16 @@
 
           <div class="row labels">
             <div class="col-6">1 {{ coinSymbol }} / {{ selectedCurrency.code }}</div>
-            <div class="col-6">Volume 24h {{ selectedCurrency.code }}</div>
+            <div
+              v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
+              class="col-6"
+            >Volume 24h {{ selectedCurrency.code }}</div>
           </div>
           <div class="row price">
             <div class="col-6">{{ latestPrice.data.PRICE }} </div>
-            <div class="col-6">{{ latestPrice.data.VOLUME24HOURTO }} </div>
+            <div
+              v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
+              class="col-6">{{ latestPrice.data.VOLUME24HOURTO }} </div>
           </div>
           <div
             :style="{ color: percentColor}"
@@ -195,11 +200,8 @@ export default {
       }
       try {
         const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
-        console.log('daydata');
         const weekData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
-        console.log('weekdata');
         const monthData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'month');
-        console.log('monthdata');
         const latestPrice = await coinSDK.getPriceFeed(
           [this.coinSymbol],
           [this.selectedCurrency.code],
