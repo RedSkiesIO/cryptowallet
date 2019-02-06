@@ -32,9 +32,10 @@ export default ({ Vue }) => {
 
 
   Vue.config.errorHandler = (err, vm = new Vue(), info) => {
-    console.error(err);
+    //console.error(err);
     console.log('ERROR UPLOADED TO ROLLBAR');
     Vue.rollbar.error(err);
+    vm.$toast.create(10, err.message, 500);
 
     console.log('trace start');
     console.log(err);
@@ -42,4 +43,6 @@ export default ({ Vue }) => {
     console.log(info);
     console.log('trace end');
   };
+
+  Vue.prototype.errorHandler = Vue.config.errorHandler;
 };

@@ -6,14 +6,13 @@
 </template>
 
 <script>
+/*eslint-disable*/
 import Transactions from '@/components/Wallet/Transactions';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import { mapState } from 'vuex';
-
-/*eslint-disable*/
 
 export default {
   name: 'Balance',
@@ -30,11 +29,20 @@ export default {
     },
   },
   mounted() {
-    this.$root.$on('updateWalletSingle', (done) => {
-      this.refresher(done);
+    this.$root.$on('updateWalletSingle', async (done) => {
+      try {
+        await this.refresher(done);
+      } catch (err) {
+        this.errorHandler(err);
+        done();
+      }
     });
   },
   methods: {
+    throwErr(err) {
+      throw err;
+    },
+
     /**
      * Fetches and updates the UTXOs
      */
@@ -67,8 +75,6 @@ export default {
     /**
      * Performs a wallet update
      */
-    /*eslint-disable*/
-
     async refresher(done) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
