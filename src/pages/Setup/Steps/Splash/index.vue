@@ -7,7 +7,7 @@
 
     <div class="splash-logo">
       <h1>CryptoWallet</h1>
-      <p>All your Coins and Tokens in one place. Secured.</p>
+      <p class="splash-slogan">All your coins and tokens in one place. Secured.</p>
     </div>
 
     <div class="btns-wrapper">
@@ -324,6 +324,10 @@ export default {
 
 .splash .btns-wrapper {
   margin-top: 0.5rem;
+}
+
+.splash-slogan {
+  padding: 0 0.5rem;
 }
 
 </style>

@@ -41,15 +41,14 @@
                 />
               </div>
               <p>
-                Digital currencies that are encrypted (secured) using cryptography and stored on a blockchain.
-                It's digital money. Used by millions world wide.
+                Digital currencies that are secured using cryptography and stored on a distributed ledger, blockchain or DAG. It's digital money. Used by millions world-wide.
               </p>
             </div>
           </q-carousel-slide>
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Wallets</h1>
+              <h1 class="setup">Your wallet</h1>
             </div>
             <div class="slide-wrapper">
               <div class="slide-illustration">
@@ -61,15 +60,14 @@
                 />
               </div>
               <p>
-                A crypto currency wallet is used to hold and transfer your digital money.
-                A single wallet can contain various types of Coins and Tokens. You are the only one with access to it.
+                Only you can access your multi-currency crypto-wallet. Your wallet holds your coins and tokens, and allows you to easily and securely transfer your digital money.
               </p>
             </div>
           </q-carousel-slide>
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Backup Seed Phrase</h1>
+              <h1 class="setup">Backup your wallet</h1>
             </div>
             <div class="slide-wrapper">
               <div class="slide-illustration">
@@ -81,7 +79,7 @@
                 />
               </div>
               <p>
-                A random list of words which store all the information needed to recover your wallet. We recommend you either memorize it or write it down. If you lose your wallet, only the Seed can be used to regain access to your money.
+                Create a list of words to help you recover your wallet, should you lose it. We strongly recommend you write these backup words on papers and hide these in several secret places or use cryptographic algorithm (e.g. Shamir secret sharing techniques).
               </p>
             </div>
           </q-carousel-slide>
@@ -102,14 +100,14 @@
                     />
                   </div>
                   <p>
-                    You are about to create the wallet and some security precautions have to be made. Please make sure no one is watching you.
+                    You are about to create the wallet. Some security precautions have to be made. Please make sure no one is watching you.
                     Please disconnect from the Internet.
                   </p>
                 </div>
 
                 <div :class="{ offline: !online }">
                   <q-alert type="negative">
-                    Please enable the Airplane Mode or disable your Internet connection before continuing
+                    Enable the Airplane Mode or disable your Internet connection before continuing
                   </q-alert>
                 </div>
               </div>
@@ -137,7 +135,7 @@
               :disabled="online"
               color="yellow"
               text-color="blueish"
-              label="Create Wallet"
+              label="Activate Your Wallet"
               class="splash-btn"
               @click="done"
             />
