@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Rollbar from 'vue-rollbar';
 
 /**
@@ -28,8 +29,10 @@ export default ({ Vue }) => {
    * @param vm
    * @param info
    */
+
+
   Vue.config.errorHandler = (err, vm = new Vue(), info) => {
-    console.err(err);
+    console.error(err);
     console.log('ERROR UPLOADED TO ROLLBAR');
     Vue.rollbar.error(err);
 

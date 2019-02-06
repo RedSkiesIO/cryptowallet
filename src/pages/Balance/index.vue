@@ -13,6 +13,8 @@ import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import { mapState } from 'vuex';
 
+/*eslint-disable*/
+
 export default {
   name: 'Balance',
   components: {
@@ -65,6 +67,8 @@ export default {
     /**
      * Performs a wallet update
      */
+    /*eslint-disable*/
+
     async refresher(done) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
