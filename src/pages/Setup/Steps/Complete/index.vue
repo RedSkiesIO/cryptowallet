@@ -50,7 +50,7 @@ export default {
       this.$store.dispatch('settings/setAuthenticatedAccount', id);
       this.$store.dispatch('settings/setLayout', 'light');
       this.$router.push({ path: '/wallet' });
-      this.$store.dispatch('settings/clearSetupData');
+      this.$store.dispatch('setup/clearSetupData');
     },
   },
 };

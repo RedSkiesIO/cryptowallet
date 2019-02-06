@@ -1,3 +1,4 @@
+
 <template>
   <!-- eslint-disable -->
   <div v-if="wallet">
@@ -38,31 +39,35 @@ export default {
      */
     async getUtxos(combinedAddresses) {
       return new Promise(async (resolve, reject) => {
-        const coinSDK = this.coinSDKS[this.wallet.sdk];
-        const utxos = await coinSDK.getUTXOs(combinedAddresses, this.wallet.network)
-          .catch(error => reject(new Error(error.message)));
+        try {
+          const coinSDK = this.coinSDKS[this.wallet.sdk];
 
-        let balance = 0;
-        utxos.forEach((utxo) => {
-          balance += utxo.amount;
-          const found = Utxo.query()
-            .where('txid', utxo.txid)
-            .where('vout', utxo.vout)
-            .where('wallet_id', this.wallet.id)
-            .get();
+          const utxos = await coinSDK.getUTXOs(combinedAddresses, this.wallet.network);
+          let balance = 0;
+          utxos.forEach((utxo) => {
+            balance += utxo.amount;
+            const found = Utxo.query()
+              .where('txid', utxo.txid)
+              .where('vout', utxo.vout)
+              .where('wallet_id', this.wallet.id)
+              .get();
 
-          if (!found[0]) {
-            utxo.account_id = this.authenticatedAccount;
-            utxo.wallet_id = this.wallet.id;
-            Utxo.$insert({ data: utxo });
-          }
-        });
+            if (!found[0]) {
+              utxo.account_id = this.authenticatedAccount;
+              utxo.wallet_id = this.wallet.id;
+              Utxo.$insert({ data: utxo });
+            }
+          });
 
-        return resolve({
-          utxos,
-          balance,
-        });
+          resolve({
+            utxos,
+            balance,
+          });
+        } catch (e) {
+          reject(e);
+        }
       });
+      /* eslint-disable max-len */
     },
 
     /**
@@ -88,11 +93,12 @@ export default {
 
         addressesRaw = addressesRaw.filter(onlyUnique);
 
+
         let newBalance;
+
         if (this.wallet.sdk === 'Bitcoin') {
-          const result = await this.getUtxos(addressesRaw);
-          // .catch(error => this.$q.notify(error.message));
-          const { balance } = result;
+          const utxos = await this.getUtxos(addressesRaw);
+          const { balance } = utxos;
           newBalance = balance;
         } else if (this.wallet.sdk === 'Ethereum') {
           newBalance = await coinSDK.getBalance(addressesRaw, this.wallet.network);
@@ -128,7 +134,7 @@ export default {
             if (result[0]) {
               const foundTx = result[0];
               if (foundTx.sent) {
-                // update the tx
+              // update the tx
                 Tx.$update({
                   where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
                   data: tx,
@@ -140,7 +146,7 @@ export default {
                 });
               }
             } else {
-              // insert tx
+            // insert tx
               Tx.$insert({
                 data: {
                   account_id: this.authenticatedAccount,
@@ -160,14 +166,14 @@ export default {
             if (result[0]) {
               const foundTx = result[0];
               if (foundTx.sent) {
-                // update the tx
+              // update the tx
                 Tx.$update({
                   where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
                   data: tx,
                 });
 
                 if (this.wallet.sdk === 'Bitcoin') {
-                  // delete utxo that were used for that transaction
+                // delete utxo that were used for that transaction
                   tx.sender.forEach((inputAddress) => {
                     const pendingUtxo = Utxo.query().where('address', inputAddress).where('pending', true).get();
                     pendingUtxo.forEach((pending) => {
@@ -190,7 +196,7 @@ export default {
                 });
               }
             } else {
-              // insert tx
+            // insert tx
               Tx.$insert({
                 data: {
                   account_id: this.authenticatedAccount,
@@ -223,6 +229,7 @@ export default {
         setTimeout(() => {
           done();
         }, 500);
+
 
         return false;
       } catch (error) {

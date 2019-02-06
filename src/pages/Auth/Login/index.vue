@@ -99,7 +99,9 @@ export default {
      */
     decrypt(data, password) {
       try {
+        console.log('data, password :', data, password);
         const bytes = AES.decrypt(data, password);
+        console.log('bytes :', bytes);
         return JSON.parse(bytes.toString(encUTF8));
       } catch (exception) {
         throw new Error(exception.message);

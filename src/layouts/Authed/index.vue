@@ -235,7 +235,11 @@ export default {
     refresher(done) {
       if (this.$route.name === 'wallet') {
         setTimeout(() => {
+          try {
           this.updateBalances(done);
+          } catch(e) {
+            
+          }
         }, 1000)
         return false;
       }
@@ -282,7 +286,8 @@ export default {
       const promises = [];
 
       this.wallets.forEach((wallet) => {
-        promises.push(new Promise(async (resolve) => {
+        promises.push(new Promise(async (resolve, reject) => {
+          try{
           const coinSDK = this.coinSDKS[wallet.sdk];
 
           const addresses = Address.query()
@@ -324,15 +329,15 @@ export default {
           });
 
           resolve();
+          } catch (e) {
+          reject(e);
+        }
         }));
       });
 
       Promise.all(promises).then(() => {
         done();
-      })
-      .catch((error) => this.$toast.create(10, error, 500));
-        
-      
+      })          
     },
   },
 };
