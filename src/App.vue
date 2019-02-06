@@ -299,8 +299,8 @@ export default {
 
       try {
         const prices = await coinSDK.getPriceFeed(coins, ['GBP', 'USD', 'EUR']);
-        console.log('prices :', prices);
-        console.log('coins :', coins);
+        // console.log('prices :', prices);
+        // console.log('coins :', coins);
         const promises = [];
         coins.forEach((coin) => {
           // eslint-disable-next-line max-len

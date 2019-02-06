@@ -7,6 +7,7 @@
 </template>
 
 <script>
+/*eslint-disable*/
 import Transactions from '@/components/Wallet/Transactions';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
@@ -29,11 +30,20 @@ export default {
     },
   },
   mounted() {
-    this.$root.$on('updateWalletSingle', (done) => {
-      this.refresher(done);
+    this.$root.$on('updateWalletSingle', async (done) => {
+      try {
+        await this.refresher(done);
+      } catch (err) {
+        this.errorHandler(err);
+        done();
+      }
     });
   },
   methods: {
+    throwErr(err) {
+      throw err;
+    },
+
     /**
      * Fetches and updates the UTXOs
      */

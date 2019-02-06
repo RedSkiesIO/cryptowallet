@@ -298,19 +298,19 @@ export default {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const parentSDK = this.coinSDKS[wallet.parentSdk];
       const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-      console.log('prices :', prices);
+      // console.log('prices :', prices);
       if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
       const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
       const erc20Wallet = await coinSDK.generateERC20Wallet(keyPair, wallet.name, wallet.symbol, wallet.contractAddress, wallet.decimals);
       this.activeWallets[this.authenticatedAccount][wallet.name] = erc20Wallet;
-      
+
       const {
         txHistory,
         accounts,
         balance,
       } = await this.discoverWallet(erc20Wallet, coinSDK, wallet.network, wallet.sdk);
-        
+
         Wallet.$update({
         where: record => record.id === wallet.id,
         data: {

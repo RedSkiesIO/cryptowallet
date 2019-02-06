@@ -153,6 +153,7 @@ import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Node from '@/components/AccountSettings/Node';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
+import Account from '@/store/wallet/entities/account';
 
 export default {
   name: 'AccountSettings',
@@ -184,7 +185,15 @@ export default {
     },
   },
   methods: {
-    logout() {
+    async logout() {
+      const accountDataLoki = await Account.$findOne(this.account.id);
+      const encryptedSeed = accountDataLoki.seed;
+
+      Account.$update({
+        where: record => record.id === this.account.id,
+        data: { seed: encryptedSeed },
+      });
+
       this.$store.dispatch('settings/setLoading', true);
       this.$store.dispatch('settings/setLayout', 'dark');
       this.$router.push({ path: '/' });

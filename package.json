@@ -82,7 +82,7 @@
     "jest-vue-preprocessor": "^1.4.0",
     "lint-staged": "^7.2.0",
     "node-sass": "^4.9.0",
-    "quasar-cli": "^0.17.0",
+    "quasar-cli": "^0.17.19",
     "sass-loader": "^7.0.1",
     "selenium": "^2.20.0",
     "strip-ansi": "^3.0.1",
