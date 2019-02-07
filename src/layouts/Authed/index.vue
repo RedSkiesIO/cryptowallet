@@ -238,7 +238,8 @@ export default {
           try {
           this.updateBalances(done);
           } catch(e) {
-            
+            this.errorHandler(e);
+            done();
           }
         }, 1000)
         return false;
