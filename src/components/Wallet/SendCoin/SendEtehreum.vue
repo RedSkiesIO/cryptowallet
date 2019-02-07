@@ -125,10 +125,8 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
-import Tx from '@/store/wallet/entities/tx';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -143,7 +141,6 @@ export default {
       inCoin: '',
       inCurrency: '',
       inCurrencyFocus: false,
-      sendingModalOpened: false,
       sendingModalOpened: false,
       feeSetting: 1,
       rawFee: 0,
@@ -253,10 +250,9 @@ export default {
       return 'fastest';
     },
 
-
     async feeChange() {
       this.getFee();
-      if(this.maxed) this.updateMax();
+      if (this.maxed) this.updateMax();
     },
 
     /**
@@ -270,8 +266,6 @@ export default {
       if (this.feeSetting === 0) fee = fees.txLow;
       if (this.feeSetting === 2) fee = fees.txHigh;
       console.log('fee :', fee);
-
-
 
       let rawFee = fees.medium;
       if (this.feeSetting === 0) rawFee = fees.low;
@@ -360,9 +354,12 @@ export default {
 
       this.maxed = true;
       this.updateMax();
+      return false;
     },
 
     updateMax() {
+      // @todo Konrad explain the code below
+      /* eslint-disable-next-line */
       this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
     },
 

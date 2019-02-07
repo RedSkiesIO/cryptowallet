@@ -110,7 +110,6 @@ export default {
         }
 
         if (this.mode === 'confirm-new-pin') {
-          console.log('wtf');
           this.$emit('inputPin', pin);
           this.$emit('attemptConfirm');
         }

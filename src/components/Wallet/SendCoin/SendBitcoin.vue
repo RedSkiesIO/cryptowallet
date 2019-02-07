@@ -202,8 +202,12 @@ export default {
     },
   },
 
-  mounted() {
-    this.fetchUTXOs();
+  async mounted() {
+    try {
+      await this.fetchUTXOs();
+    } catch (err) {
+      this.errorHandler(err);
+    }
   },
 
   methods: {
@@ -221,6 +225,7 @@ export default {
     updateInCurrencyFocus(val) {
       this.inCurrencyFocus = val;
     },
+
     /**
      * Converts coins to currency as user types
      */
@@ -254,17 +259,16 @@ export default {
 
       return parseFloat(formattedAmount.getFormatted());
     },
+
     /**
      * Fetches UTXOs
      */
-    fetchUTXOs() {
+    async fetchUTXOs() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const addressesRaw = this.getAddressesRaw();
-      coinSDK.getUTXOs(addressesRaw, this.wallet.network)
-        .then((utxos) => {
-          console.log('mounted, utxos:', utxos);
-          this.utxos = utxos;
-        });
+      const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network)
+      console.log('mounted, utxos:', utxos);
+      this.utxos = utxos;
     },
 
     /**
@@ -495,7 +499,7 @@ export default {
           utxo,
         };
       } catch (err) {
-        this.$toast.create(10, err.message, 500);
+        this.errorHandler(err);
       }
 
       return false;
@@ -586,9 +590,13 @@ export default {
      * Pastes in the text from the clipboard
      */
     paste() {
-      cordova.plugins.clipboard.paste((text) => {
-        this.address = text;
-      });
+      try {
+        cordova.plugins.clipboard.paste((text) => {
+          this.address = text;
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     async max() {
@@ -615,7 +623,7 @@ export default {
       let address = this.getAddresses()[0].address;
       if (this.address) address = this.address;
       let amount = this.wallet.confirmedBalance;
-     
+
 
       const { transaction } = await this.createRawTx(
         accounts,
@@ -651,8 +659,7 @@ export default {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
             if (err) {
-              // an error occurred, or the scan was canceled (error code `6`)
-
+              this.errorHandler(err);
             } else {
               this.address = text;
               this.$root.$emit('cancelScanning');

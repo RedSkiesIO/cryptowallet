@@ -26,7 +26,6 @@ export default {
       newGradient.addColorStop(0.3, 'rgba(250, 188, 87, 0.25)'); // show this color at 50%
       newGradient.addColorStop(1, 'rgba(250, 188, 87, 0)'); // show this color at 100%
 
-
       return newGradient;
     },
   },

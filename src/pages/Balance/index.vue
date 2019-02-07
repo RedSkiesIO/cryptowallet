@@ -1,12 +1,10 @@
 <template>
-  <!-- eslint-disable -->
   <div v-if="wallet">
     <Transactions :wallet="wallet"/>
   </div>
 </template>
 
 <script>
-/*eslint-disable*/
 import Transactions from '@/components/Wallet/Transactions';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';

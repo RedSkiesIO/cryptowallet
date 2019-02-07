@@ -193,6 +193,7 @@ export default {
       if (this.wallet.sdk === 'ERC20') {
         coinSDK = this.coinSDKS[this.wallet.parentSdk];
       }
+
       try {
         const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
         console.log('daydata');
@@ -301,9 +302,10 @@ export default {
             },
           });
         }
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        this.errorHandler(err);
       }
+
       this.loading = false;
       this.showChart = true;
       return false;

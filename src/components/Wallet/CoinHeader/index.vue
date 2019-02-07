@@ -80,7 +80,7 @@ export default {
     coinLogo() {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
@@ -95,7 +95,6 @@ export default {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).denominationShortened;
     },
     coinSymbol() {
-      console.log(this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol);
       return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
     },
     latestPrice() {

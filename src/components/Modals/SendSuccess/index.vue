@@ -147,7 +147,7 @@ export default {
         cordova.plugins.clipboard.copy(this.address);
         this.$toast.create(0, this.$t('copied'), 200);
       } catch (err) {
-        this.$toast.create(10, this.$t('copyFail'), 500);
+        this.errorHandler(err);
       }
     },
   },

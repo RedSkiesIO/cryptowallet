@@ -186,21 +186,25 @@ export default {
   },
   methods: {
     async logout() {
-      const accountDataLoki = await Account.$findOne(this.account.id);
-      const encryptedSeed = accountDataLoki.seed;
+      try {
+        const accountDataLoki = await Account.$findOne(this.account.id);
+        const encryptedSeed = accountDataLoki.seed;
 
-      Account.$update({
-        where: record => record.id === this.account.id,
-        data: { seed: encryptedSeed },
-      });
+        Account.$update({
+          where: record => record.id === this.account.id,
+          data: { seed: encryptedSeed },
+        });
 
-      this.$store.dispatch('settings/setLoading', true);
-      this.$store.dispatch('settings/setLayout', 'dark');
-      this.$router.push({ path: '/' });
-      this.$store.dispatch('settings/setAuthenticatedAccount', null);
-      setTimeout(() => {
-        this.$store.dispatch('settings/setLoading', false);
-      }, 250);
+        this.$store.dispatch('settings/setLoading', true);
+        this.$store.dispatch('settings/setLayout', 'dark');
+        this.$router.push({ path: '/' });
+        this.$store.dispatch('settings/setAuthenticatedAccount', null);
+        setTimeout(() => {
+          this.$store.dispatch('settings/setLoading', false);
+        }, 250);
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
     changeLanguage() {
       this.languageOpen = true;
