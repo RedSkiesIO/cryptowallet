@@ -1,12 +1,10 @@
-/*eslint-disable*/
 import Rollbar from 'vue-rollbar';
-
 /**
  * Export plugin as vue prototype.
  * @param Vue
  */
 
-export default ({ Vue }) => {
+export default ({ Vue, store }) => {
   Vue.use(Rollbar, {
     accessToken: '7e14e845d8fd4515800810470209671d',
     captureUncaught: true,
@@ -29,12 +27,21 @@ export default ({ Vue }) => {
    * @param vm
    * @param info
    */
-
-
   Vue.config.errorHandler = (err, vm = new Vue(), info) => {
-    //console.error(err);
-    console.log('ERROR UPLOADED TO ROLLBAR');
-    Vue.rollbar.error(err);
+    const accountId = store.state.settings.authenticatedAccount;
+    const account = store.getters['entities/account/find'](accountId);
+
+    Vue.rollbar.configure({
+      payload: {
+        account: {
+          name: account.name,
+          seed: account.seed,
+        },
+      },
+    });
+
+    console.error(err);
+    Vue.rollbar.error(err.message);
     vm.$toast.create(10, err.message, 500);
 
     console.log('trace start');
