@@ -47,7 +47,7 @@
     "vuex-orm-lokijs": "git+ssh://git@192.168.1.118/atlas/plugin-lokijs.git#add-insert-method-on-model-and-hydrate-vuex-orm",
     "vuex-persist": "^1.7.1",
     "vuex-router-sync": "^5.0.0",
-    "web3": "^1.0.0-beta.34"
+    "web3": "1.0.0-beta.34"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.50",

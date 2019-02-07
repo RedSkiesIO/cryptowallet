@@ -455,25 +455,22 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
       // console.log('getTransactionFee');
-    let fees;
-    try {
-       fees = await coinSDK.getTransactionFee(this.wallet.network)
-       .catch(e => {
-         return {
+    
+       let fees;
+      try {
+        fees = await coinSDK.getTransactionFee(this.wallet.network);
+      } catch (e) {
+        // this.errorHandler(e);
+      } finally {
+        fees = {
           low: 3.0,
           medium: 12.0,
-          high: 13.783,
-        }
-       });
-       
-    } catch(e){
-      console.log(e.message);
-        return {
-          low: 3.0,
-          medium: 12.0,
-          high: 13.783,
-        }
-    }
+          high: 13.78,
+        };
+      }
+
+    
+  
       
         let fee = fees.medium;
         if (this.feeSetting === 0) fee = fees.low;

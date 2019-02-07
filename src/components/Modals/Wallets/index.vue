@@ -58,7 +58,7 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import Latest from '@/store/latestPrice';
-/*eslint-disable*/
+
 
 export default {
   name: 'AddWallet',
@@ -225,8 +225,6 @@ export default {
 
 
       console.log(txHistory, accounts, balance);
-
-
     },
     storePriceData(coin, latestPrice) {
       // const coinSDK = this.coinSDKS.Bitcoin;
@@ -275,11 +273,13 @@ export default {
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-      if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      if (prices) {
+        this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      }
       const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
 
       if (!this.activeWallets[this.authenticatedAccount]) {
-        this.activeWallets[this.authenticatedAccount] = {}
+        this.activeWallets[this.authenticatedAccount] = {};
       }
 
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
@@ -299,10 +299,18 @@ export default {
       const parentSDK = this.coinSDKS[wallet.parentSdk];
       const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
       // console.log('prices :', prices);
-      if(prices) this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      if (prices) {
+        this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      }
       const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
       const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
-      const erc20Wallet = await coinSDK.generateERC20Wallet(keyPair, wallet.name, wallet.symbol, wallet.contractAddress, wallet.decimals);
+      const erc20Wallet = await coinSDK.generateERC20Wallet(
+        keyPair,
+        wallet.name,
+        wallet.symbol,
+        wallet.contractAddress,
+        wallet.decimals,
+      );
       this.activeWallets[this.authenticatedAccount][wallet.name] = erc20Wallet;
 
       const {
@@ -311,7 +319,7 @@ export default {
         balance,
       } = await this.discoverWallet(erc20Wallet, coinSDK, wallet.network, wallet.sdk);
 
-        Wallet.$update({
+      Wallet.$update({
         where: record => record.id === wallet.id,
         data: {
           externalChainAddressIndex: 0,
@@ -381,19 +389,17 @@ export default {
         const erc20Promises = [];
 
         setTimeout(() => {
-
           wallets.forEach((wallet) => {
-            if(wallet.sdk === 'ERC20'){
+            if (wallet.sdk === 'ERC20') {
               erc20Promises.push(new Promise(async (resolve) => {
-              await this.enableErc20Wallet(wallet);
-              resolve();
-            }));
-            }
-            else{
-            promises.push(new Promise(async (resolve) => {
-              await this.enableWallet(wallet);
-              resolve();
-            }));
+                await this.enableErc20Wallet(wallet);
+                resolve();
+              }));
+            } else {
+              promises.push(new Promise(async (resolve) => {
+                await this.enableWallet(wallet);
+                resolve();
+              }));
             }
           });
 
@@ -401,20 +407,17 @@ export default {
             Promise.all(erc20Promises).then(() => {
               this.loading = false;
 
-            setTimeout(() => {
-              this.addWalletModalOpened = false;
-            }, 250);
+              setTimeout(() => {
+                this.addWalletModalOpened = false;
+              }, 250);
             })
-            .catch((error) => this.$toast.create(10, error, 500));
+              .catch(error => this.$toast.create(10, error, 500));
           })
-          .catch((error) => this.$toast.create(10, error, 500));
+            .catch(error => this.$toast.create(10, error, 500));
         }, 500);
-
-
       } else {
         this.addWalletModalOpened = false;
       }
-
     },
   },
 };

@@ -264,7 +264,21 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      let fees;
+      try {
+        fees = await coinSDK.getTransactionFee(this.wallet.network);
+      } catch (e) {
+        // this.errorHandler(e);
+      } finally {
+        fees = {
+          low: 5000000000,
+          medium: 5195324266,
+          high: 5195324266,
+          txLow: (5000000000 * 21000) / 1000000000000000000,
+          txMedium: (5195324266 * 21000) / 1000000000000000000,
+          txHigh: (6000000000 * 21000) / 1000000000000000000,
+        };
+      }
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
