@@ -51,9 +51,17 @@
           <span class="h3-line"/>
         </div>
 
-        <div class="small-text">
+        <div
+          v-if="!isErc20"
+          class="small-text">
           {{ txData.transaction.fee }} {{ coinSymbol }}
-          ({{ coinToCurrency(txData.transaction.fee) }})
+          ({{ coinToCurrency(txData.transaction.fee, true) }})
+        </div>
+        <div
+          v-if="isErc20"
+          class="small-text">
+          {{ txData.transaction.fee * 100000 / 1000000000000000000 }}  ETH
+          ({{ coinToCurrency(txData.transaction.fee * 100000 / 1000000000000000000, true) }})
         </div>
 
         <div class="send-modal-heading">
@@ -80,10 +88,10 @@
 </template>
 
 <script>
-/* eslint-disable */
+
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-import Amount from '@/components/Wallet/Amount';
+
 import Spinner from '@/components/Spinner';
 import { AmountFormatter } from '@/helpers';
 import Address from '@/store/wallet/entities/address';
@@ -124,13 +132,22 @@ export default {
     },
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
-        const newBalance = this.wallet.confirmedBalance * 1000000000000000000 - (this.txData.transaction.value * 1000000000000000000 + parseFloat(this.txData.transaction.fee) * 1000000000000000000);;
+        const newBalance =
+        (this.wallet.confirmedBalance * 1000000000000000000)
+        - ((this.txData.transaction.value * 1000000000000000000)
+        + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
         return newBalance / 1000000000000000000;
       }
-
-      if (this.wallet.sdk === 'Bitcoin') {
-        return this.wallet.confirmedBalance - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
+      if (this.wallet.sdk === 'ERC20') {
+        const newBalance = this.wallet.confirmedBalance
+        - this.txData.transaction.value;
+        return newBalance;
       }
+      if (this.wallet.sdk === 'Bitcoin') {
+        return this.wallet.confirmedBalance
+        - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
+      }
+      return false;
     },
     to() {
       if (Array.isArray(this.txData.transaction.receiver)) {
@@ -142,11 +159,19 @@ export default {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       return prices.data.PRICE;
     },
+    isErc20() {
+      if (this.wallet.sdk === 'ERC20') {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
     this.$root.$on('confirmSendModalOpened', (value, txData) => {
       this.confirmSendModalOpened = value;
       this.txData = txData;
+      console.log('txData :', txData);
+      console.log('newBalance :', this.newBalance);
     });
   },
   methods: {
@@ -163,12 +188,11 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
 
-      /*console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
-      console.log('network', this.wallet.network);*/
+      /* console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
+      console.log('network', this.wallet.network); */
 
       if (this.wallet.sdk === 'Bitcoin') {
-
-        coinSDK.broadcastTx (hexTx, this.wallet.network)
+        coinSDK.broadcastTx(hexTx, this.wallet.network)
           .then(async (result) => {
             if (!result) {
               console.error('transaction broadcast failure');
@@ -252,11 +276,9 @@ export default {
             console.error(err);
           });
       }
-
-
     },
-    coinToCurrency(amount) {
-      const formattedAmount = new AmountFormatter({
+    coinToCurrency(amount, fee) {
+      let formattedAmount = new AmountFormatter({
         amount,
         rate: this.latestPrice,
         format: '0,0[.]00',
@@ -267,13 +289,29 @@ export default {
         withCurrencySymbol: true,
       });
 
+      if (this.wallet.sdk === 'ERC20' && fee) {
+        // eslint-disable-next-line max-len
+        const parentSymbol = this.supportedCoins.find(coin => coin.name === this.wallet.parentName).symbol;
+        const parentPrice = this.$store.getters['entities/latestPrice/find'](`${parentSymbol}_${this.selectedCurrency.code}`).data.PRICE;
+        formattedAmount = new AmountFormatter({
+          amount,
+          rate: parentPrice,
+          format: '0,0[.]00',
+          coin: this.wallet.parentName,
+          prependPlusOrMinus: false,
+          currency: this.selectedCurrency,
+          toCurrency: true,
+          withCurrencySymbol: true,
+        });
+      }
+
       return formattedAmount.getFormatted();
     },
     goBack() {
       this.confirmSendModalOpened = false;
     },
     confirm() {
-      console.log('confirm click')
+      console.log('confirm click');
       this.loading = true;
       setTimeout(() => {
         this.broadcastTx();
@@ -283,7 +321,7 @@ export default {
       this.$root.$emit('sendSuccessModalOpened', true, this.txData);
 
       setTimeout(() => {
-        console.log('completeTransaction')
+        console.log('completeTransaction');
         this.loading = false;
         this.confirmSendModalOpened = false;
       }, 250);
