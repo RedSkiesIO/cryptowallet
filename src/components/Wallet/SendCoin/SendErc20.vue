@@ -19,12 +19,6 @@
           class="sm-input grey-input"
           inverted
         />
-        <!-- <q-btn
-          :label="$t('paste')"
-          color="primary"
-          size="sm"
-          @click="paste"
-        /> -->
         <div
           class="side-content qr-code-wrapper"
           @click="scan"
@@ -121,6 +115,7 @@
 <script>
 
 import { mapState } from 'vuex';
+// import { required, alphaNum, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
@@ -141,6 +136,12 @@ export default {
       maxed: false,
     };
   },
+  // validations: {
+  //   address: {
+  //     required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+  //   },
+
+  // },
   computed: {
     ...mapState({
       id: state => state.route.params.id,
@@ -199,6 +200,43 @@ export default {
       if (feeSetting === 1) return 'recommended';
       return 'high';
     },
+
+    // async checkField(field) {
+    //   if (field === 'address') {
+    //     this.$v.address.$touch();
+    //     if (this.$v.address.$error) {
+    //       this.contractError = 'The address must be 42 characters in length.';
+    //       return;
+    //     }
+    //     this.loadingInputs = true;
+    //     this.contractError = ' ';
+    //   }
+    //   if (field === 'name') {
+    //     this.$v.form.tokenName.$touch();
+
+    //     if (this.$v.form.tokenName.$error) {
+    //       this.nameError = 'Token name is required';
+    //       return;
+    //     }
+    //     this.nameError = ' ';
+    //   }
+    //   if (field === 'symbol') {
+    //     this.$v.form.tokenSymbol.$touch();
+    //     if (this.$v.form.tokenSymbol.$error) {
+    //       this.symbolError = 'Token Symbol must be between 0 and 12 characters';
+    //       return;
+    //     }
+    //     this.symbolError = ' ';
+    //   }
+    //   if (field === 'decimals') {
+    //     this.$v.form.tokenDecimals.$touch();
+    //     if (this.$v.form.tokenDecimals.$error) {
+    //       this.decimalsError = 'Token Decimals must be at least 0, and not over 36.';
+    //       return;
+    //     }
+    //     this.decimalsError = ' ';
+    //   }
+    // },
 
     /**
      * Fetches and sets an estimated fee

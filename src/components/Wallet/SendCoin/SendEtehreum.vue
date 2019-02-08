@@ -125,10 +125,10 @@
 </template>
 
 <script>
-/* eslint-disable */
+
 import { mapState } from 'vuex';
+// import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
-import Tx from '@/store/wallet/entities/tx';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -144,14 +144,27 @@ export default {
       inCurrency: '',
       inCurrencyFocus: false,
       sendingModalOpened: false,
-      sendingModalOpened: false,
       feeSetting: 1,
       rawFee: 0,
       feeData: null,
       estimatedFee: 'N/A',
       maxed: false,
+      addressError: '',
+      inCoinError: '',
+      inCurrencyError: '',
     };
   },
+  // validations: {
+  //   address: {
+  //     required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+  //   },
+  //   inCoin: {
+  //     required, numeric,
+  //   },
+  //   inCurrency: {
+  //     required,
+  //   },
+  // },
   computed: {
     ...mapState({
       id: state => state.route.params.id,
@@ -256,7 +269,7 @@ export default {
 
     async feeChange() {
       this.getFee();
-      if(this.maxed) this.updateMax();
+      if (this.maxed) this.updateMax();
     },
 
     /**
@@ -284,7 +297,6 @@ export default {
       if (this.feeSetting === 0) fee = fees.txLow;
       if (this.feeSetting === 2) fee = fees.txHigh;
       console.log('fee :', fee);
-
 
 
       let rawFee = fees.medium;
@@ -374,10 +386,12 @@ export default {
 
       this.maxed = true;
       this.updateMax();
+      return false;
     },
 
     updateMax() {
-      this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
+      this.inCoin = (
+        (this.wallet.confirmedBalance * 1000000000000000000) - this.rawFee) / 1000000000000000000;
     },
 
     /**

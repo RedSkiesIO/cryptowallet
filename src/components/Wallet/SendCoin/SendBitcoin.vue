@@ -197,6 +197,9 @@ export default {
       this.updateFee(this.feeSetting, this);
       return false;
     },
+    address (val) {
+      console.log(val);
+    },
     utxos: {
       handler () {
         this.updateFee(this.feeSetting, this);
@@ -685,10 +688,14 @@ export default {
       if (typeof QRScanner !== "undefined") {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
+            console.log(text)
             if (err) {
               // an error occurred, or the scan was canceled (error code `6`)
+              console.log(err);
             } else {
+              
               this.address = text;
+              console.log(this.address)
               this.$root.$emit("cancelScanning");
               this.$root.$emit("sendCoinModalOpened", true);
             }
