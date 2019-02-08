@@ -80,6 +80,7 @@ export default {
 .q-tabs-panes {
   flex: 1;
   display: flex;
+  height: calc(100% - 48px);
 }
 
 .q-tab-pane {

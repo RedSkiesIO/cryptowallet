@@ -1,3 +1,4 @@
+
 <template>
   <div v-if="wallet">
     <Transactions :wallet="wallet"/>
@@ -37,17 +38,16 @@ export default {
     });
   },
   methods: {
-    throwErr(err) {
-      throw err;
-    },
-
     /**
      * Fetches and updates the UTXOs
      */
     async getUtxos(combinedAddresses) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const utxos = await coinSDK.getUTXOs(combinedAddresses, this.wallet.network);
 
+      const utxos = await coinSDK.getUTXOs(
+        combinedAddresses,
+        this.wallet.network,
+      );
       let balance = 0;
       utxos.forEach((utxo) => {
         balance += utxo.amount;
@@ -68,12 +68,17 @@ export default {
         utxos,
         balance,
       };
+      /* eslint-disable max-len */
     },
 
     /**
      * Performs a wallet update
      */
     async refresher(done) {
+      function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
+
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
       const addresses = Address.query()
@@ -84,35 +89,41 @@ export default {
 
       let addressesRaw = addresses.map(item => item.address);
 
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
       addressesRaw = addressesRaw.filter(onlyUnique);
 
       let newBalance;
+
       if (this.wallet.sdk === 'Bitcoin') {
-        const result = await this.getUtxos(addressesRaw);
-        const { balance } = result;
+        const utxos = await this.getUtxos(addressesRaw);
+        const { balance } = utxos;
         newBalance = balance;
       } else if (this.wallet.sdk === 'Ethereum') {
-        newBalance = await coinSDK.getBalance(addressesRaw, this.wallet.network);
+        newBalance = await coinSDK.getBalance(
+          addressesRaw,
+          this.wallet.network,
+        );
       } else if (this.wallet.sdk === 'ERC20') {
         // eslint-disable-next-line max-len
         newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][this.wallet.name]);
       }
       newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
 
-
       const { network } = this.wallet;
       let txHistory;
       if (this.wallet.sdk === 'ERC20') {
         // eslint-disable-next-line max-len
-        txHistory = await coinSDK.getTransactionHistory(this.activeWallets[this.authenticatedAccount][this.wallet.name], 0);
+        txHistory = await coinSDK.getTransactionHistory(
+          this.activeWallets[this.authenticatedAccount][this.wallet.name],
+          0,
+        );
       } else {
-        txHistory = await coinSDK.getTransactionHistory(addressesRaw, network, 0, 50);
+        txHistory = await coinSDK.getTransactionHistory(
+          addressesRaw,
+          network,
+          0,
+          50,
+        );
       }
-
 
       if (!txHistory) {
         done();
@@ -129,19 +140,24 @@ export default {
           if (result[0]) {
             const foundTx = result[0];
             if (foundTx.sent) {
-            // update the tx
+              // update the tx
               Tx.$update({
-                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                where: record =>
+                  record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id,
                 data: tx,
               });
-            } else { // update found received
+            } else {
+              // update found received
               Tx.$update({
-                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                where: record =>
+                  record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id,
                 data: tx,
               });
             }
           } else {
-          // insert tx
+            // insert tx
             Tx.$insert({
               data: {
                 account_id: this.authenticatedAccount,
@@ -161,16 +177,21 @@ export default {
           if (result[0]) {
             const foundTx = result[0];
             if (foundTx.sent) {
-            // update the tx
+              // update the tx
               Tx.$update({
-                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                where: record =>
+                  record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id,
                 data: tx,
               });
 
               if (this.wallet.sdk === 'Bitcoin') {
-              // delete utxo that were used for that transaction
+                // delete utxo that were used for that transaction
                 tx.sender.forEach((inputAddress) => {
-                  const pendingUtxo = Utxo.query().where('address', inputAddress).where('pending', true).get();
+                  const pendingUtxo = Utxo.query()
+                    .where('address', inputAddress)
+                    .where('pending', true)
+                    .get();
                   pendingUtxo.forEach((pending) => {
                     Utxo.$delete(pending.id);
                   });
@@ -179,19 +200,25 @@ export default {
                 // find change address that were used and mark them as used
                 tx.receiver.forEach((changeAddress) => {
                   Address.$update({
-                    where: record => record.chain === 'internal' && record.address === changeAddress,
+                    where: record =>
+                      record.chain === 'internal' &&
+                      record.address === changeAddress,
                     data: { used: true },
                   });
                 });
               }
-            } else { // update found received
+            } else {
+              // update found received
               Tx.$update({
-                where: record => record.hash === tx.hash && record.wallet_id === this.wallet.id,
+                where: record => (
+                  record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id
+                ),
                 data: tx,
               });
             }
           } else {
-          // insert tx
+            // insert tx
             Tx.$insert({
               data: {
                 account_id: this.authenticatedAccount,
@@ -205,7 +232,8 @@ export default {
                 Wallet.$update({
                   where: record => record.id === this.wallet.id,
                   data: {
-                    externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1,
+                    externalChainAddressIndex:
+                      this.wallet.externalChainAddressIndex + 1,
                     externalAddress: null,
                   },
                 });
@@ -229,9 +257,7 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped>
-
 </style>

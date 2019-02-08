@@ -287,7 +287,7 @@ export default {
 
         await Promise.all(promises);
       } catch (e) {
-        // console.log('error :', e);
+        this.$toast.create(10, e.message, 500);
       }
     },
 

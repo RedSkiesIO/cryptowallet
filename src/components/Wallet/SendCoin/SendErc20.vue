@@ -125,10 +125,9 @@
 </template>
 
 <script>
-/* eslint-disable */
+
 import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
-import Tx from '@/store/wallet/entities/tx';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -173,7 +172,7 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      if(!prices){
+      if (!prices) {
         return null;
       }
       return prices.data.PRICE;
@@ -356,7 +355,6 @@ export default {
 
       // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const parentSDK = this.coinSDKS[this.wallet.parentSdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
 
       let fee = this.feeData.medium;
@@ -376,6 +374,8 @@ export default {
       } catch (err) {
         this.errorHandler(err);
       }
+
+      return false;
     },
 
     /**
@@ -430,7 +430,6 @@ export default {
         }, 500);
       }
     },
-
   },
 
   paste() {

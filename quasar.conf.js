@@ -23,6 +23,7 @@ module.exports = (ctx) => {
       'VueSelect',
       'Vuelidate',
       'Particles',
+      'HandlePromise',
     ],
     css: ['app.styl'],
     extras: [
