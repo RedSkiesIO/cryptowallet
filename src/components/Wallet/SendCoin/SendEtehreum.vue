@@ -260,7 +260,24 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+
+      let fees;
+      try {
+        fees = await coinSDK.getTransactionFee(this.wallet.network);
+      } catch (e) {
+        // this.errorHandler(e);
+      } finally {
+        if (!fees) {
+          fees = {
+            low: 5000000000,
+            medium: 5195324266,
+            high: 5195324266,
+            txLow: (5000000000 * 100000) / 1000000000000000000,
+            txMedium: (5195324266 * 100000) / 1000000000000000000,
+            txHigh: (6000000000 * 100000) / 1000000000000000000,
+          };
+        }
+      }
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
@@ -321,16 +338,19 @@ export default {
       if (this.feeSetting === 0) fee = this.feeData.low;
       if (this.feeSetting === 2) fee = this.feeData.high;
 
-      const {
-        transaction,
-        hexTx,
-      } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
+      try {
+        const {
+          transaction,
+          hexTx,
+        } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
 
-
-      this.$root.$emit('confirmSendModalOpened', true, {
-        hexTx,
-        transaction,
-      });
+        this.$root.$emit('confirmSendModalOpened', true, {
+          hexTx,
+          transaction,
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
 
       return false;
     },
@@ -339,9 +359,13 @@ export default {
      * Pastes in the text from the clipboard
      */
     paste() {
-      cordova.plugins.clipboard.paste((text) => {
-        this.address = text;
-      });
+      try {
+        cordova.plugins.clipboard.paste((text) => {
+          this.address = text;
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     async max() {

@@ -307,7 +307,6 @@ export default {
         withCurrencySymbol: true,
       });
 
-
       this.rawFee = rawFee * 21000;
       this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
@@ -359,32 +358,37 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const parentSDK = this.coinSDKS[this.wallet.parentSdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
-      const fees = await parentSDK.getTransactionFee(this.wallet.network);
 
-      let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
+      let fee = this.feeData.medium;
+      if (this.feeSetting === 0) fee = this.feeData.low;
+      if (this.feeSetting === 2) fee = this.feeData.high;
 
-      const {
-        transaction,
-        hexTx,
-      } = await coinSDK.transfer(wallet, this.address, this.inCoin, fee);
+      try {
+        const {
+          transaction,
+          hexTx,
+        } = await coinSDK.transfer(wallet, this.address, this.inCoin, fee);
 
-      console.log('????', transaction);
-
-      this.$root.$emit('confirmSendModalOpened', true, {
-        hexTx,
-        transaction,
-      });
+        this.$root.$emit('confirmSendModalOpened', true, {
+          hexTx,
+          transaction,
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     /**
      * Pastes in the text from the clipboard
      */
     paste() {
-      cordova.plugins.clipboard.paste((text) => {
-        this.address = text;
-      });
+      try {
+        cordova.plugins.clipboard.paste((text) => {
+          this.address = text;
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     async max() {

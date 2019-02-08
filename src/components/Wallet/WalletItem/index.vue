@@ -45,6 +45,8 @@ import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
+/* eslint-disable */
+
 export default {
   name: 'WalletItem',
   components: {
@@ -96,7 +98,7 @@ export default {
     coinLogo() {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
       /* eslint-disable-next-line */
-      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
@@ -135,211 +137,74 @@ export default {
       return result.length > 0;
     },
 
-    async enableBitcoin(coinSDK, wallet, newWalletId) {
-      const {
-        txHistory,
-        externalAccountDiscovery,
-        internalAccountDiscovery,
-        externalChainAddressIndex,
-        internalChainAddressIndex,
-        balance,
-        utxos,
-      } = await this.discoverWallet(wallet, coinSDK, this.wallet.network, this.wallet.sdk);
-
-      const keyPair = coinSDK.generateKeyPair(wallet, externalChainAddressIndex);
-
-      Wallet.$update({
-        where: record => record.id === newWalletId,
-        data: {
-          externalChainAddressIndex,
-          internalChainAddressIndex,
-          confirmedBalance: balance,
-          externalAddress: keyPair.address,
-        },
-      });
-
-      const newAddress = {
-        account_id: this.authenticatedAccount,
-        wallet_id: newWalletId,
-        chain: 'external',
-        address: keyPair.address,
-        index: externalChainAddressIndex,
-      };
-
-      await Address.$insert({ data: newAddress });
-
-      const unconfirmedTx = [];
-      const confirmedTx = [];
-
-      txHistory.txs.forEach((tx) => {
-        tx.account_id = this.authenticatedAccount;
-        tx.wallet_id = newWalletId;
-        if (tx.confirmed) confirmedTx.push(tx);
-        if (!tx.confirmed) unconfirmedTx.push(tx);
-      });
-
-      utxos.forEach((utxo) => {
-        utxo.account_id = this.authenticatedAccount;
-        utxo.wallet_id = newWalletId;
-        Utxo.$insert({ data: utxo });
-      });
-
-      function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
-      }
-
-      const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => createDate(b.receivedTime) - createDate(a.receivedTime));
-
-      allTx.forEach(async (tx) => {
-        await Tx.$insert({ data: tx });
-      });
-
-      externalAccountDiscovery.active.forEach(async (address) => {
-        address.account_id = this.authenticatedAccount;
-        address.wallet_id = newWalletId;
-        address.chain = 'external';
-        address.hash = address.address;
-        address.index = address.index;
-        await Address.$insert({ data: address });
-      });
-
-      internalAccountDiscovery.used.forEach(async (address) => {
-        address.account_id = this.authenticatedAccount;
-        address.wallet_id = newWalletId;
-        address.chain = 'internal';
-        address.hash = address.address;
-        address.index = address.index;
-        await Address.$insert({ data: address });
-      });
-    },
-
-    /*eslint-disable*/
-    async enableEthereum(coinSDK, wallet, newWalletId) {
-      const {
-        txHistory,
-        accounts,
-        balance,
-      } = await this.discoverWallet(wallet, coinSDK, this.wallet.network, this.wallet.sdk);
-
-      Wallet.$update({
-        where: record => record.id === newWalletId,
-        data: {
-          externalChainAddressIndex: 0,
-          internalChainAddressIndex: 0,
-          confirmedBalance: balance,
-          externalAddress: accounts[0].address,
-        },
-      });
-
-      const newAddress = {
-        account_id: this.authenticatedAccount,
-        wallet_id: newWalletId,
-        chain: 'external',
-        address: accounts[0].address,
-        index: 0,
-      };
-
-      await Address.$insert({ data: newAddress });
-
-      const unconfirmedTx = [];
-      const confirmedTx = [];
-
-      txHistory.txs.forEach((tx) => {
-        tx.account_id = this.authenticatedAccount;
-        tx.wallet_id = newWalletId;
-        if (tx.confirmed) confirmedTx.push(tx);
-        if (!tx.confirmed) unconfirmedTx.push(tx);
-      });
-
-      function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
-      }
-
-      const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => createDate(b.confirmedTime) - createDate(a.confirmedTime));
-
-      allTx.forEach(async (tx) => {
-        await Tx.$insert({ data: tx });
-      });
-
-
-      console.log(txHistory, accounts, balance);
-
-
-    },
-
     async enableWallet() {
-      console.log('enable wallet');
-    if(this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)){
-      const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+      try {
+        if (this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)) {
+          const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
 
-      const data = {
-        name: eth.name,
-        displayName: eth.displayName,
-        sdk: eth.sdk,
-        account_id: this.authenticatedAccount,
-        network: eth.network,
-        symbol: eth.symbol,
-      };
-      const ethWalletResult = await Wallet.$insert({ data });
-      const ethWalletId = ethWalletResult.wallet[0].id;
+          const data = {
+            name: eth.name,
+            displayName: eth.displayName,
+            sdk: eth.sdk,
+            account_id: this.authenticatedAccount,
+            network: eth.network,
+            symbol: eth.symbol,
+          };
 
-      Wallet.$update({
-        where: record => record.id === ethWalletId,
-        data: { imported: false, enabled: true },
-      });
-    }
-  
-      const data = {
-        name: this.wallet.name,
-        displayName: this.wallet.displayName,
-        sdk: this.wallet.sdk,
-        account_id: this.authenticatedAccount,
-        network: this.wallet.network,
-        symbol: this.wallet.symbol,
-      };
-      
-      /*const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const wallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), this.wallet.network);
-      this.activeWallets[this.authenticatedAccount][this.wallet.name] = wallet;*/
+          const ethWalletResult = await Wallet.$insert({ data });
+          const ethWalletId = ethWalletResult.wallet[0].id;
 
-      const newWalletResult = await Wallet.$insert({ data });
-      const newWalletId = newWalletResult.wallet[0].id;
+          Wallet.$update({
+            where: record => record.id === ethWalletId,
+            data: { imported: false, enabled: true },
+          });
+        }
 
-      /*if (this.wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, wallet, newWalletId);
-      if (this.wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, wallet, newWalletId);*/
+        const data = {
+          name: this.wallet.name,
+          displayName: this.wallet.displayName,
+          sdk: this.wallet.sdk,
+          account_id: this.authenticatedAccount,
+          network: this.wallet.network,
+          symbol: this.wallet.symbol,
+        };
 
-      //this.initializingModalOpened = false;
+        const newWalletResult = await Wallet.$insert({ data });
+        const newWalletId = newWalletResult.wallet[0].id;
 
-      await Wallet.$update({
-        where: record => record.id === newWalletId,
-        data: { imported: false, enabled: true },
-      });
-      if(this.wallet.sdk === 'ERC20'){
-        const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
         await Wallet.$update({
-        where: record => record.id === newWalletId,
-        data: { parentSdk: eth.sdk, 
-                parentName: eth.name,
-                contractAddress: this.wallet.contractAddress,
-                decimals: this.wallet.decimals,
-              },
-      });
+          where: record => record.id === newWalletId,
+          data: { imported: false, enabled: true },
+        });
+
+        if (this.wallet.sdk === 'ERC20') {
+          const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+          await Wallet.$update({
+            where: record => record.id === newWalletId,
+            data: {
+              parentSdk: eth.sdk,
+              parentName: eth.name,
+              contractAddress: this.wallet.contractAddress,
+              decimals: this.wallet.decimals,
+            },
+          });
+        }
+      } catch (err) {
+        this.errorHandler(err);
       }
     },
 
     disableWallet() {
       const walletIds = [];
-      if(this.wallet.sdk === 'Ethereum'){
+      if (this.wallet.sdk === 'Ethereum') {
         const erc20Wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('sdk', 'ERC20')
         .get();
-        
+
         erc20Wallets.forEach((wallet) => {
           walletIds.push(wallet.id)
-        })
+        });
       }
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
@@ -350,30 +215,27 @@ export default {
       walletIds.push(wallets[0].id);
 
       walletIds.forEach((walletId)=> {
+        Wallet.$delete(walletId);
 
-      
-      Wallet.$delete(walletId);
+        Wallet.$update({
+          where: record => record.id === walletId,
+          data: { imported: false, enabled: false },
+        });
 
+        const transactions = Tx.query().where('wallet_id', walletId).get();
+        transactions.forEach((tx) => {
+          Tx.$delete(tx.id);
+        });
 
-      Wallet.$update({
-        where: record => record.id === walletId,
-        data: { imported: false, enabled: false },
-      });
+        const utxos = Utxo.query().where('wallet_id', walletId).get();
+        utxos.forEach((tx) => {
+          Utxo.$delete(tx.id);
+        });
 
-      const transactions = Tx.query().where('wallet_id', walletId).get();
-      transactions.forEach((tx) => {
-        Tx.$delete(tx.id);
-      });
-
-      const utxos = Utxo.query().where('wallet_id', walletId).get();
-      utxos.forEach((tx) => {
-        Utxo.$delete(tx.id);
-      });
-
-      const addresses = Address.query().where('wallet_id', walletId).get();
-      addresses.forEach((address) => {
-        Address.$delete(address.id);
-      });
+        const addresses = Address.query().where('wallet_id', walletId).get();
+        addresses.forEach((address) => {
+          Address.$delete(address.id);
+        });
       });
     },
   },

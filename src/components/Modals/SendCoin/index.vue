@@ -23,11 +23,11 @@
       >
         <CoinHeader :wallet="wallet"/>
 
-        <div v-if="wallet.sdk === 'Bitcoin' && sendCoinModalOpened">
+        <div v-if="wallet.sdk === 'Bitcoin'">
           <SendBitcoin/>
         </div>
 
-        <div v-if="wallet.sdk === 'Ethereum' && sendCoinModalOpened">
+        <div v-if="wallet.sdk === 'Ethereum'">
           <SendEtehreum/>
         </div>
 

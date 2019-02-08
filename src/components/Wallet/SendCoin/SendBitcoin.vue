@@ -434,10 +434,13 @@ export default {
       if (!address || !amount) return false;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+      let fees;
 
-      // console.log('getTransactionFee');
-
-      const fees = await coinSDK.getTransactionFee(this.wallet.network);
+      try {
+        fees = await coinSDK.getTransactionFee(this.wallet.network);
+      } catch (err) {
+        this.errorHandler(err);
+      }
 
       let fee = fees.medium;
       if (this.feeSetting === 0) fee = fees.low;
