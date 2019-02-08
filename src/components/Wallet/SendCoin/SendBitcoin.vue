@@ -198,7 +198,7 @@ export default {
       return false;
     },
     address (val) {
-      console.log(val);
+      console.log('addres: '+val);
     },
     utxos: {
       handler () {
@@ -210,6 +210,7 @@ export default {
   mounted () {
     try {
       this.fetchUTXOs();
+      console.log('mounted');
     } catch (e) {
       this.errorHandler(e);
     }
@@ -555,6 +556,9 @@ export default {
      * Creates and sends a transaction
      */
     async send () {
+      this.address = 'asd';
+      return false
+
       if (!this.isValid()) {
         this.$toast.create(10, this.$t("fillAllInputs"), 500);
         return false;
@@ -693,7 +697,8 @@ export default {
               // an error occurred, or the scan was canceled (error code `6`)
               console.log(err);
             } else {
-              
+              Window.x = this;
+              console.log(text);
               this.address = text;
               console.log(this.address)
               this.$root.$emit("cancelScanning");

@@ -23,11 +23,11 @@
       >
         <CoinHeader :wallet="wallet"/>
 
-        <div v-if="wallet.sdk === 'Bitcoin' && sendCoinModalOpened">
+        <div v-if="wallet.sdk === 'Bitcoin'">
           <SendBitcoin/>
         </div>
 
-        <div v-if="wallet.sdk === 'Ethereum' && sendCoinModalOpened">
+        <div v-if="wallet.sdk === 'Ethereum'">
           <SendEtehreum/>
         </div>
 
@@ -266,6 +266,13 @@ export default {
   top: -0.1rem;
   margin-left: 0.1rem;
   color: #e49ebe;
+}
+
+.error-label {
+  color: red;
+  min-height: 0.5em;
+  display: inline-block;
+  font-size: 12px;
 }
 
 

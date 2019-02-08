@@ -15,9 +15,11 @@
       <div class="to">
         <q-input
           v-model="address"
+          :error="$v.address.$error"
           placeholder="address"
           class="sm-input grey-input"
           inverted
+          @blur="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -28,6 +30,7 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
+      <span class="error-label">{{ addressError }}</span>
 
       <div class="send-modal-heading">
         <h3>Amount</h3>
@@ -45,13 +48,14 @@
         <div class="amount-div-wrapper">
           <q-input
             v-model="inCoin"
+            :error="$v.inCoin.$error"
             :disable="maxed"
             type="number"
             placeholder="0"
             class="sm-input grey-input"
             inverted
             @focus="updateInCoinFocus(true)"
-            @blur="updateInCoinFocus(false)"
+            @blur="updateInCoinFocus(false) && checkField('inCoin')"
           />
           <div class="side-content">{{ coinSymbol }}</div>
         </div>
@@ -69,6 +73,7 @@
           <div class="side-content">{{ selectedCurrency.code }}</div>
         </div>
       </div>
+      <span class="error-label">{{ amountError }}</span>
 
       <div class="send-modal-heading">
         <h3>
@@ -127,7 +132,7 @@
 <script>
 
 import { mapState } from 'vuex';
-// import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
+import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
@@ -152,19 +157,20 @@ export default {
       addressError: '',
       inCoinError: '',
       inCurrencyError: '',
+      amountError: '',
     };
   },
-  // validations: {
-  //   address: {
-  //     required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
-  //   },
-  //   inCoin: {
-  //     required, numeric,
-  //   },
-  //   inCurrency: {
-  //     required,
-  //   },
-  // },
+  validations: {
+    address: {
+      required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+    },
+    inCoin: {
+      required, numeric,
+    },
+    inCurrency: {
+      required, numeric,
+    },
+  },
   computed: {
     ...mapState({
       id: state => state.route.params.id,
@@ -206,6 +212,7 @@ export default {
 
   mounted() {
     this.getFee();
+    console.log('mounted');
   },
 
   methods: {
@@ -219,9 +226,38 @@ export default {
     },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
+      if (false) {
+        this.checkField('inCoin');
+      }
     },
     updateInCurrencyFocus(val) {
       this.inCurrencyFocus = val;
+    },
+
+    async checkField(field) {
+      if (field === 'address') {
+        this.$v.address.$touch();
+        if (this.$v.address.$error) {
+          this.addressError = 'The address must be 42 characters in length';
+          return;
+        }
+        this.addressError = '';
+      }
+      if (field === 'inCoin') {
+        this.$v.inCoin.$touch();
+        if (this.$v.inCoin.$error) {
+          this.amountError = 'You must provide an amount';
+          return;
+        }
+        this.amountError = '';
+      } if (field === 'inCurrency') {
+        this.$v.inCurrency.$touch();
+        if (this.$v.inCurrency.$error) {
+          this.amountError = 'You must provide an amount';
+          return;
+        }
+        this.amountError = '';
+      }
     },
     /**
      * Converts coins to currency as user types

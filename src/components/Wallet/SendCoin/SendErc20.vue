@@ -189,6 +189,7 @@ export default {
 
   mounted() {
     this.getFee();
+    console.log('mounted');
   },
 
   methods: {
