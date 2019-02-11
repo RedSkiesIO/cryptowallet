@@ -131,7 +131,7 @@ export default {
         // this.loadData();
         // const price = this.$store.getters
         // ['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-        if (!prices) return null;
+        return null;
       }
       return this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
     },

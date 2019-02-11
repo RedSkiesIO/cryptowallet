@@ -60,8 +60,8 @@
         <div
           v-if="isErc20"
           class="small-text">
-          {{ txData.transaction.fee * 100000 / 1000000000000000000 }}  ETH
-          ({{ coinToCurrency(txData.transaction.fee * 100000 / 1000000000000000000, true) }})
+          {{ txData.transaction.fee / 1000000000000000000 }}  ETH
+          ({{ coinToCurrency(txData.transaction.fee / 1000000000000000000, true) }})
         </div>
 
         <div class="send-modal-heading">

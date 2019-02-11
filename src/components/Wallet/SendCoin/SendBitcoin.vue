@@ -194,6 +194,9 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if (!prices) {
+        return null;
+      }
       return prices.data.PRICE;
     },
   },
