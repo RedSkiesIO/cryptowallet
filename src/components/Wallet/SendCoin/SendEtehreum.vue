@@ -361,8 +361,8 @@ export default {
       if (!this.address) return false;
       if (!this.inCoin) return false;
       if (!this.inCurrency) return false;
-      if (!this.checkField('address')) return false;
-      if (!this.checkField('inCoin')) return false;
+      if (this.addressError) return false;
+      if (this.amountError) return false;
 
       return true;
     },
@@ -454,6 +454,7 @@ export default {
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
               if (isValid) {
                 this.address = text;
+                this.addressError = '';
               }
               this.$root.$emit('cancelScanning');
               this.$root.$emit('sendCoinModalOpened', true);

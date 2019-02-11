@@ -129,32 +129,30 @@
 
 <script>
 /* eslint-disable */
-import { mapState } from "vuex";
-import { debounce } from "quasar";
+import { mapState } from 'vuex';
+import { debounce } from 'quasar';
 import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
-import AmountFormatter from "@/helpers/AmountFormatter";
-import Address from "@/store/wallet/entities/address";
-import Wallet from "@/store/wallet/entities/wallet";
-import Tx from "@/store/wallet/entities/tx";
-import Utxo from "@/store/wallet/entities/utxo";
-import Spinner from "@/components/Spinner";
-import Coin from "@/store/wallet/entities/coin";
+import AmountFormatter from '@/helpers/AmountFormatter';
+import Address from '@/store/wallet/entities/address';
+import Utxo from '@/store/wallet/entities/utxo';
+import Spinner from '@/components/Spinner';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
-  name: "SendCoin",
+  name: 'SendCoin',
   components: {
-    Spinner
+    Spinner,
   },
-  data () {
+  data() {
     return {
-      address: "",
-      inCoin: "",
-      inCurrency: "",
+      address: '',
+      inCoin: '',
+      inCurrency: '',
       inCoinFocus: false,
       inCurrencyFocus: false,
       sendingModalOpened: false,
       feeSetting: 1,
-      estimatedFee: "N/A",
+      estimatedFee: 'N/A',
       utxos: [],
       maxed: false,
       addressError: '',
@@ -175,54 +173,51 @@ export default {
   computed: {
     ...mapState({
       id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount
+      authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
-    wallet () {
-      return this.$store.getters["entities/wallet/find"](this.id);
+    wallet() {
+      return this.$store.getters['entities/wallet/find'](this.id);
     },
-    selectedCurrency () {
+    selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
-    supportedCoins () {
+    supportedCoins() {
       return Coin.all();
     },
-    coinSymbol () {
+    coinSymbol() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name)
         .symbol;
     },
-    coinDenomination () {
+    coinDenomination() {
       return this.supportedCoins.find(coin => coin.name === this.wallet.name)
         .denomination;
     },
-    latestPrice () {
-      const prices = this.$store.getters["entities/latestPrice/find"](
-        `${this.coinSymbol}_${this.selectedCurrency.code}`
-      );
+    latestPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       return prices.data.PRICE;
-    }
+    },
   },
   watch: {
-    inCoin (val) {
-      if (val === null || val === "") return false;
+    inCoin(val) {
+      if (val === null || val === '') return false;
       if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
       this.updateFee(this.feeSetting, this);
       return false;
     },
-    inCurrency (val) {
-      if (val === null || val === "") return false;
-      if (!this.inCoinFocus && !this.maxed)
-        this.inCoin = this.currencyToCoin(val);
+    inCurrency(val) {
+      if (val === null || val === '') return false;
+      if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       this.updateFee(this.feeSetting, this);
       return false;
     },
-    address (val) {
-      console.log('addres: '+val);
+    address(val) {
+      console.log(`addres: ${val}`);
     },
     utxos: {
-      handler () {
+      handler() {
         this.updateFee(this.feeSetting, this);
-      }
-    }
+      },
+    },
   },
 
   async mounted() {
@@ -234,21 +229,21 @@ export default {
   },
 
   methods: {
-    helpFee () {
+    helpFee() {
       this.$q.dialog({
-        title: "Fees",
-        message: this.$t("helpFeesBitcoin"),
-        ok: "OK",
-        color: "blueish"
+        title: 'Fees',
+        message: this.$t('helpFeesBitcoin'),
+        ok: 'OK',
+        color: 'blueish',
       });
     },
-    updateInCoinFocus (val) {
+    updateInCoinFocus(val) {
       this.inCoinFocus = val;
       if (!val) {
         this.checkField('inCoin');
       }
     },
-    updateInCurrencyFocus (val) {
+    updateInCurrencyFocus(val) {
       this.inCurrencyFocus = val;
     },
 
@@ -281,15 +276,15 @@ export default {
     /**
      * Converts coins to currency as user types
      */
-    amountToCurrency (amount) {
+    amountToCurrency(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
         rate: this.latestPrice,
-        format: "0.00",
+        format: '0.00',
         coin: this.wallet.name,
         prependPlusOrMinus: false,
         currency: this.selectedCurrency,
-        toCurrency: true
+        toCurrency: true,
       });
 
       return formattedAmount.getFormatted();
@@ -298,7 +293,7 @@ export default {
     /**
      * Converts currency to coin as user types
      */
-    currencyToCoin (amount) {
+    currencyToCoin(amount) {
       const formattedAmount = new AmountFormatter({
         amount,
         rate: this.latestPrice,
@@ -306,7 +301,7 @@ export default {
         coin: this.wallet.name,
         prependPlusOrMinus: false,
         currency: this.selectedCurrency,
-        toCoin: true
+        toCoin: true,
       });
 
       return parseFloat(formattedAmount.getFormatted());
@@ -318,7 +313,7 @@ export default {
     async fetchUTXOs() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const addressesRaw = this.getAddressesRaw();
-      const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network)
+      const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network);
       console.log('mounted, utxos:', utxos);
       this.utxos = utxos;
     },
@@ -326,16 +321,16 @@ export default {
     /**
      * Allows to display a custom fee label on Quasar component
      */
-    customFeeLabel (feeSetting) {
-      if (feeSetting === 0) return "low";
-      if (feeSetting === 1) return "recommended";
-      return "high";
+    customFeeLabel(feeSetting) {
+      if (feeSetting === 0) return 'low';
+      if (feeSetting === 1) return 'recommended';
+      return 'high';
     },
 
     /**
      * Calls update fee with context passed when user adjusts fee
      */
-    feeChange (fee) {
+    feeChange(fee) {
       if (!this.maxed) this.updateFee(fee, this);
       if (this.maxed) this.updateMax();
     },
@@ -348,13 +343,13 @@ export default {
 
       const changeAddresses = that.generateChangeAddresses(
         filteredUtxos,
-        pendingCount
+        pendingCount,
       );
       const wallet =
         that.activeWallets[that.authenticatedAccount][that.wallet.name];
       const accounts = that.getAccounts();
 
-      let address = that.getAddresses()[0].address;
+      let { address } = that.getAddresses()[0];
       if (that.address) address = that.address;
       let amount = that.wallet.confirmedBalance / 2;
       if (that.inCoin) amount = that.inCoin;
@@ -365,7 +360,7 @@ export default {
         filteredUtxos,
         wallet,
         address,
-        amount
+        amount,
       );
     }, 250),
 
@@ -373,11 +368,11 @@ export default {
      * Returns addresses
      * @return {Array<Object>}
      */
-    getAddresses () {
+    getAddresses() {
       return Address.query()
-        .where("account_id", this.authenticatedAccount)
-        .where("wallet_id", this.wallet.id)
-        .where("used", false)
+        .where('account_id', this.authenticatedAccount)
+        .where('wallet_id', this.wallet.id)
+        .where('used', false)
         .get();
     },
 
@@ -385,11 +380,11 @@ export default {
      * Returns raw addresses
      * @return {Array<String>}
      */
-    getAddressesRaw () {
+    getAddressesRaw() {
       const addresses = this.getAddresses();
       const addressesRaw = addresses.map(item => item.address);
 
-      function onlyUnique (value, index, self) {
+      function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
       }
 
@@ -400,13 +395,13 @@ export default {
      * Returns accounts
      * @return {Array<Object>}
      */
-    getAccounts () {
+    getAccounts() {
       const addresses = this.getAddresses();
-      function mapToAccounts (item) {
+      function mapToAccounts(item) {
         return {
           address: item.address,
           index: item.index,
-          change: item.chain === "internal"
+          change: item.chain === 'internal',
         };
       }
 
@@ -418,12 +413,12 @@ export default {
      * @param  {Array<Object>} utxos
      * @return {Object}
      */
-    filterOutPending (utxos) {
-      utxos.forEach(utxo => {
+    filterOutPending(utxos) {
+      utxos.forEach((utxo) => {
         const found = Utxo.query()
-          .where("txid", utxo.txid)
-          .where("vout", utxo.vout)
-          .where("wallet_id", this.wallet.id)
+          .where('txid', utxo.txid)
+          .where('vout', utxo.vout)
+          .where('wallet_id', this.wallet.id)
           .get();
 
         if (found) return false;
@@ -434,16 +429,15 @@ export default {
       });
 
       const pendingUtxos = Utxo.query()
-        .where("account_id", this.authenticatedAccount)
-        .where("wallet_id", this.wallet.id)
-        .where("pending", true)
+        .where('account_id', this.authenticatedAccount)
+        .where('wallet_id', this.wallet.id)
+        .where('pending', true)
         .get();
 
       // filter out the pending UTXOs
-      const filteredUtxos = utxos.filter(utxo => {
-        const found = pendingUtxos.find(pendingUtxo => {
-          if (utxo.txid === pendingUtxo.txid && utxo.vout === pendingUtxo.vout)
-            return true;
+      const filteredUtxos = utxos.filter((utxo) => {
+        const found = pendingUtxos.find((pendingUtxo) => {
+          if (utxo.txid === pendingUtxo.txid && utxo.vout === pendingUtxo.vout) { return true; }
           return false;
         });
 
@@ -453,7 +447,7 @@ export default {
 
       return {
         filteredUtxos,
-        pendingCount: pendingUtxos.length
+        pendingCount: pendingUtxos.length,
       };
     },
 
@@ -463,8 +457,8 @@ export default {
      * @param  {Number} pendingCount
      * @return {Array<String>}
      */
-    generateChangeAddresses (filteredUtxos, pendingCount) {
-      let quantityToGenerate = 1;
+    generateChangeAddresses(filteredUtxos, pendingCount) {
+      const quantityToGenerate = 1;
       // if (filteredUtxos.length === 1 && pendingCount === 0) quantityToGenerate = 2;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
@@ -493,13 +487,13 @@ export default {
      * @param  {Number} amount
      * @return {Object}
      */
-    async createRawTx (
+    async createRawTx(
       accounts,
       changeAddresses,
       filteredUtxos,
       wallet,
       address,
-      amount
+      amount,
     ) {
       if (!address || !amount) return false;
 
@@ -528,11 +522,11 @@ export default {
 
 
       if (this.maxed) amount = 0;
-      //fee = fee + ;
+      // fee = fee + ;
 
-      //console.log('fee', fee, amount);
+      // console.log('fee', fee, amount);
 
-      /*console.log('=====');
+      /* console.log('=====');
       console.log('accounts', accounts);
       console.log('changeAddresses', changeAddresses);
       console.log('filteredUtxos', filteredUtxos);
@@ -555,17 +549,17 @@ export default {
           address,
           amount,
           fee,
-          this.maxed
+          this.maxed,
         );
 
         const formattedFee = new AmountFormatter({
           amount: transaction.fee,
           rate: this.latestPrice,
-          format: "0.00",
+          format: '0.00',
           coin: this.wallet.name,
           currency: this.selectedCurrency,
           toCurrency: true,
-          withCurrencySymbol: true
+          withCurrencySymbol: true,
         });
 
         this.estimatedFee = formattedFee.getFormatted();
@@ -573,7 +567,7 @@ export default {
         return {
           hexTx,
           transaction,
-          utxo
+          utxo,
         };
       } catch (err) {
         this.errorHandler(err);
@@ -586,41 +580,38 @@ export default {
      * Validates input fields
      * @return {Boolean}
      */
-    isValid () {
+    isValid() {
       if (!this.address) return false;
       if (!this.inCoin) return false;
       if (!this.inCurrency) return false;
-       if (!this.checkField('address')) return false;
-      if (!this.checkField('inCoin')) return false;
+      if (this.addressError) return false;
+      if (this.amountError) return false;
       return true;
     },
 
     /**
      * Creates and sends a transaction
      */
-    async send () {
-      this.address = 'asd';
-      return false
-
+    async send() {
       if (!this.isValid()) {
-        this.$toast.create(10, this.$t("fillAllInputs"), 500);
+        this.$toast.create(10, this.$t('fillAllInputs'), 500);
         return false;
       }
 
       if (this.wallet.confirmedBalance < this.inCoin) {
-        this.$toast.create(10, this.$t("notEnoughFunds"), 500);
+        this.$toast.create(10, this.$t('notEnoughFunds'), 500);
         return false;
       }
 
       // this.sendingModalOpened = true;
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      // const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
       ];
 
       // there are no UTXOs available, wallet is empty
       if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t("noFunds"), 500);
+        this.$toast.create(10, this.$t('noFunds'), 500);
         // this.sendingModalOpened = false;
         return false;
       }
@@ -629,16 +620,16 @@ export default {
 
       // there is enough funds, but UTXOs are pending
       if (filteredUtxos.length === 0) {
-        this.$toast.create(10, this.$t("fundsPending"), 500);
+        this.$toast.create(10, this.$t('fundsPending'), 500);
         // this.sendingModalOpened = false;
         return false;
       }
 
-      console.log("filteredUtxos", filteredUtxos);
+      console.log('filteredUtxos', filteredUtxos);
 
       const changeAddresses = this.generateChangeAddresses(
         filteredUtxos,
-        pendingCount
+        pendingCount,
       );
       const accounts = this.getAccounts();
 
@@ -648,19 +639,19 @@ export default {
         filteredUtxos,
         wallet,
         this.address,
-        this.inCoin
+        this.inCoin,
       );
 
-      console.log("hex", hexTx);
-      console.log("tx", transaction);
-      console.log("used utxo", utxo);
+      console.log('hex', hexTx);
+      console.log('tx', transaction);
+      console.log('used utxo', utxo);
       console.log(this.wallet.network);
 
-      this.$root.$emit("confirmSendModalOpened", true, {
+      this.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
         transaction,
         changeAddresses,
-        utxo
+        utxo,
       });
 
       return false;
@@ -679,11 +670,11 @@ export default {
       }
     },
 
-    async max () {
+    async max() {
       if (this.maxed) {
         this.maxed = false;
-        this.inCoin = "";
-        this.inCurrency = "";
+        this.inCoin = '';
+        this.inCurrency = '';
         return false;
       }
 
@@ -691,12 +682,12 @@ export default {
       this.updateMax();
     },
 
-    async updateMax () {
+    async updateMax() {
       const { filteredUtxos, pendingCount } = this.filterOutPending(this.utxos);
 
       const changeAddresses = this.generateChangeAddresses(
         filteredUtxos,
-        pendingCount
+        pendingCount,
       );
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
@@ -704,7 +695,7 @@ export default {
       const accounts = this.getAccounts();
       let address = this.getAddresses()[0].address;
       if (this.address) address = this.address;
-      let amount = this.wallet.confirmedBalance;
+      const amount = this.wallet.confirmedBalance;
 
       const { transaction } = await this.createRawTx(
         accounts,
@@ -712,17 +703,17 @@ export default {
         filteredUtxos,
         wallet,
         address,
-        amount
+        amount,
       );
 
       const formattedFee = new AmountFormatter({
         amount: transaction.fee,
         rate: this.latestPrice,
-        format: "0.00",
+        format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,
         toCurrency: true,
-        withCurrencySymbol: true
+        withCurrencySymbol: true,
       });
 
       this.estimatedFee = formattedFee.getFormatted();
@@ -733,13 +724,13 @@ export default {
     /**
      * Initiates the QR code scanner
      */
-    scan () {
-      this.$root.$emit("scanQRCode");
-      this.$root.$emit("sendCoinModalOpened", false);
-      if (typeof QRScanner !== "undefined") {
+    scan() {
+      this.$root.$emit('scanQRCode');
+      this.$root.$emit('sendCoinModalOpened', false);
+      if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
-            console.log(text)
+            console.log(text);
             if (err) {
               this.errorHandler(err);
             } else {
@@ -747,15 +738,16 @@ export default {
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
               if (isValid) {
                 this.address = text;
+                this.addressError = '';
               }
-              this.$root.$emit("cancelScanning");
-              this.$root.$emit("sendCoinModalOpened", true);
+              this.$root.$emit('cancelScanning');
+              this.$root.$emit('sendCoinModalOpened', true);
             }
           });
         }, 500);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
