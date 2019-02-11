@@ -15,6 +15,14 @@
       @click="copyToClipboard"
     />
 
+    <q-btn
+      :label="$t('share')"
+      class="share-btn"
+      color="blueish"
+      size="sm"
+      @click="share()"
+    />
+
     <div class="send-modal-heading">
       <h3>Scan QR Code</h3>
       <span class="h3-line"/>
@@ -26,12 +34,6 @@
         :src="qrCodeDataURL"
       >
     </div>
-    <!-- <q-btn
-      :label="$t('share')"
-      color="primary"
-      size="sm"
-      @click="share()"
-    /> -->
   </div>
 </template>
 
@@ -132,11 +134,21 @@ export default {
       return false;
     },
     share() {
-      console.log('share method called');
-      /*
-       * @todo decide what functionality has to be included in share
-       * maybe just use https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin ?
-       */
+      const that = this;
+      const options = {
+        message: `${this.address}`,
+        subject: `Here's my ${this.wallet.name} address`,
+      };
+
+      function onSuccess(result) {
+        console.log(result);
+      }
+
+      function onError(msg) {
+        that.errorHandler(new Error(msg));
+      }
+
+      window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
     },
   },
 };
@@ -162,5 +174,9 @@ export default {
   margin: 0rem;
   display: flex;
   justify-content: center;
+}
+
+.share-btn {
+  margin-left: 0.5rem;
 }
 </style>
