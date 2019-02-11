@@ -29,9 +29,11 @@ export default {
   },
   mounted() {
     this.$root.$on('updateWalletSingle', async (done) => {
+      console.log('updateWalletSingle');
       try {
         await this.refresher(done);
       } catch (err) {
+        console.log('got there twice,, you');
         this.errorHandler(err);
         done();
       }
