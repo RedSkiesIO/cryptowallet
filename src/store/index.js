@@ -49,6 +49,7 @@ window.Utxo = Utxo;
 window.Address = Address;
 window.Wallet = Wallet;
 window.LatestPrice = LatestPrice;
+window.Prices = Prices;
 window.Account = Account;
 window.Coin = Coin;
 
