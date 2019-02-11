@@ -121,6 +121,8 @@ export default {
       let dataset;
       try {
         dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+
+        console.log('dataset', dataset);
       } catch (e) {
         this.errorHandler(e);
         console.log(`no price data for ${this.coinSymbol}`);
@@ -137,10 +139,11 @@ export default {
             currency: this.selectedCurrency.code,
             period: 'day',
             updated: +new Date(),
-            dataset,
+            data: dataset,
           },
         });
-      } else if (dataset) {
+        this.chartData = dataset.map(item => item.y);
+      } else if (price && dataset) {
         Prices.$update({
           where: record => wherePrice(record, {
             coin: this.coinSymbol,
