@@ -234,10 +234,11 @@ export default {
 
     refresher(done) {
       if (this.$route.name === 'wallet') {
-        setTimeout(() => {
+        setTimeout(async () => {
           try {
-            this.updateBalances(done);
+            await this.updateBalances(done);
           } catch (err) {
+            console.log('error???');
             this.errorHandler(err);
             done();
           }
@@ -250,14 +251,12 @@ export default {
           this.$root.$emit('updateWalletSingle', done)
         }, 1000)
       }
-
-
     },
 
     async getUtxos(combinedAddresses, wallet) {
       if (wallet.sdk) {
         const coinSDK = this.coinSDKS[wallet.sdk];
-        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network).catch((error) => this.$toast.create(10, error, 500));
+        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network);
 
         let balance = 0;
         utxos.forEach((utxo) => {
@@ -287,57 +286,61 @@ export default {
       const promises = [];
 
       this.wallets.forEach((wallet) => {
+
         promises.push(new Promise(async (resolve, reject) => {
-          try{
-          const coinSDK = this.coinSDKS[wallet.sdk];
+          try {
 
-          const addresses = Address.query()
-            .where('account_id', this.authenticatedAccount)
-            .where('wallet_id', wallet.id)
-            .where('used', false)
-            .get();
+            const coinSDK = this.coinSDKS[wallet.sdk];
 
-          let addressesRaw = addresses.map(item => item.address);
+            const addresses = Address.query()
+              .where('account_id', this.authenticatedAccount)
+              .where('wallet_id', wallet.id)
+              .where('used', false)
+              .get();
 
-          function onlyUnique(value, index, self) {
-            return self.indexOf(value) === index;
+            let addressesRaw = addresses.map(item => item.address);
+
+            function onlyUnique(value, index, self) {
+              return self.indexOf(value) === index;
+            }
+
+            addressesRaw = addressesRaw.filter(onlyUnique);
+
+            let newBalance;
+            if (wallet.sdk === 'Bitcoin') {
+              const result = await this.getUtxos(addressesRaw, wallet)
+              const { balance } = result;
+              newBalance = balance;
+            } else if (wallet.sdk === 'Ethereum') {
+              newBalance = await coinSDK.getBalance(addressesRaw, wallet.network)
+              newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
+
+            } else if (wallet.sdk === 'ERC20') {
+              console.log('wallet.name :', wallet.name);
+              newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name])
+            }
+
+            // update balance
+            Wallet.$update({
+              where: record => record.id === wallet.id,
+              data: { confirmedBalance: parseFloat(newBalance, 10) },
+            });
+
+            resolve();
+
+          } catch (err) {
+            reject(err);
           }
-
-          addressesRaw = addressesRaw.filter(onlyUnique);
-
-          let newBalance;
-          if (wallet.sdk === 'Bitcoin') {
-            const result = await this.getUtxos(addressesRaw, wallet).catch((error) => reject(new Error(error)));
-            const { balance } = result;
-            newBalance = balance;
-          } else if (wallet.sdk === 'Ethereum') {
-            newBalance = await coinSDK.getBalance(addressesRaw, wallet.network).catch((error) => reject(new Error(error)));
-            newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
-          }
-          else if (wallet.sdk === 'ERC20') {
-            console.log('wallet.name :', wallet.name);
-            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]).catch((error) => reject(new Error(error)));
-          }
-          else if (wallet.sdk === 'ERC20') {
-            console.log('wallet.name :', wallet.name);
-            newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]).catch((error) => reject(new Error(error)));
-          }
-
-          // update balance
-          Wallet.$update({
-            where: record => record.id === wallet.id,
-            data: { confirmedBalance: parseFloat(newBalance, 10) },
-          });
-
-          resolve();
-          } catch (e) {
-          reject(e);
-        }
         }));
       });
 
-      await Promise.all(promises);
-      done();
+      try {
+        await Promise.all(promises);
+        done();
+      } catch (err) {
+        this.errorHandler(err);
+        done();
+      }
     },
   },
 };

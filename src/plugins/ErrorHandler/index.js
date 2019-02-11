@@ -40,7 +40,7 @@ export default ({ Vue, store }) => {
       },
     });
 
-    // console.error(err);
+    console.log('error', err);
     Vue.rollbar.error(err.message);
     vm.$toast.create(10, err.message, 500);
 
