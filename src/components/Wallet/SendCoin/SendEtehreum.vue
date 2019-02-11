@@ -130,7 +130,6 @@
 </template>
 
 <script>
-
 import { mapState } from 'vuex';
 import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
@@ -155,8 +154,6 @@ export default {
       estimatedFee: 'N/A',
       maxed: false,
       addressError: '',
-      inCoinError: '',
-      inCurrencyError: '',
       amountError: '',
     };
   },
@@ -226,7 +223,7 @@ export default {
     },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
-      if (false) {
+      if (!val) {
         this.checkField('inCoin');
       }
     },
@@ -239,7 +236,13 @@ export default {
         this.$v.address.$touch();
         if (this.$v.address.$error) {
           this.addressError = 'The address must be 42 characters in length';
-          return;
+          return false;
+        }
+        const coinSDK = this.coinSDKS[this.wallet.sdk];
+        const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
+        if (!isValid) {
+          this.addressError = 'Invalid Ethereum address';
+          return false;
         }
         this.addressError = '';
       }
@@ -247,17 +250,11 @@ export default {
         this.$v.inCoin.$touch();
         if (this.$v.inCoin.$error) {
           this.amountError = 'You must provide an amount';
-          return;
-        }
-        this.amountError = '';
-      } if (field === 'inCurrency') {
-        this.$v.inCurrency.$touch();
-        if (this.$v.inCurrency.$error) {
-          this.amountError = 'You must provide an amount';
-          return;
+          return false;
         }
         this.amountError = '';
       }
+      return true;
     },
     /**
      * Converts coins to currency as user types
@@ -302,7 +299,6 @@ export default {
       return 'fastest';
     },
 
-
     async feeChange() {
       this.getFee();
       if (this.maxed) this.updateMax();
@@ -313,27 +309,29 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+
       let fees;
       try {
         fees = await coinSDK.getTransactionFee(this.wallet.network);
       } catch (e) {
         // this.errorHandler(e);
       } finally {
-        fees = {
-          low: 5000000000,
-          medium: 5195324266,
-          high: 5195324266,
-          txLow: (5000000000 * 21000) / 1000000000000000000,
-          txMedium: (5195324266 * 21000) / 1000000000000000000,
-          txHigh: (6000000000 * 21000) / 1000000000000000000,
-        };
+        if (!fees) {
+          fees = {
+            low: 5000000000,
+            medium: 5195324266,
+            high: 5195324266,
+            txLow: (5000000000 * 100000) / 1000000000000000000,
+            txMedium: (5195324266 * 100000) / 1000000000000000000,
+            txHigh: (6000000000 * 100000) / 1000000000000000000,
+          };
+        }
       }
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) fee = fees.txLow;
       if (this.feeSetting === 2) fee = fees.txHigh;
       console.log('fee :', fee);
-
 
       let rawFee = fees.medium;
       if (this.feeSetting === 0) rawFee = fees.low;
@@ -363,6 +361,9 @@ export default {
       if (!this.address) return false;
       if (!this.inCoin) return false;
       if (!this.inCurrency) return false;
+      if (!this.checkField('address')) return false;
+      if (!this.checkField('inCoin')) return false;
+
       return true;
     },
 
@@ -389,16 +390,19 @@ export default {
       if (this.feeSetting === 0) fee = this.feeData.low;
       if (this.feeSetting === 2) fee = this.feeData.high;
 
-      const {
-        transaction,
-        hexTx,
-      } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
+      try {
+        const {
+          transaction,
+          hexTx,
+        } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
 
-
-      this.$root.$emit('confirmSendModalOpened', true, {
-        hexTx,
-        transaction,
-      });
+        this.$root.$emit('confirmSendModalOpened', true, {
+          hexTx,
+          transaction,
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
 
       return false;
     },
@@ -407,9 +411,13 @@ export default {
      * Pastes in the text from the clipboard
      */
     paste() {
-      cordova.plugins.clipboard.paste((text) => {
-        this.address = text;
-      });
+      try {
+        cordova.plugins.clipboard.paste((text) => {
+          this.address = text;
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     async max() {
@@ -440,9 +448,13 @@ export default {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
             if (err) {
-              // an error occurred, or the scan was canceled (error code `6`)
+              this.errorHandler(err);
             } else {
-              this.address = text;
+              const coinSDK = this.coinSDKS[this.wallet.sdk];
+              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+              if (isValid) {
+                this.address = text;
+              }
               this.$root.$emit('cancelScanning');
               this.$root.$emit('sendCoinModalOpened', true);
             }

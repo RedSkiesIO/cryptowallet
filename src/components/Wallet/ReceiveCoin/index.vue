@@ -77,7 +77,7 @@ export default {
       if (this.wallet.externalAddress) return this.wallet.externalAddress;
       return this.generateExternalAddress();
     },
-    async generateExternalAddress() {
+    generateExternalAddress() {
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const keyPair = coinSDK.generateKeyPair(wallet, this.wallet.externalChainAddressIndex);
@@ -95,7 +95,7 @@ export default {
         index: this.wallet.externalChainAddressIndex,
       };
 
-      await Address.$insert({ data: newAddress });
+      Address.$insert({ data: newAddress });
 
       Wallet.$update({
         where: record => record.id === this.wallet.id,
@@ -109,7 +109,7 @@ export default {
         cordova.plugins.clipboard.copy(this.address);
         this.$toast.create(0, this.$t('copied'), 200);
       } catch (err) {
-        this.$toast.create(10, this.$t('copyFail'), 500);
+        this.errorHandler(err);
       }
     },
     qrCode() {
@@ -118,9 +118,18 @@ export default {
         height: 250,
       };
 
+      if (typeof this.address !== 'string') return false;
+
       QRCode.toDataURL(this.address, options, (err, url) => {
+        if (err) {
+          this.errorHandler(err);
+          return false;
+        }
         this.qrCodeDataURL = url;
+        return false;
       });
+
+      return false;
     },
     share() {
       console.log('share method called');

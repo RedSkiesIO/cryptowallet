@@ -1,6 +1,5 @@
 
 <template>
-  <!-- eslint-disable -->
   <div v-if="wallet">
     <Transactions :wallet="wallet"/>
   </div>
@@ -211,9 +210,10 @@ export default {
             } else {
               // update found received
               Tx.$update({
-                where: record =>
+                where: record => (
                   record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id,
+                  record.wallet_id === this.wallet.id
+                ),
                 data: tx,
               });
             }

@@ -88,10 +88,8 @@
 </template>
 
 <script>
-
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-
 import Spinner from '@/components/Spinner';
 import { AmountFormatter } from '@/helpers';
 import Address from '@/store/wallet/entities/address';
@@ -132,10 +130,9 @@ export default {
     },
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
-        const newBalance =
-        (this.wallet.confirmedBalance * 1000000000000000000)
-        - ((this.txData.transaction.value * 1000000000000000000)
-        + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
+        // @todo Konrad, explain the mysterious code below
+        /* eslint-disable-next-line */
+        const newBalance = this.wallet.confirmedBalance * 1000000000000000000 - (this.txData.transaction.value * 1000000000000000000 + parseFloat(this.txData.transaction.fee) * 1000000000000000000);;
         return newBalance / 1000000000000000000;
       }
       if (this.wallet.sdk === 'ERC20') {
@@ -144,8 +141,8 @@ export default {
         return newBalance;
       }
       if (this.wallet.sdk === 'Bitcoin') {
-        return this.wallet.confirmedBalance
-        - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
+        /* eslint-disable-next-line */
+        return this.wallet.confirmedBalance - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
       }
       return false;
     },
@@ -175,7 +172,7 @@ export default {
     });
   },
   methods: {
-    broadcastTx() {
+    async broadcastTx() {
       const {
         hexTx,
         transaction,
@@ -183,99 +180,79 @@ export default {
         changeAddresses,
       } = this.txData;
 
-      console.log('broadcastTx', transaction);
-
+      // console.log('broadcastTx', transaction);
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-
 
       /* console.log("broadcast", hexTx, transaction, utxo, changeAddresses)
       console.log('network', this.wallet.network); */
 
       if (this.wallet.sdk === 'Bitcoin') {
-        coinSDK.broadcastTx(hexTx, this.wallet.network)
-          .then(async (result) => {
-            if (!result) {
-              console.error('transaction broadcast failure');
-              return false;
-            }
+        const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
+        if (!result) {
+          throw new Error('Transaction broadcast failure');
+        }
 
-            transaction.account_id = this.authenticatedAccount;
-            transaction.wallet_id = this.wallet.id;
-            transaction.isChange = false;
-            transaction.sent = true;
+        transaction.account_id = this.authenticatedAccount;
+        transaction.wallet_id = this.wallet.id;
+        transaction.isChange = false;
+        transaction.sent = true;
 
-            await Tx.$insert({ data: transaction });
+        await Tx.$insert({ data: transaction });
 
-            utxo.forEach((usedUtxo) => {
-              const whereUtxo = (record, item) => (
-                record.txid === item.txid
-                && record.vout === item.vout
-                && record.wallet_id === this.wallet.id
-              );
+        utxo.forEach((usedUtxo) => {
+          const whereUtxo = (record, item) => (
+            record.txid === item.txid
+            && record.vout === item.vout
+            && record.wallet_id === this.wallet.id
+          );
 
-              console.log('update pending !!!!!!!!!!!!!!!');
-
-              Utxo.$update({
-                where: record => whereUtxo(record, usedUtxo),
-                data: { pending: true },
-              });
-            });
-
-            changeAddresses.forEach(async (address, i) => {
-              await Address.$insert({
-                data: {
-                  address,
-                  account_id: this.authenticatedAccount,
-                  wallet_id: this.wallet.id,
-                  chain: 'internal',
-                  index: this.wallet.internalChainAddressIndex + i,
-                },
-              });
-            });
-
-            const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
-
-            Wallet.$update({
-              where: record => record.id === this.wallet.id,
-              data: { internalChainAddressIndex: newInternalIndex },
-            });
-
-            setTimeout(() => {
-              this.completeTransaction();
-            }, 1000);
-            return false;
-          })
-          .catch((err) => {
-            this.$toast.create(10, err.message, 500);
-            this.loading = false;
-            console.error(err);
+          Utxo.$update({
+            where: record => whereUtxo(record, usedUtxo),
+            data: { pending: true },
           });
+        });
+
+        changeAddresses.forEach(async (address, i) => {
+          await Address.$insert({
+            data: {
+              address,
+              account_id: this.authenticatedAccount,
+              wallet_id: this.wallet.id,
+              chain: 'internal',
+              index: this.wallet.internalChainAddressIndex + i,
+            },
+          });
+        });
+
+        const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
+
+        Wallet.$update({
+          where: record => record.id === this.wallet.id,
+          data: { internalChainAddressIndex: newInternalIndex },
+        });
+
+        this.completeTransaction();
+        return false;
       }
 
       if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
-        coinSDK.broadcastTx(hexTx, this.wallet.network)
-          .then(async (result) => {
-            if (!result) {
-              console.error('transaction broadcast failure');
-              return false;
-            }
+        const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
+        if (!result) {
+          throw new Error('Transaction broadcast failure');
+        }
 
-            transaction.account_id = this.authenticatedAccount;
-            transaction.wallet_id = this.wallet.id;
-            transaction.isChange = false;
-            transaction.sent = true;
+        transaction.account_id = this.authenticatedAccount;
+        transaction.wallet_id = this.wallet.id;
+        transaction.isChange = false;
+        transaction.sent = true;
 
-            await Tx.$insert({ data: transaction });
+        await Tx.$insert({ data: transaction });
 
-            this.completeTransaction();
-            return false;
-          })
-          .catch((err) => {
-            this.$toast.create(10, err.message, 500);
-            this.loading = false;
-            console.error(err);
-          });
+        this.completeTransaction();
+        return false;
       }
+
+      return false;
     },
     coinToCurrency(amount, fee) {
       let formattedAmount = new AmountFormatter({
@@ -311,17 +288,19 @@ export default {
       this.confirmSendModalOpened = false;
     },
     confirm() {
-      console.log('confirm click');
       this.loading = true;
       setTimeout(() => {
-        this.broadcastTx();
+        try {
+          this.broadcastTx();
+        } catch (err) {
+          this.errorHandler(err);
+        }
       }, 250);
     },
     completeTransaction() {
       this.$root.$emit('sendSuccessModalOpened', true, this.txData);
 
       setTimeout(() => {
-        console.log('completeTransaction');
         this.loading = false;
         this.confirmSendModalOpened = false;
       }, 250);

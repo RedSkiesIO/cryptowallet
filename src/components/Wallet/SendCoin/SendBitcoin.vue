@@ -15,9 +15,11 @@
       <div class="to">
         <q-input
           v-model="address"
+          :error="$v.address.$error"
           placeholder="address"
           class="sm-input grey-input"
           inverted
+          @blur="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -28,7 +30,7 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-
+      <span class="error-label">{{ addressError }}</span>
       <div class="send-modal-heading">
         <h3>Amount</h3>
         <span class="h3-line" />
@@ -46,6 +48,7 @@
           <q-input
             ref="inCoin"
             :disable="maxed"
+            :error="$v.inCoin.$error"
             v-model="inCoin"
             type="number"
             placeholder="0"
@@ -70,6 +73,7 @@
           <div class="side-content">{{ selectedCurrency.code }}</div>
         </div>
       </div>
+      <span class="error-label">{{ amountError }}</span>
 
       <div class="send-modal-heading">
         <h3>Fee
@@ -127,6 +131,7 @@
 /* eslint-disable */
 import { mapState } from "vuex";
 import { debounce } from "quasar";
+import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from "@/helpers/AmountFormatter";
 import Address from "@/store/wallet/entities/address";
 import Wallet from "@/store/wallet/entities/wallet";
@@ -151,8 +156,21 @@ export default {
       feeSetting: 1,
       estimatedFee: "N/A",
       utxos: [],
-      maxed: false
+      maxed: false,
+      addressError: '',
+      amountError: '',
     };
+  },
+  validations: {
+    address: {
+      required, alphaNum, minLength: minLength(34), maxLength: maxLength(34),
+    },
+    inCoin: {
+      required, numeric,
+    },
+    inCurrency: {
+      required, numeric,
+    },
   },
   computed: {
     ...mapState({
@@ -207,12 +225,11 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted() {
     try {
-      this.fetchUTXOs();
-      console.log('mounted');
-    } catch (e) {
-      this.errorHandler(e);
+      await this.fetchUTXOs();
+    } catch (err) {
+      this.errorHandler(err);
     }
   },
 
@@ -227,10 +244,40 @@ export default {
     },
     updateInCoinFocus (val) {
       this.inCoinFocus = val;
+      if (!val) {
+        this.checkField('inCoin');
+      }
     },
     updateInCurrencyFocus (val) {
       this.inCurrencyFocus = val;
     },
+
+    async checkField(field) {
+      if (field === 'address') {
+        this.$v.address.$touch();
+        if (this.$v.address.$error) {
+          this.addressError = 'The address must be 34 characters in length';
+          return false;
+        }
+        const coinSDK = this.coinSDKS[this.wallet.sdk];
+        const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
+        if (!isValid) {
+          this.addressError = 'Invalid Bitcoin address';
+          return false;
+        }
+        this.addressError = '';
+      }
+      if (field === 'inCoin') {
+        this.$v.inCoin.$touch();
+        if (this.$v.inCoin.$error) {
+          this.amountError = 'You must provide an amount';
+          return false;
+        }
+        this.amountError = '';
+      }
+      return true;
+    },
+
     /**
      * Converts coins to currency as user types
      */
@@ -264,16 +311,16 @@ export default {
 
       return parseFloat(formattedAmount.getFormatted());
     },
+
     /**
      * Fetches UTXOs
      */
-    fetchUTXOs () {
+    async fetchUTXOs() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const addressesRaw = this.getAddressesRaw();
-      coinSDK.getUTXOs(addressesRaw, this.wallet.network).then(utxos => {
-        console.log("mounted, utxos:", utxos);
-        this.utxos = utxos;
-      });
+      const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network)
+      console.log('mounted, utxos:', utxos);
+      this.utxos = utxos;
     },
 
     /**
@@ -458,33 +505,27 @@ export default {
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
-      // console.log('getTransactionFee');
-    
-       let fees;
+      let fees;
       try {
         fees = await coinSDK.getTransactionFee(this.wallet.network);
       } catch (e) {
         // this.errorHandler(e);
       } finally {
-        fees = {
-          low: 3.0,
-          medium: 12.0,
-          high: 13.78,
-        };
+        if (!fees) {
+          fees = {
+            low: 3.0,
+            medium: 12.0,
+            high: 13.78,
+          };
+        }
       }
 
-    
-  
-      
-        let fee = fees.medium;
-        if (this.feeSetting === 0) fee = fees.low;
-        if (this.feeSetting === 2) fee = fees.high;
-        fee = Math.round(fee);
-     
-      // let fee = 12.0;
-      // if (this.feeSetting === 0) fee = 13.783;
-      // if (this.feeSetting === 2) fee = 3.0;
-      // fee = Math.round(fee);
+
+      let fee = fees.medium;
+      if (this.feeSetting === 0) fee = fees.low;
+      if (this.feeSetting === 2) fee = fees.high;
+      fee = Math.round(fee);
+
 
       if (this.maxed) amount = 0;
       //fee = fee + ;
@@ -535,7 +576,7 @@ export default {
           utxo
         };
       } catch (err) {
-        this.$toast.create(10, err.message, 500);
+        this.errorHandler(err);
       }
 
       return false;
@@ -549,6 +590,8 @@ export default {
       if (!this.address) return false;
       if (!this.inCoin) return false;
       if (!this.inCurrency) return false;
+       if (!this.checkField('address')) return false;
+      if (!this.checkField('inCoin')) return false;
       return true;
     },
 
@@ -626,10 +669,14 @@ export default {
     /**
      * Pastes in the text from the clipboard
      */
-    paste () {
-      cordova.plugins.clipboard.paste(text => {
-        this.address = text;
-      });
+    paste() {
+      try {
+        cordova.plugins.clipboard.paste((text) => {
+          this.address = text;
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
 
     async max () {
@@ -694,13 +741,13 @@ export default {
           QRScanner.scan((err, text) => {
             console.log(text)
             if (err) {
-              // an error occurred, or the scan was canceled (error code `6`)
-              console.log(err);
+              this.errorHandler(err);
             } else {
-              Window.x = this;
-              console.log(text);
-              this.address = text;
-              console.log(this.address)
+              const coinSDK = this.coinSDKS[this.wallet.sdk];
+              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+              if (isValid) {
+                this.address = text;
+              }
               this.$root.$emit("cancelScanning");
               this.$root.$emit("sendCoinModalOpened", true);
             }

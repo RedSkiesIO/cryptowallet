@@ -40,17 +40,21 @@ export default {
       this.$store.dispatch('settings/setSelectedAccount', data.name);
       const password = this.setup.pinArray.join('');
 
-      const result = await Account.$insert({
-        data,
-        password,
-      });
+      try {
+        const result = await Account.$insert({
+          data,
+          password,
+        });
 
-      const { id } = result.account[0];
+        const { id } = result.account[0];
 
-      this.$store.dispatch('settings/setAuthenticatedAccount', id);
-      this.$store.dispatch('settings/setLayout', 'light');
-      this.$router.push({ path: '/wallet' });
-      this.$store.dispatch('setup/clearSetupData');
+        this.$store.dispatch('settings/setAuthenticatedAccount', id);
+        this.$store.dispatch('settings/setLayout', 'light');
+        this.$router.push({ path: '/wallet' });
+        this.$store.dispatch('setup/clearSetupData');
+      } catch (err) {
+        this.errorHandler(err);
+      }
     },
   },
 };

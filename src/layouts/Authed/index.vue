@@ -236,12 +236,12 @@ export default {
       if (this.$route.name === 'wallet') {
         setTimeout(() => {
           try {
-          this.updateBalances(done);
-          } catch(e) {
-            this.errorHandler(e);
+            this.updateBalances(done);
+          } catch (err) {
+            this.errorHandler(err);
             done();
           }
-        }, 1000)
+        }, 1000);
         return false;
       }
 
@@ -283,7 +283,7 @@ export default {
       return {};
     },
 
-    updateBalances(done) {
+    async updateBalances(done) {
       const promises = [];
 
       this.wallets.forEach((wallet) => {
@@ -336,9 +336,8 @@ export default {
         }));
       });
 
-      Promise.all(promises).then(() => {
-        done();
-      })          
+      await Promise.all(promises);
+      done();
     },
   },
 };

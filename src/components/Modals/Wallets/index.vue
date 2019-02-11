@@ -4,7 +4,6 @@
       v-model="addWalletModalOpened"
       class="dark-modal"
     >
-
       <div class="header-section">
         <div class="header-back-button-wrapper">
           <q-btn
@@ -44,7 +43,6 @@
     >
       <Spinner/>
     </div>
-
   </div>
 </template>
 
@@ -58,7 +56,6 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import Latest from '@/store/latestPrice';
-
 
 export default {
   name: 'AddWallet',
@@ -181,7 +178,6 @@ export default {
         balance,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
-
       Wallet.$update({
         where: record => record.id === wallet.id,
         data: {
@@ -222,51 +218,44 @@ export default {
       allTx.forEach(async (tx) => {
         await Tx.$insert({ data: tx });
       });
-
-
-      console.log(txHistory, accounts, balance);
     },
+
     storePriceData(coin, latestPrice) {
       // const coinSDK = this.coinSDKS.Bitcoin;
-      return new Promise(async (resolve, reject) => {
-        try {
-          const checkPriceExists = (symbol, data) => {
-            const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
-            if (!price) {
-              console.log('inserting');
-              Latest.$insert({
-                data: {
-                  coin,
-                  currency: this.selectedCurrency.code,
-                  updated: +new Date(),
-                  data,
-                },
-              });
-              return false;
-            }
-            return true;
-          };
-          const whereLatestPrice = (record, item) => (
-            record.coin === item.coin
-             && record.currency === item.currency
-          );
-
-          if (checkPriceExists(coin, latestPrice)) {
-            Latest.$update({
-              where: record => whereLatestPrice(record, {
+      return new Promise(async (resolve) => {
+        const checkPriceExists = (symbol, data) => {
+          const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
+          if (!price) {
+            Latest.$insert({
+              data: {
                 coin,
                 currency: this.selectedCurrency.code,
-              }),
-              data: {
                 updated: +new Date(),
-                data: latestPrice,
+                data,
               },
             });
+            return false;
           }
-          resolve();
-        } catch (e) {
-          reject(e);
+          return true;
+        };
+        const whereLatestPrice = (record, item) => (
+          record.coin === item.coin
+           && record.currency === item.currency
+        );
+
+        if (checkPriceExists(coin, latestPrice)) {
+          Latest.$update({
+            where: record => whereLatestPrice(record, {
+              coin,
+              currency: this.selectedCurrency.code,
+            }),
+            data: {
+              updated: +new Date(),
+              data: latestPrice,
+            },
+          });
         }
+        resolve();
       });
     },
 
@@ -284,8 +273,12 @@ export default {
 
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
 
-      if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);
-      if (wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, initializedWallet, wallet);
+      try {
+        if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);
+        if (wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, initializedWallet, wallet);
+      } catch (err) {
+        this.errorHandler(err);
+      }
 
       Wallet.$update({
         where: record => record.id === wallet.id,
@@ -299,6 +292,7 @@ export default {
       const parentSDK = this.coinSDKS[wallet.parentSdk];
       const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
       // console.log('prices :', prices);
+
       if (prices) {
         this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       }
@@ -311,11 +305,11 @@ export default {
         wallet.contractAddress,
         wallet.decimals,
       );
+
       this.activeWallets[this.authenticatedAccount][wallet.name] = erc20Wallet;
 
       const {
         txHistory,
-        accounts,
         balance,
       } = await this.discoverWallet(erc20Wallet, coinSDK, wallet.network, wallet.sdk);
 
@@ -360,9 +354,6 @@ export default {
         await Tx.$insert({ data: tx });
       });
 
-
-      console.log(txHistory, accounts, balance);
-
       Wallet.$update({
         where: record => record.id === wallet.id,
         data: { imported: true, enabled: true },
@@ -373,7 +364,6 @@ export default {
       this.addWalletModalOpened = true;
     },
     close() {
-      console.log('close');
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('enabled', true)
@@ -388,7 +378,7 @@ export default {
         const promises = [];
         const erc20Promises = [];
 
-        setTimeout(() => {
+        setTimeout(async () => {
           wallets.forEach((wallet) => {
             if (wallet.sdk === 'ERC20') {
               erc20Promises.push(new Promise(async (resolve) => {
@@ -403,17 +393,17 @@ export default {
             }
           });
 
-          Promise.all(promises).then(() => {
-            Promise.all(erc20Promises).then(() => {
-              this.loading = false;
+          try {
+            await Promise.all(promises);
+            await Promise.all(erc20Promises);
+            this.loading = false;
 
-              setTimeout(() => {
-                this.addWalletModalOpened = false;
-              }, 250);
-            })
-              .catch(error => this.$toast.create(10, error, 500));
-          })
-            .catch(error => this.$toast.create(10, error, 500));
+            setTimeout(() => {
+              this.addWalletModalOpened = false;
+            }, 250);
+          } catch (err) {
+            this.errorHandler(err);
+          }
         }, 500);
       } else {
         this.addWalletModalOpened = false;

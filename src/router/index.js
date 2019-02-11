@@ -124,16 +124,6 @@ export default new VueRouter({
       ],
     },
     {
-      path: '/UserProfile',
-      component: () => import('pages/Profile/UserProfile'),
-      name: 'UserProfile',
-    },
-    {
-      path: '/EditProfile',
-      component: () => import('pages/Profile/EditProfile'),
-      name: 'editProfile',
-    },
-    {
       path: '*',
       component: () => import('layouts/UnAuthed'),
       children: [

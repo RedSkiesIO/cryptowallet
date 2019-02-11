@@ -170,6 +170,7 @@ export default {
         QRScanner.hide(() => {});
         QRScanner.destroy(() => {});
       }
+
       if (this.qrOrigin === 'addErc20') {
         setTimeout(() => {
           this.$q.scanning = false;
@@ -188,29 +189,6 @@ export default {
         this.hidden = false;
       }, 1000);
     });
-
-    this.$root.$on('cancelAddErc20Scanning', () => {
-      if (typeof QRScanner !== 'undefined') {
-        QRScanner.hide(() => {});
-        QRScanner.destroy(() => {});
-      }
-      setTimeout(() => {
-        this.$q.scanning = false;
-        this.$root.$emit('walletsModalOpened', true);
-        this.$root.$emit('erc20ModalOpened', true);
-      }, 500);
-
-      setTimeout(() => {
-        this.$q.scanning = false;
-        this.hidden = false;
-      }, 1000);
-    });
-    /* if (cordova) {
-      document.addEventListener('backbutton', () => {
-        console.log('back');
-        this.$router.go(-1);
-      }, false);
-    } */
   },
 
   methods: {

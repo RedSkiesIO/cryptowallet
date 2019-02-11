@@ -78,16 +78,16 @@ export default {
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
-      if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
-        this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
-        this.$i18n.locale = this.account.locale;
-
-        await this.decryptData(this.account.id, this.pin.join(''));
-
-        this.initializeWallets(this.account.id)
-          .then(() => {
-            this.$router.push({ path: '/wallet' });
-          });
+      try {
+        if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
+          this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
+          this.$i18n.locale = this.account.locale;
+          await this.decryptData(this.account.id, this.pin.join(''));
+          await this.initializeWallets(this.account.id);
+          this.$router.push({ path: '/wallet' });
+        }
+      } catch (err) {
+        this.errorHandler(err);
       }
     },
 
@@ -98,14 +98,8 @@ export default {
      * @return {Any}
      */
     decrypt(data, password) {
-      try {
-        console.log('data, password :', data, password);
-        const bytes = AES.decrypt(data, password);
-        console.log('bytes :', bytes);
-        return JSON.parse(bytes.toString(encUTF8));
-      } catch (exception) {
-        throw new Error(exception.message);
-      }
+      const bytes = AES.decrypt(data, password);
+      return JSON.parse(bytes.toString(encUTF8));
     },
 
     async decryptData(id, pass) {
