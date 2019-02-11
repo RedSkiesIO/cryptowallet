@@ -26,6 +26,11 @@ export default {
     this.network = new Network();
     this.online = this.network.isOnline();
 
+    if (!this.online) {
+      this.online = false;
+      this.showOfflineNotice();
+    }
+
     this.network
       .on('offline', () => {
         this.online = false;
