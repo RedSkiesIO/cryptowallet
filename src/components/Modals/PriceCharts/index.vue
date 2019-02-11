@@ -124,13 +124,20 @@ export default {
     latestPrice() {
       // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
-      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
-      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
-      if (!prices || !day || !week || !month) {
-        // this.loadData();
-        // const price = this.$store.getters
-        // ['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      // const day =
+      // this.$store.getters
+      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
+      // const week =
+      // this.$store.getters
+      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
+      // const month =
+      //  this.$store.getters
+      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
+      // if (!prices || !day || !week || !month) {
+      // this.loadData();
+      // const price = this.$store.getters
+      // ['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if (!prices) {
         return null;
       }
       return this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);

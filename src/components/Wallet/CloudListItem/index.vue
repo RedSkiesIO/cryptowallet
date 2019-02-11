@@ -143,7 +143,7 @@ export default {
           },
         });
         this.chartData = dataset.map(item => item.y);
-      } else if (price && dataset) {
+      } else if (dataset) {
         Prices.$update({
           where: record => wherePrice(record, {
             coin: this.coinSymbol,
