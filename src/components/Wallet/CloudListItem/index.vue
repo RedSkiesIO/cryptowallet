@@ -122,7 +122,7 @@ export default {
       try {
         dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
       } catch (e) {
-        // this.errorHandler(e);
+        this.errorHandler(e);
         console.log(`no price data for ${this.coinSymbol}`);
       }
       // } finally {
