@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="latestPrice">
     <div class="send-coin-box">
       <div class="send-modal-heading">
         <h3>Recipient</h3>
@@ -171,6 +171,7 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      if (!prices) return null;
       return prices.data.PRICE;
     },
   },
