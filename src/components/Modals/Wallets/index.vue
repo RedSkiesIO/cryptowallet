@@ -56,6 +56,7 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import Latest from '@/store/latestPrice';
+import Prices from '@/store/prices';
 
 export default {
   name: 'AddWallet',
@@ -259,12 +260,64 @@ export default {
       });
     },
 
+    storeChartData(coin, period, latestPrice) {
+      // const coinSDK = this.coinSDKS.Bitcoin;
+      return new Promise(async (resolve) => {
+        const checkPriceExists = (symbol, data) => {
+          const price = Prices.find([`${symbol}_${this.selectedCurrency.code}_${period}`]);
+          if (!price) {
+            Prices.$insert({
+              data: {
+                coin,
+                currency: this.selectedCurrency.code,
+                period,
+                updated: +new Date(),
+                data,
+              },
+            });
+            return false;
+          }
+          return true;
+        };
+        const whereLatestPrice = (record, item) => (
+          record.coin === item.coin
+            && record.currency === item.currency
+            && record.period === item.period
+        );
+
+        if (checkPriceExists(coin, latestPrice)) {
+          Prices.$update({
+            where: record => whereLatestPrice(record, {
+              coin,
+              currency: this.selectedCurrency.code,
+              period,
+            }),
+            data: {
+              updated: +new Date(),
+              data: latestPrice,
+            },
+          });
+        }
+        resolve();
+      });
+    },
+
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
       if (prices) {
         this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       }
+      const dayData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+      const weekData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+      const monthData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+
+      if (dayData && weekData && monthData) {
+        this.storeChartData(wallet.symbol, 'day', dayData);
+        this.storeChartData(wallet.symbol, 'week', weekData);
+        this.storeChartData(wallet.symbol, 'month', monthData);
+      }
+
       const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
 
       if (!this.activeWallets[this.authenticatedAccount]) {

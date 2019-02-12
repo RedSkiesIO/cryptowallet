@@ -124,7 +124,7 @@ export default {
 
         console.log('dataset', dataset);
       } catch (e) {
-        // this.errorHandler(e);
+        this.errorHandler(e);
         console.log(`no price data for ${this.coinSymbol}`);
       }
       // } finally {
@@ -143,7 +143,7 @@ export default {
           },
         });
         this.chartData = dataset.map(item => item.y);
-      } else if (price && dataset) {
+      } else if (dataset) {
         Prices.$update({
           where: record => wherePrice(record, {
             coin: this.coinSymbol,

@@ -131,7 +131,7 @@
 /* eslint-disable */
 import { mapState } from 'vuex';
 import { debounce } from 'quasar';
-import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
+import { required, alphaNum, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
@@ -164,10 +164,10 @@ export default {
       required, alphaNum, minLength: minLength(34), maxLength: maxLength(34),
     },
     inCoin: {
-      required, numeric,
+      required,
     },
     inCurrency: {
-      required, numeric,
+      required,
     },
   },
   computed: {
