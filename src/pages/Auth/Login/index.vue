@@ -80,11 +80,17 @@ export default {
     async attemptUnlock() {
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
+          this.$store.dispatch('settings/setLoading', true);
           this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
           this.$i18n.locale = this.account.locale;
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
           this.$router.push({ path: '/wallet' });
+          this.$store.dispatch('settings/setLayout', 'light');
+
+          setTimeout(() => {
+            this.$store.dispatch('settings/setLoading', false);
+          }, 1000);
         }
       } catch (err) {
         this.errorHandler(err);
@@ -116,8 +122,6 @@ export default {
     },
 
     initializeWallets(accountId) {
-      this.$store.dispatch('settings/setLoading', true);
-
       return new Promise((resolve) => {
         setTimeout(() => {
           const initializedWallets = {};
@@ -125,8 +129,8 @@ export default {
 
           const wallets = Wallet.query().where('account_id', accountId).get();
           if (wallets.length === 0) {
-            this.$store.dispatch('settings/setLoading', false);
-            this.$store.dispatch('settings/setLayout', 'light');
+            // this.$store.dispatch('settings/setLoading', false);
+            // this.$store.dispatch('settings/setLayout', 'light');
             resolve();
             return false;
           }
@@ -174,12 +178,6 @@ export default {
           Promise.all(erc20Promises);
 
           resolve();
-
-          this.$nextTick(() => {
-            this.$store.dispatch('settings/setLoading', false);
-            this.$store.dispatch('settings/setLayout', 'light');
-          });
-
           return false;
         }, 50);
       });
