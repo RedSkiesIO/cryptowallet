@@ -22,12 +22,14 @@ export default {
      */
     async complete() {
       const accounts = this.$store.getters['entities/account/query']().get();
+      const password = this.setup.pinArray.join('');
+      const pinHash = this.$CWCrypto.bcryptHashString(password, this.setup.salt);
 
       const data = {
         uid: uid(),
         name: this.setup.accountName,
         salt: this.setup.salt,
-        pinHash: this.setup.pinHash,
+        pinHash,
         default: accounts.length === 0,
         locale: this.setup.accountLocale || this.$i18n.locale,
         node: this.setup.accountIpNode,
@@ -38,7 +40,6 @@ export default {
       console.log('inserting account', data);
 
       this.$store.dispatch('settings/setSelectedAccount', data.name);
-      const password = this.setup.pinArray.join('');
 
       try {
         const result = await Account.$insert({
