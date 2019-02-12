@@ -26,6 +26,7 @@ export default class Wallet extends Model {
       parentSdk: this.attr(''),
       contractAddress: this.attr(''),
       decimals: this.attr(''),
+      hdWallet: this.attr(''),
 
     };
   }
