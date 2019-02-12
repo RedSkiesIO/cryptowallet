@@ -75,23 +75,21 @@ export default {
       * @param {*} pin
      */
     inputPin(pin) {
-      const btn = document.querySelectorAll(`[data-text='${pin}']`)[0];
+      /* const btn = document.querySelectorAll(`[data-text='${pin}']`)[0];
       btn.className += ' active';
       setTimeout(() => {
         btn.classList.remove('active');
-      }, 200);
+      }, 200); */
 
       this.input.push(Math.random());
 
       setTimeout(() => {
         if (this.mode === 'pin-setup') {
           this.$store.dispatch('setup/setPin', { value: pin });
-          this.$store.dispatch('setup/setPinHash', this.$CWCrypto.bcryptHashString(this.pin.join(''), this.salt));
         }
 
         if (this.mode === 'pin-confirm') {
           this.$store.dispatch('setup/setPinConfirm', { value: pin });
-          this.$store.dispatch('setup/setPinHashConfirm', this.$CWCrypto.bcryptHashString(this.pinConfirm.join(''), this.salt));
           this.$parent.validatePin();
         }
 
@@ -113,7 +111,7 @@ export default {
           this.$emit('inputPin', pin);
           this.$emit('attemptConfirm');
         }
-      }, 25);
+      }, 50);
     },
     clearPinArray() {
       this.input = [];

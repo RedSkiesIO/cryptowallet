@@ -28,8 +28,7 @@ export default {
   },
   methods: {
     validatePin() {
-      const pinHashConfirm = this.$CWCrypto.bcryptHashString(this.pinConfirm.join(''), this.salt);
-      if (this.pinHash === pinHashConfirm) {
+      if (this.pin.join('') === this.pinConfirm.join('')) {
         this.$router.push({ path: `/setup/${this.id + 1}` });
       }
     },
