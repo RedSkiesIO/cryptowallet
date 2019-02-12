@@ -125,7 +125,7 @@
 <script>
 
 import { mapState } from 'vuex';
-import { required, alphaNum, numeric, minLength, maxLength } from 'vuelidate/lib/validators';
+import { required, alphaNum, minLength, maxLength } from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
@@ -156,10 +156,10 @@ export default {
       required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
     },
     inCoin: {
-      required, numeric,
+      required,
     },
     inCurrency: {
-      required, numeric,
+      required,
     },
   },
   computed: {
