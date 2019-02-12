@@ -5,8 +5,8 @@
       class="particles"
     >
       <vue-particles
-        :particles-number="200"
-        :move-speed="1"
+        :particles-number="125"
+        :move-speed="2"
         color="#c7c7c7"
       />
     </div>
