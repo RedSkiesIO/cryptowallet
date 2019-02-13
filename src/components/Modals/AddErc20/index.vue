@@ -329,19 +329,13 @@ export default {
       if (!this.isEthEnabled('Ethereum')) {
         const eth = this.supportedCoins.find(coin => coin.name === 'Ethereum');
 
-        const data = {
-          name: eth.name,
-          displayName: eth.displayName,
-          sdk: eth.sdk,
-          account_id: this.authenticatedAccount,
-          network: eth.network,
-          symbol: eth.symbol,
-        };
-        const ethWalletResult = await Wallet.$insert({ data });
-        const ethWalletId = ethWalletResult.wallet[0].id;
+        const wallets = Wallet.query()
+          .where('account_id', this.authenticatedAccount)
+          .where('name', eth.name)
+          .get();
 
-        Wallet.$update({
-          where: record => record.id === ethWalletId,
+        await Wallet.$update({
+          where: record => record.id === wallets[0].id,
           data: { imported: false, enabled: true },
         });
       }
@@ -350,6 +344,11 @@ export default {
 
       if (!isThere) {
         console.log('adding coin');
+        const wallet = Wallet.query()
+          .where('account_id', this.authenticatedAccount)
+          .where('name', 'Ethereum')
+          .get();
+
         const data = {
           name: this.form.tokenName,
           displayName: this.form.tokenName,
@@ -365,13 +364,24 @@ export default {
         Coin.$insert({
           data,
         });
-
+        const keypair = this.coinSDKS.Ethereum.generateKeyPair(wallet, 0);
+        const erc20 = this.coinSDKS.ERC20.generateERC20Wallet(
+          keypair,
+          this.form.tokenName,
+          this.form.tokenSymbol,
+          this.form.tokenContract,
+          this.form.tokenDecimals,
+        );
         const newWalletResult = await Wallet.$insert({ data });
         const newWalletId = newWalletResult.wallet[0].id;
         await Wallet.$update({
           where: record => record.id === newWalletId,
           data: {
-            account_id: this.authenticatedAccount, imported: false, enabled: true, parentName: 'Ethereum',
+            account_id: this.authenticatedAccount,
+            imported: false,
+            enabled: true,
+            parentName: 'Ethereum',
+            erc20Wallet: erc20,
           },
         });
       } else {

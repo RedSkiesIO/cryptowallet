@@ -399,6 +399,8 @@ export default {
       // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
+      const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
+      const keypair = this.coinSDKS[this.wallet.parentSdk].generateKeyPair(parentWallet, 0);
 
       let fee = this.feeData.medium;
       if (this.feeSetting === 0) fee = this.feeData.low;
@@ -408,7 +410,7 @@ export default {
         const {
           transaction,
           hexTx,
-        } = await coinSDK.transfer(wallet, this.address, this.inCoin, fee);
+        } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, fee);
 
         this.$root.$emit('confirmSendModalOpened', true, {
           hexTx,

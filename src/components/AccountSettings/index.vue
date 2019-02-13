@@ -154,6 +154,7 @@ import Node from '@/components/AccountSettings/Node';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
 import Account from '@/store/wallet/entities/account';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'AccountSettings',
@@ -187,13 +188,29 @@ export default {
   methods: {
     async logout() {
       try {
-        const accountDataLoki = await Account.$findOne(this.account.id);
+        const accountDataLoki = await Account.$find(this.account.id);
         const encryptedSeed = accountDataLoki.seed;
 
         Account.$update({
           where: record => record.id === this.account.id,
           data: { seed: encryptedSeed },
         });
+
+        const wallets = await Wallet.query().where('account_id', this.account.id).get();
+        const promises = [];
+        wallets.forEach((wallet) => {
+          promises.push(new Promise(async (res) => {
+            const walletDataLoki = await Wallet.$find(wallet.id);
+            const encryptedData = walletDataLoki.hdWallet;
+            Wallet.$update({
+              where: record => record.name === wallet.name,
+              data: { hdWallet: encryptedData },
+            });
+            res();
+          }));
+        });
+
+        await Promise.all(promises);
 
         this.$store.dispatch('settings/setLoading', true);
         this.$store.dispatch('settings/setLayout', 'dark');
