@@ -95,6 +95,8 @@ export default {
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.mode = 'new-pin';
+      } else {
+        this.$toast.create(10, this.$t('wrongPin'), 500, 'top');
       }
     },
     /**
@@ -158,6 +160,8 @@ export default {
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.closeModal();
+      } else {
+        this.$toast.create(10, this.$t('wrongPin'), 500, 'top');
       }
     },
   },

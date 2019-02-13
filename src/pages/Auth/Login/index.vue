@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { debounce } from 'quasar';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
@@ -78,6 +79,8 @@ export default {
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
+      if (this.pin.length < 6) return false;
+
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
           this.$store.dispatch('settings/setLoading', true);
@@ -95,7 +98,13 @@ export default {
       } catch (err) {
         this.errorHandler(err);
       }
+
+      return false;
     },
+
+    debouncedUnlock: debounce(function callback() {
+      this.attemptUnlock();
+    }, 500),
 
     /**
      * Decrypts and returns a piece of data
