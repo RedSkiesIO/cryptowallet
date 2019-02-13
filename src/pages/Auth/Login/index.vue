@@ -118,16 +118,29 @@ export default {
             });
           });
         }
+        if (model.name === 'Wallet') {
+          const result = model.query().where('account_id', id).get();
+          result.forEach((item) => {
+            model.AES.forEach((key) => {
+              if (item[key]) {
+                item[key] = this.decrypt(item[key], pass);
+              }
+            });
+          });
+        }
       });
     },
 
     initializeWallets(accountId) {
       return new Promise((resolve) => {
-        setTimeout(() => {
+        setTimeout(async () => {
           const initializedWallets = {};
           this.activeWallets[accountId] = initializedWallets;
 
-          const wallets = Wallet.query().where('account_id', accountId).get();
+          const wallets = Wallet.query()
+            .where('account_id', accountId)
+            .where('enabled', true)
+            .get();
           if (wallets.length === 0) {
             // this.$store.dispatch('settings/setLoading', false);
             // this.$store.dispatch('settings/setLayout', 'light');
@@ -135,20 +148,11 @@ export default {
             return false;
           }
 
-          async function generate(wallet, vm, mnemonic) {
-            initializedWallets[wallet.name] = vm.coinSDKS[wallet.sdk].generateHDWallet(
-              mnemonic,
-              wallet.network,
-            );
+          async function generate(wallet) {
+            initializedWallets[wallet.name] = wallet.hdWallet;
           }
-          async function generateErc20(keyPair, wallet, vm) {
-            initializedWallets[wallet.name] = vm.coinSDKS[wallet.sdk].generateERC20Wallet(
-              keyPair,
-              wallet.name,
-              wallet.symbol,
-              wallet.contractAddress,
-              wallet.decimals,
-            );
+          async function generateErc20(wallet) {
+            initializedWallets[wallet.name] = wallet.erc20Wallet;
           }
 
           const erc20Promises = [];
@@ -156,26 +160,27 @@ export default {
           wallets.forEach((wallet) => {
             if (wallet.sdk !== 'ERC20') {
               promises.push(new Promise(async (res) => {
-                await generate(wallet, this, this.account.seed.join(' ').trim());
+                await generate(wallet);
                 res();
               }));
             }
           });
-          Promise.all(promises);
+          await Promise.all(promises);
 
           wallets.forEach((wallet) => {
             if (wallet.sdk === 'ERC20') {
               erc20Promises.push(new Promise(async (res) => {
                 const parentSDK = this.coinSDKS[wallet.parentSdk];
                 const parentWallet = initializedWallets[wallet.parentName];
+                console.log(parentWallet);
                 const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
-                await generateErc20(keyPair, wallet, this);
+                await generateErc20(keyPair, wallet);
                 res();
               }));
             }
           });
 
-          Promise.all(erc20Promises);
+          await Promise.all(erc20Promises);
 
           resolve();
           return false;

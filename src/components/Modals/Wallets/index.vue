@@ -317,8 +317,8 @@ export default {
         this.storeChartData(wallet.symbol, 'week', weekData);
         this.storeChartData(wallet.symbol, 'month', monthData);
       }
-
-      const initializedWallet = coinSDK.generateHDWallet(this.account.seed.join(' ').trim(), wallet.network);
+      console.log(`hdwallet ${wallet.hdWallet}`);
+      const initializedWallet = wallet.hdWallet;
 
       if (!this.activeWallets[this.authenticatedAccount]) {
         this.activeWallets[this.authenticatedAccount] = {};
@@ -349,22 +349,24 @@ export default {
       if (prices) {
         this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
       }
-      const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
-      const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
-      const erc20Wallet = await coinSDK.generateERC20Wallet(
-        keyPair,
-        wallet.name,
-        wallet.symbol,
-        wallet.contractAddress,
-        wallet.decimals,
-      );
+      if (!wallet.erc20Wallet) {
+        const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
+        const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
+        wallet.erc20Wallet = await coinSDK.generateERC20Wallet(
+          keyPair,
+          wallet.name,
+          wallet.symbol,
+          wallet.contractAddress,
+          wallet.decimals,
+        );
+      }
 
-      this.activeWallets[this.authenticatedAccount][wallet.name] = erc20Wallet;
+      this.activeWallets[this.authenticatedAccount][wallet.name] = wallet.erc20Wallet;
 
       const {
         txHistory,
         balance,
-      } = await this.discoverWallet(erc20Wallet, coinSDK, wallet.network, wallet.sdk);
+      } = await this.discoverWallet(wallet.erc20Wallet, coinSDK, wallet.network, wallet.sdk);
 
       Wallet.$update({
         where: record => record.id === wallet.id,
@@ -372,7 +374,7 @@ export default {
           externalChainAddressIndex: 0,
           internalChainAddressIndex: 0,
           confirmedBalance: balance,
-          externalAddress: keyPair.address,
+          externalAddress: wallet.erc20Wallet.address,
         },
       });
 
@@ -380,7 +382,7 @@ export default {
         account_id: this.authenticatedAccount,
         wallet_id: wallet.id,
         chain: 'external',
-        address: keyPair.address,
+        address: wallet.erc20Wallet.address,
         index: 0,
       };
 

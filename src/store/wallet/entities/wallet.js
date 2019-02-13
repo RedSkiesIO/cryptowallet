@@ -5,6 +5,7 @@ import { Model } from '@vuex-orm/core';
  */
 export default class Wallet extends Model {
   static entity = 'wallet';
+  static AES = ['hdWallet'];
   static fields() {
     return {
       id: this.increment(),
@@ -27,6 +28,7 @@ export default class Wallet extends Model {
       contractAddress: this.attr(''),
       decimals: this.attr(''),
       hdWallet: this.attr(''),
+      erc20Wallet: this.attr(''),
 
     };
   }
