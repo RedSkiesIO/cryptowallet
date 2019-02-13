@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <div
+    <!-- <div
       v-if="showParticles"
       class="particles"
     >
@@ -9,7 +9,7 @@
         :move-speed="2"
         color="#c7c7c7"
       />
-    </div>
+    </div> -->
     <q-layout-header>
       <Header/>
     </q-layout-header>
@@ -37,9 +37,9 @@ export default {
     };
   },
   computed: {
-    showParticles() {
+    /* showParticles() {
       return this.$route.path === '/setup/0';
-    },
+    }, */
   },
 };
 </script>

@@ -21,13 +21,23 @@
       />
 
       <q-btn
-        v-if="mode === 'pin-setup' || mode === 'new-pin'"
+        v-if="mode === 'pin-setup' || mode === 'new-pin' || mode === 'confirm-new-pin'"
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"
         label="Done"
         @click="done"
       />
+
+      <q-btn
+        v-if="mode != 'pin-setup' && mode != 'new-pin' && mode != 'confirm-new-pin'"
+        :disabled="canProceed"
+        color="yellow"
+        text-color="blueish"
+        label="Unlock"
+        @click="confirmPin"
+      />
+
     </div>
   </div>
 </template>
@@ -80,6 +90,9 @@ export default {
       setTimeout(() => {
         btn.classList.remove('active');
       }, 200); */
+      if (navigator && navigator.vibrate) {
+        navigator.vibrate(25);
+      }
 
       this.input.push(Math.random());
 
@@ -90,17 +103,14 @@ export default {
 
         if (this.mode === 'pin-confirm') {
           this.$store.dispatch('setup/setPinConfirm', { value: pin });
-          this.$parent.validatePin();
         }
 
         if (this.mode === 'auth') {
           this.$root.$emit('inputPin', pin);
-          this.$parent.attemptUnlock();
         }
 
         if (this.mode === 'access') {
           this.$emit('inputPin', pin);
-          this.$emit('attemptUnlock');
         }
 
         if (this.mode === 'new-pin') {
@@ -109,7 +119,21 @@ export default {
 
         if (this.mode === 'confirm-new-pin') {
           this.$emit('inputPin', pin);
-          this.$emit('attemptConfirm');
+        }
+      }, 50);
+    },
+    confirmPin() {
+      setTimeout(() => {
+        if (this.mode === 'pin-confirm') {
+          this.$parent.validatePin();
+        }
+
+        if (this.mode === 'auth') {
+          this.$parent.attemptUnlock();
+        }
+
+        if (this.mode === 'access') {
+          this.$emit('attemptUnlock');
         }
       }, 50);
     },
@@ -125,6 +149,7 @@ export default {
     done() {
       if (this.mode === 'pin-setup') this.$router.push({ path: `/setup/${this.id + 1}` });
       if (this.mode === 'new-pin') this.$emit('newPinSet');
+      if (this.mode === 'confirm-new-pin') this.$emit('attemptConfirm');
     },
 
     /**
