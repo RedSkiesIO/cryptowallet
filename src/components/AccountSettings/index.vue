@@ -188,7 +188,7 @@ export default {
   methods: {
     async logout() {
       try {
-        const accountDataLoki = await Account.$findOne(this.account.id);
+        const accountDataLoki = await Account.$find(this.account.id);
         const encryptedSeed = accountDataLoki.seed;
 
         Account.$update({
@@ -200,7 +200,7 @@ export default {
         const promises = [];
         wallets.forEach((wallet) => {
           promises.push(new Promise(async (res) => {
-            const walletDataLoki = await Wallet.$findOne(wallet.id);
+            const walletDataLoki = await Wallet.$find(wallet.id);
             const encryptedData = walletDataLoki.hdWallet;
             Wallet.$update({
               where: record => record.name === wallet.name,
