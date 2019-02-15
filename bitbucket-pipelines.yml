@@ -10,5 +10,4 @@ pipelines:
           - npm audit
           - node node_modules/snyk/cli auth ${SNYK_TOKEN} -d
           - node node_modules/snyk/cli protect
-          - npm test
           - if [ $BITBUCKET_BRANCH == "master" ]; then node node_modules/snyk/cli monitor; fi; 
