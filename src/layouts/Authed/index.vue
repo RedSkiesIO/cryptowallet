@@ -102,7 +102,10 @@ export default {
       authenticatedAccount: state => state.settings.authenticatedAccount,
     }),
     wallets() {
-      return Wallet.query().where('account_id', this.authenticatedAccount).get();
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('imported', true)
+        .get();
     },
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);

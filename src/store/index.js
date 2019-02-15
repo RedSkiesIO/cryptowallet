@@ -41,6 +41,7 @@ database.register(LatestPrice, {});
 
 Vue.prototype.encryptedModels = [
   Account,
+  Wallet
 ];
 
 window.Tx = Tx;

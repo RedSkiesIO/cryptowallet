@@ -142,25 +142,29 @@ export default {
         if (this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)) {
           const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
 
-          const data = {
-            name: eth.name,
-            displayName: eth.displayName,
-            sdk: eth.sdk,
-            account_id: this.authenticatedAccount,
-            network: eth.network,
-            symbol: eth.symbol,
-          };
+        const wallets = Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', this.wallet.parentName)
+        .get();
 
-          const ethWalletResult = await Wallet.$insert({ data });
-          const ethWalletId = ethWalletResult.wallet[0].id;
-
-          Wallet.$update({
-            where: record => record.id === ethWalletId,
-            data: { imported: false, enabled: true },
-          });
+        await Wallet.$update({
+          where: record => record.id === wallets[0].id,
+          data: { imported: false, enabled: true },
+        });
         }
 
-        const data = {
+        const wallets = Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', this.wallet.name)
+        .get();
+        
+        if (wallets) {
+        await Wallet.$update({
+          where: record => record.id === wallets[0].id,
+          data: { imported: false, enabled: true },
+        });
+        } else {
+          const data = {
           name: this.wallet.name,
           displayName: this.wallet.displayName,
           sdk: this.wallet.sdk,
@@ -179,6 +183,11 @@ export default {
 
         if (this.wallet.sdk === 'ERC20') {
           const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+          const parentSDK = this.coinSDKS[eth.sdk];
+          const parentWallet = initializedWallets[wallet.parentName];
+          const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
+          const erc20 = await this.coinSDKS[this.wallet.sdk].generateERC20Wallet(
+            keyPair, this.walletName, this.wallet.symbol, this.wallet.contractAddress, this.wallet.decimals)
           await Wallet.$update({
             where: record => record.id === newWalletId,
             data: {
@@ -186,9 +195,12 @@ export default {
               parentName: eth.name,
               contractAddress: this.wallet.contractAddress,
               decimals: this.wallet.decimals,
+              erc20Wallet: erc20,
             },
           });
-        }
+          }
+          }
+
       } catch (err) {
         this.errorHandler(err);
       }
@@ -215,7 +227,6 @@ export default {
       walletIds.push(wallets[0].id);
 
       walletIds.forEach((walletId)=> {
-        Wallet.$delete(walletId);
 
         Wallet.$update({
           where: record => record.id === walletId,
