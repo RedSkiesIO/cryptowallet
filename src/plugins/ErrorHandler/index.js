@@ -6,12 +6,12 @@ import Rollbar from 'vue-rollbar';
 
 export default ({ Vue, store }) => {
   Vue.use(Rollbar, {
-    accessToken: '7e14e845d8fd4515800810470209671d',
+    accessToken: '54bc0469e13f406b97ef0ccdb0e62e48',
     captureUncaught: true,
     captureUnhandledRejections: true,
     enabled: true,
     source_map_enabled: false,
-    environment: 'development',
+    environment: 'development', // @todo automatically detect the env
     payload: {
       client: {
         javascript: {

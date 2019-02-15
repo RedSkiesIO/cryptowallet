@@ -4,6 +4,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import VuexORM from '@vuex-orm/core';
+import VuexORMLoki from 'vuex-orm-lokijs';
 
 // import entities.
 import Account from './wallet/entities/account';
@@ -22,8 +23,6 @@ import search from './search';
 import settings from './settings';
 import setup from './setup';
 import contacts from './contacts';
-
-import VuexORMLoki from 'vuex-orm-lokijs/lib';
 
 Vue.use(Vuex);
 
@@ -63,16 +62,15 @@ const vuexLocal = new VuexPersistence({
 
 const options = {
   env: 'browser',
-  autosave: true,
-  autosaveInterval: 1000,
-  hydrationCompletedCallback: () => {
-    setTimeout(() => {
-      store.dispatch('settings/setLoading', false);
-    }, 1000);
-  },
 };
 
-VuexORM.use(VuexORMLoki, { database, options });
+function hydrationCompletedCallback() {
+  setTimeout(() => {
+    store.dispatch('settings/setLoading', false);
+  }, 1000);
+}
+
+VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
 
 
 /**
