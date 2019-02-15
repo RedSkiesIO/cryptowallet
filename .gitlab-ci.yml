@@ -1,7 +1,0 @@
-build-develop:
-  stage: build
-  script:
-    - docker build . --tag acmwunittest:latest
-    - docker run -v ${PWD}:/srv acmwunittest:latest sh -c "npm install && npm run test:unit:snapshot && npm run test:unit"
-  only:
-    - develop
