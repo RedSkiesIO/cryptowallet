@@ -11,8 +11,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-  displayName: 'sudo npm install'
+    sudo npm install
+  displayName: 'install npm'
 
 #- script: |
 #    npm run security:audit
