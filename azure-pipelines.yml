@@ -11,8 +11,8 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    sudo npm install
-  displayName: 'install npm'
+    sudo npm cache clean -f &&sudo npm install
+  displayName: 'npm install'
 
 #- script: |
 #    npm run security:audit
