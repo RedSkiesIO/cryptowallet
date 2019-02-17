@@ -1,5 +1,6 @@
 trigger:
 - develop
+- master
 
 pool:
   vmImage: 'Ubuntu-16.04'

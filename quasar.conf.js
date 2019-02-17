@@ -52,7 +52,7 @@ module.exports = function (ctx) {
         'QPageSticky',
         'QScrollArea',
         'QLayoutFooter',
-        'QInput'
+        'QInput',
       ],
       directives: ['Ripple'],
       // Quasar plugins
