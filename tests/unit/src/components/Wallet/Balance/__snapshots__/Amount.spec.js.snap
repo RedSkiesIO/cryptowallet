@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Amount.vue renders and matches snapshot 1`] = `
+<div
+  class="amount-box"
+>
+  <div>
+    +10.00 £
+  </div>
+</div>
+`;

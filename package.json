@@ -1,0 +1,93 @@
+{
+  "name": "acmobilewallet",
+  "version": "0.0.1",
+  "description": "Atlas City Crypto Currency Wallet",
+  "productName": "AC Mobile Wallet",
+  "cordovaId": "com.atlascity.wallet.mobile",
+  "author": "James Kirkby <james.kirby@atlascity.io>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --fix --ext .js,.vue src",
+    "test:unit": "cross-env NODE_ENV=test jest",
+    "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
+    "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
+    "test:unit:qa:codacy": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | codacy-coverage",
+    "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
+    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
+    "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
+    "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
+    "test": "snyk test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "bip39": "^2.5.0",
+    "bulma": "^0.7.1",
+    "cordova": "^8.1.2",
+    "numeral": "^2.0.6",
+    "vue-axios": "^2.1.4",
+    "vue-i18n": "^7.3.3",
+    "vue-keyboard": "git://github.com/dufia/vue-keyboard.git",
+    "vuex-persist": "^1.7.1",
+    "snyk": "^1.130.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.0.0-beta.50",
+    "@types/cross-spawn": "^6.0.0",
+    "@types/jest": "^23.3.2",
+    "@vue/cli-plugin-eslint": "^3.0.0",
+    "@vue/cli-service": "^3.0.0",
+    "@vue/eslint-config-airbnb": "^3.0.0",
+    "@vue/test-utils": "^1.0.0-beta.25",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^23.4.2",
+    "codacy-coverage": "^3.4.0",
+    "cross-env": "^5.2.0",
+    "cross-spawn": "^6.0.5",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-vue": "^4.7.1",
+    "http-server": "^0.11.1",
+    "jest": "^23.6.0",
+    "jest-serializer-vue": "^2.0.2",
+    "jest-vue-preprocessor": "^1.4.0",
+    "lint-staged": "^7.2.0",
+    "node-sass": "^4.9.0",
+    "quasar-cli": "^0.17.23",
+    "sass-loader": "^7.0.1",
+    "strip-ansi": "^3.0.1",
+    "vue-jest": "^2.6.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">= 8.15.0",
+    "npm": ">= 6.4.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "snyk": true
+}
