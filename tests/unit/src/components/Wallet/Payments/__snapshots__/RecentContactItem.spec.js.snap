@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecentContactItem.vue renders and matches snapshot 1`] = `
+<div
+  class="contact-list-item"
+>
+  <div
+    class="circle"
+  />
+  
+  Fio
+
+</div>
+`;
