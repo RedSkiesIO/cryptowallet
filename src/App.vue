@@ -23,22 +23,22 @@
     >
 
       <div v-if="!settings.loading">
-        <router-view/>
-        <SelectAccountModal/>
-        <NewAccountModal/>
+        <router-view />
+        <SelectAccountModal />
+        <NewAccountModal />
         <GetStartedModal />
-        <TermsModal/>
+        <TermsModal />
 
         <div v-if="settings.authenticatedAccount">
-          <OfflineNotice/>
+          <OfflineNotice />
 
-          <WalletsModal/>
-          <PriceChartModal/>
-          <SendCoinModal/>
-          <ReceiveCoinModal/>
-          <ConfirmSendModal/>
-          <SendSuccessModal/>
-          <AddErc20Modal/>
+          <WalletsModal />
+          <PriceChartModal />
+          <SendCoinModal />
+          <ReceiveCoinModal />
+          <ConfirmSendModal />
+          <SendSuccessModal />
+          <AddErc20Modal />
         </div>
       </div>
     </div>

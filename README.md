@@ -2,17 +2,17 @@
 Current Status
 [![pipeline status](http://gitlab.engr.atlas/atlas/acmobilewallet/badges/master/pipeline.svg)](http://gitlab.engr.atlas/atlas/acmobilewallet/commits/develop)
 
-### Prerequisites
+## Prerequisites
 You will need to have Node.js `>= 8.11.0` installed on your machine.
 
-### Installing
+## Installing
 In the directory where you want to keep the repository, run
-```git clone git@gitlab.engr.atlas:atlas/acmobilewallet.git```
+`git clone git@gitlab.engr.atlas:atlas/acmobilewallet.git`
 
 In the root of the directory run
-```npm install```
+`npm install`
 
-#### Problems during installation
+### Problems during installation
 **make: g++: Command not found**
 You have to install `g++`, to do it run in the terminal:  `sudo apt-get install g++`
 
@@ -34,13 +34,16 @@ and
 
 **AndroidStudio**
 1. Download AndroidStudio [here](https://developer.android.com/studio/)
+
 2. And follow installation steps [here
 ](https://developer.android.com/studio/install)
+
 3. Add Android installation to your path:
-```
+
+`
 export ANDROID_HOME="$HOME/Android/Sdk"
 PATH=$PATH:$ANDROID_HOME/tools; PATH=$PATH:$ANDROID_HOME/platform-tools
-```
+`
 4. Start Android studio by changing into the folder you installed it in and run `./studio.sh`
 5. Open the “Configure” menu at the bottom of the window
 6. Select the desired SDKs and click on “Apply” to install the SDKs
@@ -61,4 +64,3 @@ Find the path to the Gradle on your system and export it
 ## Deployment
 
 n/a
-

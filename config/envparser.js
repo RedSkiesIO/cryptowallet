@@ -2,7 +2,7 @@ const DotEnv = require('dotenv');
 
 const parsedEnv = DotEnv.config().parsed;
 
-module.exports = function () {
+function toExport() {
   const keys = Object.keys(parsedEnv);
   keys.forEach((key) => {
     if (typeof parsedEnv[key] === 'string') {
@@ -10,4 +10,6 @@ module.exports = function () {
     }
   });
   return parsedEnv;
-};
+}
+
+module.exports = toExport;
