@@ -1,4 +1,5 @@
 /* eslint-disable */
+const envparser = require('./config/envparser');
 const path = require('path');
 
 module.exports = (ctx) => {
@@ -56,6 +57,7 @@ module.exports = (ctx) => {
       uglifyOptions: {
         mangle: false,
       },
+      env: envparser(),
     },
     devServer: {
       // https: true,
