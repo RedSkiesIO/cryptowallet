@@ -27,7 +27,6 @@
       :options="options"
       @legendHtml="updateLegend"
     />
-
   </div>
 </template>
 

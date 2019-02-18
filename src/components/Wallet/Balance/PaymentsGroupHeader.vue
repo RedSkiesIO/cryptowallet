@@ -4,7 +4,7 @@
       {{ group.date }}
     </div>
     <div class="column">
-      <Amount :amount="balanceChange"/>
+      <Amount :amount="balanceChange" />
     </div>
   </div>
 </template>

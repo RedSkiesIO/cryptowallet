@@ -5,11 +5,12 @@
       class="light-modal"
     >
       <div class="header-section">
-        <h1 class="header-h1">Terms & Conditions</h1>
+        <h1 class="header-h1">
+          Terms & Conditions
+        </h1>
       </div>
 
       <div class="modal-layout-wrapper">
-
         <!-- eslint-disable -->
         <div class="terms-wrapper">
 

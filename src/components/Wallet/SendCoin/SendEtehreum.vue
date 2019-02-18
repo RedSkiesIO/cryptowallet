@@ -3,7 +3,7 @@
     <div class="send-coin-box">
       <div class="send-modal-heading">
         <h3>Recipient</h3>
-        <span class="h3-line"/>
+        <span class="h3-line" />
         <q-btn
           :label="$t('paste')"
           size="sm"
@@ -25,8 +25,8 @@
           class="side-content qr-code-wrapper"
           @click="scan"
         >
-          <div class="hor-line"/>
-          <div class="ver-line"/>
+          <div class="hor-line" />
+          <div class="ver-line" />
           <img src="~assets/QR.svg">
         </div>
       </div>
@@ -34,7 +34,7 @@
 
       <div class="send-modal-heading">
         <h3>Amount</h3>
-        <span class="h3-line"/>
+        <span class="h3-line" />
         <q-btn
           :label="$t('max')"
           :class="{ active: maxed }"
@@ -57,7 +57,9 @@
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false) && checkField('inCoin')"
           />
-          <div class="side-content">{{ coinSymbol }}</div>
+          <div class="side-content">
+            {{ coinSymbol }}
+          </div>
         </div>
         <div class="amount-div-wrapper">
           <q-input
@@ -70,7 +72,9 @@
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
           />
-          <div class="side-content">{{ selectedCurrency.code }}</div>
+          <div class="side-content">
+            {{ selectedCurrency.code }}
+          </div>
         </div>
       </div>
       <span class="error-label">{{ amountError }}</span>
@@ -85,7 +89,7 @@
             @click.native="helpFee"
           />
         </h3>
-        <span class="h3-line"/>
+        <span class="h3-line" />
       </div>
 
       <div>
@@ -122,7 +126,7 @@
       minimized
     >
       <div class="sending-wallet-modal">
-        <Spinner/>
+        <Spinner />
         <h1>{{ $t('sending') }}</h1>
       </div>
     </q-modal>
@@ -131,7 +135,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { required, alphaNum, minLength, maxLength } from 'vuelidate/lib/validators';
+import {
+  required, alphaNum, minLength, maxLength,
+} from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';

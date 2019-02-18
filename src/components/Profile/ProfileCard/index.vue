@@ -2,9 +2,12 @@
   <div class="mainContentCard">
     <img
       id="avatar_img_id"
-      src="~/assets/avatar.png">
-    <h1 >Atlas City</h1><br>
-    <p id="profileTitle">CEO & Founder, Example</p>
+      src="~/assets/avatar.png"
+    >
+    <h1>Atlas City</h1><br>
+    <p id="profileTitle">
+      CEO & Founder, Example
+    </p>
   </div>
 </template>
 

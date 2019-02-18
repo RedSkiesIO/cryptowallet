@@ -8,11 +8,12 @@
         :class="{ active: loading }"
         class="sending-spinner-overlay"
       >
-        <Spinner/>
+        <Spinner />
       </div>
       <div
         v-if="wallet"
-        class="header-section">
+        class="header-section"
+      >
         <div class="header-back-button-wrapper">
           <q-btn
             icon="arrow_back"
@@ -49,25 +50,35 @@
         class="modal-layout-wrapper"
       >
         <div class="price-info justify-center">
-
           <div class="row labels">
-            <div class="col-6">1 {{ coinSymbol }} / {{ selectedCurrency.code }}</div>
+            <div class="col-6">
+              1 {{ coinSymbol }} / {{ selectedCurrency.code }}
+            </div>
             <div
               v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
               class="col-6"
-            >Volume 24h {{ selectedCurrency.code }}</div>
+            >
+              Volume 24h {{ selectedCurrency.code }}
+            </div>
           </div>
           <div class="row price">
-            <div class="col-6">{{ latestPrice.data.PRICE }} </div>
+            <div class="col-6">
+              {{ latestPrice.data.PRICE }}
+            </div>
             <div
               v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
-              class="col-6">{{ latestPrice.data.VOLUME24HOURTO }} </div>
+              class="col-6"
+            >
+              {{ latestPrice.data.VOLUME24HOURTO }}
+            </div>
           </div>
           <div
             :style="{ color: percentColor}"
-            class="row">
-            <div class="col-6">{{ latestPrice.data.CHANGEPCT24HOUR }}%</div>
-
+            class="row"
+          >
+            <div class="col-6">
+              {{ latestPrice.data.CHANGEPCT24HOUR }}%
+            </div>
           </div>
         </div>
         <PriceChart
@@ -77,7 +88,6 @@
       </div>
     </q-modal>
   </div>
-
 </template>
 
 <script>
@@ -180,8 +190,8 @@ export default {
     priceChartModalOpened: {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
-          if (this.$store.state.route.name === 'coinPrices' ||
-              this.$store.state.route.name === 'coinSinglePrices') this.$router.go(-1);
+          if (this.$store.state.route.name === 'coinPrices'
+              || this.$store.state.route.name === 'coinSinglePrices') this.$router.go(-1);
         }
       },
     },

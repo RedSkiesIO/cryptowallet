@@ -1,6 +1,8 @@
 <template>
   <section class="user-balance">
-    <div class="coin">{{ wallet.displayName }}</div>
+    <div class="coin">
+      {{ wallet.displayName }}
+    </div>
     <div>
       <h1 class="balance-h1">
         <Amount

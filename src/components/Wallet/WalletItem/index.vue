@@ -8,10 +8,11 @@
         <div class="icon">
           <img :src="coinLogo">
         </div>
-        <div class="name">{{ wallet.displayName }}</div>
+        <div class="name">
+          {{ wallet.displayName }}
+        </div>
       </div>
       <div>
-
         <div v-if="clickItemAction === 'addWallet'">
           <q-toggle
             v-model="isEnabled"
@@ -24,13 +25,11 @@
         minimized
         @show="enableWallet()"
       >
-
         <div class="initialize-wallet-modal">
-          <Spinner/>
+          <Spinner />
           <span>Enabling wallet</span>
         </div>
       </q-modal>
-
     </div>
   </div>
 </template>

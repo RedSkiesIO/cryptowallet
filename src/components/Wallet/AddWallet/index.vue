@@ -28,7 +28,6 @@
           click-item-action="addWallet"
         />
       </div>
-
     </q-modal>
   </div>
 </template>

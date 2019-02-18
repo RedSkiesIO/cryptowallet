@@ -1,12 +1,14 @@
 <template>
   <div class="container">
     <div>
-      <h1 class="setup">{{ $t('setAccountName') }}</h1>
+      <h1 class="setup">
+        {{ $t('setAccountName') }}
+      </h1>
     </div>
     <div class="account-name-input-wrapper">
       <q-input
-        :float-label="$t('accountName')"
         v-model="accountName"
+        :float-label="$t('accountName')"
         inverted
         clearable
         color="blueish"

@@ -2,7 +2,7 @@
   <div>
     <div class="layout">
       <div class="list">
-        <CloudList/>
+        <CloudList />
       </div>
     </div>
   </div>

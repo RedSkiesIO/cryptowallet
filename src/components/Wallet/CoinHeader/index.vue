@@ -45,7 +45,9 @@
           :coin="wallet.name"
           format="0,0[.]00"
         />
-        <div class="in-coin">{{ balanceInCoin }} {{ coinSymbol }}</div>
+        <div class="in-coin">
+          {{ balanceInCoin }} {{ coinSymbol }}
+        </div>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="setup-wrapper">
-    <component :is="steps[id]"/>
+    <component :is="steps[id]" />
   </div>
 </template>
 

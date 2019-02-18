@@ -14,34 +14,41 @@
             @click.prevent="goBack"
           />
         </div>
-        <h1 class="header-h1">Add Token</h1>
+        <h1 class="header-h1">
+          Add Token
+        </h1>
       </div>
       <q-tabs
         swipeable
         color="secondary"
         inverted
-        align="justify">
+        align="justify"
+      >
         <q-tab
           slot="title"
           disable
           name="search"
-          label="Search" />
+          label="Search"
+        />
         <q-tab
           slot="title"
           default
           name="custom"
-          label="Custom Token" />
+          label="Custom Token"
+        />
 
 
         <q-tab-pane name="search">
           <q-search
             v-model="searchName"
-            placeholder="Start typing a token name">
+            placeholder="Start typing a token name"
+          >
             <q-autocomplete
               :static-data="tokens"
               :value-field="v => ` ${ v.label } (${ v.symbol })`"
-              class= "autocomplete"
-              @selected="selected" />
+              class="autocomplete"
+              @selected="selected"
+            />
           </q-search>
         </q-tab-pane>
         <q-tab-pane name="custom">
@@ -51,7 +58,7 @@
             <div class="send-coin-box">
               <div class="send-modal-heading">
                 <h4>Contract Address</h4>
-                <span class="h3-line"/>
+                <span class="h3-line" />
                 <q-btn
                   :label="$t('paste')"
                   size="sm"
@@ -75,16 +82,15 @@
                   class="side-content qr-code-wrapper"
                   @click="scan"
                 >
-                  <div class="hor-line"/>
-                  <div class="ver-line"/>
+                  <div class="hor-line" />
+                  <div class="ver-line" />
                   <img src="~assets/QR.svg">
                 </div>
-
               </div>
               <span class="error">{{ contractError }}</span>
               <div class="send-modal-heading">
                 <h4>Name</h4>
-                <span class="h3-line"/>
+                <span class="h3-line" />
               </div>
               <div class="to">
                 <q-input
@@ -98,13 +104,12 @@
                   clearable
                   @blur="checkField('name')"
                 />
-
               </div>
               <span class="error">{{ nameError }}</span>
 
               <div class="send-modal-heading">
                 <h4>Symbol</h4>
-                <span class="h3-line"/>
+                <span class="h3-line" />
               </div>
               <div class="to">
                 <q-input
@@ -119,12 +124,11 @@
                   upper-case
                   @blur="checkField('symbol')"
                 />
-
               </div>
               <span class="error">{{ symbolError }}</span>
               <div class="send-modal-heading">
                 <h4>Decimals</h4>
-                <span class="h3-line"/>
+                <span class="h3-line" />
               </div>
               <div class="to">
                 <q-input
@@ -139,7 +143,6 @@
                   clearable
                   @blur="checkField('decimals')"
                 />
-
               </div>
               <span class="error">{{ decimalsError }}</span>
               <div class="send">
@@ -153,9 +156,7 @@
               </div>
             </div>
           </div>
-
         </q-tab-pane>
-
       </q-tabs>
     </q-modal>
   </div>
@@ -163,7 +164,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import { required, alphaNum, numeric, between, minLength, maxLength } from 'vuelidate/lib/validators';
+import {
+  required, alphaNum, numeric, between, minLength, maxLength,
+} from 'vuelidate/lib/validators';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';

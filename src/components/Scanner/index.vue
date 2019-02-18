@@ -1,6 +1,6 @@
 <template>
   <div class="target-wrapper">
-    <div class="target"/>
+    <div class="target" />
     <div class="controls-box">
       <q-btn
         :label="$t('cancel')"

@@ -5,6 +5,7 @@ import { Model } from '@vuex-orm/core';
  */
 export default class Address extends Model {
   static entity = 'address';
+
   static fields() {
     return {
       id: this.increment(),

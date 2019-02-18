@@ -15,7 +15,7 @@
       ref="scrollArea"
       class="scroll-area extended cloud-scroll"
     >
-      <div class="scroll-offset"/>
+      <div class="scroll-offset" />
 
       <CloudListItem
         v-for="wallet in wallets"

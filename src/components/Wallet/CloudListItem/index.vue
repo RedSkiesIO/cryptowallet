@@ -4,7 +4,7 @@
     @click="goToWallet"
   >
     <div class="cloud-top-row">
-      <CoinHeader :wallet="wallet"/>
+      <CoinHeader :wallet="wallet" />
     </div>
     <div
       v-if="chartData"

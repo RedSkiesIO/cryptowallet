@@ -14,7 +14,9 @@
             @click.prevent="closeModal"
           />
         </div>
-        <h1 class="header-h1">Language</h1>
+        <h1 class="header-h1">
+          Language
+        </h1>
       </div>
 
       <div class="modal-layout-wrapper no-padding">

@@ -1,7 +1,7 @@
 <template>
   <div>
     /wallet/more
-    <Invite/>
+    <Invite />
   </div>
 </template>
 

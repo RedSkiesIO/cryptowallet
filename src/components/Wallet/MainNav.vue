@@ -56,7 +56,6 @@
         </i>
         <div>{{ $t('more') }}</div>
       </router-link>
-
     </div>
   </section>
 </template>

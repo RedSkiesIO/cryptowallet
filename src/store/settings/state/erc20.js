@@ -301,4 +301,3 @@ export default [
     symbol: 'NAS',
   },
 ];
-

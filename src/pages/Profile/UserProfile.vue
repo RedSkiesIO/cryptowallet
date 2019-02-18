@@ -2,33 +2,33 @@
   <q-layout>
     <q-page-container>
       <button id="backButton_id">
-        <img src= "~/assets/back.png">
+        <img src="~/assets/back.png">
       </button>
       <div class="mainContent">
-        <ProfileCard id="profilecard_id"/>
+        <ProfileCard id="profilecard_id" />
         <hr>
-        <div id="profileButtons_id" >
+        <div id="profileButtons_id">
           <h1>Profile</h1><br><br><br>
           <a href="#"><i> <img src="~/assets/personal-details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Personal Details</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Personal Details</i></a>
           <br><br>
           <a href="#"><i> <img src="~/assets/acount_details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Acount Details</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Acount Details</i></a>
           <br><br>
           <a href="#"><i> <img src="~/assets/acount_details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Top-up Limit</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Top-up Limit</i></a>
         </div>
         <hr>
-        <div id="profileButtons_id" >
+        <div id="profileButtons_id">
           <strong>Security</strong> <br><br>
           <a href="#"><i> <img src="~/assets/personal-details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
           <br><br>
           <a href="#"><i> <img src="~/assets/acount_details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
           <br><br>
           <a href="#"><i> <img src="~/assets/acount_details.png">&nbsp;&nbsp;
-          &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
+            &nbsp;&nbsp;&nbsp;&nbsp;Some text here</i></a>
         </div>
         <br>
         <a>
@@ -36,7 +36,8 @@
             id="editBtn_id"
             tag="button"
             class="button is-dark"
-            to="/EditProfile">Edit Profile Details
+            to="/EditProfile"
+          >Edit Profile Details
           </router-link>
         </a>
         <br><br>

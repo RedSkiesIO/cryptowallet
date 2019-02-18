@@ -1,7 +1,7 @@
 <template>
   <div class="contact-list-item">
     <div @click.prevent="goToContact">
-      <div class="circle"/>
+      <div class="circle" />
       {{ contact.displayName }}
     </div>
   </div>

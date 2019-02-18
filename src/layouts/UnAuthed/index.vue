@@ -11,7 +11,7 @@
       />
     </div> -->
     <q-layout-header>
-      <Header/>
+      <Header />
     </q-layout-header>
 
     <div

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="setup">{{ $t('confirmSeed') }}</h1>
+    <h1 class="setup">
+      {{ $t('confirmSeed') }}
+    </h1>
     <p class="setup">
       {{ $t('pressSeed') }}
     </p>

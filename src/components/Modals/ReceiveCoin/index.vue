@@ -14,13 +14,15 @@
             @click.prevent="goBack"
           />
         </div>
-        <h1 class="header-h1">Receive</h1>
+        <h1 class="header-h1">
+          Receive
+        </h1>
       </div>
       <div
         v-if="wallet"
         class="modal-layout-wrapper"
       >
-        <Receive/>
+        <Receive />
       </div>
     </q-modal>
   </div>

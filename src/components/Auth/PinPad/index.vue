@@ -37,7 +37,6 @@
         label="Unlock"
         @click="confirmPin"
       />
-
     </div>
   </div>
 </template>

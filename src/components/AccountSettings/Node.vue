@@ -13,7 +13,9 @@
           @click.prevent="closeModal"
         />
       </div>
-      <h1 class="header-h1">Atlas Node</h1>
+      <h1 class="header-h1">
+        Atlas Node
+      </h1>
     </div>
 
     <div class="modal-layout-wrapper">

@@ -1,8 +1,12 @@
 <template>
   <div>
-    <h1 class="setup">Pin Setup</h1>
-    <h4 class="setup">Set your pin. Minimum 6 digits asd.</h4>
-    <pin-pad mode="pin-setup"/>
+    <h1 class="setup">
+      Pin Setup
+    </h1>
+    <h4 class="setup">
+      Set your pin. Minimum 6 digits asd.
+    </h4>
+    <PinPad mode="pin-setup" />
   </div>
 </template>
 

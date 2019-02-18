@@ -1,6 +1,6 @@
 <template>
   <div class="contact-list-item">
-    <div class="circle"/>
+    <div class="circle" />
     {{ contact.displayName }}
   </div>
 </template>

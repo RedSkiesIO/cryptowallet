@@ -2,8 +2,12 @@
   <div>
     <div class="container">
       <div class="restore-header">
-        <h1 class="setup">{{ $t('restoreAccount') }}</h1>
-        <p class="setup"> {{ $t('restoreDescription') }}</p>
+        <h1 class="setup">
+          {{ $t('restoreAccount') }}
+        </h1>
+        <p class="setup">
+          {{ $t('restoreDescription') }}
+        </p>
       </div>
 
       <div class="restore-input-wrapper">

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1 class="setup">Seed Setup</h1>
+    <h1 class="setup">
+      Seed Setup
+    </h1>
     <p class="setup">
       We're going to create a recovery seed for you that can be
       used to restore your wallets.

@@ -13,7 +13,9 @@
           @click.prevent="closeModal"
         />
       </div>
-      <h1 class="header-h1">PIN Code</h1>
+      <h1 class="header-h1">
+        PIN Code
+      </h1>
     </div>
 
     <div class="modal-layout-wrapper center">
@@ -33,7 +35,6 @@
         @attemptConfirm="updateAccount"
       />
     </div>
-
   </q-modal>
 </template>
 

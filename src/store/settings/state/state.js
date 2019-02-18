@@ -1,7 +1,7 @@
 import coins from './coins.js';
 import currencies from './currencies.js';
-import supportedCoins from '../state/supportedCoins.js';
-import supportedCurrencies from '../state/supportedCurrencies.js';
+import supportedCoins from './supportedCoins.js';
+import supportedCurrencies from './supportedCurrencies.js';
 
 export default {
   pin: {

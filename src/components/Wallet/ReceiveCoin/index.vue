@@ -1,12 +1,14 @@
 <template>
   <div class="receive-coin-box">
-    <CoinHeader :wallet="wallet"/>
+    <CoinHeader :wallet="wallet" />
 
     <div class="send-modal-heading">
       <h3>Your Address</h3>
-      <span class="h3-line"/>
+      <span class="h3-line" />
     </div>
-    <div class="address break">{{ getAddress() }}</div>
+    <div class="address break">
+      {{ getAddress() }}
+    </div>
 
     <q-btn
       :label="$t('copy')"
@@ -25,7 +27,7 @@
 
     <div class="send-modal-heading">
       <h3>Scan QR Code</h3>
-      <span class="h3-line"/>
+      <span class="h3-line" />
     </div>
 
     <div class="qr-code">

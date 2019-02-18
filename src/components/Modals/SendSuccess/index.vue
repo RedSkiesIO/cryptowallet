@@ -14,7 +14,9 @@
             @click.prevent="complete"
           />
         </div>
-        <h1 class="header-h1">Success</h1>
+        <h1 class="header-h1">
+          Success
+        </h1>
       </div>
       <div
         v-if="wallet && txData"
@@ -34,7 +36,9 @@
 
           <div class="done-tx-details-wrapper">
             <div class="tx-details-row">
-              <div class="detail">Tx hash</div>
+              <div class="detail">
+                Tx hash
+              </div>
               <div class="break">
                 <span class="tx-hash-span">{{ txData.transaction.hash }}</span>
                 <q-btn
@@ -48,13 +52,21 @@
             </div>
 
             <div class="tx-details-row">
-              <div class="detail">Recipient</div>
-              <div class="break">{{ recipient }}</div>
+              <div class="detail">
+                Recipient
+              </div>
+              <div class="break">
+                {{ recipient }}
+              </div>
             </div>
 
             <div class="tx-details-row">
-              <div class="detail">Amount</div>
-              <div class="nowrap">{{ amount }}</div>
+              <div class="detail">
+                Amount
+              </div>
+              <div class="nowrap">
+                {{ amount }}
+              </div>
             </div>
           </div>
 

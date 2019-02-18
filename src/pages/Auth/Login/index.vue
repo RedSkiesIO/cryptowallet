@@ -1,8 +1,10 @@
 <template>
   <div class="center-content-wrapper">
     <div v-if="account">
-      <h1 class="account-name-h1 setup">{{ account.name }}</h1>
-      <pin-pad mode="auth"/>
+      <h1 class="account-name-h1 setup">
+        {{ account.name }}
+      </h1>
+      <PinPad mode="auth" />
     </div>
   </div>
 </template>

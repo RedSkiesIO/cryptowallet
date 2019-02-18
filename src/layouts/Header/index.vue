@@ -24,10 +24,14 @@
     </div>
     <div v-else>
       <div v-if="heading === 'CryptoWallet'">
-        <h1 class="header-h1 logo">{{ heading }}</h1>
+        <h1 class="header-h1 logo">
+          {{ heading }}
+        </h1>
       </div>
       <div v-else>
-        <h1 class="header-h1">{{ heading }}</h1>
+        <h1 class="header-h1">
+          {{ heading }}
+        </h1>
       </div>
     </div>
 
@@ -84,8 +88,6 @@
         @click.prevent="setAccountModalOpened(true)"
       />
     </div>
-
-
   </section>
 </template>
 
@@ -130,8 +132,8 @@ export default {
       if (this.wallet && this.selectedCurrency) {
         const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
-          return this.$route.name === 'walletSingle' ||
-                 this.$route.name === 'sendCoinSingle';
+          return this.$route.name === 'walletSingle'
+                 || this.$route.name === 'sendCoinSingle';
         }
       }
       return false;
@@ -146,9 +148,9 @@ export default {
       return 'CryptoWallet';
     },
     coinHeading() {
-      if (this.$route.name === 'walletSingle' ||
-          this.$route.name === 'sendCoinSingle' ||
-          this.$route.name === 'coinSinglePrices') {
+      if (this.$route.name === 'walletSingle'
+          || this.$route.name === 'sendCoinSingle'
+          || this.$route.name === 'coinSinglePrices') {
         return true;
       }
       return false;
@@ -168,10 +170,10 @@ export default {
   },
   watch: {
     $route() {
-      if (window.history.length > 0 &&
-          this.$route.path !== '/setup/0' &&
-          this.$route.path !== '/' &&
-          this.$route.path !== '/wallet') {
+      if (window.history.length > 0
+          && this.$route.path !== '/setup/0'
+          && this.$route.path !== '/'
+          && this.$route.path !== '/wallet') {
         this.isBackButtonEnabled = true;
       } else {
         this.isBackButtonEnabled = false;

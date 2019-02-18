@@ -21,7 +21,7 @@
         name="tab-3"
       />
       <q-tab-pane name="tab-1">
-        <TransactionsList :wallet="wallet"/>
+        <TransactionsList :wallet="wallet" />
       </q-tab-pane>
       <q-tab-pane name="tab-2">
         <TransactionsList

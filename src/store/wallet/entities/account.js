@@ -6,6 +6,7 @@ import Wallet from './wallet';
  */
 export default class Account extends Model {
   static entity = 'account';
+
   static AES = ['seed'];
 
   /**

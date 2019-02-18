@@ -1,8 +1,12 @@
 <template>
   <div>
-    <h1 class="setup">Pin Confirmation</h1>
-    <h4 class="setup">Confirm your pin</h4>
-    <pin-pad mode="pin-confirm"/>
+    <h1 class="setup">
+      Pin Confirmation
+    </h1>
+    <h4 class="setup">
+      Confirm your pin
+    </h4>
+    <PinPad mode="pin-confirm" />
   </div>
 </template>
 

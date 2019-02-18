@@ -1,36 +1,39 @@
 <template>
   <div class="mainContentContacts">
     <p> &nbsp; </p>
-    <p id="Title_id">&nbsp;{{ $t("recent") }}</p>
+    <p id="Title_id">
+      &nbsp;{{ $t("recent") }}
+    </p>
     <hr>
     <div class="container is-fluid">
-      <div id="items">&nbsp;
+      <div id="items">
+&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;
         <div class="item">
-          <RecentContactBox/>
+          <RecentContactBox />
         </div>&nbsp;&nbsp;
         <br>
       </div>
@@ -40,7 +43,7 @@
 </template>
 
 <script>
-import RecentContactBox from '../../components/RecentUsedContacts/RecentContactBox.vue';
+import RecentContactBox from './RecentContactBox.vue';
 
 export default {
 

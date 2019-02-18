@@ -1,11 +1,13 @@
 <template>
   <div class="columns is-mobile no-margin-bottom">
     <div class="column is-2">
-      <div class="circle"/>
+      <div class="circle" />
     </div>
     <div class="column">
       <div class="columns is-mobile no-margin-bottom">
-        <div class="column is-7 no-padding-bottom">{{ payment.title }}</div>
+        <div class="column is-7 no-padding-bottom">
+          {{ payment.title }}
+        </div>
         <div class="column no-padding-bottom">
           <Amount
             :amount="payment.amount"

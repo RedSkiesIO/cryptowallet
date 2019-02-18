@@ -1,8 +1,8 @@
 <template>
   <div>
-    <SearchContacts key="SearchContacts"/>
-    <RecentContacts key="RecentContacts"/>
-    <ContactsList key="ContactsList"/>
+    <SearchContacts key="SearchContacts" />
+    <RecentContacts key="RecentContacts" />
+    <ContactsList key="ContactsList" />
   </div>
 </template>
 

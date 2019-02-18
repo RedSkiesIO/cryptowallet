@@ -1,12 +1,16 @@
 <template>
   <div>
-    <h1 class="setup">{{ $t("nodeTitle") }}</h1>
-    <p class="setup">{{ $t("nodeSubtitle") }}</p>
+    <h1 class="setup">
+      {{ $t("nodeTitle") }}
+    </h1>
+    <p class="setup">
+      {{ $t("nodeSubtitle") }}
+    </p>
 
     <div class="ip-input">
       <q-input
-        :float-label="$t('IPAddress')"
         v-model="nodeIp"
+        :float-label="$t('IPAddress')"
         inverted
         color="blueish"
       />

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>pin setup page</div>
-    <pin-pad />
+    <PinPad />
     <q-btn
       v-if="pin.length >= 6"
       :label="$t('continue')"

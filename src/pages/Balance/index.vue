@@ -1,7 +1,7 @@
 
 <template>
   <div v-if="wallet">
-    <Transactions :wallet="wallet"/>
+    <Transactions :wallet="wallet" />
   </div>
 </template>
 
@@ -145,8 +145,8 @@ export default {
               // update the tx
               Tx.$update({
                 where: (record) => {
-                  return record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id;
+                  return record.hash === tx.hash
+                  && record.wallet_id === this.wallet.id;
                 },
                 data: tx,
               });
@@ -154,8 +154,8 @@ export default {
               // update found received
               Tx.$update({
                 where: (record) => {
-                  return record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id;
+                  return record.hash === tx.hash
+                  && record.wallet_id === this.wallet.id;
                 },
                 data: tx,
               });
@@ -184,8 +184,8 @@ export default {
               // update the tx
               Tx.$update({
                 where: (record) => {
-                  return record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id;
+                  return record.hash === tx.hash
+                  && record.wallet_id === this.wallet.id;
                 },
                 data: tx,
               });
@@ -206,8 +206,8 @@ export default {
                 tx.receiver.forEach((changeAddress) => {
                   Address.$update({
                     where: (record) => {
-                      return record.chain === 'internal' &&
-                      record.address === changeAddress;
+                      return record.chain === 'internal'
+                      && record.address === changeAddress;
                     },
                     data: { used: true },
                   });
@@ -218,8 +218,8 @@ export default {
               Tx.$update({
                 where: (record) => {
                   return (
-                    record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id
+                    record.hash === tx.hash
+                  && record.wallet_id === this.wallet.id
                   );
                 },
                 data: tx,

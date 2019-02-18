@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h1 class="setup">Seed Phrase</h1>
-    <p class="setup">{{ $t('writeSeed') }}</p>
+    <h1 class="setup">
+      Seed Phrase
+    </h1>
+    <p class="setup">
+      {{ $t('writeSeed') }}
+    </p>
     <h4 class="setup seed-box">
       <span
         v-for="(word, i) in seedPhrase"
@@ -27,7 +31,6 @@
         @click="done"
       />
     </div>
-
   </div>
 </template>
 

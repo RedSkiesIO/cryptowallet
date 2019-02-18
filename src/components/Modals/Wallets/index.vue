@@ -14,7 +14,9 @@
             @click.prevent="close"
           />
         </div>
-        <h1 class="header-h1">Wallets</h1>
+        <h1 class="header-h1">
+          Wallets
+        </h1>
         <div
           class="header-settings-button-wrapper"
         >
@@ -41,7 +43,7 @@
       v-if="loading"
       class="app-loading background modal"
     >
-      <Spinner/>
+      <Spinner />
     </div>
   </div>
 </template>

@@ -3,7 +3,9 @@
     :class="{ isSearchingContacts: isSearchingContacts }"
     class="contacts-list"
   >
-    <h1 class="section-h1">{{ $t('contacts') }}</h1>
+    <h1 class="section-h1">
+      {{ $t('contacts') }}
+    </h1>
     <div class="flex-scroll-area-wrapper">
       <q-scroll-area class="contacts-list-scroll-area">
         <div class="scroll-content">

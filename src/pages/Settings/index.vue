@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AccountSettings/>
+    <AccountSettings />
   </div>
 </template>
 

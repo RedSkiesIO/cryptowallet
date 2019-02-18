@@ -47,9 +47,9 @@
         <div class="amount-div-wrapper">
           <q-input
             ref="inCoin"
+            v-model="inCoin"
             :disable="maxed"
             :error="$v.inCoin.$error"
-            v-model="inCoin"
             type="number"
             placeholder="0"
             class="sm-input grey-input"
@@ -57,7 +57,9 @@
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
           />
-          <div class="side-content">{{ coinSymbol }}</div>
+          <div class="side-content">
+            {{ coinSymbol }}
+          </div>
         </div>
         <div class="amount-div-wrapper">
           <q-input
@@ -70,13 +72,16 @@
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
           />
-          <div class="side-content">{{ selectedCurrency.code }}</div>
+          <div class="side-content">
+            {{ selectedCurrency.code }}
+          </div>
         </div>
       </div>
       <span class="error-label">{{ amountError }}</span>
 
       <div class="send-modal-heading">
-        <h3>Fee
+        <h3>
+          Fee
           <q-icon
             name="help_outline"
             size="1.1rem"
@@ -102,7 +107,9 @@
             @input="feeChange"
           />
         </div>
-        <div class="estimated-fee">Estimated transaction cost: {{ estimatedFee }}</div>
+        <div class="estimated-fee">
+          Estimated transaction cost: {{ estimatedFee }}
+        </div>
       </div>
 
       <div class="send">

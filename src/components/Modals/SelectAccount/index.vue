@@ -4,7 +4,6 @@
       v-model="selectAccountModalOpened"
       class="dark-modal"
     >
-
       <div class="header-section">
         <div class="header-back-button-wrapper">
           <q-btn
@@ -15,7 +14,9 @@
             @click.prevent="closeModal"
           />
         </div>
-        <h1 class="header-h1">{{ $t('accounts') }}</h1>
+        <h1 class="header-h1">
+          {{ $t('accounts') }}
+        </h1>
         <div
           class="header-settings-button-wrapper"
         >

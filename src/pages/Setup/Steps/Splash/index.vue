@@ -7,7 +7,9 @@
 
     <div class="splash-logo">
       <h1>CryptoWallet</h1>
-      <p class="splash-slogan">All your coins and tokens in one place. Secured.</p>
+      <p class="splash-slogan">
+        All your coins and tokens in one place. Secured.
+      </p>
     </div>
 
     <div class="btns-wrapper">
@@ -57,7 +59,8 @@
           <div class="col-2 flag-icon">
             <img
               :src="selectedLang.icon"
-              class="select-icon">
+              class="select-icon"
+            >
           </div>
           <div class="col-10 input-field">
             <v-select
@@ -67,15 +70,18 @@
               :clear-search-on-select="false"
               :filterable="false"
               class="lang-select"
-              label="label">
+              label="label"
+            >
               <template
                 slot="option"
-                slot-scope="option">
+                slot-scope="option"
+              >
                 <div class="row">
                   <div class="col-2">
                     <img
                       :src="option.icon"
-                      class="input-icon">
+                      class="input-icon"
+                    >
                   </div>
                   <div class="label col-10">
                     {{ option.label }}
@@ -111,7 +117,6 @@
         src="~/assets/logo-white-horizontal.png"
       >
     </div>
-
   </div>
 </template>
 

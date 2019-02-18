@@ -8,7 +8,7 @@
         :class="{ active: loading }"
         class="sending-spinner-overlay"
       >
-        <Spinner/>
+        <Spinner />
       </div>
 
       <div class="header-section">
@@ -21,24 +21,28 @@
             @click.prevent="goBack"
           />
         </div>
-        <h1 class="header-h1">Confirm</h1>
+        <h1 class="header-h1">
+          Confirm
+        </h1>
       </div>
       <div
         v-if="wallet && txData"
         class="modal-layout-wrapper"
       >
-        <CoinHeader :wallet="wallet"/>
+        <CoinHeader :wallet="wallet" />
 
         <div class="send-modal-heading">
           <h3>To</h3>
-          <span class="h3-line"/>
+          <span class="h3-line" />
         </div>
 
-        <div class="small-text break">{{ to }}</div>
+        <div class="small-text break">
+          {{ to }}
+        </div>
 
         <div class="send-modal-heading">
           <h3>Amount</h3>
-          <span class="h3-line"/>
+          <span class="h3-line" />
         </div>
 
         <div class="small-text">
@@ -48,25 +52,27 @@
 
         <div class="send-modal-heading">
           <h3>Fee</h3>
-          <span class="h3-line"/>
+          <span class="h3-line" />
         </div>
 
         <div
           v-if="!isErc20"
-          class="small-text">
+          class="small-text"
+        >
           {{ txData.transaction.fee }} {{ coinSymbol }}
           ({{ coinToCurrency(txData.transaction.fee, true) }})
         </div>
         <div
           v-if="isErc20"
-          class="small-text">
+          class="small-text"
+        >
           {{ txData.transaction.fee / 1000000000000000000 }}  ETH
           ({{ coinToCurrency(txData.transaction.fee / 1000000000000000000, true) }})
         </div>
 
         <div class="send-modal-heading">
           <h3>New Balance</h3>
-          <span class="h3-line"/>
+          <span class="h3-line" />
         </div>
 
         <div class="small-text">

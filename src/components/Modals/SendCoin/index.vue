@@ -15,24 +15,26 @@
             @click.prevent="goBack"
           />
         </div>
-        <h1 class="header-h1">Send</h1>
+        <h1 class="header-h1">
+          Send
+        </h1>
       </div>
       <div
         v-if="wallet"
         class="modal-layout-wrapper"
       >
-        <CoinHeader :wallet="wallet"/>
+        <CoinHeader :wallet="wallet" />
 
         <div v-if="wallet.sdk === 'Bitcoin'">
-          <SendBitcoin/>
+          <SendBitcoin />
         </div>
 
         <div v-if="wallet.sdk === 'Ethereum'">
-          <SendEtehreum/>
+          <SendEtehreum />
         </div>
 
         <div v-if="wallet.sdk === 'ERC20'">
-          <SendErc20/>
+          <SendErc20 />
         </div>
       </div>
     </q-modal>

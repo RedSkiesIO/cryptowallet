@@ -15,7 +15,6 @@
       v-if="wallets.length > 0"
       class="scroll-area"
     >
-
       <WalletItem
         v-for="wallet in wallets"
         :key="wallet.displayName"

@@ -29,7 +29,6 @@
               Transaction history is empty.
             </q-alert>
           </div>
-
         </q-timeline>
         <q-spinner-dots
           slot="message"

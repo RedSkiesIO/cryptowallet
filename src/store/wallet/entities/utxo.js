@@ -5,6 +5,7 @@ import { Model } from '@vuex-orm/core';
  */
 export default class Utxo extends Model {
   static entity = 'utxo';
+
   static fields() {
     return {
       id: this.increment(),

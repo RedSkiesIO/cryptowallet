@@ -20,8 +20,8 @@
           @click.prevent="invitationModalOpened = false"
         />
       </div>
-      <SearchContacts/>
-      <ContactsList click-item-action="app-invitation"/>
+      <SearchContacts />
+      <ContactsList click-item-action="app-invitation" />
     </q-modal>
 
     <q-modal
@@ -29,7 +29,9 @@
       minimized
     >
       <div style="padding: 2rem">
-        <div class="q-display-1 q-mb-md">{{ $t('permissions') }}</div>
+        <div class="q-display-1 q-mb-md">
+          {{ $t('permissions') }}
+        </div>
         <p>{{ $t('contactsPermissions') }}</p>
         <q-btn
           color="primary"

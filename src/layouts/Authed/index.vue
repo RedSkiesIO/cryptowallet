@@ -8,7 +8,7 @@
     view="lHh Lpr lFf"
   >
     <q-layout-header>
-      <Header/>
+      <Header />
     </q-layout-header>
 
     <div class="q-pull-to-refresh-wrapper">
@@ -17,8 +17,7 @@
         :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
       >
-
-        <div class="background"/>
+        <div class="background" />
         <div
           :class="{ 'no-footer': !isMainNavVisible }"
           class="layout-wrapper"
@@ -48,11 +47,10 @@
             class="layout-shape"
           >
             <keep-alive>
-              <router-view/>
+              <router-view />
             </keep-alive>
           </div>
         </div>
-
       </q-pull-to-refresh>
     </div>
 
@@ -61,7 +59,7 @@
       leave-active-class="animated slideOutDown"
     >
       <q-layout-footer v-show="isMainNavVisible">
-        <MainNav/>
+        <MainNav />
       </q-layout-footer>
     </transition>
   </q-layout>
@@ -150,32 +148,32 @@ export default {
       return formattedBalance.getFormatted();
     },
     showTotalBalance() {
-      return this.$route.name === 'wallet' ||
-             this.$route.name === 'sendCoin' ||
-             this.$route.name === 'receiveCoin' ||
-             this.$route.name === 'coinHistory' ||
-             this.$route.name === 'coinPrices';
+      return this.$route.name === 'wallet'
+             || this.$route.name === 'sendCoin'
+             || this.$route.name === 'receiveCoin'
+             || this.$route.name === 'coinHistory'
+             || this.$route.name === 'coinPrices';
     },
     layoutShapeWhite() {
-      return this.$route.name === 'settings' ||
-             this.$route.name === 'exchange' ||
-             this.$route.name === 'walletSingle' ||
-             this.$route.name === 'sendCoinSingle' ||
-             this.$route.name === 'coinSinglePrices';
+      return this.$route.name === 'settings'
+             || this.$route.name === 'exchange'
+             || this.$route.name === 'walletSingle'
+             || this.$route.name === 'sendCoinSingle'
+             || this.$route.name === 'coinSinglePrices';
     },
     shortTop() {
-      return this.$route.name === 'settings' ||
-             this.$route.name === 'exchange';
+      return this.$route.name === 'settings'
+             || this.$route.name === 'exchange';
     },
     showCoinHeader() {
-      return (this.$route.name === 'walletSingle' && this.wallet) ||
-             (this.$route.name === 'sendCoinSingle' && this.wallet) ||
-             (this.$route.name === 'coinSinglePrices' && this.wallet);
+      return (this.$route.name === 'walletSingle' && this.wallet)
+             || (this.$route.name === 'sendCoinSingle' && this.wallet)
+             || (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
     singleWalletTop() {
-      return (this.$route.name === 'walletSingle' && this.wallet) ||
-             (this.$route.name === 'sendCoinSingle' && this.wallet) ||
-             (this.$route.name === 'coinSinglePrices' && this.wallet);
+      return (this.$route.name === 'walletSingle' && this.wallet)
+             || (this.$route.name === 'sendCoinSingle' && this.wallet)
+             || (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
   },
 

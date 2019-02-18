@@ -3,7 +3,9 @@
     v-show="!isSearchingContacts"
     class="recent-contacts-list"
   >
-    <h1 class="section-h1">{{ $t('recent') }}</h1>
+    <h1 class="section-h1">
+      {{ $t('recent') }}
+    </h1>
     <div class="flex-scroll-area-wrapper">
       <div class="height-fix">
         <q-scroll-area class="recent-contacts-scroll-area">
