@@ -1,6 +1,5 @@
 <template>
   <div :class="{ shrinked : settings.layout !== 'dark' }">
-
     <div
       :class="{done : !settings.loading}"
       class="app-loading background"
@@ -21,7 +20,6 @@
       id="q-app"
       :class="{ hidden: hidden }"
     >
-
       <div v-if="!settings.loading">
         <router-view />
         <SelectAccountModal />
@@ -42,7 +40,7 @@
         </div>
       </div>
     </div>
-    <Scanner v-if="hidden"/>
+    <Scanner v-if="hidden" />
   </div>
 </template>
 
@@ -229,7 +227,6 @@ export default {
           const checkPriceExists = (symbol, data) => {
             const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
             if (!price) {
-              console.log('inserting');
               Latest.$insert({
                 data: {
                   coin,

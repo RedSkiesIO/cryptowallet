@@ -4,3 +4,4 @@
 /tests
 /src/**/*.spec.js
 /src/**/*.e2e.js
+/src/assets
