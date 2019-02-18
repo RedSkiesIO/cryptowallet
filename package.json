@@ -12,12 +12,14 @@
     "test:unit": "cross-env NODE_ENV=test jest",
     "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
+    "test:unit:qa:codacy": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | codacy-coverage",
     "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
     "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
-    "appium": "appium",
-    "appium-doctor": "appium-doctor"
+    "test": "snyk test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@vuex-orm/core": "^0.27.0",
@@ -47,7 +49,8 @@
     "vuex-orm-lokijs": "https://github.com/atlascity/vuex-orm-plugin-loki.git#1-prepare-for-opensource",
     "vuex-persist": "^1.7.1",
     "vuex-router-sync": "^5.0.0",
-    "web3": "1.0.0-beta.34"
+    "web3": "1.0.0-beta.34",
+    "snyk": "^1.130.0"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.50",
@@ -61,7 +64,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^23.4.2",
-    "chromedriver": "^2.42.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "eslint": "^4.18.2",
@@ -82,11 +84,6 @@
     "jest-vue-preprocessor": "^1.4.0",
     "lint-staged": "^7.2.0",
     "node-sass": "^4.9.0",
-    "quasar-cli": "^0.17.19",
-    "sass-loader": "^7.0.1",
-    "selenium": "^2.20.0",
-    "strip-ansi": "^3.0.1",
-    "vue-jest": "^2.6.0",
     "vue-particles": "^1.0.9",
     "wdio-appium-service": "^0.2.3",
     "wdio-chromedriver-service": "^0.1.3",
@@ -94,7 +91,11 @@
     "wdio-mocha-framework": "^0.6.3",
     "wdio-spec-reporter": "^0.1.5",
     "webdriverio": "^4.13.2",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "quasar-cli": "^0.17.23",
+    "sass-loader": "^7.0.1",
+    "strip-ansi": "^3.0.1",
+    "vue-jest": "^2.6.0"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -110,7 +111,13 @@
     ]
   },
   "engines": {
-    "node": ">= 8.11.0",
-    "npm": ">= 5.6.0"
-  }
+    "node": ">= 8.15.0",
+    "npm": ">= 6.4.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "snyk": true
 }
