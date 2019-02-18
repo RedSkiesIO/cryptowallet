@@ -40,8 +40,8 @@ export default {
   },
   computed: {
     ...mapState({
-      spvModeState: state => state.setup.spvMode,
-      id: state => parseInt(state.route.params.id, 10),
+      spvModeState: (state) => { return state.setup.spvMode; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
   methods: {

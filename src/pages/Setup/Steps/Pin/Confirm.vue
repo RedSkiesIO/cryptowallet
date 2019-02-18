@@ -16,14 +16,14 @@ export default {
   },
   computed: {
     ...mapState({
-      pin: state => state.setup.pinArray,
-      pinConfirm: state => state.setup.pinConfirmArray,
-      salt: state => state.setup.salt,
-      minLength: state => state.settings.pin.minLength,
-      pinHash: state => state.setup.pinHash,
-      pinHashConfirm: state => state.setup.pinHashConfirm,
-      accountType: state => state.setup.accountType,
-      id: state => parseInt(state.route.params.id, 10),
+      pin: (state) => { return state.setup.pinArray; },
+      pinConfirm: (state) => { return state.setup.pinConfirmArray; },
+      salt: (state) => { return state.setup.salt; },
+      minLength: (state) => { return state.settings.pin.minLength; },
+      pinHash: (state) => { return state.setup.pinHash; },
+      pinHashConfirm: (state) => { return state.setup.pinHashConfirm; },
+      accountType: (state) => { return state.setup.accountType; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
   methods: {

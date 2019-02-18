@@ -212,8 +212,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -327,7 +327,7 @@ export default {
     },
     async enableWallet() {
       if (!this.isEthEnabled('Ethereum')) {
-        const eth = this.supportedCoins.find(coin => coin.name === 'Ethereum');
+        const eth = this.supportedCoins.find((coin) => { return coin.name === 'Ethereum'; });
 
         const wallets = Wallet.query()
           .where('account_id', this.authenticatedAccount)
@@ -335,7 +335,7 @@ export default {
           .get();
 
         await Wallet.$update({
-          where: record => record.id === wallets[0].id,
+          where: (record) => { return record.id === wallets[0].id; },
           data: { imported: false, enabled: true },
         });
       }
@@ -375,7 +375,7 @@ export default {
         const newWalletResult = await Wallet.$insert({ data });
         const newWalletId = newWalletResult.wallet[0].id;
         await Wallet.$update({
-          where: record => record.id === newWalletId,
+          where: (record) => { return record.id === newWalletId; },
           data: {
             account_id: this.authenticatedAccount,
             imported: false,

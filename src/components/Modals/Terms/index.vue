@@ -89,7 +89,7 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => parseInt(state.route.params.id, 10),
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
   watch: {

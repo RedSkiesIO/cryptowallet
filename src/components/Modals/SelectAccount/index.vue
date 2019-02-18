@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => parseInt(state.route.params.id, 10),
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -118,17 +118,17 @@ export default {
     defualtAccountChange(data) {
       if (data.val) {
         Account.$update({
-          where: () => true,
+          where: () => { return true; },
           data: { default: false },
         });
 
         Account.$update({
-          where: record => record.name === data.name,
+          where: (record) => { return record.name === data.name; },
           data: { default: true },
         });
       } else {
         Account.$update({
-          where: record => record.name === data.name,
+          where: (record) => { return record.name === data.name; },
           data: { default: true },
         });
       }

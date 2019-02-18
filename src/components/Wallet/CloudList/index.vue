@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;

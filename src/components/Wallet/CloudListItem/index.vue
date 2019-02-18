@@ -81,7 +81,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -90,10 +90,10 @@ export default {
       return Coin.all();
     },
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denomination;
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     showChart() {
       const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
@@ -108,11 +108,13 @@ export default {
   },
   async mounted() {
     try {
-      const wherePrice = (record, item) => (
-        record.coin === item.coin
+      const wherePrice = (record, item) => {
+        return (
+          record.coin === item.coin
         && record.currency === item.currency
         && record.period === item.period
-      );
+        );
+      };
 
       let coinSDK = this.coinSDKS[this.wallet.sdk];
       if (this.wallet.sdk === 'ERC20') {
@@ -142,20 +144,22 @@ export default {
             data: dataset,
           },
         });
-        this.chartData = dataset.map(item => item.y);
+        this.chartData = dataset.map((item) => { return item.y; });
       } else if (dataset) {
         Prices.$update({
-          where: record => wherePrice(record, {
-            coin: this.coinSymbol,
-            currency: this.selectedCurrency.code,
-            period: 'day',
-          }),
+          where: (record) => {
+            return wherePrice(record, {
+              coin: this.coinSymbol,
+              currency: this.selectedCurrency.code,
+              period: 'day',
+            });
+          },
           data: {
             updated: +new Date(),
             data: dataset,
           },
         });
-        this.chartData = dataset.map(item => item.y);
+        this.chartData = dataset.map((item) => { return item.y; });
       } else if (price && !dataset) {
         this.chartData = price;
       }

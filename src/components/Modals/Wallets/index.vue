@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -107,7 +107,7 @@ export default {
       const keyPair = coinSDK.generateKeyPair(initializedWallet, externalChainAddressIndex);
 
       Wallet.$update({
-        where: record => record.id === wallet.id,
+        where: (record) => { return record.id === wallet.id; },
         data: {
           externalChainAddressIndex,
           internalChainAddressIndex,
@@ -147,7 +147,7 @@ export default {
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => createDate(b.receivedTime) - createDate(a.receivedTime));
+      allTx.sort((a, b) => { return createDate(b.receivedTime) - createDate(a.receivedTime); });
 
       allTx.forEach(async (tx) => {
         await Tx.$insert({ data: tx });
@@ -180,7 +180,7 @@ export default {
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
       Wallet.$update({
-        where: record => record.id === wallet.id,
+        where: (record) => { return record.id === wallet.id; },
         data: {
           externalChainAddressIndex: 0,
           internalChainAddressIndex: 0,
@@ -214,7 +214,7 @@ export default {
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => createDate(b.confirmedTime) - createDate(a.confirmedTime));
+      allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
 
       allTx.forEach(async (tx) => {
         await Tx.$insert({ data: tx });
@@ -239,17 +239,21 @@ export default {
           }
           return true;
         };
-        const whereLatestPrice = (record, item) => (
-          record.coin === item.coin
+        const whereLatestPrice = (record, item) => {
+          return (
+            record.coin === item.coin
            && record.currency === item.currency
-        );
+          );
+        };
 
         if (checkPriceExists(coin, latestPrice)) {
           Latest.$update({
-            where: record => whereLatestPrice(record, {
-              coin,
-              currency: this.selectedCurrency.code,
-            }),
+            where: (record) => {
+              return whereLatestPrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+              });
+            },
             data: {
               updated: +new Date(),
               data: latestPrice,
@@ -279,19 +283,23 @@ export default {
           }
           return true;
         };
-        const whereLatestPrice = (record, item) => (
-          record.coin === item.coin
+        const whereLatestPrice = (record, item) => {
+          return (
+            record.coin === item.coin
             && record.currency === item.currency
             && record.period === item.period
-        );
+          );
+        };
 
         if (checkPriceExists(coin, latestPrice)) {
           Prices.$update({
-            where: record => whereLatestPrice(record, {
-              coin,
-              currency: this.selectedCurrency.code,
-              period,
-            }),
+            where: (record) => {
+              return whereLatestPrice(record, {
+                coin,
+                currency: this.selectedCurrency.code,
+                period,
+              });
+            },
             data: {
               updated: +new Date(),
               data: latestPrice,
@@ -334,7 +342,7 @@ export default {
       }
 
       Wallet.$update({
-        where: record => record.id === wallet.id,
+        where: (record) => { return record.id === wallet.id; },
         data: { imported: true, enabled: true },
       });
     },
@@ -369,7 +377,7 @@ export default {
       } = await this.discoverWallet(wallet.erc20Wallet, coinSDK, wallet.network, wallet.sdk);
 
       Wallet.$update({
-        where: record => record.id === wallet.id,
+        where: (record) => { return record.id === wallet.id; },
         data: {
           externalChainAddressIndex: 0,
           internalChainAddressIndex: 0,
@@ -403,14 +411,14 @@ export default {
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => createDate(b.confirmedTime) - createDate(a.confirmedTime));
+      allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
 
       allTx.forEach(async (tx) => {
         await Tx.$insert({ data: tx });
       });
 
       Wallet.$update({
-        where: record => record.id === wallet.id,
+        where: (record) => { return record.id === wallet.id; },
         data: { imported: true, enabled: true },
       });
     },

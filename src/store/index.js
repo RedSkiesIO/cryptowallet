@@ -18,7 +18,6 @@ import Prices from './prices';
 import LatestPrice from './latestPrice';
 
 // import modules.
-import payments from './payments';
 import search from './search';
 import settings from './settings';
 import setup from './setup';
@@ -80,7 +79,6 @@ VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
  */
 const store = new Vuex.Store({
   modules: {
-    payments,
     search,
     settings,
     setup,

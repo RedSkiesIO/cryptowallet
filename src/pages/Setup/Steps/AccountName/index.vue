@@ -35,14 +35,14 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => parseInt(state.route.params.id, 10),
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
   methods: {
     validate() {
       if (this.accountName.length === 0) return false;
       const accounts = this.$store.getters['entities/account/query']().get();
-      const nameAlreadyInUse = accounts.find(account => account.name === this.accountName);
+      const nameAlreadyInUse = accounts.find((account) => { return account.name === this.accountName; });
 
       if (nameAlreadyInUse) {
         this.$toast.create(10, this.$t('accountNameTaken'), 500);

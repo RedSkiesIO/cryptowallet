@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -124,7 +124,7 @@ export default {
 
       if (wasDefault && this.accounts.length > 0) {
         Account.$update({
-          where: record => record.id === id,
+          where: (record) => { return record.id === id; },
           data: { default: true },
         });
       }

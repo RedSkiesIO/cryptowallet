@@ -36,9 +36,9 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.search.isSearchingContacts,
-      searchingContactsQueryString: state => state.search.searchingContactsQueryString,
-      contacts: state => state.contacts.contacts,
+      isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
+      searchingContactsQueryString: (state) => { return state.search.searchingContactsQueryString; },
+      contacts: (state) => { return state.contacts.contacts; },
     }),
 
     /**
@@ -46,7 +46,7 @@ export default {
      * @return {Array}
      */
     filteredContacts() {
-      return this.contacts.filter(contact => new RegExp(`^${this.searchingContactsQueryString}`, 'i').test(contact.displayName));
+      return this.contacts.filter((contact) => { return new RegExp(`^${this.searchingContactsQueryString}`, 'i').test(contact.displayName); });
     },
   },
 };

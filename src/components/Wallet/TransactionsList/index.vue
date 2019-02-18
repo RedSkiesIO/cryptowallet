@@ -126,7 +126,7 @@ export default {
      * @return {Function}
      */
     sleeper(ms) {
-      return () => new Promise(resolve => setTimeout(() => resolve(), ms));
+      return () => { return new Promise((resolve) => { return setTimeout(() => { return resolve(); }, ms); }); };
     },
 
     /**

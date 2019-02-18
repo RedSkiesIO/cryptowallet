@@ -106,8 +106,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -119,7 +119,7 @@ export default {
       return Coin.all();
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
       // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
@@ -234,18 +234,22 @@ export default {
           return true;
         };
 
-        const wherePrice = (record, item) => (
-          record.coin === item.coin
+        const wherePrice = (record, item) => {
+          return (
+            record.coin === item.coin
             && record.currency === item.currency
             && record.period === item.period
-        );
+          );
+        };
         if (checkExists('day', dayData)) {
           Prices.$update({
-            where: record => wherePrice(record, {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'day',
-            }),
+            where: (record) => {
+              return wherePrice(record, {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+                period: 'day',
+              });
+            },
             data: {
               updated: +new Date(),
               data: dayData,
@@ -254,11 +258,13 @@ export default {
         }
         if (checkExists('week', weekData)) {
           Prices.$update({
-            where: record => wherePrice(record, {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'week',
-            }),
+            where: (record) => {
+              return wherePrice(record, {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+                period: 'week',
+              });
+            },
             data: {
               updated: +new Date(),
               data: weekData,
@@ -267,11 +273,13 @@ export default {
         }
         if (checkExists('month', monthData)) {
           Prices.$update({
-            where: record => wherePrice(record, {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-              period: 'month',
-            }),
+            where: (record) => {
+              return wherePrice(record, {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+                period: 'month',
+              });
+            },
             data: {
               updated: +new Date(),
               data: monthData,
@@ -295,17 +303,21 @@ export default {
           return true;
         };
 
-        const whereLatest = (record, item) => (
-          record.coin === item.coin
+        const whereLatest = (record, item) => {
+          return (
+            record.coin === item.coin
             && record.currency === item.currency
-        );
+          );
+        };
         // eslint-disable-next-line max-len
         if (checkPriceExists(this.coinSymbol, latestPrice[this.coinSymbol][this.selectedCurrency.code])) {
           Latest.$update({
-            where: record => whereLatest(record, {
-              coin: this.coinSymbol,
-              currency: this.selectedCurrency.code,
-            }),
+            where: (record) => {
+              return whereLatest(record, {
+                coin: this.coinSymbol,
+                currency: this.selectedCurrency.code,
+              });
+            },
             data: {
               updated: +new Date(),
               data: latestPrice[this.coinSymbol][this.selectedCurrency.code],

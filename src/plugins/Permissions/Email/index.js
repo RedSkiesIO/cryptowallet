@@ -6,7 +6,7 @@ export default ({ Vue }) => {
      */
     detect() {
       return new Promise((resolve) => {
-        this.cordovaEmail.hasPermission(hasPermission => resolve(hasPermission));
+        this.cordovaEmail.hasPermission((hasPermission) => { return resolve(hasPermission); });
       });
     },
 
@@ -16,7 +16,7 @@ export default ({ Vue }) => {
      */
     hasConfiguredEmail() {
       return new Promise((resolve) => {
-        this.cordovaEmail.isAvailable(hasAccount => resolve(hasAccount));
+        this.cordovaEmail.isAvailable((hasAccount) => { return resolve(hasAccount); });
       });
     },
 
@@ -26,7 +26,7 @@ export default ({ Vue }) => {
      */
     request() {
       return new Promise((resolve) => {
-        this.cordovaEmail.requestPermission(granted => resolve(granted));
+        this.cordovaEmail.requestPermission((granted) => { return resolve(granted); });
       });
     },
   };

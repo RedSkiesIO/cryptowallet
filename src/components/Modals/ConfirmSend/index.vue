@@ -113,8 +113,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -126,7 +126,7 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
@@ -200,14 +200,16 @@ export default {
         await Tx.$insert({ data: transaction });
 
         utxo.forEach((usedUtxo) => {
-          const whereUtxo = (record, item) => (
-            record.txid === item.txid
+          const whereUtxo = (record, item) => {
+            return (
+              record.txid === item.txid
             && record.vout === item.vout
             && record.wallet_id === this.wallet.id
-          );
+            );
+          };
 
           Utxo.$update({
-            where: record => whereUtxo(record, usedUtxo),
+            where: (record) => { return whereUtxo(record, usedUtxo); },
             data: { pending: true },
           });
         });
@@ -227,7 +229,7 @@ export default {
         const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
 
         Wallet.$update({
-          where: record => record.id === this.wallet.id,
+          where: (record) => { return record.id === this.wallet.id; },
           data: { internalChainAddressIndex: newInternalIndex },
         });
 
@@ -268,7 +270,7 @@ export default {
 
       if (this.wallet.sdk === 'ERC20' && fee) {
         // eslint-disable-next-line max-len
-        const parentSymbol = this.supportedCoins.find(coin => coin.name === this.wallet.parentName).symbol;
+        const parentSymbol = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; }).symbol;
         const parentPrice = this.$store.getters['entities/latestPrice/find'](`${parentSymbol}_${this.selectedCurrency.code}`).data.PRICE;
         formattedAmount = new AmountFormatter({
           amount,

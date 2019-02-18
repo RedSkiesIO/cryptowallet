@@ -54,8 +54,8 @@ export default {
       return this.$store.getters['setup/getShuffledSeed'];
     },
     ...mapState({
-      seed: state => state.setup.seed,
-      id: state => parseInt(state.route.params.id, 10),
+      seed: (state) => { return state.setup.seed; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
     resetDisabled() {
       return this.pipSeq.length === 0;

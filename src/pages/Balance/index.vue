@@ -20,8 +20,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -89,7 +89,7 @@ export default {
         .where('used', false)
         .get();
 
-      let addressesRaw = addresses.map(item => item.address);
+      let addressesRaw = addresses.map((item) => { return item.address; });
 
       addressesRaw = addressesRaw.filter(onlyUnique);
 
@@ -144,17 +144,19 @@ export default {
             if (foundTx.sent) {
               // update the tx
               Tx.$update({
-                where: record =>
-                  record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id,
+                where: (record) => {
+                  return record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id;
+                },
                 data: tx,
               });
             } else {
               // update found received
               Tx.$update({
-                where: record =>
-                  record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id,
+                where: (record) => {
+                  return record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id;
+                },
                 data: tx,
               });
             }
@@ -181,9 +183,10 @@ export default {
             if (foundTx.sent) {
               // update the tx
               Tx.$update({
-                where: record =>
-                  record.hash === tx.hash &&
-                  record.wallet_id === this.wallet.id,
+                where: (record) => {
+                  return record.hash === tx.hash &&
+                  record.wallet_id === this.wallet.id;
+                },
                 data: tx,
               });
 
@@ -202,9 +205,10 @@ export default {
                 // find change address that were used and mark them as used
                 tx.receiver.forEach((changeAddress) => {
                   Address.$update({
-                    where: record =>
-                      record.chain === 'internal' &&
-                      record.address === changeAddress,
+                    where: (record) => {
+                      return record.chain === 'internal' &&
+                      record.address === changeAddress;
+                    },
                     data: { used: true },
                   });
                 });
@@ -212,10 +216,12 @@ export default {
             } else {
               // update found received
               Tx.$update({
-                where: record => (
-                  record.hash === tx.hash &&
+                where: (record) => {
+                  return (
+                    record.hash === tx.hash &&
                   record.wallet_id === this.wallet.id
-                ),
+                  );
+                },
                 data: tx,
               });
             }
@@ -232,7 +238,7 @@ export default {
             if (this.wallet.sdk === 'Bitcoin') {
               if (tx.receiver.includes(this.wallet.externalAddress)) {
                 Wallet.$update({
-                  where: record => record.id === this.wallet.id,
+                  where: (record) => { return record.id === this.wallet.id; },
                   data: {
                     externalChainAddressIndex:
                       this.wallet.externalChainAddressIndex + 1,
@@ -247,7 +253,7 @@ export default {
 
       // update balance
       Wallet.$update({
-        where: record => record.id === this.wallet.id,
+        where: (record) => { return record.id === this.wallet.id; },
         data: { confirmedBalance: parseFloat(newBalance, 10) },
       });
 

@@ -17,7 +17,7 @@ export default function dateTranslater(timestamp, format, vm) {
       'thursday',
       'friday',
       'saturday',
-    ].map(item => vm.$t(item)),
+    ].map((item) => { return vm.$t(item); }),
     monthNames: [
       'january',
       'february',
@@ -31,6 +31,6 @@ export default function dateTranslater(timestamp, format, vm) {
       'october',
       'november',
       'december',
-    ].map(item => vm.$t(item)),
+    ].map((item) => { return vm.$t(item); }),
   });
 }

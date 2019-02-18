@@ -11,11 +11,11 @@ export default {
   name: 'Name',
   computed: {
     ...mapState({
-      contacts: state => state.contacts.contacts,
-      id: state => state.route.params.id,
+      contacts: (state) => { return state.contacts.contacts; },
+      id: (state) => { return state.route.params.id; },
     }),
     contactData() {
-      return this.contacts.find(contact => String(contact.id) === this.id);
+      return this.contacts.find((contact) => { return String(contact.id) === this.id; });
     },
   },
 };

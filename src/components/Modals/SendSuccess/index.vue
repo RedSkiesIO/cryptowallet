@@ -87,8 +87,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -100,7 +100,7 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     amount() {
       const inCurrency = this.coinToCurrency(this.txData.transaction.value);

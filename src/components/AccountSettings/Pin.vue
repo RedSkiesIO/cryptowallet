@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -154,7 +154,7 @@ export default {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
         this.$toast.create(0, this.$t('pinChanged'), 200);
         Account.$update({
-          where: record => record.id === this.authenticatedAccount,
+          where: (record) => { return record.id === this.authenticatedAccount; },
           data: { pinHash: this.newPinHash },
         });
         this.$refs.PinPad.resetState();

@@ -55,10 +55,10 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     currencies() {
-      return this.$store.state.settings.supportedCurrencies.map(item => item.code);
+      return this.$store.state.settings.supportedCurrencies.map((item) => { return item.code; });
     },
     selectedLocale: {
       get() {
@@ -66,7 +66,7 @@ export default {
       },
       set(newCurrency) {
         Account.$update({
-          where: record => record.id === this.authenticatedAccount,
+          where: (record) => { return record.id === this.authenticatedAccount; },
           data: { currency: newCurrency },
         });
       },

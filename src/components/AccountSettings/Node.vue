@@ -63,7 +63,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     newNodeIp: {
       get() {
@@ -93,7 +93,7 @@ export default {
     updateNode() {
       if (this.validIp(this.ip)) {
         Account.$update({
-          where: record => record.id === this.authenticatedAccount,
+          where: (record) => { return record.id === this.authenticatedAccount; },
           data: { node: this.ip },
         });
         this.$toast.create(0, this.$t('nodeUpdated'), 200);

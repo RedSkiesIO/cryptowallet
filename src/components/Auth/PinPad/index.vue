@@ -63,11 +63,11 @@ export default {
   },
   computed: {
     ...mapState({
-      minLength: state => state.settings.pin.minLength,
-      pin: state => state.setup.pinArray,
-      pinConfirm: state => state.setup.pinConfirmArray,
-      salt: state => state.setup.salt,
-      id: state => parseInt(state.route.params.id, 10),
+      minLength: (state) => { return state.settings.pin.minLength; },
+      pin: (state) => { return state.setup.pinArray; },
+      pinConfirm: (state) => { return state.setup.pinConfirmArray; },
+      salt: (state) => { return state.setup.salt; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
     canProceed() {
       return this.input.length < this.minLength;

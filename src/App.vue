@@ -92,7 +92,7 @@ export default {
 
   computed: {
     ...mapState({
-      settings: state => state.settings,
+      settings: (state) => { return state.settings; },
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -238,17 +238,21 @@ export default {
             }
             return true;
           };
-          const whereLatestPrice = (record, item) => (
-            record.coin === item.coin
+          const whereLatestPrice = (record, item) => {
+            return (
+              record.coin === item.coin
              && record.currency === item.currency
-          );
+            );
+          };
 
           if (checkPriceExists(coin, latestPrice)) {
             Latest.$update({
-              where: record => whereLatestPrice(record, {
-                coin,
-                currency: this.selectedCurrency.code,
-              }),
+              where: (record) => {
+                return whereLatestPrice(record, {
+                  coin,
+                  currency: this.selectedCurrency.code,
+                });
+              },
               data: {
                 updated: +new Date(),
                 data: latestPrice,
@@ -263,7 +267,7 @@ export default {
     },
 
     async fetchPrices() {
-      const coins = this.supportedCoins.map(x => x.symbol);
+      const coins = this.supportedCoins.map((x) => { return x.symbol; });
       const coinSDK = this.coinSDKS.Bitcoin;
 
       function onlyUnique(value, index, self) {
@@ -278,7 +282,7 @@ export default {
         const promises = [];
         coins.forEach((coin) => {
           // eslint-disable-next-line max-len
-          promises.push(new Promise(async res => res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code]))));
+          promises.push(new Promise(async (res) => { return res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code])); }));
         });
 
         await Promise.all(promises);

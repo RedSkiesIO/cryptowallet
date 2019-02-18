@@ -87,7 +87,7 @@ function AppDataEncryption(config) {
         });
       }
 
-      encryptedModelData.forEach(modelData => target.model.update(modelData));
+      encryptedModelData.forEach((modelData) => { return target.model.update(modelData); });
     });
   };
 
@@ -105,7 +105,7 @@ function AppDataEncryption(config) {
         });
       }
 
-      decryptedModelData.forEach(modelData => target.model.update(modelData));
+      decryptedModelData.forEach((modelData) => { return target.model.update(modelData); });
     });
   };
 }

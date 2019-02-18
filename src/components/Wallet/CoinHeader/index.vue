@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     coinLogo() {
       // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
@@ -92,10 +92,10 @@ export default {
       return Coin.all();
     },
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denominationShortened;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denominationShortened;
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);

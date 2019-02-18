@@ -29,12 +29,12 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
-      searchingContactsQueryString: state => state.payments.searchingContactsQueryString,
-      contacts: state => state.wallet.contacts,
+      isSearchingContacts: (state) => { return state.payments.isSearchingContacts; },
+      searchingContactsQueryString: (state) => { return state.payments.searchingContactsQueryString; },
+      contacts: (state) => { return state.wallet.contacts; },
     }),
     filteredContacts() {
-      return this.contacts.filter(contact => new RegExp(`^${this.searchingContactsQueryString}`, 'i').test(contact.displayName));
+      return this.contacts.filter((contact) => { return new RegExp(`^${this.searchingContactsQueryString}`, 'i').test(contact.displayName); });
     },
   },
 };

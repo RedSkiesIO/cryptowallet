@@ -62,7 +62,7 @@ export default {
 
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
+      id: (state) => { return state.route.params.id; },
     }),
 
     wallet() {
@@ -78,11 +78,11 @@ export default {
     },
 
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).denomination;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denomination;
     },
 
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
@@ -189,7 +189,7 @@ export default {
         });
 
         if (this.wallet.sdk === 'ERC20') {
-          const parent = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+          const parent = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; });
           const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
 
           feeInCoin = new AmountFormatter({

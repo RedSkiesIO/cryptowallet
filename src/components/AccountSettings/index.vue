@@ -176,7 +176,7 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -192,7 +192,7 @@ export default {
         const encryptedSeed = accountDataLoki.seed;
 
         Account.$update({
-          where: record => record.id === this.account.id,
+          where: (record) => { return record.id === this.account.id; },
           data: { seed: encryptedSeed },
         });
 
@@ -203,7 +203,7 @@ export default {
             const walletDataLoki = await Wallet.$find(wallet.id);
             const encryptedData = walletDataLoki.hdWallet;
             Wallet.$update({
-              where: record => record.name === wallet.name,
+              where: (record) => { return record.name === wallet.name; },
               data: { hdWallet: encryptedData },
             });
             res();

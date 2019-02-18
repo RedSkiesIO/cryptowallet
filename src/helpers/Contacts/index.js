@@ -7,9 +7,9 @@ export default function Contacts() {
   this.vm = new Vue();
   this.import = (contacts) => {
     this.contacts = contacts;
-    this.vm.$once('contactsImported', () => this.success());
-    this.vm.$once('contactsImportFailure', () => this.failure());
-    this.vm.$once('contactsImportError', event => this.error(event.payload));
+    this.vm.$once('contactsImported', () => { return this.success(); });
+    this.vm.$once('contactsImportFailure', () => { return this.failure(); });
+    this.vm.$once('contactsImportError', (event) => { return this.error(event.payload); });
 
     try {
       const options = new ContactFindOptions();

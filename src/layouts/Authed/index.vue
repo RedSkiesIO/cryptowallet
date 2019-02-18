@@ -97,9 +97,9 @@ export default {
 
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      isSearchingContacts: state => state.search.isSearchingContacts,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallets() {
       return Wallet.query()

@@ -52,8 +52,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -65,7 +65,7 @@ export default {
       return Coin.all();
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name).symbol;
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     chartStyles() {
       return {
@@ -145,7 +145,7 @@ export default {
             ticks: {
               fontColor: '#78d2e6',
               // eslint-disable-next-line no-unused-vars
-              callback: (value, index, values) => `£${value}`,
+              callback: (value, index, values) => { return `£${value}`; },
             },
           }],
         },

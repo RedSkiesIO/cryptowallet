@@ -39,8 +39,8 @@ export default {
 
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.search.isSearchingContacts,
-      searchingContactsQueryString: state => state.search.searchingContactsQueryString,
+      isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
+      searchingContactsQueryString: (state) => { return state.search.searchingContactsQueryString; },
     }),
 
     searchQueryString: {

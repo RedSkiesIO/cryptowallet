@@ -30,8 +30,8 @@ export default {
 
   computed: {
     ...mapState({
-      salt: state => state.account.salt,
-      minLength: state => state.account.minLength,
+      salt: (state) => { return state.account.salt; },
+      minLength: (state) => { return state.account.minLength; },
     }),
   },
 

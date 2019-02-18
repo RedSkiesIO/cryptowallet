@@ -29,7 +29,7 @@ export default {
 
   computed: {
     ...mapState({
-      selectedAccount: state => state.settings.selectedAccount,
+      selectedAccount: (state) => { return state.settings.selectedAccount; },
     }),
 
     accounts() {
@@ -41,10 +41,10 @@ export default {
      */
     account() {
       if (this.selectedAccount) {
-        return this.accounts.find(account => account.name === this.selectedAccount);
+        return this.accounts.find((account) => { return account.name === this.selectedAccount; });
       }
 
-      return this.accounts.find(account => account.default);
+      return this.accounts.find((account) => { return account.default; });
     },
   },
 
@@ -57,7 +57,7 @@ export default {
    */
   mounted() {
     if (!this.selectedAccount) {
-      const defaultAccount = this.accounts.find(account => account.default);
+      const defaultAccount = this.accounts.find((account) => { return account.default; });
       if (defaultAccount) this.$store.dispatch('settings/setSelectedAccount', defaultAccount.name);
     }
   },

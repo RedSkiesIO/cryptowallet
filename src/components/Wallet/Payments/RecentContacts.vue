@@ -31,8 +31,8 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
-      recentContacts: state => state.wallet.recentContacts,
+      isSearchingContacts: (state) => { return state.payments.isSearchingContacts; },
+      recentContacts: (state) => { return state.wallet.recentContacts; },
     }),
   },
 };

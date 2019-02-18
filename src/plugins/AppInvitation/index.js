@@ -8,7 +8,7 @@ function AppInvitation({ contact, vm }) {
    */
   this.mobilePhoneNumber = () => {
     if (!this.contact.phoneNumbers) return false;
-    return this.contact.phoneNumbers.find(item => item.type === 'mobile').value;
+    return this.contact.phoneNumbers.find((item) => { return item.type === 'mobile'; }).value;
   };
 
   /**

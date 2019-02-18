@@ -56,8 +56,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -85,7 +85,7 @@ export default {
       const keyPair = coinSDK.generateKeyPair(wallet, this.wallet.externalChainAddressIndex);
 
       Wallet.$update({
-        where: record => record.id === this.wallet.id,
+        where: (record) => { return record.id === this.wallet.id; },
         data: { externalAddress: keyPair.address },
       });
 
@@ -100,7 +100,7 @@ export default {
       Address.$insert({ data: newAddress });
 
       Wallet.$update({
-        where: record => record.id === this.wallet.id,
+        where: (record) => { return record.id === this.wallet.id; },
         data: { externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1 },
       });
 

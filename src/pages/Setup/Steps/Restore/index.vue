@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => parseInt(state.route.params.id, 10),
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
       }
 
       const accounts = this.$store.getters['entities/account/query']().get();
-      const seedAlreadyInUse = accounts.find(account => account.seed === seedPhrase);
+      const seedAlreadyInUse = accounts.find((account) => { return account.seed === seedPhrase; });
 
       if (seedAlreadyInUse) {
         this.$toast.create(10, this.$t('accountAlreadyImported'), 500);

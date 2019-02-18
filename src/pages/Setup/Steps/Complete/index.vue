@@ -11,7 +11,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 export default {
   computed: {
     ...mapState({
-      setup: state => state.setup,
+      setup: (state) => { return state.setup; },
     }),
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
