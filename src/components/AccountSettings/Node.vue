@@ -19,8 +19,8 @@
     <div class="modal-layout-wrapper">
       <div class="ip-input">
         <q-input
-          :float-label="$t('IPAddress')"
           v-model="newNodeIp"
+          :float-label="$t('IPAddress')"
           inverted
           clearable
           color="blueish"

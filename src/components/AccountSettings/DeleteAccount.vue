@@ -13,12 +13,16 @@
           @click.prevent="closeModal"
         />
       </div>
-      <h1 class="header-h1">Delete Account</h1>
+      <h1 class="header-h1">
+        Delete Account
+      </h1>
     </div>
 
     <div class="modal-layout-wrapper center">
       <h1 class="setup with-margin">
-        <span>{{ $t('enterPin') }}</span>
+        <span>
+          {{ $t('enterPin') }}
+        </span>
       </h1>
       <PinPad
         ref="PinPad"
