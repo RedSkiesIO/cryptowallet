@@ -14,7 +14,7 @@
         >
       </div>
 
-      <Spinner/>
+      <Spinner />
     </div>
 
     <div
