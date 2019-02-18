@@ -4,7 +4,6 @@
       :class="{done : !settings.loading}"
       class="app-loading background"
     >
-
       <div class="loading-footer">
         <!-- <div class="developed-by">Designed and Developed by</div> -->
         <img
