@@ -26,7 +26,7 @@
         <router-view/>
         <SelectAccountModal/>
         <NewAccountModal/>
-        <GetStartedModal/>
+        <GetStartedModal />
         <TermsModal/>
 
         <div v-if="settings.authenticatedAccount">
