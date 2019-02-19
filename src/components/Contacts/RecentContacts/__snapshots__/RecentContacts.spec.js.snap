@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecentContacts.vue renders and matches snapshot 1`] = `
+<section
+  class="recent-contacts-list"
+>
+  <h1
+    class="section-h1"
+  >
+    Recent
+  </h1>
+   
+  <div
+    class="flex-scroll-area-wrapper"
+  >
+    <div
+      class="height-fix"
+    >
+      <qscrollarea-stub
+        class="recent-contacts-scroll-area"
+        contentactivestyle="[object Object]"
+        contentstyle="[object Object]"
+        delay="1000"
+        thumbstyle="[object Object]"
+      >
+        <div
+          class="scroll-content"
+        >
+          <recentcontactitem-stub
+            contact="[object Object]"
+          />
+          <recentcontactitem-stub
+            contact="[object Object]"
+          />
+          <recentcontactitem-stub
+            contact="[object Object]"
+          />
+        </div>
+      </qscrollarea-stub>
+    </div>
+  </div>
+</section>
+`;

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <PaymentsGroupHeader :group="group"/>
+    <PaymentsGroupHeader :group="group" />
     <Payment
       v-for="payment in group.payments"
       :key="payment.ts"

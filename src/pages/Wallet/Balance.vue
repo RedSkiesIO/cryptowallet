@@ -1,7 +1,7 @@
 <template>
   <q-layout>
-    <UserBalance/>
-    <RecentPayments/>
+    <UserBalance />
+    <RecentPayments />
   </q-layout>
 </template>
 

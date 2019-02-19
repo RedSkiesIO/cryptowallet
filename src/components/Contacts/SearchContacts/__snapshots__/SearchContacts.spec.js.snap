@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchContacts.vue renders and matches snapshot 1`] = `
+<section
+  class="search-contacts"
+>
+  <div
+    class="flex-wrapper"
+  >
+    <div
+      class="search-input-wrapper"
+    >
+      <qinput-stub
+        clearable=""
+        color="blueish"
+        float-label="Search contacts"
+        inverted=""
+        type="text"
+        value=""
+      />
+       
+      <div
+        class="cancel-search-wrapper"
+        style="display: none;"
+      >
+        <qbtn-stub
+          color="secondary"
+          label="Cancel"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+`;

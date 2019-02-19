@@ -24,4 +24,3 @@ export function SET_PIN_HASH(state, pinHash) {
 export function SET_PIN_LENGTH(state, pinLength) {
   state.pinLength = pinLength;
 }
-

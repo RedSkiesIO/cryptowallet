@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactListItem.vue renders and matches snapshot 1`] = `
+<div
+  class="contact-list-item"
+>
+  <div
+    class="columns is-mobile no-margin-bottom"
+  >
+    <div
+      class="column is-2"
+    >
+      <div
+        class="circle"
+      />
+    </div>
+     
+    <div
+      class="column"
+    >
+      <div
+        class="columns is-mobile no-margin-bottom"
+      >
+        <div
+          class="column is-7 no-padding-bottom"
+        >
+          Fio
+        </div>
+      </div>
+       
+      <div
+        class="wallet-address"
+      >
+        <div>
+          
+          1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE
+        
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

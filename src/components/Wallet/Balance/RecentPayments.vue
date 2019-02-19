@@ -33,7 +33,7 @@ export default {
      * @return {Array}
      */
     groupedPayments() {
-      const sortedByDate = this.payments.slice().sort((a, b) => b.ts - a.ts);
+      const sortedByDate = this.payments.slice().sort((a, b) => { return b.ts - a.ts; });
       const groupedPayments = [];
       let groupKey = 0;
 
@@ -41,7 +41,7 @@ export default {
         const day = new Date(payment.ts).getDate();
         const month = monthNames[new Date(payment.ts).getMonth()];
         const paymentDate = `${day} ${month}`;
-        const groupItem = groupedPayments.find(item => item.date === paymentDate);
+        const groupItem = groupedPayments.find((item) => { return item.date === paymentDate; });
 
         if (!groupItem) {
           groupedPayments.push({

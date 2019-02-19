@@ -1,0 +1,16 @@
+export default {
+  setupTitle: 'Ρύθμιση CryptoWallet!',
+  continue: 'Συνέχισε',
+  profile: 'Προφίλ',
+  unlock: 'Ξεκλείδωμα',
+  balance: 'Υπόλοιπο',
+  analytics: 'Αναλυτικά',
+  payments: 'Πληρωμές',
+  exchange: 'Ανταλλαγή',
+  more: 'Περισσότερα',
+  'payments/noWalletAddress': 'Δεν διατίθεται διεύθυνση πορτοφολιού για αυτήν την επαφή',
+  contacts: 'Επαφές',
+  recent: 'Πρόσφατη',
+  welcome: 'Καλωσορίσατε',
+  selectLang: 'Επιλέξτε την γλώσσα σας',
+};

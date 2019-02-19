@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactsList.vue renders and matches snapshot 1`] = `
+<section
+  class="contacts-list"
+>
+  <h1
+    class="section-h1"
+  >
+    Contacts
+  </h1>
+   
+  <div
+    class="flex-scroll-area-wrapper"
+  >
+    <qscrollarea-stub
+      class="contacts-list-scroll-area"
+      contentactivestyle="[object Object]"
+      contentstyle="[object Object]"
+      delay="1000"
+      thumbstyle="[object Object]"
+    >
+      <div
+        class="scroll-content"
+      >
+        <contactlistitem-stub
+          contact="[object Object]"
+        />
+      </div>
+    </qscrollarea-stub>
+  </div>
+</section>
+`;

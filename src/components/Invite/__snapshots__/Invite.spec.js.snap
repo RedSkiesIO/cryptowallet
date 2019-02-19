@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Invite renders and matches snapshot 1`] = `
+<div>
+  <qbtn-stub
+    class="send-invitation"
+    color="primary"
+    icon="send"
+    label="Invite to use the app"
+  />
+   
+  <qmodal-stub
+    class="dark-modal"
+    position=""
+    positionclasses="flex-center"
+  >
+    <div
+      class="close-button-wrapper"
+    >
+      <qbtn-stub
+        color="secondary"
+        label="Close"
+        size="sm"
+      />
+    </div>
+     
+    <searchcontacts-stub />
+     
+    <contactslist-stub
+      clickitemaction="app-invitation"
+    />
+  </qmodal-stub>
+   
+  <qmodal-stub
+    minimized="true"
+    position=""
+    positionclasses="flex-center"
+  >
+    <div
+      style="padding: 2rem;"
+    >
+      <div
+        class="q-display-1 q-mb-md"
+      >
+        Permissions
+      </div>
+       
+      <p>
+        We're going to ask you to give us access to your contacts. We have reasons buddy.
+      </p>
+       
+      <qbtn-stub
+        color="primary"
+        label="Ok"
+      />
+    </div>
+  </qmodal-stub>
+</div>
+`;

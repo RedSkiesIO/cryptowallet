@@ -1,0 +1,7 @@
+build-develop:
+  stage: build
+  script:
+    - docker build . --tag acmwunittest:latest
+    - docker run -v ${PWD}:/srv acmwunittest:latest sh -c "rm -Rf node_modules; npm cache clean --force; npm install --force && npm run lint && npm run test:unit:snapshot && npm run test:unit"
+  only:
+    - develop

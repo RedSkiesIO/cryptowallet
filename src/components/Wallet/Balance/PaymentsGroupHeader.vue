@@ -4,7 +4,7 @@
       {{ group.date }}
     </div>
     <div class="column">
-      <Amount :amount="balanceChange"/>
+      <Amount :amount="balanceChange" />
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
      * @return {Number}
      */
     balanceChange() {
-      return this.group.payments.reduce((accumulator, payment) => accumulator + payment.amount, 0);
+      return this.group.payments.reduce((accumulator, payment) => { return accumulator + payment.amount; }, 0);
     },
   },
 };

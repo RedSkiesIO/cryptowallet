@@ -2,12 +2,12 @@
   <q-layout>
     <q-page-container>
       <button id="backButton_id">
-        <img src= "~/assets/back.png">
+        <img src="~/assets/back.png">
       </button>
-      <ProfileCard/>
+      <ProfileCard />
       <div class="mainContent">
         <hr>
-        <div id="form_id" >
+        <div id="form_id">
           <h1>Profile</h1>
           <div class="field">
             <label class="label">Name</label>
@@ -19,7 +19,8 @@
               pattern="[a-zA-Z0-9]+"
               required
               minlength="2"
-              maxlength="128">
+              maxlength="128"
+            >
           </div>
           <div class="field">
             <label class="label">Surname</label>
@@ -31,10 +32,10 @@
               pattern="[a-zA-Z0-9]+"
               required
               minlength="2"
-              maxlength="128">
+              maxlength="128"
+            >
           </div>
           <br>
-
         </div>
         <div class="field">
           <label class="label">Email</label>
@@ -44,7 +45,8 @@
             placeholder="me@example.com"
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
             required
-            title="email address">
+            title="email address"
+          >
         </div>
 
         <div class="field">
@@ -57,7 +59,8 @@
             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
             required
             minlength="6"
-            maxlength="128">
+            maxlength="128"
+          >
         </div>
         <div class="field">
           <input
@@ -68,7 +71,8 @@
             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
             required
             minlength="6"
-            maxlength="128">
+            maxlength="128"
+          >
         </div>
         <br>
         <div class="field">
@@ -100,12 +104,14 @@
             <label class="radio">
               <input
                 type="radio"
-                name="question">Yes
+                name="question"
+              >Yes
             </label>
             <label class="radio">
               <input
                 type="radio"
-                name="question">No
+                name="question"
+              >No
             </label>
           </div>
         </div>
@@ -117,7 +123,9 @@
               id="saveBtn_id"
               tag="button"
               class="button is-link"
-              to="/UserProfile">Save
+              to="/UserProfile"
+            >
+              Save
             </router-link>
           </div>
           <div class="control">
@@ -125,7 +133,9 @@
               id="cancelBtn_id"
               tag="button"
               class="button is-text"
-              to="/UserProfile">Cancel
+              to="/UserProfile"
+            >
+              Cancel
             </router-link>
           </div>
         </div>
