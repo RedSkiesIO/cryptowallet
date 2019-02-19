@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Receive
+          {{ $t('receive') }}
         </h1>
       </div>
       <div

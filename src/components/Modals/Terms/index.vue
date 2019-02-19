@@ -6,13 +6,12 @@
     >
       <div class="header-section">
         <h1 class="header-h1">
-          Terms & Conditions
+          {{ $t('termsAndConditions') }}
         </h1>
       </div>
 
       <div class="modal-layout-wrapper">
         <div class="terms-wrapper">
-          <h2>Introduction</h2>
 
           <div class="checkbox-wrapper">
             <q-checkbox

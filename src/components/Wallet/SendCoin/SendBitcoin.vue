@@ -466,9 +466,8 @@ export default {
      * @param  {Number} pendingCount
      * @return {Array<String>}
      */
-    generateChangeAddresses(/* filteredUtxos, pendingCount */) {
+    generateChangeAddresses() {
       const quantityToGenerate = 1;
-      // if (filteredUtxos.length === 1 && pendingCount === 0) quantityToGenerate = 2;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][

@@ -315,10 +315,6 @@ export default {
               newBalance = balance;
             } else if (wallet.sdk === 'Ethereum') {
               newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
-              /**
-               * @todo, figure out what the line before was for and comment it properly
-               */
-              // newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
             } else if (wallet.sdk === 'ERC20') {
               const activeWallet = this.activeWallets[this.authenticatedAccount][wallet.name];
               newBalance = await coinSDK.getBalance(activeWallet);
