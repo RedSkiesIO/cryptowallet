@@ -144,9 +144,9 @@ export default {
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
         // @todo Konrad, explain the mysterious code below
-        const newBalance = (this.wallet.confirmedBalance * 1000000000000000000) -
-                           ((this.txData.transaction.value * 1000000000000000000) +
-                           (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
+        const newBalance = (this.wallet.confirmedBalance * 1000000000000000000)
+                           - ((this.txData.transaction.value * 1000000000000000000)
+                           + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
         return newBalance / 1000000000000000000;
       }
       if (this.wallet.sdk === 'ERC20') {
