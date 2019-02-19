@@ -39,7 +39,9 @@
                 />
               </div>
               <p>
-                Digital currencies that are secured using cryptography and stored on a distributed ledger, blockchain or DAG. It's digital money. Used by millions world-wide.
+                Digital currencies that are secured using cryptography and stored
+                on a distributed ledger, blockchain or DAG. It's digital money.
+                Used by millions world-wide.
               </p>
             </div>
           </q-carousel-slide>
@@ -60,7 +62,9 @@
                 />
               </div>
               <p>
-                Only you can access your multi-currency crypto-wallet. Your wallet holds your coins and tokens, and allows you to easily and securely transfer your digital money.
+                Only you can access your multi-currency crypto-wallet. Your wallet
+                holds your coins and tokens, and allows you to easily and securely
+                transfer your digital money.
               </p>
             </div>
           </q-carousel-slide>
@@ -81,7 +85,10 @@
                 />
               </div>
               <p>
-                Create a list of words to help you recover your wallet, should you lose it. We strongly recommend you write these backup words on papers and hide these in several secret places or use cryptographic algorithm (e.g. Shamir secret sharing techniques).
+                Create a list of words to help you recover your wallet, should you
+                lose it. We strongly recommend you write these backup words on
+                papers and hide these in several secret places or use cryptographic
+                algorithm (e.g. Shamir secret sharing techniques).
               </p>
             </div>
           </q-carousel-slide>
@@ -104,7 +111,8 @@
                     />
                   </div>
                   <p>
-                    You are about to create the wallet. Some security precautions have to be made. Please make sure no one is watching you.
+                    You are about to create the wallet. Some security precautions
+                    have to be made. Please make sure no one is watching you.
                     Please disconnect from the Internet.
                   </p>
                 </div>

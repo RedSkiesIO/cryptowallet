@@ -6,7 +6,9 @@ export default ({ Vue }) => {
      */
     detect() {
       return new Promise((resolve) => {
-        this.cordovaSms.hasPermission((hasPermission) => { return resolve(hasPermission); }, (err) => {
+        this.cordovaSms.hasPermission((hasPermission) => {
+          return resolve(hasPermission);
+        }, (err) => {
           throw err;
         });
       });

@@ -125,7 +125,13 @@ export default {
      * @return {Function}
      */
     sleeper(ms) {
-      return () => { return new Promise((resolve) => { return setTimeout(() => { return resolve(); }, ms); }); };
+      return () => {
+        return new Promise((resolve) => {
+          return setTimeout(() => {
+            return resolve();
+          }, ms);
+        });
+      };
     },
 
     /**

@@ -77,7 +77,9 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      authenticatedAccount: (state) => {
+        return state.settings.authenticatedAccount;
+      },
     }),
 
     coinLogo() {
@@ -96,11 +98,15 @@ export default {
     },
 
     coinDenomination() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denominationShortened;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).denominationShortened;
     },
 
     coinSymbol() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).symbol;
     },
 
     latestPrice() {

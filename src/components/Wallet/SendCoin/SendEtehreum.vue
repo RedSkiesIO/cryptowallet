@@ -128,10 +128,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import {
-  required, alphaNum, minLength, maxLength,
+  required,
+  alphaNum,
+  minLength,
+  maxLength,
 } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
@@ -358,6 +361,7 @@ export default {
       try {
         fees = await coinSDK.getTransactionFee(this.wallet.network);
       } catch (e) {
+        fees = null;
       } finally {
         if (!fees) {
           fees = {

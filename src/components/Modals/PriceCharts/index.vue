@@ -305,7 +305,8 @@ export default {
           );
         };
 
-        if (checkPriceExists(this.coinSymbol, latestPrice[this.coinSymbol][this.selectedCurrency.code])) {
+        const latest = latestPrice[this.coinSymbol][this.selectedCurrency.code];
+        if (checkPriceExists(this.coinSymbol, latest)) {
           Latest.$update({
             where: (record) => {
               return whereLatest(record, {

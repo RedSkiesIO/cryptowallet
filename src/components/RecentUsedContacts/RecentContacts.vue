@@ -7,7 +7,7 @@
     <hr>
     <div class="container is-fluid">
       <div id="items">
-&nbsp;
+        &nbsp;
         <div class="item">
           <RecentContactBox />
         </div>&nbsp;

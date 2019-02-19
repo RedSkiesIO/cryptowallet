@@ -141,7 +141,7 @@ export default {
             color: '#78d2e6',
             ticks: {
               fontColor: '#78d2e6',
-              callback: (value, index, values) => { return `£${value}`; },
+              callback: (value) => { return `£${value}`; },
             },
           }],
         },

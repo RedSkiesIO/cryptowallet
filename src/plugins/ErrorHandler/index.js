@@ -24,12 +24,11 @@ export default ({ Vue, store }) => {
 
   /**
    * Add an error handling callback that creates toast.
-   * @TODO info is declared but never used??????
    * @param err
    * @param vm
    * @param info
    */
-  Vue.config.errorHandler = (err, vm = new Vue(), info) => {
+  Vue.config.errorHandler = (err, vm = new Vue()) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
