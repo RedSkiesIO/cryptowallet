@@ -17,8 +17,12 @@ module.exports = {
   globals: {
     cordova: true,
     ContactFindOptions: true,
+    jest: true,
+    sms: true,
+    QRScanner: true,
   },
   rules: {
+    'vue/require-default-prop': 0,
     'no-param-reassign': 0,
     'import/first': 0,
     'import/named': 2,
@@ -30,5 +34,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'arrow-body-style': ['error', 'always'],
+    'vue/component-name-in-template-casing': ["error", "PascalCase|kebab-case"]
   },
 };

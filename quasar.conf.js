@@ -1,24 +1,38 @@
-/* eslint-disable-next-line */
-module.exports = function (ctx) {
+/* eslint-disable */
+const envparser = require('./config/envparser');
+const path = require('path');
+
+module.exports = (ctx) => {
   return {
-    // app plugins (/src/plugins)
-    plugins: ['i18n', 'axios', 'acmwcrypto'],
+    plugins: [
+      'i18n',
+      'Axios',
+      'CWCrypto',
+      'VuexRouterSync',
+      'Toaster',
+      'ErrorHandler',
+      'Permissions',
+      'AppInvitation',
+      'Sms',
+      'Email',
+      'ContactsImport',
+      'AppDataEncryption',
+      'CryptoWalletSDK',
+      'WalletDiscovery',
+      'CoinFormatter',
+      'VueTrend',
+      'VueSelect',
+      'Vuelidate',
+    ],
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons', // optional, you are not bound to it
-      // 'ionicons',
-      // 'mdi',
-      // 'fontawesome'
+      'material-icons',
     ],
     supportIE: false,
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
-      // vueCompiler: true,
-      // gzip: true,
-      // analyze: true,
-      // extractCSS: false,
+
       extendWebpack(cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
@@ -26,11 +40,17 @@ module.exports = function (ctx) {
           loader: 'eslint-loader',
           exclude: /node_modules/,
         });
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          '@': path.resolve(__dirname, './src/'),
+        };
       },
+      uglifyOptions: {
+        mangle: false,
+      },
+      env: envparser(),
     },
     devServer: {
-      // https: true,
-      // port: 8080,
       open: true,
     },
     framework: {
@@ -42,6 +62,7 @@ module.exports = function (ctx) {
         'QPage',
         'QToolbar',
         'QToolbarTitle',
+        'QBtnGroup',
         'QBtn',
         'QIcon',
         'QList',
@@ -53,12 +74,36 @@ module.exports = function (ctx) {
         'QScrollArea',
         'QLayoutFooter',
         'QInput',
+        'QTabs',
+        'QTab',
+        'QTabPane',
+        'QRouteTab',
+        'QPullToRefresh',
+        'QTimeline',
+        'QTimelineEntry',
+        'QInfiniteScroll',
+        'QSpinnerDots',
+        'QCollapsible',
+        'QModal',
+        'QModalLayout',
+        'QToggle',
+        'QRadio',
+        'QSelect',
+        'QSlider',
+        'QScrollObservable',
+        'QAlert',
+        'QSearch',
+        'QAutocomplete',
+        'QCarousel',
+        'QCarouselSlide',
+        'QCarouselControl',
+        'QCheckbox',
       ],
-      directives: ['Ripple'],
+      directives: ['Ripple', 'CloseOverlay'],
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog', 'ActionSheet', 'AppVisibility'],
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      i18n: 'en-us',
+      i18n: 'en-uk',
     },
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],

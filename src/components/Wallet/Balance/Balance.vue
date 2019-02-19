@@ -1,6 +1,8 @@
 <template>
   <section class="user-balance">
-    <h1 class="balance-h1">£{{ UserBalance }}</h1>
+    <h1 class="balance-h1">
+      £{{ UserBalance }}
+    </h1>
     <div>Balance</div>
   </section>
 </template>

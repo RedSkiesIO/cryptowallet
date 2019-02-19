@@ -5,8 +5,11 @@
         <router-link
           id="Btn_id"
           tag="button"
-          to="/UserProfile">
-          <p id="profile_id">{{ $t('profile') }}</p>
+          to="/UserProfile"
+        >
+          <p id="profile_id">
+            {{ $t('profile') }}
+          </p>
         </router-link>
       </div>
     </div>

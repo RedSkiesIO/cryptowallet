@@ -12,7 +12,12 @@ export const getters = {};
 export const mutations = {};
 export const state = {};
 
-export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}, state: {} }) {
+export function createMocks(custom = {
+  getters: {},
+  mutations: {},
+  actions: {},
+  state: {},
+}) {
   /**
    * mock store modules.
    */
@@ -56,4 +61,4 @@ export function __createMocks(custom = { getters: {}, mutations: {}, actions: {}
   };
 }
 
-export const store = __createMocks().store;
+export const { store } = createMocks();

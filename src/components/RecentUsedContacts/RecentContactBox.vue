@@ -3,10 +3,13 @@
     <router-link
       id="Btn_id"
       tag="button"
-      to="/#FixThePath">
+      to="/#FixThePath"
+    >
       <div class="item">
         <img src="~/assets/avatar.png">
-        <p id="usersName_id">Name Surname</p>
+        <p id="usersName_id">
+          Name Surname
+        </p>
       </div>&nbsp;
     </router-link>
     <!-- <br><br> -->

@@ -3,7 +3,9 @@
     v-show="!isSearchingContacts"
     class="recent-contacts-list"
   >
-    <h1 class="section-h1">{{ $t('recent') }}</h1>
+    <h1 class="section-h1">
+      {{ $t('recent') }}
+    </h1>
     <div class="flex-scroll-area-wrapper">
       <div class="test">
         <q-scroll-area class="recent-contacts-scroll-area">
@@ -31,8 +33,8 @@ export default {
   },
   computed: {
     ...mapState({
-      isSearchingContacts: state => state.payments.isSearchingContacts,
-      recentContacts: state => state.wallet.recentContacts,
+      isSearchingContacts: (state) => { return state.payments.isSearchingContacts; },
+      recentContacts: (state) => { return state.wallet.recentContacts; },
     }),
   },
 };

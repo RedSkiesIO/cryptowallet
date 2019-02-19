@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>pin setup page</div>
-    <pin-pad />
+    <PinPad />
     <q-btn
       v-if="pin.length >= 6"
       :label="$t('continue')"
@@ -30,41 +30,13 @@ export default {
 
   computed: {
     ...mapState({
-      salt: state => state.account.salt,
-      minLength: state => state.account.minLength,
+      salt: (state) => { return state.account.salt; },
+      minLength: (state) => { return state.account.minLength; },
     }),
-  },
-
-  beforeCreate() {
-
-  },
-
-  created() {
-
   },
 
   beforeMount() {
     this.pinInputListener();
-  },
-
-  mounted() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
   },
 
   methods: {
@@ -83,7 +55,6 @@ export default {
      */
     hashPin() {
       const pinHash = this.$acmwcrypto.bcryptHashString(this.pin.join(''), this.salt);
-      console.log(pinHash);
       this.$store.dispatch('account/setPinHash', {
         pinHash,
         pinLength: this.pin.length,
@@ -93,6 +64,3 @@ export default {
 };
 
 </script>
-
-<style scoped>
-</style>

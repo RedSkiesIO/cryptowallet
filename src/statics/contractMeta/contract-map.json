@@ -1,0 +1,1277 @@
+{
+    "field": "value",
+    "list": [
+        {
+            "contract": "0x150b0b96933B75Ce27af8b92441F8fB683bF9739",
+            "value": "Dragonereum Gold",
+            "label": "Dragonereum Gold",
+            "image": "./statics/contractMeta/images/gold.svg",
+            "erc20": true,
+            "symbol": "GOLD",
+            "decimals": 18
+        },
+        {
+            "contract": "0x5d60d8d7eF6d37E16EBABc324de3bE57f135e0BC",
+            "value": "MyBit",
+            "label": "MyBit",
+            "image": "./statics/contractMeta/images/MYB.svg",
+            "erc20": true,
+            "symbol": "MYB",
+            "decimals": 18
+        },
+        {
+            "contract": "0x5adc961D6AC3f7062D2eA45FEFB8D8167d44b190",
+            "value": "Dether",
+            "label": "Dether",
+            "image": "./statics/contractMeta/images/dether.svg",
+            "erc20": true,
+            "symbol": "DTH",
+            "decimals": 18
+        },
+        {
+            "contract": "0x3F17Dd476faF0a4855572F0B6ed5115D9bBA22AD",
+            "value": "Wibson",
+            "label": "Wibson",
+            "image": "./statics/contractMeta/images/wibson-image.svg",
+            "erc20": true,
+            "symbol": "WIB",
+            "decimals": 9
+        },
+        {
+            "contract": "0xDF347911910b6c9A4286bA8E2EE5ea4a39eB2134",
+            "value": "Bob's Repair",
+            "label": "Bob's Repair",
+            "image": "./statics/contractMeta/images/bobsrepair.png",
+            "erc20": true,
+            "symbol": "BOB",
+            "decimals": 18
+        },
+        {
+            "contract": "0x9e88613418cF03dCa54D6a2cf6Ad934A78C7A17A",
+            "value": "Swarm",
+            "label": "Swarm",
+            "image": "./statics/contractMeta/images/swarm.svg",
+            "erc20": true,
+            "symbol": "SWM",
+            "decimals": 18
+        },
+        {
+            "contract": "0x6863bE0e7CF7ce860A574760e9020D519a8bDC47",
+            "value": "On.Live",
+            "label": "On.Live",
+            "image": "./statics/contractMeta/images/onlive.svg",
+            "erc20": true,
+            "symbol": "ONL",
+            "decimals": 18
+        },
+        {
+            "contract": "0xea5f88E54d982Cbb0c441cde4E79bC305e5b43Bc",
+            "value": "Pareto",
+            "label": "Pareto",
+            "image": "./statics/contractMeta/images/Paretoimage.png",
+            "erc20": true,
+            "symbol": "PARETO",
+            "decimals": 18
+        },
+        {
+            "contract": "0x4D807509aECe24C0fa5A102b6a3B059Ec6E14392",
+            "value": "Menlo One",
+            "label": "Menlo One",
+            "image": "./statics/contractMeta/images/Menlo_One.png",
+            "erc20": true,
+            "symbol": "ONE",
+            "decimals": 18
+        },
+        {
+            "contract": "0xDDD460bBD9F79847ea08681563e8A9696867210C",
+            "value": "Spendcoin",
+            "label": "Spendcoin",
+            "image": "./statics/contractMeta/images/SpendCoin.png",
+            "erc20": true,
+            "symbol": "SPND",
+            "decimals": 18
+        },
+        {
+            "contract": "0x27054b13b1B798B345b591a4d22e6562d47eA75a",
+            "value": "AirSwap Token",
+            "label": "AirSwap Token",
+            "image": "./statics/cc-icons/color/ast.svg",
+            "erc20": true,
+            "symbol": "AST",
+            "decimals": 4
+        },
+        {
+            "contract": "0x8D5682941cE456900b12d47ac06a88b47C764CE1",
+            "value": "RightMesh Token",
+            "label": "RightMesh Token",
+            "image": "./statics/contractMeta/images/Rmesh.png",
+            "erc20": true,
+            "symbol": "RMESH",
+            "decimals": 18
+        },
+        {
+            "contract": "0xDDe12a12A6f67156e0DA672be05c374e1B0a3e57",
+            "value": "JOYSO",
+            "label": "JOYSO",
+            "image": "./statics/contractMeta/images/JOY.png",
+            "erc20": true,
+            "symbol": "JOY",
+            "decimals": 6
+        },
+        {
+            "contract": "0x0D262e5dC4A06a0F1c90cE79C7a60C09DfC884E4",
+            "value": "JET8 Token",
+            "label": "JET8 Token",
+            "image": "./statics/contractMeta/images/J8T.svg",
+            "erc20": true,
+            "symbol": "J8T",
+            "decimals": 8
+        },
+        {
+            "contract": "0x4a220E6096B25EADb88358cb44068A3248254675",
+            "value": "Quant Network",
+            "label": "Quant Network",
+            "image": "./statics/contractMeta/images/quant-network.svg",
+            "erc20": true,
+            "symbol": "QNT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xBC86727E770de68B1060C91f6BB6945c73e10388",
+            "value": "Ink Protocol",
+            "label": "Ink Protocol",
+            "image": "./statics/contractMeta/images/ink_protocol.svg",
+            "erc20": true,
+            "symbol": "XNK",
+            "decimals": 18
+        },
+        {
+            "contract": "0x4CEdA7906a5Ed2179785Cd3A40A69ee8bc99C466",
+            "value": "Aion Network",
+            "label": "Aion Network",
+            "image": "./statics/cc-icons/color/aion.svg",
+            "erc20": true,
+            "symbol": "AION",
+            "decimals": 8
+        },
+        {
+            "contract": "0xa95592DCFfA3C080B4B40E459c5f5692F67DB7F8",
+            "value": "ELY Token",
+            "label": "ELY Token",
+            "image": "./statics/contractMeta/images/ely.png",
+            "erc20": true,
+            "symbol": "ELY",
+            "decimals": 18
+        },
+        {
+            "contract": "0x9E46A38F5DaaBe8683E10793b06749EEF7D733d1",
+            "value": "PolySwarm Nectar",
+            "label": "PolySwarm Nectar",
+            "image": "./statics/contractMeta/images/polyswarm_nectar.svg",
+            "erc20": true,
+            "symbol": "NCT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xe1A178B681BD05964d3e3Ed33AE731577d9d96dD",
+            "value": "BOX Token",
+            "label": "BOX Token",
+            "image": "./statics/contractMeta/images/box_token.png",
+            "erc20": true,
+            "symbol": "BOX",
+            "decimals": 18
+        },
+        {
+            "contract": "0x82BD526bDB718C6d4DD2291Ed013A5186cAE2DCa",
+            "value": "dutyof.care Token",
+            "label": "dutyof.care Token",
+            "image": "./statics/contractMeta/images/dutyof.care-square.png",
+            "erc20": true,
+            "symbol": "VDOC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x168296bb09e24A88805CB9c33356536B980D3fC5",
+            "value": "Rhoc",
+            "label": "Rhoc",
+            "image": "./statics/cc-icons/color/rhoc.svg",
+            "erc20": true,
+            "symbol": "RHOC",
+            "decimals": 8
+        },
+        {
+            "contract": "0x543Ff227F64Aa17eA132Bf9886cAb5DB55DCAddf",
+            "value": "DAOstack",
+            "label": "DAOstack",
+            "image": "./statics/contractMeta/images/DAOstack.png",
+            "erc20": true,
+            "symbol": "GEN",
+            "decimals": 18
+        },
+        {
+            "contract": "0x6aEDbF8dFF31437220dF351950Ba2a3362168d1b",
+            "value": "Dragonglass",
+            "label": "Dragonglass",
+            "image": "./statics/contractMeta/images/dragonglass.svg",
+            "erc20": true,
+            "symbol": "DGS",
+            "decimals": 8
+        },
+        {
+            "contract": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+            "value": "OmiseGO",
+            "label": "OmiseGO",
+            "image": "./statics/cc-icons/color/omg.svg",
+            "erc20": true,
+            "symbol": "OMG",
+            "decimals": 18
+        },
+        {
+            "contract": "0x4162178B78D6985480A308B2190EE5517460406D",
+            "value": "Colu Local Network",
+            "label": "Colu Local Network",
+            "image": "./statics/contractMeta/images/cln.png",
+            "erc20": true,
+            "symbol": "CLN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC",
+            "value": "Storj",
+            "label": "Storj",
+            "image": "./statics/contractMeta/images/storj.jpg",
+            "erc20": true,
+            "symbol": "STORJ",
+            "decimals": 8
+        },
+        {
+            "contract": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+            "value": "Decentraland",
+            "label": "Decentraland",
+            "image": "./statics/cc-icons/color/mana.svg",
+            "erc20": true,
+            "symbol": "MANA",
+            "decimals": 18
+        },
+        {
+            "contract": "0x5BC7e5f0Ab8b2E10D2D0a3F21739FCe62459aeF3",
+            "value": "Hut34 Entropy Token",
+            "label": "Hut34 Entropy Token",
+            "image": "./statics/cc-icons/color/entrp.svg",
+            "symbol": "ENTRP",
+            "erc20": true,
+            "decimals": 18
+        },
+        {
+            "contract": "0xEBBdf302c940c6bfd49C6b165f457fdb324649bc",
+            "value": "Hydro",
+            "label": "Hydro",
+            "image": "./statics/contractMeta/images/hydro.png",
+            "erc20": true,
+            "symbol": "HYDRO",
+            "decimals": 18
+        },
+        {
+            "contract": "0x2604FA406Be957E542BEb89E6754fCdE6815e83f",
+            "value": "Playkey Token",
+            "label": "Playkey Token",
+            "image": "./statics/contractMeta/images/playkey.svg",
+            "erc20": true,
+            "symbol": "PKT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
+            "value": "0x",
+            "label": "0x",
+            "image": "./statics/contractMeta/images/0x.svg",
+            "erc20": true,
+            "symbol": "ZRX",
+            "decimals": 18
+        },
+        {
+            "contract": "0xB563300A3BAc79FC09B93b6F84CE0d4465A2AC27",
+            "value": "RedCab",
+            "label": "RedCab",
+            "image": "./statics/contractMeta/images/redcab.png",
+            "erc20": true,
+            "symbol": "REDC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x957c30aB0426e0C93CD8241E2c60392d08c6aC8e",
+            "value": "Modum Token",
+            "label": "Modum Token",
+            "image": "./statics/contractMeta/images/modum.svg",
+            "erc20": true,
+            "symbol": "MOD",
+            "decimals": 0
+        },
+        {
+            "contract": "0x1a7a8BD9106F2B8D977E08582DC7d24c723ab0DB",
+            "value": "AppCoins",
+            "label": "AppCoins",
+            "image": "./statics/cc-icons/color/appc.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "APPC"
+        },
+        {
+            "contract": "0xdB25f211AB05b1c97D595516F45794528a807ad8",
+            "value": "STASIS EURS Token",
+            "label": "STASIS EURS Token",
+            "image": "./statics/contractMeta/images/stasis-eurs.svg",
+            "erc20": true,
+            "decimals": 2,
+            "symbol": "EURS"
+        },
+        {
+            "contract": "0xC011A72400E58ecD99Ee497CF89E3775d4bd732F",
+            "value": "Synthetix Network Token",
+            "label": "Synthetix Network Token",
+            "image": "./statics/contractMeta/images/synthetix.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "SNX"
+        },
+        {
+            "contract": "0x57Ab1E02fEE23774580C119740129eAC7081e9D3",
+            "value": "sUSD",
+            "label": "sUSD",
+            "image": "./statics/contractMeta/images/synthetix_susd.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "SUSD"
+        },
+        {
+            "contract": "0x0DB8D8b76BC361bAcbB72E2C491E06085A97Ab31",
+            "value": "IQeon",
+            "label": "IQeon",
+            "image": "./statics/contractMeta/images/iqeon.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "IQN"
+        },
+        {
+            "contract": "0x26E75307Fc0C021472fEb8F727839531F112f317",
+            "value": "Crypto20",
+            "label": "Crypto20",
+            "image": "./statics/contractMeta/images/c20.svg",
+            "erc20": true,
+            "symbol": "C20",
+            "decimals": 18
+        },
+        {
+            "contract": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+            "value": "Crypto Kitties",
+            "label": "Crypto Kitties",
+            "image": "./statics/contractMeta/images/CryptoKitties-Kitty-13733.svg",
+            "erc20": true,
+            "symbol": "CK",
+            "decimals": 0
+        },
+        {
+            "contract": "0x4F4f0Db4de903B88f2B1a2847971E231D54F8fd3",
+            "value": "Geens Platform Token",
+            "label": "Geens Platform Token",
+            "image": "./statics/contractMeta/images/gee-icon.svg",
+            "erc20": true,
+            "symbol": "GEE",
+            "decimals": 8
+        },
+        {
+            "contract": "0xBEB9eF514a379B997e0798FDcC901Ee474B6D9A1",
+            "value": "Melon",
+            "label": "Melon",
+            "image": "./statics/cc-icons/color/mln.svg",
+            "erc20": true,
+            "symbol": "MLN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xCed1A8529125D1bD06B54a7B01210df357D00885",
+            "value": "Too Real Badge",
+            "label": "Too Real Badge",
+            "image": "./statics/contractMeta/images/too-real.jpg",
+            "erc20": true,
+            "symbol": "TRL",
+            "decimals": 0
+        },
+        {
+            "contract": "0x08d32b0da63e2C3bcF8019c9c5d849d7a9d791e6",
+            "value": "Dentacoin",
+            "label": "Dentacoin",
+            "image": "./statics/cc-icons/color/dcn.svg",
+            "erc20": true,
+            "symbol": "DCN",
+            "decimals": 0
+        },
+        {
+            "contract": "0xba2184520A1cC49a6159c57e61E1844E085615B6",
+            "value": "Helimageld Token",
+            "label": "Helimageld Token",
+            "image": "./statics/contractMeta/images/hgt.png",
+            "erc20": true,
+            "symbol": "HGT",
+            "decimals": 8
+        },
+        {
+            "contract": "0xeAb43193CF0623073Ca89DB9B712796356FA7414",
+            "value": "GOLDX",
+            "label": "GOLDX",
+            "image": "./statics/contractMeta/images/goldx.png",
+            "erc20": true,
+            "symbol": "GOLDX",
+            "decimals": 18
+        },
+        {
+            "contract": "0x8727c112C712c4a03371AC87a74dD6aB104Af768",
+            "value": "Jetcoin Institute Token",
+            "label": "Jetcoin Institute Token",
+            "image": "./statics/contractMeta/images/JETCOIN28.png",
+            "erc20": true,
+            "symbol": "JET",
+            "decimals": 18
+        },
+        {
+            "contract": "0xC596bD09d652827b0106292D3e378D5938df4B12",
+            "value": "Teleport Token",
+            "label": "Teleport Token",
+            "image": "./statics/contractMeta/images/tpt.png",
+            "erc20": true,
+            "symbol": "TPT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xA54ddC7B3CcE7FC8b1E3Fa0256D0DB80D2c10970",
+            "value": "NEVERDIE Coin",
+            "label": "NEVERDIE Coin",
+            "image": "./statics/contractMeta/images/ndc.png",
+            "erc20": true,
+            "symbol": "NDC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x1c4481750daa5Ff521A2a7490d9981eD46465Dbd",
+            "value": "BlockMason Credit Protocol Token",
+            "label": "BlockMason Credit Protocol Token",
+            "image": "./statics/contractMeta/images/bcpt.svg",
+            "erc20": true,
+            "symbol": "BCPT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x20F7A3DdF244dc9299975b4Da1C39F8D5D75f05A",
+            "value": "Sapien Network Token",
+            "label": "Sapien Network Token",
+            "image": "./statics/contractMeta/images/spn.svg",
+            "erc20": true,
+            "symbol": "SPN",
+            "decimals": 6
+        },
+        {
+            "contract": "0xA4e8C3Ec456107eA67d3075bF9e3DF3A75823DB0",
+            "value": "Loom Network Token",
+            "label": "Loom Network Token",
+            "image": "./statics/contractMeta/images/loom.svg",
+            "erc20": true,
+            "symbol": "LOOM",
+            "decimals": 18
+        },
+        {
+            "contract": "0xD0b3462481C33F63a288cd1923e2A261EE65b4FF",
+            "value": "EGO Badge",
+            "label": "EGO Badge",
+            "image": "./statics/contractMeta/images/ego_badge.png",
+            "erc20": true,
+            "symbol": "EGO",
+            "decimals": 0
+        },
+        {
+            "contract": "0x71D01dB8d6a2fBEa7f8d434599C237980C234e4C",
+            "value": "Gladius",
+            "label": "Gladius",
+            "image": "./statics/contractMeta/images/gladius.svg",
+            "erc20": true,
+            "symbol": "GLA",
+            "decimals": 8
+        },
+        {
+            "contract": "0xdd974D5C2e2928deA5F71b9825b8b646686BD200",
+            "value": "Kyber Network Crystal",
+            "label": "Kyber Network Crystal",
+            "image": "./statics/contractMeta/images/kyber.svg",
+            "erc20": true,
+            "symbol": "KNC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C",
+            "value": "Bancor Network Token",
+            "label": "Bancor Network Token",
+            "image": "./statics/cc-icons/color/bnt.svg",
+            "erc20": true,
+            "symbol": "BNT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xfa05A73FfE78ef8f1a739473e462c54bae6567D9",
+            "value": "Lunyr Token",
+            "label": "Lunyr Token",
+            "image": "./statics/cc-icons/color/lun.svg",
+            "erc20": true,
+            "symbol": "LUN",
+            "decimals": 18
+        },
+        {
+            "contract": "0x5b26C5D0772E5bbaC8b3182AE9a13f9BB2D03765",
+            "value": "EDU Token",
+            "label": "EDU Token",
+            "image": "./statics/contractMeta/images/edu.svg",
+            "erc20": true,
+            "symbol": "EDU",
+            "decimals": 8
+        },
+        {
+            "contract": "0x5c543e7AE0A1104f78406C340E9C64FD9fCE5170",
+            "value": "vSlice",
+            "label": "vSlice",
+            "image": "./statics/contractMeta/images/vslice.png",
+            "erc20": true,
+            "symbol": "VSL",
+            "decimals": 18
+        },
+        {
+            "contract": "0xFf3519eeeEA3e76F1F699CCcE5E23ee0bdDa41aC",
+            "value": "Blockchain Capital",
+            "label": "Blockchain Capital",
+            "image": "./statics/contractMeta/images/bcap.svg",
+            "erc20": true,
+            "symbol": "BCAP",
+            "decimals": 0
+        },
+        {
+            "contract": "0x6531f133e6DeeBe7F2dcE5A0441aA7ef330B4e53",
+            "value": "Chronobank TIME",
+            "label": "Chronobank TIME",
+            "image": "./statics/contractMeta/images/chronobank.png",
+            "erc20": true,
+            "symbol": "TIME",
+            "decimals": 8
+        },
+        {
+            "contract": "0xE7775A6e9Bcf904eb39DA2b68c5efb4F9360e08C",
+            "value": "Token-as-a-Service",
+            "label": "Token-as-a-Service",
+            "image": "./statics/cc-icons/color/taas.svg",
+            "erc20": true,
+            "symbol": "TAAS",
+            "decimals": 6
+        },
+        {
+            "contract": "0xaAAf91D9b90dF800Df4F55c205fd6989c977E73a",
+            "value": "Monolith TKN",
+            "label": "Monolith TKN",
+            "image": "./statics/contractMeta/images/tkn.svg",
+            "erc20": true,
+            "symbol": "TKN",
+            "decimals": 8
+        },
+        {
+            "contract": "0x08711D3B02C8758F2FB3ab4e80228418a7F8e39c",
+            "value": "Edgeless",
+            "label": "Edgeless",
+            "image": "./statics/cc-icons/color/edg.svg",
+            "erc20": true,
+            "symbol": "EDG",
+            "decimals": 0
+        },
+        {
+            "contract": "0xf7B098298f7C69Fc14610bf71d5e02c60792894C",
+            "value": "Guppy",
+            "label": "Guppy",
+            "image": "./statics/cc-icons/color/gup.svg",
+            "erc20": true,
+            "symbol": "GUP",
+            "decimals": 3
+        },
+        {
+            "contract": "0x4DF812F6064def1e5e029f1ca858777CC98D2D81",
+            "value": "Xaurum",
+            "label": "Xaurum",
+            "image": "./statics/contractMeta/images/xaurum_image.svg",
+            "erc20": true,
+            "symbol": "XAUR",
+            "decimals": 8
+        },
+        {
+            "contract": "0xB9e7F8568e08d5659f5D29C4997173d84CdF2607",
+            "value": "Swarm City Token",
+            "label": "Swarm City Token",
+            "image": "./statics/contractMeta/images/swt.jpg",
+            "erc20": true,
+            "symbol": "SWT",
+            "decimals": 18
+        },
+        {
+            "contract": "0xCb94be6f13A1182E4A4B6140cb7bf2025d28e41B",
+            "value": "Trustcoin",
+            "label": "Trustcoin",
+            "image": "./statics/contractMeta/images/trustcoin.jpg",
+            "erc20": true,
+            "symbol": "TRST",
+            "decimals": 6
+        },
+        {
+            "contract": "0x960b236A07cf122663c4303350609A66A7B288C0",
+            "value": "Aragon Network Token",
+            "label": "Aragon Network Token",
+            "image": "./statics/contractMeta/images/aragon_isotype.svg",
+            "erc20": true,
+            "symbol": "ANT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x667088b212ce3d06a1b553a7221E1fD19000d9aF",
+            "value": "WINGS",
+            "label": "WINGS",
+            "image": "./statics/contractMeta/images/wings_image.svg",
+            "erc20": true,
+            "symbol": "WINGS",
+            "decimals": 18
+        },
+        {
+            "contract": "0xAf30D2a7E90d7DC361c8C4585e9BB7D2F6f15bc7",
+            "value": "FirstBlood Token",
+            "label": "FirstBlood Token",
+            "image": "./statics/contractMeta/images/1st.svg",
+            "erc20": true,
+            "symbol": "1ST",
+            "decimals": 18
+        },
+        {
+            "contract": "0x607F4C5BB672230e8672085532f7e901544a7375",
+            "value": "iExec RLC Token",
+            "label": "iExec RLC Token",
+            "image": "./statics/contractMeta/images/rlc.svg",
+            "erc20": true,
+            "symbol": "RLC",
+            "decimals": 9
+        },
+        {
+            "contract": "0xaeC2E87E0A235266D9C5ADc9DEb4b2E29b54D009",
+            "value": "SingularDTV",
+            "label": "SingularDTV",
+            "image": "./statics/contractMeta/images/singulardtv.svg",
+            "erc20": true,
+            "symbol": "SNGLS",
+            "decimals": 0
+        },
+        {
+            "contract": "0x888666CA69E0f178DED6D75b5726Cee99A87D698",
+            "value": "ICONOMI",
+            "label": "ICONOMI",
+            "image": "./statics/cc-icons/color/icn.svg",
+            "erc20": true,
+            "symbol": "ICN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xE0B7927c4aF23765Cb51314A0E0521A9645F0E2A",
+            "value": "Digix",
+            "label": "Digix",
+            "image": "./statics/cc-icons/color/dgd.svg",
+            "erc20": true,
+            "symbol": "DGD",
+            "decimals": 9
+        },
+        {
+            "contract": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+            "value": "Maker",
+            "label": "Maker",
+            "image": "./statics/cc-icons/color/mkr.svg",
+            "erc20": true,
+            "symbol": "MKR",
+            "decimals": 18
+        },
+        {
+            "contract": "0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359",
+            "value": "Dai Stablecoin v1.0",
+            "label": "Dai Stablecoin v1.0",
+            "image": "./statics/contractMeta/images/dai.svg",
+            "erc20": true,
+            "symbol": "DAI",
+            "decimals": 18
+        },
+        {
+            "contract": "0xDF2C7238198Ad8B389666574f2d8bc411A4b7428",
+            "value": "Mainframe Token",
+            "label": "Mainframe Token",
+            "image": "./statics/contractMeta/images/Mainframe.png",
+            "erc20": true,
+            "symbol": "MFT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+            "value": "Basic Attention Token",
+            "label": "Basic Attention Token",
+            "image": "./statics/contractMeta/images/BAT_icon.svg",
+            "erc20": true,
+            "symbol": "BAT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x4D8fc1453a0F359e99c9675954e656D80d996FbF",
+            "value": "BEE Token",
+            "label": "BEE Token",
+            "image": "./statics/contractMeta/images/bee_token.svg",
+            "erc20": true,
+            "symbol": "BEE",
+            "decimals": 18
+        },
+        {
+            "contract": "0x6810e776880C02933D47DB1b9fc05908e5386b96",
+            "value": "Gnosis Token",
+            "label": "Gnosis Token",
+            "image": "./statics/contractMeta/images/gnosis.svg",
+            "erc20": true,
+            "symbol": "GNO",
+            "decimals": 18
+        },
+        {
+            "contract": "0xD8912C10681D8B21Fd3742244f44658dBA12264E",
+            "value": "Pluton",
+            "label": "Pluton",
+            "image": "./statics/contractMeta/images/plutus-god.svg",
+            "erc20": true,
+            "symbol": "PLU",
+            "decimals": 18
+        },
+        {
+            "contract": "0x1985365e9f78359a9B6AD760e32412f4a445E862",
+            "value": "Reputation",
+            "label": "Reputation",
+            "image": "./statics/cc-icons/color/rep.svg",
+            "erc20": true,
+            "symbol": "REP",
+            "decimals": 18
+        },
+        {
+            "contract": "0xd0929d411954c47438dc1d871dd6081F5C5e149c",
+            "value": "Refereum",
+            "label": "Refereum",
+            "image": "./statics/contractMeta/images/rfr.svg",
+            "erc20": true,
+            "symbol": "RFR",
+            "decimals": 4
+        },
+        {
+            "contract": "0xb0866289e870D2efc282406cF4123Df6E5BcB652",
+            "value": "NoFakeCoin",
+            "label": "NoFakeCoin",
+            "image": "./statics/contractMeta/images/nfticon.png",
+            "erc20": true,
+            "symbol": "NFC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x408e41876cCCDC0F92210600ef50372656052a38",
+            "value": "Republic Protocol",
+            "label": "Republic Protocol",
+            "image": "./statics/contractMeta/images/ren.svg",
+            "erc20": true,
+            "symbol": "REN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xa74476443119A942dE498590Fe1f2454d7D4aC0d",
+            "value": "Golem Network Token",
+            "label": "Golem Network Token",
+            "image": "./statics/contractMeta/images/golem.svg",
+            "erc20": true,
+            "symbol": "GNT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x6888a16eA9792c15A4DCF2f6C623D055c8eDe792",
+            "value": "Spectiv Signal Token",
+            "label": "Spectiv Signal Token",
+            "image": "./statics/contractMeta/images/spectiv.svg",
+            "erc20": true,
+            "symbol": "SIG",
+            "decimals": 18
+        },
+        {
+            "contract": "0xC526560cf6Ab1755a457248CB9E8669ec7F4B78C",
+            "value": "Spectiv Crowdsale",
+            "label": "Spectiv Crowdsale",
+            "image": "./statics/contractMeta/images/spectiv.svg"
+        },
+        {
+            "contract": "0x617b3f8050a0BD94b6b1da02B4384eE5B4DF13F4",
+            "value": "MetaMark",
+            "label": "MetaMark",
+            "image": "./statics/contractMeta/images/metamark.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "META"
+        },
+        {
+            "contract": "0x9a642d6b3368ddc662CA244bAdf32cDA716005BC",
+            "value": "Qtum",
+            "label": "Qtum",
+            "image": "./statics/cc-icons/color/qtum.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "QTUM"
+        },
+        {
+            "contract": "0x1234567461d3f8Db7496581774Bd869C83D51c93",
+            "value": "BitClave",
+            "label": "BitClave",
+            "image": "./statics/contractMeta/images/bitclave.svg",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "CAT"
+        },
+        {
+            "contract": "0x7d4b8Cce0591C9044a22ee543533b72E976E36C3",
+            "value": "Change Coin",
+            "label": "Change Coin",
+            "image": "./statics/contractMeta/images/change.png",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "CAG"
+        },
+        {
+            "contract": "0x1d462414fe14cf489c7A21CaC78509f4bF8CD7c0",
+            "value": "CanYaCoin",
+            "label": "CanYaCoin",
+            "image": "./statics/contractMeta/images/CanYa.svg",
+            "erc20": true,
+            "decimals": 6,
+            "symbol": "CAN"
+        },
+        {
+            "contract": "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef",
+            "value": "ENS Registrar",
+            "label": "ENS Registrar",
+            "image": "./statics/contractMeta/images/ens.svg"
+        },
+        {
+            "contract": "0x3d1BA9be9f66B8ee101911bC36D3fB562eaC2244",
+            "value": "Rivetz",
+            "label": "Rivetz",
+            "image": "./statics/contractMeta/images/rivetz.png",
+            "erc20": true,
+            "decimals": 18,
+            "symbol": "RVT"
+        },
+        {
+            "contract": "0x13f11C9905A08ca76e3e853bE63D4f0944326C72",
+            "value": "Divi Exchange Token",
+            "label": "Divi Exchange Token",
+            "image": "./statics/contractMeta/images/divi.svg",
+            "erc20": true,
+            "symbol": "DIVX",
+            "decimals": 18
+        },
+        {
+            "contract": "0x056017c55aE7AE32d12AeF7C679dF83A85ca75Ff",
+            "value": "WyvernToken",
+            "label": "WyvernToken",
+            "image": "./statics/contractMeta/images/wyvern-image.svg",
+            "erc20": true,
+            "symbol": "WYV",
+            "decimals": 18
+        },
+        {
+            "contract": "0x17F68886d00845867C154C912b4cCc506EC92Fc7",
+            "value": "WyvernDAO",
+            "label": "WyvernDAO",
+            "image": "./statics/contractMeta/images/wyvern-image.svg"
+        },
+        {
+            "contract": "0xf14f06e227C015b398b8069314F4B8d1d7022c9e",
+            "value": "WyvernExchange",
+            "label": "WyvernExchange",
+            "image": "./statics/contractMeta/images/wyvern-image.svg"
+        },
+        {
+            "contract": "0xa4306692b00795f97010ec7237980141d08c6D56",
+            "value": "WyvernProxyRegistry",
+            "label": "WyvernProxyRegistry",
+            "image": "./statics/contractMeta/images/wyvern-image.svg"
+        },
+        {
+            "contract": "0xfec0cF7fE078a500abf15F1284958F22049c2C7e",
+            "value": "Maecenas ART Token",
+            "label": "Maecenas ART Token",
+            "image": "./statics/contractMeta/images/Maecenas.jpg",
+            "erc20": true,
+            "symbol": "ART",
+            "decimals": 18
+        },
+        {
+            "contract": "0x05f4a42e251f2d52b8ed15E9FEdAacFcEF1FAD27",
+            "value": "Zilliqa",
+            "label": "Zilliqa",
+            "image": "./statics/contractMeta/images/zilliqa.svg",
+            "erc20": true,
+            "symbol": "ZIL",
+            "decimals": 12
+        },
+        {
+            "contract": "0x986EE2B944c42D017F52Af21c4c69B84DBeA35d8",
+            "value": "BitMartToken",
+            "label": "BitMartToken",
+            "image": "./statics/contractMeta/images/bitmart.png",
+            "erc20": true,
+            "symbol": "BMX",
+            "decimals": 18
+        },
+        {
+            "contract": "0xF03f8D65BaFA598611C3495124093c56e8F638f0",
+            "value": "Viewly",
+            "label": "Viewly",
+            "image": "./statics/contractMeta/images/viewly.svg",
+            "erc20": true,
+            "symbol": "VIEW",
+            "decimals": 18
+        },
+        {
+            "contract": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "value": "Wrapped Ether",
+            "label": "Wrapped Ether",
+            "image": "./statics/contractMeta/images/weth.png",
+            "erc20": true,
+            "symbol": "WETH",
+            "decimals": 18
+        },
+        {
+            "contract": "0xFFE02ee4C69eDf1b340fCaD64fbd6b37a7b9e265",
+            "value": "NANJCOIN",
+            "label": "NANJCOIN",
+            "image": "./statics/contractMeta/images/nanjcoin.svg",
+            "erc20": true,
+            "symbol": "NANJ",
+            "decimals": 8
+        },
+        {
+            "contract": "0xB6eD7644C69416d67B522e20bC294A9a9B405B31",
+            "value": "0xBitcoin Token",
+            "label": "0xBitcoin Token",
+            "image": "./statics/contractMeta/images/0xbitcoin.svg",
+            "erc20": true,
+            "symbol": "0xBTC",
+            "decimals": 8
+        },
+        {
+            "contract": "0x744d70FDBE2Ba4CF95131626614a1763DF805B9E",
+            "value": "Status Network Token",
+            "label": "Status Network Token",
+            "image": "./statics/contractMeta/images/snt.svg",
+            "erc20": true,
+            "symbol": "SNT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x42d6622deCe394b54999Fbd73D108123806f6a18",
+            "value": "SPANK",
+            "label": "SPANK",
+            "image": "./statics/cc-icons/color/spank.svg",
+            "erc20": true,
+            "symbol": "SPANK",
+            "decimals": 18
+        },
+        {
+            "contract": "0x4a6058666cf1057eaC3CD3A5a614620547559fc9",
+            "value": "Brickblock",
+            "label": "Brickblock",
+            "image": "./statics/contractMeta/images/Brickblock.svg",
+            "erc20": true,
+            "symbol": "BBK",
+            "decimals": 18
+        },
+        {
+            "contract": "0x80fB784B7eD66730e8b1DBd9820aFD29931aab03",
+            "value": "ETHLend Token",
+            "label": "ETHLend Token",
+            "image": "./statics/contractMeta/images/lend.svg",
+            "erc20": true,
+            "symbol": "LEND",
+            "decimals": 18
+        },
+        {
+            "contract": "0x48FF53777F747cFB694101222a944dE070c15D36",
+            "value": "Ether Kingdoms Token",
+            "label": "Ether Kingdoms Token",
+            "image": "./statics/contractMeta/images/IMP.svg",
+            "erc20": true,
+            "symbol": "IMP",
+            "decimals": 7
+        },
+        {
+            "contract": "0x02F61Fd266DA6E8B102D4121f5CE7b992640CF98",
+            "value": "LikeCoin",
+            "label": "LikeCoin",
+            "image": "./statics/contractMeta/images/like.svg",
+            "erc20": true,
+            "symbol": "LIKE",
+            "decimals": 18
+        },
+        {
+            "contract": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+            "value": "Binance Coin",
+            "label": "Binance Coin",
+            "image": "./statics/cc-icons/color/bnb.svg",
+            "erc20": true,
+            "symbol": "BNB",
+            "decimals": 18
+        },
+        {
+            "contract": "0xD850942eF8811f2A866692A623011bDE52a462C1",
+            "value": "VeChain",
+            "label": "VeChain",
+            "image": "./statics/contractMeta/images/vechain.png",
+            "erc20": true,
+            "symbol": "VEN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xb5A5F22694352C15B00323844aD545ABb2B11028",
+            "value": "ICON",
+            "label": "ICON",
+            "image": "./statics/cc-icons/color/icx.svg",
+            "erc20": true,
+            "symbol": "ICX",
+            "decimals": 18
+        },
+        {
+            "contract": "0x5CA9a71B1d01849C0a95490Cc00559717fCF0D1d",
+            "value": "Aeternity",
+            "label": "Aeternity",
+            "image": "./statics/contractMeta/images/aeternity.svg",
+            "erc20": true,
+            "symbol": "AE",
+            "decimals": 18
+        },
+        {
+            "contract": "0xd4fa1460F537bb9085d22C7bcCB5DD450Ef28e3a",
+            "value": "Populous",
+            "label": "Populous",
+            "image": "./statics/cc-icons/color/ppt.svg",
+            "erc20": true,
+            "symbol": "PPT",
+            "decimals": 8
+        },
+        {
+            "contract": "0xFA1a856Cfa3409CFa145Fa4e20Eb270dF3EB21ab",
+            "value": "IOST",
+            "label": "IOST",
+            "image": "./statics/cc-icons/color/iost.svg",
+            "erc20": true,
+            "symbol": "IOST",
+            "decimals": 18
+        },
+        {
+            "contract": "0x039B5649A59967e3e936D7471f9c3700100Ee1ab",
+            "value": "Kucoin Shares",
+            "label": "Kucoin Shares",
+            "image": "./statics/contractMeta/images/kucoin.svg",
+            "erc20": true,
+            "symbol": "LIKE",
+            "decimals": 6
+        },
+        {
+            "contract": "0x3893b9422Cd5D70a81eDeFfe3d5A1c6A978310BB",
+            "value": "Mithril",
+            "label": "Mithril",
+            "image": "./statics/cc-icons/color/mith.svg",
+            "erc20": true,
+            "symbol": "MITH",
+            "decimals": 18
+        },
+        {
+            "contract": "0xb7cB1C96dB6B22b0D3d9536E0108d062BD488F74",
+            "value": "Walton",
+            "label": "Walton",
+            "image": "./statics/cc-icons/color/wtc.svg",
+            "erc20": true,
+            "symbol": "WTC",
+            "decimals": 18
+        },
+        {
+            "contract": "0x93ED3FBe21207Ec2E8f2d3c3de6e058Cb73Bc04d",
+            "value": "Pinakion Token",
+            "label": "Pinakion Token",
+            "image": "./statics/contractMeta/images/pinakion.svg",
+            "erc20": true,
+            "symbol": "PNK",
+            "decimals": 18
+        },
+        {
+            "contract": "0x419D0d8BdD9aF5e606Ae2232ed285Aff190E711b",
+            "value": "FunFair",
+            "label": "FunFair",
+            "image": "./statics/contractMeta/images/fun.svg",
+            "erc20": true,
+            "symbol": "FUN",
+            "decimals": 8
+        },
+        {
+            "contract": "0xcA2796F9F61dc7b238Aab043971e49c6164DF375",
+            "value": "YGGDRASH YEED Token",
+            "label": "YGGDRASH YEED Token",
+            "image": "./statics/contractMeta/images/yggdrash.svg",
+            "erc20": true,
+            "symbol": "YEED",
+            "decimals": 18
+        },
+        {
+            "contract": "0x03e3f0c25965f13DbbC58246738C183E27b26a56",
+            "value": "Disciplina Token",
+            "label": "Disciplina Token",
+            "image": "./statics/contractMeta/images/disciplina.svg",
+            "erc20": true,
+            "symbol": "DSCP",
+            "decimals": 18
+        },
+        {
+            "contract": "0xE814aeE960a85208C3dB542C53E7D4a6C8D5f60F",
+            "value": "Chronologic DAY Token",
+            "label": "Chronologic DAY Token",
+            "image": "./statics/contractMeta/images/DAY.png",
+            "erc20": true,
+            "symbol": "DAY",
+            "decimals": 18
+        },
+        {
+            "contract": "0x7E43581b19ab509BCF9397a2eFd1ab10233f27dE",
+            "value": "PLATINUM",
+            "label": "PLATINUM",
+            "image": "./statics/contractMeta/images/plat.png",
+            "erc20": true,
+            "symbol": "PLAT",
+            "decimals": 18
+        },
+        {
+            "contract": "0x8E870D67F660D95d5be530380D0eC0bd388289E1",
+            "value": "PAX Stablecoin",
+            "label": "PAX Stablecoin",
+            "image": "./statics/contractMeta/images/pax.svg",
+            "erc20": true,
+            "symbol": "PAX",
+            "decimals": 18
+        },
+        {
+            "contract": "0x0000000000085d4780B73119b644AE5ecd22b376",
+            "value": "TrueUSD",
+            "label": "TrueUSD",
+            "image": "./statics/cc-icons/color/tusd.svg",
+            "erc20": true,
+            "symbol": "TUSD",
+            "decimals": 18
+        },
+        {
+            "contract": "0xC16b542ff490e01fcc0DC58a60e1EFdc3e357cA6",
+            "value": "ICE ROCK MINING",
+            "label": "ICE ROCK MINING",
+            "image": "./statics/contractMeta/images/rock2.png",
+            "erc20": true,
+            "symbol": "ROCK2",
+            "decimals": 0
+        },
+        {
+            "contract": "0x6758B7d441a9739b98552B373703d8d3d14f9e62",
+            "value": "POA20 Token",
+            "label": "POA20 Token",
+            "image": "./statics/contractMeta/images/POA20.png",
+            "erc20": true,
+            "symbol": "POA20",
+            "decimals": 18
+        },
+        {
+            "contract": "0x7064aAb39A0Fcf7221c3396719D0917a65E35515",
+            "value": "Cpollo",
+            "label": "Cpollo",
+            "image": "./statics/contractMeta/images/Cpollo.svg",
+            "erc20": true,
+            "symbol": "CPLO",
+            "decimals": 18
+        },
+        {
+            "contract": "0xd8446236FA95b9b5f9fd0f8E7Df1a944823c683d",
+            "value": "NEEO",
+            "label": "NEEO",
+            "image": "./statics/contractMeta/images/neeo.png",
+            "erc20": true,
+            "symbol": "NEEO",
+            "decimals": 18
+        },
+        {
+            "contract": "0xA823E6722006afe99E91c30FF5295052fe6b8E32",
+            "value": "Neumark",
+            "label": "Neumark",
+            "image": "./statics/contractMeta/images/neu.svg",
+            "erc20": true,
+            "symbol": "NEU",
+            "decimals": 18
+        },
+        {
+            "contract": "0x0Cf0Ee63788A0849fE5297F3407f701E122cC023",
+            "value": "Streamr",
+            "label": "Streamr",
+            "image": "./statics/contractMeta/images/streamr.svg",
+            "erc20": true,
+            "symbol": "DATA",
+            "decimals": 18
+        },
+        {
+            "contract": "0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b",
+            "value": "Crypto.com Chain",
+            "label": "Crypto.com Chain",
+            "image": "./statics/contractMeta/images/CRO.png",
+            "erc20": true,
+            "symbol": "CRO",
+            "decimals": 8
+        },
+        {
+            "contract": "0xF70a642bD387F94380fFb90451C2c81d4Eb82CBc",
+            "value": "STAR",
+            "label": "STAR",
+            "image": "./statics/contractMeta/images/starbase.png",
+            "erc20": true,
+            "symbol": "STAR",
+            "decimals": 18
+        },
+        {
+            "contract": "0xC17195bde49D70CefCF8A9F2ee1759FFC27BF0B1",
+            "value": "Groocoin",
+            "label": "Groocoin",
+            "image": "./statics/contractMeta/images/groo.png",
+            "erc20": true,
+            "symbol": "GROO",
+            "decimals": 18
+        },
+        {
+            "contract": "0x7C5A0CE9267ED19B22F8cae653F198e3E8daf098",
+            "value": "Santiment",
+            "label": "Santiment",
+            "image": "./statics/contractMeta/images/santiment.svg",
+            "erc20": true,
+            "symbol": "SAN",
+            "decimals": 18
+        },
+        {
+            "contract": "0xFBeef911Dc5821886e1dda71586d90eD28174B7d",
+            "value": "KnownOrigin",
+            "label": "KnownOrigin",
+            "image": "./statics/contractMeta/images/knownorigin.svg",
+            "erc20": true,
+            "symbol": "KODA",
+            "decimals": 0
+        }
+    ]
+}

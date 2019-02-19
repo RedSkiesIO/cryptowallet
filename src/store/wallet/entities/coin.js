@@ -1,0 +1,25 @@
+import { Model } from '@vuex-orm/core';
+
+/**
+ * Coin Entity.
+ */
+export default class Coin extends Model {
+  static entity = 'coin';
+
+  static primaryKey = 'name';
+
+  static fields() {
+    return {
+      name: this.attr(''),
+      displayName: this.attr(''),
+      sdk: this.attr(''),
+      symbol: this.attr(''),
+      network: this.attr(''),
+      denomination: this.attr(''),
+      parentName: this.attr(''),
+      parentSdk: this.attr(''),
+      contractAddress: this.attr(''),
+      decimals: this.attr(''),
+    };
+  }
+}
