@@ -153,8 +153,6 @@ export default {
             .where('enabled', true)
             .get();
           if (wallets.length === 0) {
-            // this.$store.dispatch('settings/setLoading', false);
-            // this.$store.dispatch('settings/setLayout', 'light');
             resolve();
             return false;
           }
@@ -183,7 +181,6 @@ export default {
               erc20Promises.push(new Promise(async (res) => {
                 const parentSDK = this.coinSDKS[wallet.parentSdk];
                 const parentWallet = initializedWallets[wallet.parentName];
-                console.log(parentWallet);
                 const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
                 await generateErc20(keyPair, wallet);
                 res();

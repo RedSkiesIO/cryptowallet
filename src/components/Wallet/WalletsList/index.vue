@@ -53,7 +53,6 @@ export default {
   },
   computed: {
     wallets() {
-      console.log('Coin.all() :', Coin.all());
       return Coin.all();
     },
   },

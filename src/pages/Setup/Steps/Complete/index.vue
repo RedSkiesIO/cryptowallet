@@ -13,13 +13,16 @@ export default {
     ...mapState({
       setup: (state) => { return state.setup; },
     }),
+
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
     },
   },
+
   mounted() {
     this.complete();
   },
+
   methods: {
     /**
      * complete setup and store account entity.
@@ -38,10 +41,8 @@ export default {
         locale: this.setup.accountLocale || this.$i18n.locale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
-        currency: 'GBP',
+        currency: 'GBP', // @TODO HARD CODED VALUE ????????
       };
-
-      console.log('inserting account', data);
 
       this.$store.dispatch('settings/setSelectedAccount', data.name);
 
@@ -52,7 +53,6 @@ export default {
         });
 
         const { id } = result.account[0];
-
         const promises = [];
         const erc20Promises = [];
 
@@ -65,25 +65,19 @@ export default {
             sdk: coin.sdk,
             network: coin.network,
           };
+
           if (coin.sdk !== 'ERC20') {
             promises.push(new Promise(async (resolve) => {
-              console.log('generating wallet');
               wallet.hdWallet = await this.coinSDKS[coin.sdk].generateHDWallet(
                 Object.values(this.setup.seed).join(' ').trim(),
                 coin.network,
               );
-              console.log(`wallet: ${wallet.hdWallet}`);
-              console.log('inserting wallet');
               await Wallet.$insert({ data: wallet, password });
-              console.log('wallet inserted');
-
               resolve();
             }));
           } else {
             erc20Promises.push(new Promise(async (resolve) => {
-              console.log('erc20 parent');
               const parentSDK = await this.coinSDKS[coin.parentSdk];
-              console.log('erc20 parent wallet');
               const parentWallet = await parentSDK.generateHDWallet(
                 Object.values(this.setup.seed).join(' ').trim(),
                 coin.network,
@@ -123,7 +117,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-</style>

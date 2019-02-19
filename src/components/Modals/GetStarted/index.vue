@@ -1,11 +1,9 @@
 <template>
-  <!-- eslint-disable -->
   <div>
     <q-modal
       v-model="getStartedModalOpened"
       class="dark-modal"
     >
-
       <div class="header-section">
         <div class="header-back-button-wrapper">
           <q-btn
@@ -16,7 +14,6 @@
             @click.prevent="closeModal"
           />
         </div>
-        <!-- <h1 class="header-h1">{{ $t('newAccount') }}</h1> -->
       </div>
 
       <div class="modal-layout-wrapper no-padding">
@@ -26,10 +23,11 @@
           quick-nav
           @slide="updateSlideIndex"
         >
-
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Coins & Tokens</h1>
+              <h1 class="setup">
+                Coins & Tokens
+              </h1>
             </div>
             <div class="slide-wrapper">
               <div class="slide-illustration">
@@ -48,7 +46,9 @@
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Your wallet</h1>
+              <h1 class="setup">
+                Your wallet
+              </h1>
             </div>
             <div class="slide-wrapper">
               <div class="slide-illustration">
@@ -67,7 +67,9 @@
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Backup your wallet</h1>
+              <h1 class="setup">
+                Backup your wallet
+              </h1>
             </div>
             <div class="slide-wrapper">
               <div class="slide-illustration">
@@ -86,7 +88,9 @@
 
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
-              <h1 class="setup">Security</h1>
+              <h1 class="setup">
+                Security
+              </h1>
             </div>
             <div class="slide-wrapper">
               <div>
@@ -140,7 +144,6 @@
               @click="done"
             />
           </q-carousel-control>
-
         </q-carousel>
       </div>
     </q-modal>
@@ -257,10 +260,6 @@ export default {
 .slide-wrapper .slide-illustration {
   text-align: center;
 }
-
-/*.slide-wrapper .q-carousel-inner {
-  z-index: 1;
-}*/
 
 .slide-wrapper p {
   padding: 1rem;

@@ -15,41 +15,45 @@ import { mapState } from 'vuex';
 
 export default {
   name: 'Balance',
+
   components: {
     Transactions,
   },
+
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
   },
+
   mounted() {
     this.$root.$on('updateWalletSingle', async (done) => {
-      console.log('updateWalletSingle');
       try {
         await this.refresher(done);
       } catch (err) {
-        console.log('got there twice,, you');
         this.errorHandler(err);
         done();
       }
     });
   },
+
   methods: {
+
     /**
      * Fetches and updates the UTXOs
      */
     async getUtxos(combinedAddresses) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-
       const utxos = await coinSDK.getUTXOs(
         combinedAddresses,
         this.wallet.network,
       );
+
       let balance = 0;
       utxos.forEach((utxo) => {
         balance += utxo.amount;
@@ -70,7 +74,6 @@ export default {
         utxos,
         balance,
       };
-      /* eslint-disable max-len */
     },
 
     /**
@@ -105,15 +108,15 @@ export default {
           this.wallet.network,
         );
       } else if (this.wallet.sdk === 'ERC20') {
-        // eslint-disable-next-line max-len
         newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][this.wallet.name]);
       }
+
       newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
 
       const { network } = this.wallet;
       let txHistory;
+
       if (this.wallet.sdk === 'ERC20') {
-        // eslint-disable-next-line max-len
         txHistory = await coinSDK.getTransactionHistory(
           this.activeWallets[this.authenticatedAccount][this.wallet.name],
           0,
@@ -234,6 +237,7 @@ export default {
                 ...tx,
               },
             });
+
             // update external address
             if (this.wallet.sdk === 'Bitcoin') {
               if (tx.receiver.includes(this.wallet.externalAddress)) {

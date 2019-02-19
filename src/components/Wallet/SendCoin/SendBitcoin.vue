@@ -135,10 +135,11 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { mapState } from 'vuex';
 import { debounce } from 'quasar';
-import { required, alphaNum, minLength, maxLength } from 'vuelidate/lib/validators';
+import {
+  required, alphaNum, minLength, maxLength,
+} from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
@@ -179,8 +180,8 @@ export default {
   },
   computed: {
     ...mapState({
-      id: state => state.route.params.id,
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -192,11 +193,11 @@ export default {
       return Coin.all();
     },
     coinSymbol() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name)
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; })
         .symbol;
     },
     coinDenomination() {
-      return this.supportedCoins.find(coin => coin.name === this.wallet.name)
+      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; })
         .denomination;
     },
     latestPrice() {
@@ -221,7 +222,7 @@ export default {
       return false;
     },
     address(val) {
-      console.log(`addres: ${val}`);
+
     },
     utxos: {
       handler() {
@@ -324,7 +325,6 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const addressesRaw = this.getAddressesRaw();
       const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network);
-      console.log('mounted, utxos:', utxos);
       this.utxos = utxos;
     },
 
@@ -355,8 +355,7 @@ export default {
         filteredUtxos,
         pendingCount,
       );
-      const wallet =
-        that.activeWallets[that.authenticatedAccount][that.wallet.name];
+      const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
       const accounts = that.getAccounts();
 
       let { address } = that.getAddresses()[0];
@@ -392,7 +391,7 @@ export default {
      */
     getAddressesRaw() {
       const addresses = this.getAddresses();
-      const addressesRaw = addresses.map(item => item.address);
+      const addressesRaw = addresses.map((item) => { return item.address; });
 
       function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
@@ -526,29 +525,18 @@ export default {
 
 
       let fee = fees.medium;
-      if (this.feeSetting === 0) fee = fees.low;
-      if (this.feeSetting === 2) fee = fees.high;
+      if (this.feeSetting === 0) {
+        fee = fees.low;
+      }
+      if (this.feeSetting === 2) {
+        fee = fees.high;
+      }
       fee = Math.round(fee);
 
 
-      if (this.maxed) amount = 0;
-      // fee = fee + ;
-
-      // console.log('fee', fee, amount);
-
-      /* console.log('=====');
-      console.log('accounts', accounts);
-      console.log('changeAddresses', changeAddresses);
-      console.log('filteredUtxos', filteredUtxos);
-      console.log('wallet', wallet);
-      console.log('address', address);
-      console.log('amount', amount);
-      console.log('fee rate', fee);
-      console.log('maxed', this.maxed);
-      console.log('???');
-*/
-
-      // console.log('maxed', this.maxed);
+      if (this.maxed) {
+        amount = 0;
+      }
 
       try {
         const { hexTx, transaction, utxo } = await coinSDK.createRawTx(
@@ -591,11 +579,21 @@ export default {
      * @return {Boolean}
      */
     isValid() {
-      if (!this.address) return false;
-      if (!this.inCoin) return false;
-      if (!this.inCurrency) return false;
-      if (this.addressError) return false;
-      if (this.amountError) return false;
+      if (!this.address) {
+        return false;
+      }
+      if (!this.inCoin) {
+        return false;
+      }
+      if (!this.inCurrency) {
+        return false;
+      }
+      if (this.addressError) {
+        return false;
+      }
+      if (this.amountError) {
+        return false;
+      }
       return true;
     },
 
@@ -613,8 +611,6 @@ export default {
         return false;
       }
 
-      // this.sendingModalOpened = true;
-      // const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
       ];
@@ -622,7 +618,6 @@ export default {
       // there are no UTXOs available, wallet is empty
       if (this.utxos.length === 0) {
         this.$toast.create(10, this.$t('noFunds'), 500);
-        // this.sendingModalOpened = false;
         return false;
       }
 
@@ -631,11 +626,8 @@ export default {
       // there is enough funds, but UTXOs are pending
       if (filteredUtxos.length === 0) {
         this.$toast.create(10, this.$t('fundsPending'), 500);
-        // this.sendingModalOpened = false;
         return false;
       }
-
-      console.log('filteredUtxos', filteredUtxos);
 
       const changeAddresses = this.generateChangeAddresses(
         filteredUtxos,
@@ -651,11 +643,6 @@ export default {
         this.address,
         this.inCoin,
       );
-
-      console.log('hex', hexTx);
-      console.log('tx', transaction);
-      console.log('used utxo', utxo);
-      console.log(this.wallet.network);
 
       this.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
@@ -703,7 +690,7 @@ export default {
         this.wallet.name
       ];
       const accounts = this.getAccounts();
-      let address = this.getAddresses()[0].address;
+      let { address } = this.getAddresses()[0];
       if (this.address) address = this.address;
       const amount = this.wallet.confirmedBalance;
 
@@ -740,7 +727,6 @@ export default {
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
-            console.log(text);
             if (err) {
               this.errorHandler(err);
             } else {

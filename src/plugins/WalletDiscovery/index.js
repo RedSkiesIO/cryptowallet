@@ -1,17 +1,24 @@
-/*eslint-disable*/
 async function discoverBitcoin(wallet, coinSDK, network) {
-  console.log('wallet: '+wallet.network.discovery)
   const externalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network);
   const internalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network, true);
 
   let combinedUsedAddresses = [
-    ...externalAccountDiscovery.active.map(item => item.address),
-    ...internalAccountDiscovery.used.map(item => item.address),
+    ...externalAccountDiscovery.active.map((item) => {
+      return item.address;
+    }),
+    ...internalAccountDiscovery.used.map((item) => {
+      return item.address;
+    }),
   ];
 
   let combinedActiveAddresses = [
-    ...externalAccountDiscovery.active.map(item => item.address),
-    ...internalAccountDiscovery.active.map(item => item.address),
+    ...externalAccountDiscovery.active.map((item) => {
+      return item.address;
+    }),
+
+    ...internalAccountDiscovery.active.map((item) => {
+      return item.address;
+    }),
   ];
 
   function onlyUnique(value, index, self) {
@@ -36,7 +43,7 @@ async function discoverBitcoin(wallet, coinSDK, network) {
     txs: [],
   };
 
-  const collectHistory = async function (from, to) {
+  const collectHistory = async (from, to) => {
     const history = await coinSDK.getTransactionHistory(combinedUsedAddresses, network, from, to);
     txHistory = {
       ...history,
@@ -46,7 +53,9 @@ async function discoverBitcoin(wallet, coinSDK, network) {
     if (txHistory.more) await collectHistory(to + 1, to + 49);
   };
 
-  if (combinedUsedAddresses.length > 0) await collectHistory(0, 50);
+  if (combinedUsedAddresses.length > 0) {
+    await collectHistory(0, 50);
+  }
   const externalChainAddressIndex = externalAccountDiscovery.nextAddress;
   const internalChainAddressIndex = internalAccountDiscovery.nextAddress;
 
@@ -77,9 +86,8 @@ async function discoverErc20(wallet, coinSDK) {
   const accounts = [{
     address: wallet.address,
     index: 0,
-  }]
+  }];
   const txHistory = await coinSDK.getTransactionHistory(wallet, 0);
-  console.log(txHistory);
   let balance = await coinSDK.getBalance(wallet);
   if (!balance) {
     balance = 0;
@@ -92,9 +100,17 @@ async function discoverErc20(wallet, coinSDK) {
 }
 
 async function discoverWallet(wallet, coinSDK, network, sdk) {
-  if (sdk === 'Bitcoin') return await discoverBitcoin(wallet, coinSDK, network);
-  if (sdk === 'Ethereum') return await discoverEthereum(wallet, coinSDK, network);
-  if (sdk === 'ERC20') return await discoverErc20(wallet, coinSDK);
+  if (sdk === 'Bitcoin') {
+    return discoverBitcoin(wallet, coinSDK, network);
+  }
+
+  if (sdk === 'Ethereum') {
+    return discoverEthereum(wallet, coinSDK, network);
+  }
+
+  if (sdk === 'ERC20') {
+    return discoverErc20(wallet, coinSDK);
+  }
   return false;
 }
 

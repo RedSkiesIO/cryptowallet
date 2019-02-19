@@ -1,5 +1,3 @@
-/*eslint-disable*/
-
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
@@ -40,7 +38,7 @@ database.register(LatestPrice, {});
 
 Vue.prototype.encryptedModels = [
   Account,
-  Wallet
+  Wallet,
 ];
 
 window.Tx = Tx;
@@ -53,6 +51,8 @@ window.Account = Account;
 window.Coin = Coin;
 
 // Setup persistant storage.
+// @TODO WHY IS THIS DEFINED AND NOT USED???
+/* eslint-disable-next-line */
 const vuexLocal = new VuexPersistence({
   supportCircular: true,
   storage: window.localStorage,
@@ -64,14 +64,15 @@ const options = {
   env: 'browser',
 };
 
+// @TODO WHY IS THIS DEFINED BEFORE USE???
 function hydrationCompletedCallback() {
   setTimeout(() => {
+    /* eslint-disable-next-line */
     store.dispatch('settings/setLoading', false);
   }, 1000);
 }
 
 VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
-
 
 /**
  * Create CryptoWallet Vuex store obj.
@@ -88,8 +89,5 @@ const store = new Vuex.Store({
 });
 
 Vue.prototype.activeWallets = {};
-
-// @todo remove line below (used for development purposes only)
-window.store = store;
 
 export default store;

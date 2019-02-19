@@ -1,13 +1,8 @@
 <template>
-  <!-- eslint-disable -->
   <div
     v-if="!online"
     class="bg-offline"
-  >
-<!--     <q-alert type="negative">
-      No Internet connection detected. To use your wallet, please reconnect to the Internet.
-    </q-alert> -->
-  </div>
+  />
 </template>
 
 <script>

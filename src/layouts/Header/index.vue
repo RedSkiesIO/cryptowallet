@@ -102,32 +102,39 @@ export default {
   components: {
     SelectAccount,
   },
+
   data() {
     return {
       isBackButtonEnabled: false,
     };
   },
+
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+
     displaySettings() {
-      // if (this.authenticatedAccount) return true;
       return false;
     },
+
     displayAccounts() {
       return this.$route.path === '/';
     },
+
     displayAddWallet() {
       return this.$route.path === '/wallet';
     },
+
     displayPriceChart() {
       if (this.wallet && this.selectedCurrency) {
         const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
@@ -138,15 +145,18 @@ export default {
       }
       return false;
     },
+
     supportedCoins() {
       return Coin.all();
     },
+
     heading() {
       if (this.$route.name === 'setup') return '';
       if (this.$route.name === 'exchange') return 'Exchange';
       if (this.$route.name === 'settings') return 'Settings';
       return 'CryptoWallet';
     },
+
     coinHeading() {
       if (this.$route.name === 'walletSingle'
           || this.$route.name === 'sendCoinSingle'
@@ -155,19 +165,22 @@ export default {
       }
       return false;
     },
+
     hideHeader() {
-      if (this.$route.path === '/setup/0') return true;
+      if (this.$route.path === '/setup/0') {
+        return true;
+      }
       return false;
     },
+
     coinLogo() {
-      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
-      /* eslint-disable-next-line */
-      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
     },
   },
+
   watch: {
     $route() {
       if (window.history.length > 0
@@ -180,19 +193,24 @@ export default {
       }
     },
   },
+
   methods: {
     goBack() {
       this.$router.go(-1);
     },
+
     goToSettings() {
       this.$router.push({ path: '/settings' });
     },
+
     setAccountModalOpened(value) {
       this.$root.$emit('selectAccountModalOpened', value);
     },
+
     openWalletsModal() {
       this.$root.$emit('walletsModalOpened', true);
     },
+
     openChartModal() {
       this.$router.push({ path: `/wallet/single/prices/${this.wallet.id}` });
     },

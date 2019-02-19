@@ -44,65 +44,71 @@ import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
-/* eslint-disable */
-
 export default {
   name: 'WalletItem',
+
   components: {
     Spinner,
   },
+
   props: {
     wallet: {
       type: Object,
       required: true,
     },
+
     currency: {
       type: Object,
       required: false,
     },
+
     clickItemAction: {
       type: String,
       required: true,
     },
   },
+
   data() {
     return {
       initializingModalOpened: false,
       walletsState: [],
     };
   },
+
   computed: {
     ...mapState({
-      authenticatedAccount: state => state.settings.authenticatedAccount,
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
     isEnabled: {
+
       get() {
         return this.isWalletEnabled();
       },
+
       set(val) {
         if (val) {
           this.enableWallet();
-          // walletsState
-          // this.initializingModalOpened = true;
         }
         if (!val) this.disableWallet();
       },
     },
+
     supportedCoins() {
       return Coin.all();
     },
+
     coinLogo() {
-      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
-      /* eslint-disable-next-line */
-      if (IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
     },
   },
+
   methods: {
     clickHandler(id) {
       switch (this.clickItemAction) {
@@ -139,67 +145,67 @@ export default {
     async enableWallet() {
       try {
         if (this.wallet.sdk === 'ERC20' && !this.isEthEnabled(this.wallet.parentName)) {
-          const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
+          const eth = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; });
 
-        const wallets = Wallet.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('name', this.wallet.parentName)
-        .get();
+          const wallets = Wallet.query()
+            .where('account_id', this.authenticatedAccount)
+            .where('name', this.wallet.parentName)
+            .get();
 
-        await Wallet.$update({
-          where: record => record.id === wallets[0].id,
-          data: { imported: false, enabled: true },
-        });
+          await Wallet.$update({
+            where: (record) => { return record.id === wallets[0].id; },
+            data: { imported: false, enabled: true },
+          });
         }
 
         const wallets = Wallet.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('name', this.wallet.name)
-        .get();
-        
+          .where('account_id', this.authenticatedAccount)
+          .where('name', this.wallet.name)
+          .get();
+
         if (wallets) {
-        await Wallet.$update({
-          where: record => record.id === wallets[0].id,
-          data: { imported: false, enabled: true },
-        });
+          await Wallet.$update({
+            where: (record) => { return record.id === wallets[0].id; },
+            data: { imported: false, enabled: true },
+          });
         } else {
           const data = {
-          name: this.wallet.name,
-          displayName: this.wallet.displayName,
-          sdk: this.wallet.sdk,
-          account_id: this.authenticatedAccount,
-          network: this.wallet.network,
-          symbol: this.wallet.symbol,
-        };
+            name: this.wallet.name,
+            displayName: this.wallet.displayName,
+            sdk: this.wallet.sdk,
+            account_id: this.authenticatedAccount,
+            network: this.wallet.network,
+            symbol: this.wallet.symbol,
+          };
 
-        const newWalletResult = await Wallet.$insert({ data });
-        const newWalletId = newWalletResult.wallet[0].id;
+          const newWalletResult = await Wallet.$insert({ data });
+          const newWalletId = newWalletResult.wallet[0].id;
 
-        await Wallet.$update({
-          where: record => record.id === newWalletId,
-          data: { imported: false, enabled: true },
-        });
-
-        if (this.wallet.sdk === 'ERC20') {
-          const eth = this.supportedCoins.find(coin => coin.name === this.wallet.parentName);
-          const parentSDK = this.coinSDKS[eth.sdk];
-          const parentWallet = initializedWallets[wallet.parentName];
-          const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
-          const erc20 = await this.coinSDKS[this.wallet.sdk].generateERC20Wallet(
-            keyPair, this.walletName, this.wallet.symbol, this.wallet.contractAddress, this.wallet.decimals)
           await Wallet.$update({
-            where: record => record.id === newWalletId,
-            data: {
-              parentSdk: eth.sdk,
-              parentName: eth.name,
-              contractAddress: this.wallet.contractAddress,
-              decimals: this.wallet.decimals,
-              erc20Wallet: erc20,
-            },
+            where: (record) => { return record.id === newWalletId; },
+            data: { imported: false, enabled: true },
           });
-          }
-          }
 
+          if (this.wallet.sdk === 'ERC20') {
+            const eth = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; });
+            const parentSDK = this.coinSDKS[eth.sdk];
+            const parentWallet = initializedWallets[wallet.parentName];
+            const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
+            const erc20 = await this.coinSDKS[this.wallet.sdk].generateERC20Wallet(
+              keyPair, this.walletName, this.wallet.symbol, this.wallet.contractAddress, this.wallet.decimals,
+            );
+            await Wallet.$update({
+              where: (record) => { return record.id === newWalletId; },
+              data: {
+                parentSdk: eth.sdk,
+                parentName: eth.name,
+                contractAddress: this.wallet.contractAddress,
+                decimals: this.wallet.decimals,
+                erc20Wallet: erc20,
+              },
+            });
+          }
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -209,12 +215,12 @@ export default {
       const walletIds = [];
       if (this.wallet.sdk === 'Ethereum') {
         const erc20Wallets = Wallet.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('sdk', 'ERC20')
-        .get();
+          .where('account_id', this.authenticatedAccount)
+          .where('sdk', 'ERC20')
+          .get();
 
         erc20Wallets.forEach((wallet) => {
-          walletIds.push(wallet.id)
+          walletIds.push(wallet.id);
         });
       }
       const wallets = Wallet.query()
@@ -225,10 +231,9 @@ export default {
 
       walletIds.push(wallets[0].id);
 
-      walletIds.forEach((walletId)=> {
-
+      walletIds.forEach((walletId) => {
         Wallet.$update({
-          where: record => record.id === walletId,
+          where: (record) => { return record.id === walletId; },
           data: { imported: false, enabled: false },
         });
 

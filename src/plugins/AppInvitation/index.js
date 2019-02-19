@@ -88,7 +88,6 @@ function AppInvitation({ contact, vm }) {
         if (action.label === 'Email') this.sendEmail();
       })
       .catch(() => {
-        // console.log('action sheet dismissed');
       });
   };
 }

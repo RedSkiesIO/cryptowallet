@@ -171,8 +171,6 @@ import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
 import tokens from '@/statics/contractMeta/contract-map.json';
-// import tokens from '@/statics/tokens.json';
-
 
 export default {
   name: 'AddErc20',
@@ -269,7 +267,6 @@ export default {
           this.disableInputs = false;
           this.disableButton = false;
         } catch (err) {
-          console.log('err :', err);
           this.disableButton = true;
           this.loadingInputs = false;
           this.contractError = err.message;
@@ -321,9 +318,10 @@ export default {
       }
       const coinSDK = this.coinSDKS.Ethereum;
       const valid = await coinSDK.validateAddress(this.form.tokenContract.toLowerCase(), 'ETHEREUM_ROPSTEN');
-      console.log('valid :', valid);
-      // eslint-disable-next-line max-len
-      if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) { return false; }
+
+      if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) {
+        return false;
+      }
       await this.enableWallet();
       this.goBack();
       return true;
@@ -346,7 +344,6 @@ export default {
       const isThere = Coin.find([this.form.tokenName]);
 
       if (!isThere) {
-        console.log('adding coin');
         const wallet = Wallet.query()
           .where('account_id', this.authenticatedAccount)
           .where('name', 'Ethereum')
@@ -388,10 +385,10 @@ export default {
           },
         });
       } else {
-        console.log('already exists');
         this.$q.notify('This token has already been enabled');
       }
     },
+
     /**
      * Pastes in the text from the clipboard
      */

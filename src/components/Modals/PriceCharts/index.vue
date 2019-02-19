@@ -132,21 +132,7 @@ export default {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
-      // return Latest.find([`${this.coinSymbol}_${this.selectedCurrency.code}`]);
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      // const day =
-      // this.$store.getters
-      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
-      // const week =
-      // this.$store.getters
-      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
-      // const month =
-      //  this.$store.getters
-      // ['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
-      // if (!prices || !day || !week || !month) {
-      // this.loadData();
-      // const price = this.$store.getters
-      // ['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (!prices) {
         return null;
       }
@@ -160,9 +146,7 @@ export default {
       return '#de4662';
     },
     coinLogo() {
-      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
-      /* eslint-disable-next-line */
-      if(IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
@@ -191,7 +175,9 @@ export default {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
           if (this.$store.state.route.name === 'coinPrices'
-              || this.$store.state.route.name === 'coinSinglePrices') this.$router.go(-1);
+              || this.$store.state.route.name === 'coinSinglePrices') {
+            this.$router.go(-1);
+          }
         }
       },
     },
@@ -225,7 +211,6 @@ export default {
           [this.coinSymbol],
           [this.selectedCurrency.code],
         );
-        console.log('latestprice');
 
         const checkExists = (period, data) => {
           const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_${period}`]);
@@ -251,6 +236,7 @@ export default {
             && record.period === item.period
           );
         };
+
         if (checkExists('day', dayData)) {
           Prices.$update({
             where: (record) => {
@@ -299,7 +285,6 @@ export default {
         const checkPriceExists = (symbol, data) => {
           const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
           if (!price) {
-            console.log('inserting');
             Latest.$insert({
               data: {
                 coin: this.coinSymbol,
@@ -319,7 +304,7 @@ export default {
             && record.currency === item.currency
           );
         };
-        // eslint-disable-next-line max-len
+
         if (checkPriceExists(this.coinSymbol, latestPrice[this.coinSymbol][this.selectedCurrency.code])) {
           Latest.$update({
             where: (record) => {

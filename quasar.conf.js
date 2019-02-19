@@ -27,19 +27,12 @@ module.exports = (ctx) => {
     css: ['app.styl'],
     extras: [
       ctx.theme.mat ? 'roboto-font' : null,
-      'material-icons', // optional, you are not bound to it
-      // 'ionicons',
-      // 'mdi',
-      // 'fontawesome'
+      'material-icons',
     ],
     supportIE: false,
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
-      // vueCompiler: true,
-      // gzip: true,
-      // analyze: true,
-      // extractCSS: false,
+
       extendWebpack(cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
@@ -58,8 +51,6 @@ module.exports = (ctx) => {
       env: envparser(),
     },
     devServer: {
-      // https: true,
-      // port: 8080,
       open: true,
     },
     framework: {

@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <section
     class="main-nav"
   >
@@ -9,45 +8,15 @@
         to="/wallet"
       >
         <q-icon name="account_balance_wallet" />
-
-        <!-- <i class="svg-icon">
-          <img src="~assets/icons/Wallet.svg">
-        </i> -->
         <div>{{ $t('wallets') }}</div>
       </router-link>
     </div>
-<!--     <div class="">
-      <router-link
-        class="main-nav-link"
-        to="/wallet/analytics"
-      >
-        <q-icon name="show_chart" />
-        <i class="svg-icon">
-          <img src="~assets/icons/Analytics.svg">
-        </i>
-        <div>{{ $t('analytics') }}</div>
-      </router-link>
-    </div> -->
-<!--     <div class="">
-      <router-link
-        class="main-nav-link"
-        to="/wallet/payments"
-      >
-        <i class="svg-icon">
-          <img src="~assets/icons/Payments.svg">
-        </i>
-        <div>{{ $t('payments') }}</div>
-      </router-link>
-    </div> -->
     <div class="">
       <router-link
         class="main-nav-link"
         to="/wallet/exchange"
       >
         <q-icon name="cached" />
-        <!-- <i class="svg-icon">
-          <img src="~assets/icons/Exchange.svg">
-        </i> -->
         <div>{{ $t('exchange') }}</div>
       </router-link>
     </div>
@@ -57,24 +26,9 @@
         to="/settings"
       >
         <q-icon name="settings" />
-        <!-- <i class="svg-icon">
-          <img src="~assets/icons/Exchange.svg">
-        </i> -->
         <div>{{ $t('settings') }}</div>
       </router-link>
     </div>
-<!--     <div class="">
-      <router-link
-        class="main-nav-link"
-        to="/wallet/more"
-      >
-        <i class="svg-icon">
-          <img src="~assets/icons/More.svg">
-        </i>
-        <div>{{ $t('more') }}</div>
-      </router-link>
-
-    </div> -->
   </section>
 </template>
 
@@ -129,10 +83,6 @@ export default {
     color: #fabc57;
     font-family: 'Montserrat-Medium';
   }
-
-/*  .router-link-active i {
-    color: #de4662;
-  }*/
 
   .svg-icon {
     width: 100%;

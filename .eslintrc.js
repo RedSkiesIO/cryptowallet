@@ -35,6 +35,9 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'arrow-body-style': ['error', 'always'],
-    'vue/component-name-in-template-casing': ["error", "PascalCase"]
+    'vue/component-name-in-template-casing': ["error", "PascalCase", {
+      "registeredComponentsOnly": true,
+      "ignores": []
+    }]
   },
 };

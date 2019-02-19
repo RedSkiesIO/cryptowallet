@@ -5,7 +5,6 @@
       class="app-loading background"
     >
       <div class="loading-footer">
-        <!-- <div class="developed-by">Designed and Developed by</div> -->
         <img
           class="logo-loading"
           src="~/assets/logo-white-horizontal.png"
@@ -47,7 +46,6 @@
 import { mapState } from 'vuex';
 import Latest from '@/store/latestPrice';
 import Coin from '@/store/wallet/entities/coin';
-// import Prices from '@/store/prices';
 import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
@@ -140,20 +138,6 @@ export default {
     window.app = this;
 
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
-    // if (!this.settings.selectedAccount) this.$router.push({ path: '/setup/0' });
-
-    // @todo figure this bit out, salt is causing errors
-    /* if (this.account.salt === null) {
-      this.$router.push({ path: 'setup/seed' });
-      return false;
-    }
-
-    if (this.account.pin === null) {
-      this.$router.push({ path: 'setup/Pin' });
-      return false;
-    }
-
-    return true; */
 
     this.$root.$on('scanQRCode', (origin) => {
       this.qrOrigin = origin;
@@ -193,10 +177,7 @@ export default {
       this.supportedCoins.forEach((coin) => {
         const isThere = Coin.find([coin.name]);
 
-        // console.log(isThere);
-
         if (!isThere) {
-          // console.log('adding coin');
           const data = {
             name: coin.name,
             displayName: coin.displayName,
@@ -218,9 +199,7 @@ export default {
       });
     },
 
-
     storePriceData(coin, latestPrice) {
-      // const coinSDK = this.coinSDKS.Bitcoin;
       return new Promise(async (resolve, reject) => {
         try {
           const checkPriceExists = (symbol, data) => {
@@ -277,12 +256,11 @@ export default {
 
       try {
         const prices = await coinSDK.getPriceFeed(coins, ['GBP', 'USD', 'EUR']);
-        // console.log('prices :', prices);
-        // console.log('coins :', coins);
         const promises = [];
         coins.forEach((coin) => {
-          // eslint-disable-next-line max-len
-          promises.push(new Promise(async (res) => { return res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code])); }));
+          promises.push(new Promise(async (res) => {
+            return res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code]));
+          }));
         });
 
         await Promise.all(promises);

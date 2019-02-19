@@ -217,7 +217,6 @@ export default {
 
   mounted() {
     this.getFee();
-    console.log('mounted');
   },
 
   methods: {
@@ -336,13 +335,21 @@ export default {
       }
 
       let fee = fees.txMedium;
-      if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;
-      console.log('fee :', fee);
+      if (this.feeSetting === 0) {
+        fee = fees.txLow;
+      }
+      if (this.feeSetting === 2) {
+        fee = fees.txHigh;
+      }
 
       let rawFee = fees.medium;
-      if (this.feeSetting === 0) rawFee = fees.low;
-      if (this.feeSetting === 2) rawFee = fees.high;
+      if (this.feeSetting === 0) {
+        rawFee = fees.low;
+      }
+
+      if (this.feeSetting === 2) {
+        rawFee = fees.high;
+      }
 
       const formattedFee = new AmountFormatter({
         amount: fee,
@@ -381,11 +388,26 @@ export default {
      * @return {Boolean}
      */
     isValid() {
-      if (!this.address) return false;
-      if (!this.inCoin) return false;
-      if (!this.inCurrency) return false;
-      if (this.addressError) return false;
-      if (this.amountError) return false;
+      if (!this.address) {
+        return false;
+      }
+
+      if (!this.inCoin) {
+        return false;
+      }
+
+      if (!this.inCurrency) {
+        return false;
+      }
+
+      if (this.addressError) {
+        return false;
+      }
+
+      if (this.amountError) {
+        return false;
+      }
+
       return true;
     },
 
@@ -403,15 +425,19 @@ export default {
         return false;
       }
 
-      // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
       const keypair = this.coinSDKS[this.wallet.parentSdk].generateKeyPair(parentWallet, 0);
 
       let fee = this.feeData.medium;
-      if (this.feeSetting === 0) fee = this.feeData.low;
-      if (this.feeSetting === 2) fee = this.feeData.high;
+      if (this.feeSetting === 0) {
+        fee = this.feeData.low;
+      }
+
+      if (this.feeSetting === 2) {
+        fee = this.feeData.high;
+      }
 
       try {
         const {
@@ -458,7 +484,6 @@ export default {
 
     updateMax() {
       // @todo Konrad explain the code below
-      /* eslint-disable-next-line */
       this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
     },
 

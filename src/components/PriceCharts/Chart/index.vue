@@ -14,7 +14,6 @@ export default {
   },
   data() {
     return {
-      /* eslint-disable-next-line */
       _chart: '',
     };
   },
@@ -32,13 +31,11 @@ export default {
   watch: {
     chartData: {
       handler() {
-        console.log('changed');
         const chart = this.chartData;
         chart.datasets[0].backgroundColor = this.gradient;
         chart.datasets[1].backgroundColor = this.gradient;
         chart.datasets[2].backgroundColor = this.gradient;
         this.renderChart(chart, this.options);
-        // eslint-disable-next-line no-underscore-dangle
         this.chart = this.$data._chart;
         this.newLegend();
       },
@@ -50,7 +47,6 @@ export default {
     chart.datasets[1].backgroundColor = this.gradient;
     chart.datasets[2].backgroundColor = this.gradient;
     this.renderChart(chart, this.options);
-    // eslint-disable-next-line no-underscore-dangle
     this.chart = this.$data._chart;
     this.newLegend();
   },

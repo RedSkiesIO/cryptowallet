@@ -99,22 +99,27 @@ export default {
       isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     wallets() {
       return Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('imported', true)
         .get();
     },
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/all'];
       return prices;
     },
+
     totalBalance() {
       let balance = 0;
       this.wallets.forEach((wallet) => {
@@ -193,6 +198,7 @@ export default {
      */
     isSearchingContacts() { this.updateMainNavVisibility(); },
   },
+
   /**
    * Make sure that the MainNav visibility is set correctly on initial render
    */
@@ -200,19 +206,15 @@ export default {
     this.updateMainNavVisibility();
     this.updateisPullEnabled();
   },
-  /* eslint-disable */
+
   mounted() {
     this.$root.$on('isHomeBalanceVisible', (value) => {
       this.isBalanceVisible = value;
-
-      // if (!value) this.isPullTempDisabled = true;
-      // if (value) setTimeout(() => { this.isPullTempDisabled = false }, 0);
     });
   },
 
   methods: {
     prevent(event) {
-      //if (!this.isBalanceVisible) event.stopPropagation();
       return false;
     },
 
@@ -228,7 +230,7 @@ export default {
         this.isMainNavVisible = true;
       }
     },
-    /*eslint-disable*/
+
     updateisPullEnabled() {
       this.isPullEnabled = this.$route.name === 'wallet' || this.$route.name === 'walletSingle';
     },
@@ -239,7 +241,6 @@ export default {
           try {
             await this.updateBalances(done);
           } catch (err) {
-            console.log('error???');
             this.errorHandler(err);
             done();
           }
@@ -249,8 +250,8 @@ export default {
 
       if (this.$route.name === 'walletSingle') {
         setTimeout(() => {
-          this.$root.$emit('updateWalletSingle', done)
-        }, 1000)
+          this.$root.$emit('updateWalletSingle', done);
+        }, 1000);
       }
     },
 
@@ -287,10 +288,8 @@ export default {
       const promises = [];
 
       this.wallets.forEach((wallet) => {
-
         promises.push(new Promise(async (resolve, reject) => {
           try {
-
             const coinSDK = this.coinSDKS[wallet.sdk];
 
             const addresses = Address.query()
@@ -299,7 +298,7 @@ export default {
               .where('used', false)
               .get();
 
-            let addressesRaw = addresses.map(item => item.address);
+            let addressesRaw = addresses.map((item) => { return item.address; });
 
             function onlyUnique(value, index, self) {
               return self.indexOf(value) === index;
@@ -309,26 +308,23 @@ export default {
 
             let newBalance;
             if (wallet.sdk === 'Bitcoin') {
-              const result = await this.getUtxos(addressesRaw, wallet)
+              const result = await this.getUtxos(addressesRaw, wallet);
               const { balance } = result;
               newBalance = balance;
             } else if (wallet.sdk === 'Ethereum') {
-              newBalance = await coinSDK.getBalance(addressesRaw, wallet.network)
-              newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
-
+              newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
+              newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000; // @TODO comment this????
             } else if (wallet.sdk === 'ERC20') {
-              console.log('wallet.name :', wallet.name);
-              newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name])
+              newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
             }
 
             // update balance
             Wallet.$update({
-              where: record => record.id === wallet.id,
+              where: (record) => { return record.id === wallet.id; },
               data: { confirmedBalance: parseFloat(newBalance, 10) },
             });
 
             resolve();
-
           } catch (err) {
             reject(err);
           }

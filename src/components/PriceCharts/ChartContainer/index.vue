@@ -36,8 +36,6 @@ import { mapState } from 'vuex';
 import Prices from '@/store/prices';
 import Coin from '@/store/wallet/entities/coin';
 
-// import Spinner from '@/components/Spinner';
-
 export default {
   name: 'ChartContainer',
   components: { Chart },
@@ -143,7 +141,6 @@ export default {
             color: '#78d2e6',
             ticks: {
               fontColor: '#78d2e6',
-              // eslint-disable-next-line no-unused-vars
               callback: (value, index, values) => { return `£${value}`; },
             },
           }],
@@ -166,13 +163,10 @@ export default {
     updateLegend(chart) {
       this.newChart = chart;
     },
-    /*eslint-disable*/
+
     onClick(index) {
-      console.log('this:', this);
       const ci = this.newChart;
       if (index === 0) {
-        // eslint-disable-next-line no-underscore-dangle
-
         [ci.getDatasetMeta(1),
           ci.getDatasetMeta(2)].forEach((meta) => {
           meta.hidden = true;
@@ -181,8 +175,6 @@ export default {
         selected.hidden = false;
         ci.update();
       } else if (index === 1) {
-        // eslint-disable-next-line no-underscore-dangle
-        // const ci = this.$data._chart;
         [ci.getDatasetMeta(0),
           ci.getDatasetMeta(2)].forEach((meta) => {
           meta.hidden = true;
@@ -191,8 +183,6 @@ export default {
         selected.hidden = false;
         ci.update();
       } else {
-        // eslint-disable-next-line no-underscore-dangle
-        // const ci = this.$data._chart;
         [ci.getDatasetMeta(0),
           ci.getDatasetMeta(1)].forEach((meta) => {
           meta.hidden = true;

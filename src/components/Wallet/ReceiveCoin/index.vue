@@ -143,7 +143,6 @@ export default {
       };
 
       function onSuccess(result) {
-        console.log(result);
       }
 
       function onError(msg) {

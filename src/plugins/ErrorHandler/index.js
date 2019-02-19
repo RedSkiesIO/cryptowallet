@@ -1,4 +1,5 @@
 import Rollbar from 'vue-rollbar';
+
 /**
  * Export plugin as vue prototype.
  * @param Vue
@@ -23,6 +24,7 @@ export default ({ Vue, store }) => {
 
   /**
    * Add an error handling callback that creates toast.
+   * @TODO info is declared but never used??????
    * @param err
    * @param vm
    * @param info
@@ -40,15 +42,8 @@ export default ({ Vue, store }) => {
       },
     });
 
-    console.log('error', err);
     Vue.rollbar.error(err.message);
     vm.$toast.create(10, err.message, 500);
-
-    console.log('trace start');
-    console.log(err);
-    console.log(vm);
-    console.log(info);
-    console.log('trace end');
   };
 
   Vue.prototype.errorHandler = Vue.config.errorHandler;

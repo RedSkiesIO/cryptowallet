@@ -46,20 +46,23 @@ export default {
       valid: false,
     };
   },
+
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
+
   mounted() {
     this.generateSeed();
   },
+
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
-      console.log(this.seedPhrase);
       this.$store.dispatch('setup/setSeed', this.seedPhrase);
     },
+
     done() {
       this.$q.dialog({
         title: 'Confirm',
@@ -73,6 +76,7 @@ export default {
         this.closeModal();
       });
     },
+
     anotherSeed() {
       this.generateSeed();
     },

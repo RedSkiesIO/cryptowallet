@@ -35,36 +35,8 @@ export default {
     }),
   },
 
-  beforeCreate() {
-
-  },
-
-  created() {
-
-  },
-
   beforeMount() {
     this.pinInputListener();
-  },
-
-  mounted() {
-
-  },
-
-  beforeUpdate() {
-
-  },
-
-  updated() {
-
-  },
-
-  beforeDestroy() {
-
-  },
-
-  destroyed() {
-
   },
 
   methods: {
@@ -83,7 +55,6 @@ export default {
      */
     hashPin() {
       const pinHash = this.$acmwcrypto.bcryptHashString(this.pin.join(''), this.salt);
-      console.log(pinHash);
       this.$store.dispatch('account/setPinHash', {
         pinHash,
         pinLength: this.pin.length,
@@ -93,6 +64,3 @@ export default {
 };
 
 </script>
-
-<style scoped>
-</style>

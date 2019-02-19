@@ -79,26 +79,30 @@ export default {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     coinLogo() {
-      // const coin = this.supportedCoins.find(cc => cc.name === this.wallet.name);
-      /* eslint-disable-next-line */
-      if (IconList.find(icon => icon.symbol === this.wallet.symbol.toUpperCase())){
+      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
     },
+
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+
     supportedCoins() {
       return Coin.all();
     },
+
     coinDenomination() {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denominationShortened;
     },
+
     coinSymbol() {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
+
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (prices) {
@@ -106,6 +110,7 @@ export default {
       }
       return null;
     },
+
     balanceInCoin() {
       const balanceInCoin = new AmountFormatter({
         amount: this.wallet.confirmedBalance,
@@ -117,10 +122,12 @@ export default {
 
       return balanceInCoin.getFormatted();
     },
+
     cantSend() {
       return this.wallet.confirmedBalance === 0;
     },
   },
+
   methods: {
     send() {
       this.$router.push({ path: `/wallet/single/send/${this.wallet.id}` });

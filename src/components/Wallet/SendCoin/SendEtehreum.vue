@@ -11,7 +11,6 @@
           @click="paste"
         />
       </div>
-
       <div class="to">
         <q-input
           v-model="address"
@@ -27,11 +26,10 @@
         >
           <div class="hor-line" />
           <div class="ver-line" />
-          <img src="~assets/QR.svg">
+          <img src="~assets/QR.svg"> //@TODO WHY THIS AND NOT DATA-URI?????
         </div>
       </div>
       <span class="error-label">{{ addressError }}</span>
-
       <div class="send-modal-heading">
         <h3>Amount</h3>
         <span class="h3-line" />
@@ -43,7 +41,6 @@
           @click="max"
         />
       </div>
-
       <div class="amount">
         <div class="amount-div-wrapper">
           <q-input
@@ -78,7 +75,6 @@
         </div>
       </div>
       <span class="error-label">{{ amountError }}</span>
-
       <div class="send-modal-heading">
         <h3>
           Fee
@@ -91,7 +87,6 @@
         </h3>
         <span class="h3-line" />
       </div>
-
       <div>
         <div class="fee">
           <q-slider
@@ -120,7 +115,6 @@
         />
       </div>
     </div>
-
     <q-modal
       v-model="sendingModalOpened"
       minimized
@@ -147,6 +141,7 @@ export default {
   components: {
     Spinner,
   },
+
   data() {
     return {
       address: '',
@@ -163,6 +158,7 @@ export default {
       amountError: '',
     };
   },
+
   validations: {
     address: {
       required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
@@ -174,49 +170,76 @@ export default {
       required,
     },
   },
+
   computed: {
     ...mapState({
-      id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      id: (state) => {
+        return state.route.params.id;
+      },
+
+      authenticatedAccount: (state) => {
+        return state.settings.authenticatedAccount;
+      },
     }),
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+
     supportedCoins() {
       return Coin.all();
     },
+
     coinSymbol() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).symbol;
     },
+
     coinDenomination() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denomination;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).denomination;
     },
+
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      if (!prices) return null;
+      if (!prices) {
+        return null;
+      }
       return prices.data.PRICE;
     },
   },
 
   watch: {
+
     inCoin(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
+      if (val === null || val === '') {
+        return false;
+      }
+      if (!this.inCurrencyFocus) {
+        this.inCurrency = this.amountToCurrency(val);
+      }
       return false;
     },
+
     inCurrency(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
+      if (val === null || val === '') {
+        return false;
+      }
+      if (!this.inCoinFocus && !this.maxed) {
+        this.inCoin = this.currencyToCoin(val);
+      }
       return false;
     },
   },
 
   mounted() {
     this.getFee();
-    console.log('mounted');
   },
 
   methods: {
@@ -228,12 +251,14 @@ export default {
         color: 'blueish',
       });
     },
+
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
       if (!val) {
         this.checkField('inCoin');
       }
     },
+
     updateInCurrencyFocus(val) {
       this.inCurrencyFocus = val;
     },
@@ -241,18 +266,21 @@ export default {
     async checkField(field) {
       if (field === 'address') {
         this.$v.address.$touch();
+
         if (this.$v.address.$error) {
           this.addressError = 'The address must be 42 characters in length';
           return false;
         }
         const coinSDK = this.coinSDKS[this.wallet.sdk];
         const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
+
         if (!isValid) {
           this.addressError = 'Invalid Ethereum address';
           return false;
         }
         this.addressError = '';
       }
+
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
         if (this.$v.inCoin.$error) {
@@ -263,6 +291,7 @@ export default {
       }
       return true;
     },
+
     /**
      * Converts coins to currency as user types
      */
@@ -301,14 +330,22 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return 'slow';
-      if (feeSetting === 1) return 'fast';
+      if (feeSetting === 0) {
+        return 'slow';
+      }
+
+      if (feeSetting === 1) {
+        return 'fast';
+      }
+
       return 'fastest';
     },
 
     async feeChange() {
       this.getFee();
-      if (this.maxed) this.updateMax();
+      if (this.maxed) {
+        this.updateMax();
+      }
     },
 
     /**
@@ -321,7 +358,6 @@ export default {
       try {
         fees = await coinSDK.getTransactionFee(this.wallet.network);
       } catch (e) {
-        // this.errorHandler(e);
       } finally {
         if (!fees) {
           fees = {
@@ -336,13 +372,22 @@ export default {
       }
 
       let fee = fees.txMedium;
-      if (this.feeSetting === 0) fee = fees.txLow;
-      if (this.feeSetting === 2) fee = fees.txHigh;
-      console.log('fee :', fee);
+      if (this.feeSetting === 0) {
+        fee = fees.txLow;
+      }
+
+      if (this.feeSetting === 2) {
+        fee = fees.txHigh;
+      }
 
       let rawFee = fees.medium;
-      if (this.feeSetting === 0) rawFee = fees.low;
-      if (this.feeSetting === 2) rawFee = fees.high;
+      if (this.feeSetting === 0) {
+        rawFee = fees.low;
+      }
+
+      if (this.feeSetting === 2) {
+        rawFee = fees.high;
+      }
 
       const formattedFee = new AmountFormatter({
         amount: fee,

@@ -38,24 +38,34 @@ export default {
   components: {
     CloudListItem,
   },
+
   data() {
     return {
       scrollPosition: 0,
     };
   },
+
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+
     wallets() {
       return Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('imported', true).get();
     },
   },
+  activated() {
+    if (document.querySelectorAll('.cloud-scroll .scroll')[0]) {
+      document.querySelectorAll('.cloud-scroll .scroll')[0].scrollTop = this.scrollPosition;
+    }
+  },
+
   methods: {
     openWalletsModal() {
       this.$root.$emit('walletsModalOpened', true);
@@ -68,7 +78,7 @@ export default {
       }
       return false;
     },
-    /* eslint-disable */
+
     scrolled(data) {
       this.scrollPosition = data.position;
       if (data.position > 100 && data.direction === 'down') {
@@ -78,11 +88,6 @@ export default {
         this.$root.$emit('isHomeBalanceVisible', true);
       }
     },
-  },
-  activated() {
-    if (document.querySelectorAll('.cloud-scroll .scroll')[0]) {
-      document.querySelectorAll('.cloud-scroll .scroll')[0].scrollTop = this.scrollPosition;
-    }
   },
 };
 </script>

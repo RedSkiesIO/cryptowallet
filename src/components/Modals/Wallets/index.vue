@@ -224,7 +224,6 @@ export default {
     },
 
     storePriceData(coin, latestPrice) {
-      // const coinSDK = this.coinSDKS.Bitcoin;
       return new Promise(async (resolve) => {
         const checkPriceExists = (symbol, data) => {
           const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
@@ -267,7 +266,6 @@ export default {
     },
 
     storeChartData(coin, period, latestPrice) {
-      // const coinSDK = this.coinSDKS.Bitcoin;
       return new Promise(async (resolve) => {
         const checkPriceExists = (symbol, data) => {
           const price = Prices.find([`${symbol}_${this.selectedCurrency.code}_${period}`]);
@@ -327,7 +325,6 @@ export default {
         this.storeChartData(wallet.symbol, 'week', weekData);
         this.storeChartData(wallet.symbol, 'month', monthData);
       }
-      console.log(`hdwallet ${wallet.hdWallet}`);
       const initializedWallet = wallet.hdWallet;
 
       if (!this.activeWallets[this.authenticatedAccount]) {
@@ -337,8 +334,12 @@ export default {
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
 
       try {
-        if (wallet.sdk === 'Bitcoin') await this.enableBitcoin(coinSDK, initializedWallet, wallet);
-        if (wallet.sdk === 'Ethereum') await this.enableEthereum(coinSDK, initializedWallet, wallet);
+        if (wallet.sdk === 'Bitcoin') {
+          await this.enableBitcoin(coinSDK, initializedWallet, wallet);
+        }
+        if (wallet.sdk === 'Ethereum') {
+          await this.enableEthereum(coinSDK, initializedWallet, wallet);
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -350,11 +351,9 @@ export default {
     },
 
     async enableErc20Wallet(wallet) {
-      // const token = this.supportedCoins.find(coin => coin.name === wallet.name);
       const coinSDK = this.coinSDKS[wallet.sdk];
       const parentSDK = this.coinSDKS[wallet.parentSdk];
       const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-      // console.log('prices :', prices);
 
       if (prices) {
         this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
@@ -434,8 +433,6 @@ export default {
         .where('enabled', true)
         .where('imported', false)
         .get();
-
-      console.log('wallets', wallets);
 
       if (wallets.length > 0) {
         this.loading = true;

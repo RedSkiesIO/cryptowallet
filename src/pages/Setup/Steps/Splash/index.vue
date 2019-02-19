@@ -136,24 +136,25 @@ export default {
       },
     };
   },
+
   computed: {
+
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
+
     languages() {
-      console.log('object :', Object.keys(this.$i18n.messages));
       return Object.keys(this.$i18n.messages);
     },
+
     emphasised() {
-      if (this.$route.path === '/setup/0') return true;
+      if (this.$route.path === '/setup/0') {
+        return true;
+      }
       return false;
     },
+
     languageArray() {
-      // return this.languages.map(x => ({
-      //   label: this.$t(x),
-      //   value: x,
-      //   icon: `/assets/flags/${x}.svg`,
-      // }));
       return [
         {
           label: 'English',
@@ -178,20 +179,21 @@ export default {
       ];
     },
   },
+
   methods: {
     selection(type) {
-      console.log('type, this.selectedLang :', type, this.selectedLang);
       if (this.selectedLang) {
         this.$i18n.locale = this.selectedLang.value;
       } else {
         this.$i18n.locale = this.languageArray[0].value;
       }
-      console.log('this.$i18n.locale :', this.$i18n.locale);
+
       if (type === 'new') {
         this.$store.dispatch('setup/setAccountType', 'new');
         this.$router.push({ path: `/setup/${this.id + 2}` });
         return true;
       }
+
       this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: `/setup/${this.id + 1}` });
@@ -201,7 +203,6 @@ export default {
     getStarted() {
       this.$root.$emit('getStartedModalOpened', true);
     },
-
   },
 };
 
@@ -214,6 +215,7 @@ export default {
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
   margin-bottom: 2em;
 }
+
 .done-msg-wrapper h1 {
   font-size: xx-large;
   letter-spacing: 0.1em;
@@ -266,28 +268,34 @@ export default {
   width: 1.5em;
   margin-left: -5px;
 }
+
 .select-icon {
   width: 1.5em;
   margin-left: 15px;
   margin-top: 5px;
 }
+
 .lang-select .dropdown-menu {
   background-color: darkslategrey;
   color: white;
   width: 125%;
   margin-left: -21%;
 }
+
 .lang-select .label {
   color: white;
   padding-left: 0.3em;
   padding-top: 0.19em;
 }
+
 .lang-select .open-indicator:before {
   border-color: white;
 }
+
 .lang-select .form-control {
   display: none;
 }
+
 .flag-icon {
   padding-top: 2px;
 }
@@ -300,10 +308,6 @@ export default {
 .splash-btn {
   width: 15rem;
   height: 3rem;
-}
-
-.splash-logo {
-
 }
 
 .splash-logo h1 {
