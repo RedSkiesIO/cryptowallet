@@ -26,7 +26,7 @@
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
-                Coins & Tokens
+                {{ $t('CoinsTokens') }}
               </h1>
             </div>
             <div class="slide-wrapper">
@@ -39,9 +39,7 @@
                 />
               </div>
               <p>
-                Digital currencies that are secured using cryptography and stored
-                on a distributed ledger, blockchain or DAG. It's digital money.
-                Used by millions world-wide.
+                {{ $t('getStartedCoinsTokens') }}
               </p>
             </div>
           </q-carousel-slide>
@@ -49,7 +47,7 @@
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
-                Your wallet
+                {{ $t('yourWallet') }}
               </h1>
             </div>
             <div class="slide-wrapper">
@@ -62,9 +60,7 @@
                 />
               </div>
               <p>
-                Only you can access your multi-currency crypto-wallet. Your wallet
-                holds your coins and tokens, and allows you to easily and securely
-                transfer your digital money.
+                {{ $t('getStartedYourWallet') }}
               </p>
             </div>
           </q-carousel-slide>
@@ -72,7 +68,7 @@
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
-                Backup your wallet
+                {{ $t('backupYourWallet') }}
               </h1>
             </div>
             <div class="slide-wrapper">
@@ -85,10 +81,7 @@
                 />
               </div>
               <p>
-                Create a list of words to help you recover your wallet, should you
-                lose it. We strongly recommend you write these backup words on
-                papers and hide these in several secret places or use cryptographic
-                algorithm (e.g. Shamir secret sharing techniques).
+                {{ $t('getStartedBackupYourWallet') }}
               </p>
             </div>
           </q-carousel-slide>
@@ -96,7 +89,7 @@
           <q-carousel-slide class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
-                Security
+                {{ $t('security') }}
               </h1>
             </div>
             <div class="slide-wrapper">
@@ -111,15 +104,13 @@
                     />
                   </div>
                   <p>
-                    You are about to create the wallet. Some security precautions
-                    have to be made. Please make sure no one is watching you.
-                    Please disconnect from the Internet.
+                    {{ $t('getStartedSecurity') }}
                   </p>
                 </div>
 
                 <div :class="{ offline: !online }">
                   <q-alert type="negative">
-                    Enable the Airplane Mode or disable your Internet connection before continuing
+                    {{ $t('enableAirplaneDisableInternet') }}
                   </q-alert>
                 </div>
               </div>
@@ -135,9 +126,9 @@
           >
             <q-btn
               v-if="slide !== 3"
+              :label="$t('next')"
               color="yellow"
               text-color="blueish"
-              label="next"
               class="splash-btn"
               @click="carousel.next"
             />
@@ -145,9 +136,9 @@
             <q-btn
               v-if="slide === 3"
               :disabled="online"
+              :label="$t('activateYourWallet')"
               color="yellow"
               text-color="blueish"
-              label="Activate Your Wallet"
               class="splash-btn"
               @click="done"
             />
