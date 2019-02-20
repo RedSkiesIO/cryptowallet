@@ -78,7 +78,9 @@ export default {
     },
 
     coinDenomination() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denomination;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).denomination;
     },
 
     coinSymbol() {
@@ -189,7 +191,9 @@ export default {
         });
 
         if (this.wallet.sdk === 'ERC20') {
-          const parent = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; });
+          const parent = this.supportedCoins.find((coin) => {
+            return coin.name === this.wallet.parentName;
+          });
           const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
 
           feeInCoin = new AmountFormatter({

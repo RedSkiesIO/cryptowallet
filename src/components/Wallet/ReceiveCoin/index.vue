@@ -142,14 +142,11 @@ export default {
         subject: `Here's my ${this.wallet.name} address`,
       };
 
-      function onSuccess(result) {
-      }
-
       function onError(msg) {
         that.errorHandler(new Error(msg));
       }
 
-      window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+      window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
     },
   },
 };

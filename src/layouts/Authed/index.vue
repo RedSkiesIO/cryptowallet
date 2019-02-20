@@ -214,7 +214,7 @@ export default {
   },
 
   methods: {
-    prevent(event) {
+    prevent() {
       return false;
     },
 
@@ -253,6 +253,8 @@ export default {
           this.$root.$emit('updateWalletSingle', done);
         }, 1000);
       }
+
+      return false;
     },
 
     async getUtxos(combinedAddresses, wallet) {
@@ -287,6 +289,10 @@ export default {
     async updateBalances(done) {
       const promises = [];
 
+      function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+      }
+
       this.wallets.forEach((wallet) => {
         promises.push(new Promise(async (resolve, reject) => {
           try {
@@ -300,10 +306,6 @@ export default {
 
             let addressesRaw = addresses.map((item) => { return item.address; });
 
-            function onlyUnique(value, index, self) {
-              return self.indexOf(value) === index;
-            }
-
             addressesRaw = addressesRaw.filter(onlyUnique);
 
             let newBalance;
@@ -313,9 +315,9 @@ export default {
               newBalance = balance;
             } else if (wallet.sdk === 'Ethereum') {
               newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
-              newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000; // @TODO comment this????
             } else if (wallet.sdk === 'ERC20') {
-              newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][wallet.name]);
+              const activeWallet = this.activeWallets[this.authenticatedAccount][wallet.name];
+              newBalance = await coinSDK.getBalance(activeWallet);
             }
 
             // update balance

@@ -9,7 +9,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    'plugin:vue/recommended'
+    'plugin:vue/recommended',
   ],
   plugins: [
     'vue',
@@ -35,6 +35,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     'arrow-body-style': ['error', 'always'],
-    'vue/component-name-in-template-casing': ["error", "PascalCase|kebab-case"]
+    'vue/component-name-in-template-casing': 0,
   },
 };
