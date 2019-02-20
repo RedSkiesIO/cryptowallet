@@ -135,11 +135,14 @@
 </template>
 
 <script>
+import {
+  required,
+  alphaNum,
+  minLength,
+  maxLength,
+} from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import { debounce } from 'quasar';
-import {
-  required, alphaNum, minLength, maxLength,
-} from 'vuelidate/lib/validators';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
@@ -220,9 +223,6 @@ export default {
       if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       this.updateFee(this.feeSetting, this);
       return false;
-    },
-    address(val) {
-
     },
     utxos: {
       handler() {
@@ -359,7 +359,7 @@ export default {
       const accounts = that.getAccounts();
 
       let { address } = that.getAddresses()[0];
-      if (that.address) address = that.address;
+      if (that.address) ({ address } = that);
       let amount = that.wallet.confirmedBalance / 2;
       if (that.inCoin) amount = that.inCoin;
 
@@ -466,9 +466,8 @@ export default {
      * @param  {Number} pendingCount
      * @return {Array<String>}
      */
-    generateChangeAddresses(filteredUtxos, pendingCount) {
+    generateChangeAddresses() {
       const quantityToGenerate = 1;
-      // if (filteredUtxos.length === 1 && pendingCount === 0) quantityToGenerate = 2;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][
@@ -677,6 +676,7 @@ export default {
 
       this.maxed = true;
       this.updateMax();
+      return false;
     },
 
     async updateMax() {
@@ -691,7 +691,7 @@ export default {
       ];
       const accounts = this.getAccounts();
       let { address } = this.getAddresses()[0];
-      if (this.address) address = this.address;
+      if (this.address) ({ address } = this);
       const amount = this.wallet.confirmedBalance;
 
       const { transaction } = await this.createRawTx(

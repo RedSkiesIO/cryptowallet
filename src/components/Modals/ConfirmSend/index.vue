@@ -144,7 +144,9 @@ export default {
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
         // @todo Konrad, explain the mysterious code below
-        const newBalance = this.wallet.confirmedBalance * 1000000000000000000 - (this.txData.transaction.value * 1000000000000000000 + parseFloat(this.txData.transaction.fee) * 1000000000000000000);
+        const newBalance = (this.wallet.confirmedBalance * 1000000000000000000)
+                           - ((this.txData.transaction.value * 1000000000000000000)
+                           + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
         return newBalance / 1000000000000000000;
       }
       if (this.wallet.sdk === 'ERC20') {
@@ -153,7 +155,8 @@ export default {
         return newBalance;
       }
       if (this.wallet.sdk === 'Bitcoin') {
-        return this.wallet.confirmedBalance - (this.txData.transaction.value + parseFloat(this.txData.transaction.fee));
+        const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
+        return this.wallet.confirmedBalance - totalCost;
       }
       return false;
     },
@@ -284,7 +287,10 @@ export default {
       });
 
       if (this.wallet.sdk === 'ERC20' && fee) {
-        const parentSymbol = this.supportedCoins.find((coin) => { return coin.name === this.wallet.parentName; }).symbol;
+        const parentSymbol = this.supportedCoins.find((coin) => {
+          return coin.name === this.wallet.parentName;
+        }).symbol;
+
         const parentPrice = this.$store.getters['entities/latestPrice/find'](`${parentSymbol}_${this.selectedCurrency.code}`).data.PRICE;
         formattedAmount = new AmountFormatter({
           amount,

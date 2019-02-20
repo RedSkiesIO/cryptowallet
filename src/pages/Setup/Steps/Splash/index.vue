@@ -8,13 +8,13 @@
     <div class="splash-logo">
       <h1>CryptoWallet</h1>
       <p class="splash-slogan">
-        All your coins and tokens in one place. Secured.
+        {{ $t('splashSlogan') }}
       </p>
     </div>
 
     <div class="btns-wrapper">
       <q-btn
-        label="Get Started"
+        :label="$t('getStarted')"
         color="primary"
         text-color="blueish"
         class="splash-btn"

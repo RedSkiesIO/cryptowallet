@@ -44,7 +44,9 @@ export default {
     validate() {
       if (this.accountName.length === 0) return false;
       const accounts = this.$store.getters['entities/account/query']().get();
-      const nameAlreadyInUse = accounts.find((account) => { return account.name === this.accountName; });
+      const nameAlreadyInUse = accounts.find((account) => {
+        return account.name === this.accountName;
+      });
 
       if (nameAlreadyInUse) {
         this.$toast.create(10, this.$t('accountNameTaken'), 500);

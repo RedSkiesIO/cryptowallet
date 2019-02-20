@@ -163,10 +163,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import {
-  required, alphaNum, numeric, between, minLength, maxLength,
+  required,
+  alphaNum,
+  numeric,
+  between,
+  minLength,
+  maxLength,
 } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';

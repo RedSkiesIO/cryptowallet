@@ -14,6 +14,8 @@ export default {
   },
   data() {
     return {
+      // cannot fix this, _chart is coming from vue-chartjs
+      // eslint-disable-next-line
       _chart: '',
     };
   },
@@ -36,6 +38,8 @@ export default {
         chart.datasets[1].backgroundColor = this.gradient;
         chart.datasets[2].backgroundColor = this.gradient;
         this.renderChart(chart, this.options);
+        // cannot fix this, _chart is coming from vue-chartjs
+        // eslint-disable-next-line
         this.chart = this.$data._chart;
         this.newLegend();
       },
@@ -47,6 +51,8 @@ export default {
     chart.datasets[1].backgroundColor = this.gradient;
     chart.datasets[2].backgroundColor = this.gradient;
     this.renderChart(chart, this.options);
+    // cannot fix this, _chart is coming from vue-chartjs
+    // eslint-disable-next-line
     this.chart = this.$data._chart;
     this.newLegend();
   },

@@ -1,4 +1,3 @@
-
 <template>
   <div v-if="wallet">
     <Transactions :wallet="wallet" />
@@ -108,7 +107,8 @@ export default {
           this.wallet.network,
         );
       } else if (this.wallet.sdk === 'ERC20') {
-        newBalance = await coinSDK.getBalance(this.activeWallets[this.authenticatedAccount][this.wallet.name]);
+        const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
+        newBalance = await coinSDK.getBalance(wallet);
       }
 
       newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;

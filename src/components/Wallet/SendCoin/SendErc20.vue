@@ -128,11 +128,13 @@
 </template>
 
 <script>
-
-import { mapState } from 'vuex';
 import {
-  required, alphaNum, minLength, maxLength,
+  required,
+  alphaNum,
+  minLength,
+  maxLength,
 } from 'vuelidate/lib/validators';
+import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
@@ -184,10 +186,14 @@ export default {
       return Coin.all();
     },
     coinSymbol() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).symbol;
     },
     coinDenomination() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).denomination;
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).denomination;
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
@@ -484,7 +490,8 @@ export default {
 
     updateMax() {
       // @todo Konrad explain the code below
-      this.inCoin = (this.wallet.confirmedBalance * 1000000000000000000 - this.rawFee) / 1000000000000000000;
+      const quintillion = 1000000000000000000;
+      this.inCoin = ((this.wallet.confirmedBalance * quintillion) - this.rawFee) / quintillion;
     },
 
     /**
