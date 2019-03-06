@@ -14,7 +14,7 @@
         />
       </div>
       <h1 class="header-h1">
-        Atlas Node
+        {{ $t('CatalystNode') }}
       </h1>
     </div>
 

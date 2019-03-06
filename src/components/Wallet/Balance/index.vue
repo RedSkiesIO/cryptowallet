@@ -14,7 +14,7 @@
           format="0.00"
         />
       </h1>
-      <div>Balance</div>
+      <div>{{ $t('balance') }}</div>
     </div>
   </section>
 </template>

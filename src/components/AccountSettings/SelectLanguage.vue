@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Language
+          {{ $t('language') }}
         </h1>
       </div>
 

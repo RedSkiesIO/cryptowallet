@@ -26,7 +26,7 @@
             class="no-tx-alert"
           >
             <q-alert color="info">
-              Transaction history is empty.
+              {{ $t(emptyTransactionHistory) }}
             </q-alert>
           </div>
         </q-timeline>

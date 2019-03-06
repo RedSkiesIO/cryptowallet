@@ -2,7 +2,7 @@
   <div v-if="latestPrice">
     <div class="send-coin-box">
       <div class="send-modal-heading">
-        <h3>Recipient</h3>
+        <h3>{{ $t('recipient') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('paste')"
@@ -31,7 +31,7 @@
       </div>
       <span class="error-label">{{ addressError }}</span>
       <div class="send-modal-heading">
-        <h3>Amount</h3>
+        <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('max')"
@@ -103,7 +103,7 @@
           />
         </div>
         <div class="estimated-fee">
-          Estimated transaction cost: {{ estimatedFee }}
+          {{ $t('estimatedTransaction') }} {{ estimatedFee }}
         </div>
       </div>
       <div class="send">
@@ -248,9 +248,9 @@ export default {
   methods: {
     helpFee() {
       this.$q.dialog({
-        title: 'Fees',
+        title: this.$t('fees'),
         message: this.$t('helpFeesEtheruem'),
-        ok: 'OK',
+        ok: this.$t('ok'),
         color: 'blueish',
       });
     },
@@ -271,14 +271,14 @@ export default {
         this.$v.address.$touch();
 
         if (this.$v.address.$error) {
-          this.addressError = 'The address must be 42 characters in length';
+          this.addressError = this.$t('ethereumAddressInvalidLength');
           return false;
         }
         const coinSDK = this.coinSDKS[this.wallet.sdk];
         const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
 
         if (!isValid) {
-          this.addressError = 'Invalid Ethereum address';
+          this.addressError = this.$t('ethereumAddressInvalid');
           return false;
         }
         this.addressError = '';
@@ -287,7 +287,7 @@ export default {
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
         if (this.$v.inCoin.$error) {
-          this.amountError = 'You must provide an amount';
+          this.amountError = this.$t('noAmount');
           return false;
         }
         this.amountError = '';
@@ -334,14 +334,14 @@ export default {
      */
     customFeeLabel(feeSetting) {
       if (feeSetting === 0) {
-        return 'slow';
+        return this.$t('lowFeeLabel');
       }
 
       if (feeSetting === 1) {
-        return 'fast';
+        return this.$t('mediumFeeLabel');
       }
 
-      return 'fastest';
+      return this.$t('highFeeLabel');
     },
 
     async feeChange() {

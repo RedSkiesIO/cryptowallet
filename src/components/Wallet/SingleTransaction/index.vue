@@ -229,9 +229,9 @@ export default {
      * @return {String}
      */
     status() {
-      if (this.data.confirmations > 5) return 'confirmed';
-      if (this.data.confirmations > 0) return 'unconfirmed';
-      return 'pending';
+      if (this.data.confirmations > 5) return this.$t('confirmed');
+      if (this.data.confirmations > 0) return this.$t('unconfirmed');
+      return this.$t('pending');
     },
   },
 };

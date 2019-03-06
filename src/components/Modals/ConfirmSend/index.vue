@@ -22,7 +22,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Confirm
+          {{ $t('confirm') }}
         </h1>
       </div>
       <div
@@ -32,7 +32,7 @@
         <CoinHeader :wallet="wallet" />
 
         <div class="send-modal-heading">
-          <h3>To</h3>
+          <h3>{{ $t('to') }}</h3>
           <span class="h3-line" />
         </div>
 
@@ -41,7 +41,7 @@
         </div>
 
         <div class="send-modal-heading">
-          <h3>Amount</h3>
+          <h3>{{ $t('amount') }}</h3>
           <span class="h3-line" />
         </div>
 
@@ -51,7 +51,7 @@
         </div>
 
         <div class="send-modal-heading">
-          <h3>Fee</h3>
+          <h3>{{ $t('fee') }}</h3>
           <span class="h3-line" />
         </div>
 
@@ -71,7 +71,7 @@
         </div>
 
         <div class="send-modal-heading">
-          <h3>New Balance</h3>
+          <h3>{{ $t('newBalance') }}</h3>
           <span class="h3-line" />
         </div>
 
@@ -202,7 +202,7 @@ export default {
       if (this.wallet.sdk === 'Bitcoin') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {
-          throw new Error('Transaction broadcast failure');
+          throw new Error(this.$t('transactionBroadcastFail'));
         }
 
         transaction.account_id = this.authenticatedAccount;
@@ -258,7 +258,7 @@ export default {
       if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {
-          throw new Error('Transaction broadcast failure');
+          throw new Error(this.$t('transactionBroadcastFail'));
         }
 
         transaction.account_id = this.authenticatedAccount;

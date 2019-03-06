@@ -16,7 +16,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Send
+          {{ $t('send') }}
         </h1>
       </div>
       <div

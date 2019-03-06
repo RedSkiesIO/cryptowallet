@@ -27,7 +27,7 @@
       >
         <div class="initialize-wallet-modal">
           <Spinner />
-          <span>Enabling wallet</span>
+          <span>{{ $t('enablingWallet') }}</span>
         </div>
       </q-modal>
     </div>

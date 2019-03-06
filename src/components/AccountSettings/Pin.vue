@@ -14,7 +14,7 @@
         />
       </div>
       <h1 class="header-h1">
-        PIN Code
+        {{ $t(pinCode) }}
       </h1>
     </div>
 

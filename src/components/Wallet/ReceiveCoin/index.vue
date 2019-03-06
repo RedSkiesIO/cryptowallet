@@ -3,7 +3,7 @@
     <CoinHeader :wallet="wallet" />
 
     <div class="send-modal-heading">
-      <h3>Your Address</h3>
+      <h3>{{ $t('yourAddress') }}</h3>
       <span class="h3-line" />
     </div>
     <div class="address break">
@@ -26,7 +26,7 @@
     />
 
     <div class="send-modal-heading">
-      <h3>Scan QR Code</h3>
+      <h3>{{ $t('scanQR') }}</h3>
       <span class="h3-line" />
     </div>
 

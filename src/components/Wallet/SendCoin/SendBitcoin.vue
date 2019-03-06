@@ -2,7 +2,7 @@
   <div>
     <div class="send-coin-box">
       <div class="send-modal-heading">
-        <h3>Recipient</h3>
+        <h3>{{ $t('recipient') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('paste')"
@@ -32,7 +32,7 @@
       </div>
       <span class="error-label">{{ addressError }}</span>
       <div class="send-modal-heading">
-        <h3>Amount</h3>
+        <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('max')"
@@ -81,7 +81,7 @@
 
       <div class="send-modal-heading">
         <h3>
-          Fee
+          {{ $t('fee') }}
           <q-icon
             name="help_outline"
             size="1.1rem"
@@ -108,7 +108,7 @@
           />
         </div>
         <div class="estimated-fee">
-          Estimated transaction cost: {{ estimatedFee }}
+          {{ $t('estimatedTransaction') }} {{ estimatedFee }}
         </div>
       </div>
 
@@ -242,9 +242,9 @@ export default {
   methods: {
     helpFee() {
       this.$q.dialog({
-        title: 'Fees',
+        title: this.$t('fees'),
         message: this.$t('helpFeesBitcoin'),
-        ok: 'OK',
+        ok: this.$t('ok'),
         color: 'blueish',
       });
     },
@@ -262,13 +262,13 @@ export default {
       if (field === 'address') {
         this.$v.address.$touch();
         if (this.$v.address.$error) {
-          this.addressError = 'The address must be 34 characters in length';
+          this.addressError = this.$t('bitcoinAddressInvalidLength');
           return false;
         }
         const coinSDK = this.coinSDKS[this.wallet.sdk];
         const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
         if (!isValid) {
-          this.addressError = 'Invalid Bitcoin address';
+          this.addressError = this.$t('bitcoinAddressInvalid');
           return false;
         }
         this.addressError = '';
@@ -276,7 +276,7 @@ export default {
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
         if (this.$v.inCoin.$error) {
-          this.amountError = 'You must provide an amount';
+          this.amountError = this.$t('noAmount');
           return false;
         }
         this.amountError = '';
@@ -332,9 +332,9 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return 'low';
-      if (feeSetting === 1) return 'recommended';
-      return 'high';
+      if (feeSetting === 0) return this.$t('lowFeeLabel');
+      if (feeSetting === 1) return this.$t('mediumFeeLabel');
+      return this.$t('highFeeLabel');
     },
 
     /**

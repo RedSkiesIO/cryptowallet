@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Wallets
+          {{ $t('wallets') }}
         </h1>
         <div
           class="header-settings-button-wrapper"
