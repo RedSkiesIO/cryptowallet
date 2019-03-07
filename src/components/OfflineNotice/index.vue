@@ -58,7 +58,7 @@ export default {
   methods: {
     showOfflineNotice() {
       this.dissmis = this.$q.notify({
-        message: 'No Internet connection',
+        message: this.$t('noConnection'),
         timeout: 0,
         type: 'negative',
         // color: 'positive',

@@ -6,7 +6,7 @@
      -->
 
     <div class="splash-logo">
-      <h1>CryptoWallet</h1>
+      <h1>{{ $t('CryptoWallet') }}</h1>
       <p class="splash-slogan">
         {{ $t('splashSlogan') }}
       </p>
