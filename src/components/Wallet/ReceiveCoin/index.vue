@@ -68,11 +68,11 @@ export default {
       return this.getAddress();
     },
   },
-  watch: {
-    address() {
-      this.qrCode();
-    },
-  },
+  // watch: {
+  //   address() {
+  //     this.qrCode();
+  //   },
+  // },
   mounted() {
     this.qrCode();
   },

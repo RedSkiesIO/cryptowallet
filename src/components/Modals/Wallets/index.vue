@@ -312,18 +312,23 @@ export default {
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
-      const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-      if (prices) {
-        this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      if (coinSDK.getPriceFeed) {
+        const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
+        if (prices) {
+          this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+        }
       }
-      const dayData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-      const weekData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-      const monthData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+      if (coinSDK.getPriceFeed) {
+        const dayData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+        const weekData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+        const monthData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
-      if (dayData && weekData && monthData) {
-        this.storeChartData(wallet.symbol, 'day', dayData);
-        this.storeChartData(wallet.symbol, 'week', weekData);
-        this.storeChartData(wallet.symbol, 'month', monthData);
+
+        if (dayData && weekData && monthData) {
+          this.storeChartData(wallet.symbol, 'day', dayData);
+          this.storeChartData(wallet.symbol, 'week', weekData);
+          this.storeChartData(wallet.symbol, 'month', monthData);
+        }
       }
       const initializedWallet = wallet.hdWallet;
 

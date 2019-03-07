@@ -93,15 +93,15 @@
 
 <script>
 import { mapState } from 'vuex';
-import SelectAccount from '@/components/Modals/SelectAccount';
+// import SelectAccount from '@/components/Modals/SelectAccount';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'Header',
-  components: {
-    SelectAccount,
-  },
+  // components: {
+  //   SelectAccount,
+  // },
 
   data() {
     return {
@@ -140,7 +140,7 @@ export default {
         const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
           return this.$route.name === 'walletSingle'
-                 || this.$route.name === 'sendCoinSingle';
+                || this.$route.name === 'sendCoinSingle';
         }
       }
       return false;

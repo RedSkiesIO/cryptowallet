@@ -23,7 +23,7 @@ export default [
     sdk: 'Bitcoin',
     coinType: 0,
     symbol: 'BTC',
-    network: 'REGTEST',
+    network: 'BITCOIN_TESTNET',
     denomination: '0.00000000',
   },
   {
