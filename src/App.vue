@@ -43,6 +43,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapState } from 'vuex';
 import Latest from '@/store/latestPrice';
 import Coin from '@/store/wallet/entities/coin';
@@ -126,6 +127,8 @@ export default {
       handler(value) {
         if (value) return false;
         if (this.accounts.length < 1) this.$router.push({ path: '/setup/0' });
+
+
         this.storeSupportedCoins();
         this.fetchPrices();
         return true;
@@ -133,9 +136,12 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     window.store = this.$store;
     window.app = this;
+
+    this.backEndService = new this.BackEndService();
+    console.log(await this.backEndService.getPriceFeed());
 
     if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
 
@@ -255,6 +261,9 @@ export default {
       coins.filter(onlyUnique);
 
       try {
+
+
+/*        console.log('here');
         const prices = await coinSDK.getPriceFeed(coins, ['GBP', 'USD', 'EUR']);
         const promises = [];
         coins.forEach((coin) => {
@@ -263,7 +272,7 @@ export default {
           }));
         });
 
-        await Promise.all(promises);
+        await Promise.all(promises);*/
       } catch (e) {
         this.$toast.create(10, e.message, 500);
       }
