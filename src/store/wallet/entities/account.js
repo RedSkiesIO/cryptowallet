@@ -7,16 +7,13 @@ import Wallet from './wallet';
 export default class Account extends Model {
   static entity = 'account';
 
-  static AES = ['seed'];
+  static AES = ['seed', 'refresh_token'];
 
-  /**
-   * Sets entity attributes.
-   * @returns {{id: Increment, uid: Attr, salt: Attr, pinHash: Attr}}
-   */
   static fields() {
     return {
       id: this.increment(),
       uid: this.attr(''),
+      refresh_token: this.attr(null),
       salt: this.attr(''),
       pinHash: this.attr(''),
       name: this.attr(''),

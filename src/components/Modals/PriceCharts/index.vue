@@ -99,7 +99,6 @@ import Latest from '@/store/latestPrice';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
-
 export default {
   name: 'PriceCharts',
   components: {
@@ -140,9 +139,10 @@ export default {
     },
     percentColor() {
       const priceChange = this.latestPrice.data.CHANGEPCT24HOUR;
-      if (priceChange.charAt(0) !== '-') {
+      if (priceChange > 0) {
         return 'lime';
       }
+
       return '#de4662';
     },
     coinLogo() {
@@ -158,6 +158,7 @@ export default {
       if (!day || !week || !month) {
         return false;
       }
+
       return true;
     },
   },
@@ -166,6 +167,7 @@ export default {
       handler(to) {
         if (to.name === 'coinPrices' || to.name === 'coinSinglePrices') {
           this.priceChartModalOpened = true;
+          this.loadData();
         } else {
           this.priceChartModalOpened = false;
         }
@@ -198,19 +200,21 @@ export default {
       this.showChart = false;
       this.loading = true;
 
-      let coinSDK = this.coinSDKS[this.wallet.sdk];
-      if (this.wallet.sdk === 'ERC20') {
-        coinSDK = this.coinSDKS[this.wallet.parentSdk];
-      }
-
       try {
-        const dayData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
-        const weekData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
-        const monthData = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'month');
-        const latestPrice = await coinSDK.getPriceFeed(
+        let dayData = await this.backEndService.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+        let weekData = await this.backEndService.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'week');
+        let monthData = await this.backEndService.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'month');
+
+        dayData = dayData.data;
+        weekData = weekData.data;
+        monthData = monthData.data;
+
+        let latestPrice = await this.backEndService.getPriceFeed(
           [this.coinSymbol],
           [this.selectedCurrency.code],
         );
+
+        ([latestPrice] = latestPrice.data);
 
         const checkExists = (period, data) => {
           const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_${period}`]);
@@ -305,7 +309,7 @@ export default {
           );
         };
 
-        const latest = latestPrice[this.coinSymbol][this.selectedCurrency.code];
+        const latest = latestPrice[this.selectedCurrency.code];
         if (checkPriceExists(this.coinSymbol, latest)) {
           Latest.$update({
             where: (record) => {
@@ -316,7 +320,7 @@ export default {
             },
             data: {
               updated: +new Date(),
-              data: latestPrice[this.coinSymbol][this.selectedCurrency.code],
+              data: latestPrice[this.selectedCurrency.code],
             },
           });
         }

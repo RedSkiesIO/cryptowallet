@@ -76,7 +76,7 @@ export default {
         this.pin.push(pin);
       });
     },
-
+    /*eslint-disable*/
     /**
      * Compares bcrypt pin string to try and unlock an account
      */
@@ -88,8 +88,15 @@ export default {
           this.$store.dispatch('settings/setLoading', true);
           this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
           this.$i18n.locale = this.account.locale;
+
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
+
+          this.$root.__proto__.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''))
+
+          await this.backEndService.connect();
+          await this.backEndService.loadPriceFeed();
+
           this.$router.push({ path: '/wallet' });
           this.$store.dispatch('settings/setLayout', 'light');
 
@@ -125,7 +132,8 @@ export default {
           const result = model.query().where('id', id).get();
           result.forEach((item) => {
             model.AES.forEach((key) => {
-              item[key] = this.decrypt(item[key], pass);
+              if (item[key]) {
+                item[key] = this.decrypt(item[key], pass);              }
             });
           });
         }

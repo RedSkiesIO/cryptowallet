@@ -105,9 +105,7 @@ export default {
           backgroundColor: 'black',
           hidden: true,
           data: this.monthData.data,
-        },
-        ],
-
+        }],
       };
     },
     options() {
@@ -155,8 +153,6 @@ export default {
 
   mounted() {
     this.loaded = false;
-
-
     this.loaded = true;
   },
   methods: {
