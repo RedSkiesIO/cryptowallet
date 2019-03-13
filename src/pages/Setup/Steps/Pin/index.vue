@@ -4,7 +4,7 @@
       Pin Setup
     </h1>
     <h4 class="setup">
-      Set your pin. Minimum 6 digits asd.
+      Set your pin. Minimum 6 digits.
     </h4>
     <PinPad mode="pin-setup" />
   </div>

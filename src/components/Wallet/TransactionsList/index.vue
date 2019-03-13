@@ -69,6 +69,7 @@ export default {
   },
   computed: {
     transactions() {
+      const msTos = 1000;
       const txs = Tx.query()
         .where('wallet_id', this.wallet.id)
         .where('isChange', false)
@@ -76,17 +77,17 @@ export default {
 
       txs.sort((a, b) => {
         if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
-          let b1 = new Date(b.confirmedTime * 1000);
-          if (!b.confirmedTime) b1 = new Date(b.receivedTime.toString() * 1000);
+          let b1 = new Date(b.confirmedTime * msTos);
+          if (!b.confirmedTime) { b1 = new Date(b.receivedTime.toString() * msTos); }
 
-          let a1 = new Date(a.confirmedTime * 1000);
-          if (!a.confirmedTime) a1 = new Date(a.receivedTime.toString() * 1000);
+          let a1 = new Date(a.confirmedTime * msTos);
+          if (!a.confirmedTime) { a1 = new Date(a.receivedTime.toString() * msTos); }
 
           return b1 - a1;
         }
 
         if (this.wallet.sdk === 'Bitcoin') {
-          return new Date(b.receivedTime * 1000) - new Date(a.receivedTime * 1000);
+          return new Date(b.receivedTime * msTos) - new Date(a.receivedTime * msTos);
         }
 
         return 0;
@@ -101,8 +102,8 @@ export default {
      */
     filtered() {
       return this.transactions.filter((transaction) => {
-        if (this.filter === 'sent') return transaction.sent === true;
-        if (this.filter === 'received') return transaction.sent === false;
+        if (this.filter === 'sent') { return transaction.sent === true; }
+        if (this.filter === 'received') { return transaction.sent === false; }
         return true;
       });
     },

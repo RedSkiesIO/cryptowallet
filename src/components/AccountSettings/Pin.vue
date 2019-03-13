@@ -116,7 +116,7 @@ export default {
      * @return {String}
      */
     getSalt() {
-      if (this.salt) return this.salt;
+      if (this.salt) { return this.salt; }
       this.salt = bcrypt.genSaltSync(10);
       return this.salt;
     },

@@ -134,8 +134,8 @@ export default {
       txHistory.txs.forEach((tx) => {
         tx.account_id = this.authenticatedAccount;
         tx.wallet_id = wallet.id;
-        if (tx.confirmed) confirmedTx.push(tx);
-        if (!tx.confirmed) unconfirmedTx.push(tx);
+        if (tx.confirmed) { confirmedTx.push(tx); }
+        if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
       utxos.forEach((utxo) => {
@@ -207,8 +207,8 @@ export default {
       txHistory.txs.forEach((tx) => {
         tx.account_id = this.authenticatedAccount;
         tx.wallet_id = wallet.id;
-        if (tx.confirmed) confirmedTx.push(tx);
-        if (!tx.confirmed) unconfirmedTx.push(tx);
+        if (tx.confirmed) { confirmedTx.push(tx); }
+        if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
       function createDate(timestamp) {
@@ -408,8 +408,8 @@ export default {
       txHistory.forEach((tx) => {
         tx.account_id = this.authenticatedAccount;
         tx.wallet_id = wallet.id;
-        if (tx.confirmed) confirmedTx.push(tx);
-        if (!tx.confirmed) unconfirmedTx.push(tx);
+        if (tx.confirmed) { confirmedTx.push(tx); }
+        if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
       function createDate(timestamp) {

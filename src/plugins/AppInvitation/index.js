@@ -7,7 +7,7 @@ function AppInvitation({ contact, vm }) {
    * @return {String}
    */
   this.mobilePhoneNumber = () => {
-    if (!this.contact.phoneNumbers) return false;
+    if (!this.contact.phoneNumbers) { return false; }
     return this.contact.phoneNumbers.find((item) => { return item.type === 'mobile'; }).value;
   };
 
@@ -16,7 +16,7 @@ function AppInvitation({ contact, vm }) {
    * @return {String}
    */
   this.emailAddress = () => {
-    if (!this.contact.emails) return false;
+    if (!this.contact.emails) { return false; }
     return this.contact.emails[0].value;
   };
 
@@ -84,8 +84,8 @@ function AppInvitation({ contact, vm }) {
 
     this.vm.$q.actionSheet(options)
       .then((action) => {
-        if (action.label === 'SMS') this.sendSMS();
-        if (action.label === 'Email') this.sendEmail();
+        if (action.label === 'SMS') { this.sendSMS(); }
+        if (action.label === 'Email') { this.sendEmail(); }
       })
       .catch(() => {
       });

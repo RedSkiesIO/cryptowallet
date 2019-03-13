@@ -93,16 +93,11 @@
 
 <script>
 import { mapState } from 'vuex';
-// import SelectAccount from '@/components/Modals/SelectAccount';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'Header',
-  // components: {
-  //   SelectAccount,
-  // },
-
   data() {
     return {
       isBackButtonEnabled: false,
@@ -151,9 +146,9 @@ export default {
     },
 
     heading() {
-      if (this.$route.name === 'setup') return '';
-      if (this.$route.name === 'exchange') return 'Exchange';
-      if (this.$route.name === 'settings') return 'Settings';
+      if (this.$route.name === 'setup') { return ''; }
+      if (this.$route.name === 'exchange') { return 'Exchange'; }
+      if (this.$route.name === 'settings') { return 'Settings'; }
       return 'CryptoWallet';
     },
 

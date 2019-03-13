@@ -414,11 +414,11 @@ export default {
      * @return {Boolean}
      */
     isValid() {
-      if (!this.address) return false;
-      if (!this.inCoin) return false;
-      if (!this.inCurrency) return false;
-      if (this.addressError) return false;
-      if (this.amountError) return false;
+      if (!this.address) { return false; }
+      if (!this.inCoin) { return false; }
+      if (!this.inCurrency) { return false; }
+      if (this.addressError) { return false; }
+      if (this.amountError) { return false; }
 
       return true;
     },
@@ -443,8 +443,8 @@ export default {
       const keypair = coinSDK.generateKeyPair(wallet, 0);
 
       let fee = this.feeData.medium;
-      if (this.feeSetting === 0) fee = this.feeData.low;
-      if (this.feeSetting === 2) fee = this.feeData.high;
+      if (this.feeSetting === 0) { fee = this.feeData.low; }
+      if (this.feeSetting === 2) { fee = this.feeData.high; }
 
       try {
         const {
