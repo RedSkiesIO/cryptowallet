@@ -46,6 +46,8 @@ export default ({ Vue, store }) => {
 
     if (showToast) {
       vm.$toast.create(10, err.message, 500);
+      // this console.error is needed, otherwise we don't have debugging information, just a toast
+      /* eslint-disable-next-line */
       console.error(err);
     }
   };
