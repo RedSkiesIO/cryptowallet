@@ -58,7 +58,7 @@
               v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
               class="col-6"
             >
-              {{ $t('volume24h') }}{{ selectedCurrency.code }}
+              {{ $t('volume24h') }} {{ selectedCurrency.code }}
             </div>
           </div>
           <div class="row price">
