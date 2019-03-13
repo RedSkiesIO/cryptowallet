@@ -91,6 +91,19 @@
     "vue-jest": "^3.0.3",
     "yorkie": "^2.0.0"
   },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --ext .js,.vue src",
+      "git add"
+    ],
+    "*.vue": [
+      "eslint --ext .js,.vue src",
+      "git add"
+    ]
+  },
   "engines": {
     "node": ">= 8.15.0",
     "npm": ">= 6.4.0"
