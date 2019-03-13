@@ -59,7 +59,9 @@ export default {
    */
   mounted() {
     if (!this.selectedAccount) {
-      const defaultAccount = this.accounts.find((account) => { return account.default; });
+      const defaultAccount = this.accounts.find((account) => {
+        return account.default;
+      });
       if (defaultAccount) this.$store.dispatch('settings/setSelectedAccount', defaultAccount.name);
     }
   },
@@ -133,7 +135,8 @@ export default {
           result.forEach((item) => {
             model.AES.forEach((key) => {
               if (item[key]) {
-                item[key] = this.decrypt(item[key], pass);              }
+                item[key] = this.decrypt(item[key], pass);
+              }
             });
           });
         }
@@ -160,6 +163,7 @@ export default {
             .where('account_id', accountId)
             .where('enabled', true)
             .get();
+
           if (wallets.length === 0) {
             resolve();
             return false;

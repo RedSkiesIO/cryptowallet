@@ -1,5 +1,3 @@
-/*eslint-disable*/
-
 import Rollbar from 'vue-rollbar';
 
 /**
@@ -27,10 +25,11 @@ export default ({ Vue, store }) => {
   /**
    * Add an error handling callback that creates toast.
    * @param err
+   * @param showToast
    * @param vm
    * @param info
    */
-  Vue.config.errorHandler = (err, vm = new Vue()) => {
+  Vue.config.errorHandler = (err, showToast = true, vm = new Vue()) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
@@ -44,7 +43,11 @@ export default ({ Vue, store }) => {
     });
 
     Vue.rollbar.error(err.message);
-    vm.$toast.create(10, err.message, 500);
+
+    if (showToast) {
+      vm.$toast.create(10, err.message, 500);
+      console.error(err);
+    }
   };
 
   Vue.prototype.errorHandler = Vue.config.errorHandler;

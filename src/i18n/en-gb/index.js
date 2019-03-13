@@ -125,7 +125,7 @@ export default {
   language: 'Language',
   currency: 'Currency',
   pinCode: 'PIN Code',
-  logOut: 'Logout',
+  logout: 'Logout',
   deleteAccount: 'Delete Account',
   catalystNode: 'Catalyst Node',
   // Wallet

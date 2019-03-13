@@ -30,7 +30,9 @@ class BackEndService {
    */
   setRefreshToken(token) {
     Account.$update({
-      where: (record) => { return record.id === this.accountId; },
+      where: (record) => {
+        return record.id === this.accountId;
+      },
       data: { refresh_token: token },
       password: this.password,
     });
@@ -38,26 +40,42 @@ class BackEndService {
     this.refreshToken = token;
   }
 
+  /**
+   * Recursivly authenticates against the backend service
+   * @param  {Number} attempts
+   * @return {Promise}
+   */
   connect(attempts = 0) {
-    return new Promise(async (resolve, reject) => {
-      if (attempts >= 1000) {
-        this.vm.$toast.create(10, 'Failed to connect to the server', 500);
-        reject(new Error('Failed to connect to the server'));
+    return new Promise(async (resolve) => {
+      if (attempts >= 100) {
+        this.vm.errorHandler(new Error('Failed to connect to the server'), false);
         return false;
       }
 
-      if (this.refreshToken) {
-        const code = await this.refreshAuth();
-        if (code === 201) {
-          resolve(true);
-          return false;
+      try {
+        if (this.refreshToken) {
+          try {
+            // access denied, refresh access token
+            const code = await this.refreshAuth();
+            if (code === 201) {
+              resolve(true);
+              return false;
+            }
+          } catch (error) {
+            // refresh token failed, re-authenticate
+            await this.auth();
+            resolve(true);
+            return false;
+          }
+        } else {
+          const code = await this.auth();
+          if (code === 200) {
+            resolve(true);
+            return false;
+          }
         }
-      } else {
-        const code = await this.auth();
-        if (code === 200) {
-          resolve(true);
-          return false;
-        }
+      } catch (err) {
+        this.vm.errorHandler(err);
       }
 
       setTimeout(() => {
@@ -69,6 +87,10 @@ class BackEndService {
     });
   }
 
+  /**
+   * Calls the auth endpoint
+   * @return {String}
+   */
   async auth() {
     const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/fake`);
 
@@ -80,6 +102,10 @@ class BackEndService {
     return response.status;
   }
 
+  /**
+   * Calls the refresh auth endpoint with the refresh token
+   * @return {String}
+   */
   async refreshAuth() {
     const data = { refresh_token: this.refreshToken };
     const response = await axios.post(`${process.env.BACKEND_SERVICE_URL}/auth/refresh`, data);
@@ -92,6 +118,10 @@ class BackEndService {
     return response.status;
   }
 
+  /**
+   * Sets up authorization headers for axios requests
+   * @return {Object}
+   */
   async getAxiosConfig() {
     return {
       headers: {
@@ -100,8 +130,14 @@ class BackEndService {
     };
   }
 
+  /**
+   * Used to make calls to the API
+   * @param  {String} URL
+   * @param  {Number} attempts
+   * @return {Object}
+   */
   async try(URL, attempts = 0) {
-    if (attempts >= 5) return 'failure';
+    if (attempts >= 50) return 'failure';
 
     try {
       const config = await this.getAxiosConfig();
@@ -115,7 +151,7 @@ class BackEndService {
         if (err.response.status === 401) {
           if (this.refreshToken) {
             try {
-              // request failed, refresh
+              // access denied, refresh access token
               await this.refreshAuth();
             } catch (error) {
               // refresh token failed, re-authenticate
@@ -125,29 +161,39 @@ class BackEndService {
             // no refresh token, authenticate
             await this.auth();
           }
-
-          return new Promise((resolve) => {
-            setTimeout(async () => {
-              const result = await this.try(URL, attempts);
-              resolve(result);
-            }, 1000);
-          });
         }
-
-        throw new Error(`External API: ${err.response.status}`);
-      } else if (err.request) {
-        throw new Error('BackEndService: no response received');
-      } else {
-        throw new Error(err.message);
       }
+
+      this.vm.errorHandler(err);
+
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          const result = await this.try(URL, attempts);
+          resolve(result);
+          return false;
+        }, 1000);
+      });
     }
   }
 
+  /**
+   * Used to call the price-feed endpoint
+   * @param  {Array}  coins
+   * @param  {Array}  currencies
+   * @return {Object}
+   */
   async getPriceFeed(coins, currencies = ['ALL']) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-feed/${coins.join(',')}/${currencies.join(',')}`);
     return result;
   }
 
+  /**
+   * Used to call the price-history endpoint
+   * @param  {Array}  coin
+   * @param  {Array}  currency
+   * @param  {String} period
+   * @return {Object}
+   */
   async getHistoricalData(coin, currency, period) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`);
 
@@ -158,7 +204,23 @@ class BackEndService {
     return result.data;
   }
 
-  async storePriceData(coin, latestPrice) {
+  /**
+   * Used to call the fee-estimate endpoint
+   * @param  {String} coin
+   * @return {Object}
+   */
+  async getTransactionFee(coin) {
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
+    return result;
+  }
+
+  /**
+   * Puts the price data in the database
+   * @param  {String} coin
+   * @param  {Object} priceData
+   * @return {Promise}
+   */
+  async storePriceData(coin, priceData) {
     const { selectedCurrency } = this.vm.$store.state.settings;
 
     return new Promise(async (resolve, reject) => {
@@ -181,11 +243,11 @@ class BackEndService {
         const whereLatestPrice = (record, item) => {
           return (
             record.coin === item.coin
-           && record.currency === item.currency
+            && record.currency === item.currency
           );
         };
 
-        if (checkPriceExists(coin, latestPrice)) {
+        if (checkPriceExists(coin, priceData)) {
           LatestPrice.$update({
             where: (record) => {
               return whereLatestPrice(record, {
@@ -195,7 +257,7 @@ class BackEndService {
             },
             data: {
               updated: +new Date(),
-              data: latestPrice,
+              data: priceData,
             },
           });
         }
@@ -206,6 +268,9 @@ class BackEndService {
     });
   }
 
+  /**
+   * Calls the API and and stores the price data
+   */
   async loadPriceFeed() {
     const {
       supportedCoins,
@@ -235,8 +300,6 @@ class BackEndService {
     } catch (e) {
       this.vm.$toast.create(10, e.message, 500);
     }
-
-    return true;
   }
 }
 
