@@ -72,7 +72,7 @@ export default {
     },
 
     prevent(event) {
-      if (this.wallets.length === 0 || !this.$refs.scrollArea) return false;
+      if (this.wallets.length === 0 || !this.$refs.scrollArea) { return false; }
       if (this.$refs.scrollArea.$el.childNodes[0].scrollTop > 0) {
         event.stopPropagation();
       }

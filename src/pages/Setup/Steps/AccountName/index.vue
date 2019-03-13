@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     validate() {
-      if (this.accountName.length === 0) return false;
+      if (this.accountName.length === 0) { return false; }
       const accounts = this.$store.getters['entities/account/query']().get();
       const nameAlreadyInUse = accounts.find((account) => {
         return account.name === this.accountName;

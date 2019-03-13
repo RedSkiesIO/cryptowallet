@@ -80,7 +80,7 @@ export function SET_ACCOUNT_IP_NODE(state, payload) {
  * State mutation for pin array
  */
 export function SET_PIN(state, payload) {
-  if (!Array.isArray(state.pinArray)) state.pinArray = [];
+  if (!Array.isArray(state.pinArray)) { state.pinArray = []; }
   const pinArray = state.pinArray.slice();
   pinArray.push(payload.value);
   state.pinArray = pinArray;
@@ -90,7 +90,7 @@ export function SET_PIN(state, payload) {
  * State mutation for pin confirmation array
  */
 export function SET_PIN_CONFIRM(state, payload) {
-  if (!Array.isArray(state.pinConfirmArray)) state.pinConfirmArray = [];
+  if (!Array.isArray(state.pinConfirmArray)) { state.pinConfirmArray = []; }
   const pinConfirmArray = state.pinConfirmArray.slice();
   pinConfirmArray.push(payload.value);
   state.pinConfirmArray = pinConfirmArray;

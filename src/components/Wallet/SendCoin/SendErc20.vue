@@ -218,13 +218,13 @@ export default {
 
   watch: {
     inCoin(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
+      if (val === null || val === '') { return false; }
+      if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
       return false;
     },
     inCurrency(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCoinFocus && !this.maxed) this.inCoin = this.currencyToCoin(val);
+      if (val === null || val === '') { return false; }
+      if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       return false;
     },
   },
@@ -315,14 +315,14 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return this.$t('lowFeeLabel');
-      if (feeSetting === 1) return this.$t('mediumFeeLabel');
+      if (feeSetting === 0) { return this.$t('lowFeeLabel'); }
+      if (feeSetting === 1) { return this.$t('mediumFeeLabel'); }
       return this.$t('highFeeLabel');
     },
 
     async feeChange() {
       this.getFee();
-      if (this.maxed) this.updateMax();
+      if (this.maxed) { this.updateMax(); }
     },
 
     /**

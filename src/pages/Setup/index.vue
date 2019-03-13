@@ -54,7 +54,7 @@ export default {
     }),
   },
   created() {
-    if (this.$store.state.setup.salt) return false;
+    if (this.$store.state.setup.salt) { return false; }
     this.$store.dispatch('setup/setSalt', bcrypt.genSaltSync(10));
     return true;
   },

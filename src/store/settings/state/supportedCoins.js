@@ -7,6 +7,7 @@ export default [
     symbol: 'LTC',
     network: 'LITECOIN_TESTNET',
     denomination: '0.00000000',
+    minConfirmations: 6,
   },
   {
     displayName: 'Dash',
@@ -16,6 +17,7 @@ export default [
     symbol: 'DASH',
     network: 'DASH_TESTNET',
     denomination: '0.00000000',
+    minConfirmations: 6,
   },
   {
     displayName: 'Bitcoin',
@@ -25,6 +27,7 @@ export default [
     symbol: 'BTC',
     network: 'BITCOIN_TESTNET',
     denomination: '0.00000000',
+    minConfirmations: 6,
   },
   {
     displayName: 'Ethereum',
@@ -34,6 +37,7 @@ export default [
     symbol: 'ETH',
     network: 'ETHEREUM_ROPSTEN',
     denomination: '0.000000000000000000',
+    minConfirmations: 11,
   },
   {
     displayName: 'Catalyst',
@@ -46,5 +50,6 @@ export default [
     parentName: 'Ethereum',
     network: 'ETHEREUM_ROPSTEN',
     denomination: '0.00000000',
+    minConfirmations: 11,
   },
 ];

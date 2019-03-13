@@ -53,7 +53,7 @@ export default {
     });
   },
   beforeDestroy() {
-    if (this.onlineInterval) clearInterval(this.onlineInterval);
+    if (this.onlineInterval) { clearInterval(this.onlineInterval); }
   },
   methods: {
     showOfflineNotice() {
@@ -61,8 +61,6 @@ export default {
         message: this.$t('noConnection'),
         timeout: 0,
         type: 'negative',
-        // color: 'positive',
-        // textColor: 'black',
         position: 'top',
         closeBtn: false,
         onDismiss() {

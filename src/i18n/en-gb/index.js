@@ -71,7 +71,6 @@ export default {
   accountAlreadyImported: 'This account has already been imported',
   settings: 'Settings',
   default: 'Default',
-  switch: 'Switch',
   accountName: 'Account Name',
   enterSeed: 'Enter your 12 word seed',
   setAccountName: 'Set Account Name',
@@ -125,7 +124,7 @@ export default {
   language: 'Language',
   currency: 'Currency',
   pinCode: 'PIN Code',
-  logOut: 'Logout',
+  logout: 'Logout',
   deleteAccount: 'Delete Account',
   catalystNode: 'Catalyst Node',
   // Wallet

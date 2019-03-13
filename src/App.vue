@@ -113,8 +113,8 @@ export default {
     '$q.appVisible': {
       handler(visible) {
         const encryptionUtil = new this.AppDataEncryption(toEncryptConfig);
-        if (visible) encryptionUtil.decrypt('pin hash');
-        if (!visible) encryptionUtil.encrypt('pin hash');
+        if (visible) { encryptionUtil.decrypt('pin hash'); }
+        if (!visible) { encryptionUtil.encrypt('pin hash'); }
       },
     },
 
@@ -124,8 +124,8 @@ export default {
      */
     'settings.loading': {
       handler(value) {
-        if (value) return false;
-        if (this.accounts.length < 1) this.$router.push({ path: '/setup/0' });
+        if (value) { return false; }
+        if (this.accounts.length < 1) { this.$router.push({ path: '/setup/0' }); }
         this.storeSupportedCoins();
         this.fetchPrices();
         return true;
@@ -137,13 +137,13 @@ export default {
     window.store = this.$store;
     window.app = this;
 
-    if (!this.settings.authenticatedAccount) this.$router.push({ path: '/' });
+    if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
 
     this.$root.$on('scanQRCode', (origin) => {
       this.qrOrigin = origin;
       this.$q.scanning = true;
       this.hidden = true;
-      if (typeof QRScanner !== 'undefined') QRScanner.show(() => {});
+      if (typeof QRScanner !== 'undefined') { QRScanner.show(() => {}); }
     });
 
     this.$root.$on('cancelScanning', () => {
