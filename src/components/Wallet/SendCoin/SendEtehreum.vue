@@ -159,12 +159,17 @@ export default {
       maxed: false,
       addressError: '',
       amountError: '',
+      weiMultiplier: 1000000000000000000,
+      addressLength: 42,
     };
   },
 
   validations: {
     address: {
-      required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+      required,
+      alphaNum,
+      minLength: minLength(this.addressLength),
+      maxLength: maxLength(this.addressLength),
     },
     inCoin: {
       required,
@@ -356,6 +361,7 @@ export default {
      */
     async getFee() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const gasLimit = 21000;
 
       let fees;
       try {
@@ -363,14 +369,15 @@ export default {
       } catch (e) {
         fees = null;
       } finally {
+        const gweiToWei = 10000;
         if (!fees) {
           fees = {
             low: 5000000000,
             medium: 5195324266,
             high: 5195324266,
-            txLow: (5000000000 * 100000) / 1000000000000000000,
-            txMedium: (5195324266 * 100000) / 1000000000000000000,
-            txHigh: (6000000000 * 100000) / 1000000000000000000,
+            txLow: (5000000000 * gweiToWei) / this.weiMultiplier,
+            txMedium: (5195324266 * gweiToWei) / this.weiMultiplier,
+            txHigh: (6000000000 * gweiToWei) / this.weiMultiplier,
           };
         }
       }
@@ -403,8 +410,7 @@ export default {
         withCurrencySymbol: true,
       });
 
-
-      this.rawFee = rawFee * 21000;
+      this.rawFee = rawFee * gasLimit;
       this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
     },
@@ -491,7 +497,7 @@ export default {
 
     updateMax() {
       this.inCoin = (
-        (this.wallet.confirmedBalance * 1000000000000000000) - this.rawFee) / 1000000000000000000;
+        (this.wallet.confirmedBalance * this.weiMultiplier) - this.rawFee) / this.weiMultiplier;
     },
 
     /**

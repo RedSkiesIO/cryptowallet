@@ -81,7 +81,8 @@ export default {
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
-      if (this.pin.length < 6) { return false; }
+      const minPinLength = 6;
+      if (this.pin.length < minPinLength) { return false; }
 
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {

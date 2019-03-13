@@ -166,11 +166,12 @@ export default {
       maxed: false,
       addressError: '',
       amountError: '',
+      addressLength: 42,
     };
   },
   validations: {
     address: {
-      required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+      required, alphaNum, minLength: minLength(this.addressLength), maxLength: maxLength(this.addressLength),
     },
     inCoin: {
       required,

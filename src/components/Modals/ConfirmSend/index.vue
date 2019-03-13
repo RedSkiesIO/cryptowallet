@@ -66,8 +66,8 @@
           v-if="isErc20"
           class="small-text"
         >
-          {{ txData.transaction.fee / 1000000000000000000 }}  ETH
-          ({{ coinToCurrency(txData.transaction.fee / 1000000000000000000, true) }})
+          {{ txData.transaction.fee / weiMultiplier }}  ETH
+          ({{ coinToCurrency(txData.transaction.fee / weiMultiplier, true) }})
         </div>
 
         <div class="send-modal-heading">
@@ -116,6 +116,7 @@ export default {
       confirmSendModalOpened: false,
       txData: null,
       loading: false,
+      weiMultiplier: 1000000000000000000,
     };
   },
 
@@ -144,10 +145,10 @@ export default {
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
         // @todo Konrad, explain the mysterious code below
-        const newBalance = (this.wallet.confirmedBalance * 1000000000000000000)
-                           - ((this.txData.transaction.value * 1000000000000000000)
-                           + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
-        return newBalance / 1000000000000000000;
+        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+                           - ((this.txData.transaction.value * this.weiMultiplier)
+                           + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
+        return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'ERC20') {
         const newBalance = this.wallet.confirmedBalance

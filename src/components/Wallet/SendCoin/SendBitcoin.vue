@@ -360,9 +360,10 @@ export default {
 
       let { address } = that.getAddresses()[0];
       if (that.address) { ({ address } = that); }
-      let amount = that.wallet.confirmedBalance / 2;
+      const halfBalance = 2;
+      let amount = that.wallet.confirmedBalance / halfBalance;
       if (that.inCoin) { amount = that.inCoin; }
-
+      // TODO: change this to calculate fee using max boolean
       that.createRawTx(
         accounts,
         changeAddresses,
