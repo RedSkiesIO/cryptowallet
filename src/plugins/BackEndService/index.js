@@ -137,7 +137,9 @@ class BackEndService {
    * @return {Object}
    */
   async try(URL, attempts = 0) {
-    if (attempts >= 50) return 'failure';
+    if (attempts >= 50) {
+      this.vm.errorHandler(new Error('Failed to connect to the server'), false);
+    }
 
     try {
       const config = await this.getAxiosConfig();
