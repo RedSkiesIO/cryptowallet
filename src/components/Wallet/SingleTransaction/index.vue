@@ -25,7 +25,7 @@
             }"
             class="status"
           >
-            {{ $t(status) }}
+            {{ $t('status') }}
           </span>
         </p>
         <p>
