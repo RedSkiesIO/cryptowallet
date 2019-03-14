@@ -23,6 +23,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallet() {
@@ -111,8 +112,9 @@ export default {
         const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
         newBalance = await coinSDK.getBalance(wallet);
       }
+      const satoshiMultiplier = 100000000000000;
 
-      newBalance = Math.floor(newBalance * 100000000000000) / 100000000000000;
+      newBalance = Math.floor(newBalance * satoshiMultiplier) / satoshiMultiplier;
 
       const { network } = this.wallet;
       let txHistory;
@@ -123,11 +125,12 @@ export default {
           0,
         );
       } else {
+        const apiReturnLimit = 50;
         txHistory = await coinSDK.getTransactionHistory(
           addressesRaw,
           network,
           0,
-          50,
+          apiReturnLimit,
         );
       }
 
@@ -264,7 +267,7 @@ export default {
 
       setTimeout(() => {
         done();
-      }, 500);
+      }, this.delay.normal);
 
       return false;
     },

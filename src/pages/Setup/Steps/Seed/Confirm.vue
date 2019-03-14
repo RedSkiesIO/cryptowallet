@@ -58,6 +58,8 @@ export default {
     ...mapState({
       seed: (state) => { return state.setup.seed; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
+
     }),
     resetDisabled() {
       return this.pipSeq.length === 0;
@@ -65,10 +67,11 @@ export default {
   },
   watch: {
     pipSeq() {
-      if (this.pipSeq.length === 12) {
+      const seedLength = 12;
+      if (this.pipSeq.length === seedLength) {
         setTimeout(() => {
           this.validate();
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },
@@ -80,7 +83,7 @@ export default {
       if (Object.keys(this.seed).join('') === this.pipSeq.join('')) {
         this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
-        this.$toast.create(10, this.$t('seedSeqNotMatch'), 500);
+        this.$toast.create(10, this.$t('seedSeqNotMatch'), this.delay.normal);
         this.reset();
       }
     },

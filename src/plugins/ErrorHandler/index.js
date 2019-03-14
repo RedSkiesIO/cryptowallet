@@ -45,7 +45,8 @@ export default ({ Vue, store }) => {
     Vue.rollbar.error(err.message);
 
     if (showToast) {
-      vm.$toast.create(10, err.message, 500);
+      const delay = 500;
+      vm.$toast.create(10, err.message, delay);
       // this console.error is needed, otherwise we don't have debugging information, just a toast
       /* eslint-disable-next-line */
       console.error(err);

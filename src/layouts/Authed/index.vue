@@ -98,6 +98,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallets() {
@@ -245,14 +246,14 @@ export default {
             this.errorHandler(err);
             done();
           }
-        }, 1000);
+        }, this.delay.long);
         return false;
       }
 
       if (this.$route.name === 'walletSingle') {
         setTimeout(() => {
           this.$root.$emit('updateWalletSingle', done);
-        }, 1000);
+        }, this.delay.long);
       }
 
       return false;

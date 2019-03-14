@@ -17,6 +17,7 @@ import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 import Wallet from '@/store/wallet/entities/wallet';
 
+const delay = 500;
 export default {
 
   components: {
@@ -119,7 +120,7 @@ export default {
 
     debouncedUnlock: debounce(function callback() {
       this.attemptUnlock();
-    }, 500),
+    }, delay),
 
     /**
      * Decrypts and returns a piece of data

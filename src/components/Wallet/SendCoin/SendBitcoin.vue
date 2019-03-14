@@ -149,6 +149,7 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
+const delay = 500;
 export default {
   name: 'SendCoin',
   components: {
@@ -355,34 +356,31 @@ export default {
     /**
      * Creates a raw transaction which will calculate and update the fee
      */
-    updateFee(fee, that) {
-      debounce(() => {
-        console.log(fee);
-        const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
+    updateFee: debounce((fee, that) => {
+      const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
 
-        const changeAddresses = that.generateChangeAddresses(
-          filteredUtxos,
-          pendingCount,
-        );
-        const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
-        const accounts = that.getAccounts();
+      const changeAddresses = that.generateChangeAddresses(
+        filteredUtxos,
+        pendingCount,
+      );
+      const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
+      const accounts = that.getAccounts();
 
-        let { address } = that.getAddresses()[0];
-        if (that.address) { ({ address } = that); }
-        const halfBalance = 2;
-        let amount = that.wallet.confirmedBalance / halfBalance;
-        if (that.inCoin) { amount = that.inCoin; }
-        // TODO: change this to calculate fee using max boolean
-        that.createRawTx(
-          accounts,
-          changeAddresses,
-          filteredUtxos,
-          wallet,
-          address,
-          amount,
-        );
-      }, that.delay.short);
-    },
+      let { address } = that.getAddresses()[0];
+      if (that.address) { ({ address } = that); }
+      const halfBalance = 2;
+      let amount = that.wallet.confirmedBalance / halfBalance;
+      if (that.inCoin) { amount = that.inCoin; }
+      // TODO: change this to calculate fee using max boolean
+      that.createRawTx(
+        accounts,
+        changeAddresses,
+        filteredUtxos,
+        wallet,
+        address,
+        amount,
+      );
+    }, delay),
 
     /**
      * Returns addresses
@@ -481,7 +479,9 @@ export default {
       const quantityToGenerate = 1;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
+      const wallet = this.activeWallets[this.authenticatedAccount][
+        this.wallet.name
+      ];
 
       const changeAddresses = [];
 
@@ -515,14 +515,21 @@ export default {
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
 
-      const fees = response.data.data;
-      const kbToBytes = 1000;
-
-      Object.keys(fees).forEach((key) => {
-        fees[key] /= kbToBytes;
-      });
+      let fees;
+      try {
+        fees = await coinSDK.getTransactionFee(this.wallet.network);
+      } catch (e) {
+        // this.errorHandler(e);
+      } finally {
+        if (!fees) {
+          fees = {
+            low: 3.0,
+            medium: 12.0,
+            high: 13.78,
+          };
+        }
+      }
 
 
       let fee = fees.medium;
@@ -532,8 +539,8 @@ export default {
       if (this.feeSetting === 2) {
         fee = fees.high;
       }
-
       fee = Math.round(fee);
+
 
       if (this.maxed) {
         amount = 0;

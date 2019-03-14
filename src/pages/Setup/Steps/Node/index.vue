@@ -46,6 +46,7 @@ export default {
     ...mapState({
       spvModeState: (state) => { return state.setup.spvMode; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
     }),
   },
   methods: {
@@ -66,7 +67,7 @@ export default {
       if (this.validIp(this.nodeIp)) {
         this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
-        this.$toast.create(10, this.$t('invalidIpAddress'), 500);
+        this.$toast.create(10, this.$t('invalidIpAddress'), this.delay.normal);
       }
     },
 
