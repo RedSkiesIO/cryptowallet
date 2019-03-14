@@ -122,10 +122,9 @@ export default {
      * If there are no Accounts, got to setup
      */
     'settings.loading': {
-      handler() {
-        if (this.accounts.length < 1) {
-          this.$router.push({ path: '/setup/0' });
-        }
+      handler(value) {
+        if (value) { return false; }
+        if (this.accounts.length < 1) { this.$router.push({ path: '/setup/0' }); }
         this.storeSupportedCoins();
         return true;
       },
