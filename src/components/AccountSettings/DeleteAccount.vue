@@ -14,7 +14,7 @@
         />
       </div>
       <h1 class="header-h1">
-        Delete Account
+        {{ $t('deleteAccount') }}
       </h1>
     </div>
 
@@ -93,10 +93,10 @@ export default {
         this.resetPin();
 
         this.$q.dialog({
-          title: 'Confirm',
-          message: `Are you sure you want to delete the account "${this.account.name}"`,
-          ok: 'Yes',
-          cancel: 'No',
+          title: this.$t('confirm'),
+          message: `${this.$t('confirmMessage')} ${this.account.name}${this.$t('questionMark')}`,
+          ok: this.$t('acceptConfirm'),
+          cancel: this.$t('cancelConfirm'),
           color: 'blueish',
         }).then(() => {
           this.deleteAccount(this.account.id);

@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Currency
+          {{ $t('currency') }}
         </h1>
       </div>
 

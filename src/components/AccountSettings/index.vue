@@ -81,7 +81,7 @@
       @click="logout"
     >
       <div>
-        Logout
+        {{ $t('logout') }}
       </div>
       <div>
         <q-btn
