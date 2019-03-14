@@ -14,7 +14,7 @@ export default {
       required: true,
     },
     rate: {
-      type: String,
+      type: Number,
       required: false,
     },
     prependPlusOrMinus: {

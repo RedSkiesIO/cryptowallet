@@ -26,7 +26,7 @@
         >
           <div class="hor-line" />
           <div class="ver-line" />
-          <img src="~assets/QR.svg"> //@TODO WHY THIS AND NOT DATA-URI?????
+          <img src="~assets/QR.svg">
         </div>
       </div>
       <span class="error-label">{{ addressError }}</span>

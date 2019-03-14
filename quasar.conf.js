@@ -23,6 +23,7 @@ module.exports = (ctx) => {
       'VueTrend',
       'VueSelect',
       'Vuelidate',
+      'BackEndService',
     ],
     css: ['app.styl'],
     extras: [
