@@ -2,8 +2,8 @@ import AppInvitation from './index.js';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import SMS from '@/plugins/Sms/mock';
-import Email from '@/plugins/Email/mock';
+import SMS from '@/boot/Sms/mock';
+import Email from '@/boot/Email/mock';
 
 const store = createStoreMocks().store;
 const wrapperMock = shallowMount({name: 'mock', template: '<div/>'}, { i18n, localVue, store });

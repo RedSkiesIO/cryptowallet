@@ -1,7 +1,11 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="selectAccountModalOpened"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
       class="dark-modal"
     >
       <div class="header-section">
@@ -64,7 +68,7 @@
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

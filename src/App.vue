@@ -45,7 +45,7 @@
 <script>
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
+import toEncryptConfig from '@/boot/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';

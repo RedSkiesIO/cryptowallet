@@ -6,13 +6,13 @@ import VueI18n from 'vue-i18n';
 import messages from '@/i18n/';
 import axios from 'axios';
 import { sync } from 'vuex-router-sync';
-import errorHandlerPlugin from '@/plugins/ErrorHandler';
-import toasterPlugin from '@/plugins/Toaster';
-import permissionsPlugin from '@/plugins/Permissions';
-import appInvitationPlugin from '@/plugins/AppInvitation';
-import smsPlugin from '@/plugins/Sms';
-import emailPlugin from '@/plugins/Email';
-import contactsImportPlugin from '@/plugins/ContactsImport';
+import errorHandlerPlugin from '@/boot/ErrorHandler';
+import toasterPlugin from '@/boot/Toaster';
+import permissionsPlugin from '@/boot/Permissions';
+import appInvitationPlugin from '@/boot/AppInvitation';
+import smsPlugin from '@/boot/Sms';
+import emailPlugin from '@/boot/Email';
+import contactsImportPlugin from '@/boot/ContactsImport';
 
 const localVue = createLocalVue();
 
