@@ -154,7 +154,7 @@ export default {
   margin: 0!important;
 }
 
-.seed-btn .q-btn-inner {
+.seed-btn .q-btn__content {
   font-size: 0.8rem;
   padding: 0.3rem 0;
   text-transform: none;

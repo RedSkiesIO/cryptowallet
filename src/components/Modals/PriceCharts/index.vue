@@ -6,7 +6,7 @@
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
-      class="dark-modal"
+      content-class="dark-modal"
     >
       <div
         :class="{ active: loading }"
@@ -344,7 +344,7 @@ export default {
 </script>
 
 <style lang="scss">
-.close-btn .q-btn-inner .modal-layout-wrapper{
+.close-btn .q-btn__content .modal-layout-wrapper{
   justify-content: flex-start;
 }
 

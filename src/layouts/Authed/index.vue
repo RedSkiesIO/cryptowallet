@@ -11,7 +11,7 @@
 
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
-        :handler="refresher"
+        @refresh="refresher"
         :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
       >
@@ -415,16 +415,16 @@ export default {
 
 .no-balance .background,
 .short-top .background {
-  height: 21rem;
+  height: 17rem;
 }
 
 .single-wallet-top .background {
   height: 28.5rem;
 }
 
-.q-pull-to-refresh-wrapper {
+/*.q-pull-to-refresh-wrapper {
   padding-top: 2.5rem;
-}
+}*/
 
 .q-pull-to-refresh-wrapper .pull-to-refresh-message {
   position: relative;

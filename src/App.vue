@@ -244,7 +244,7 @@ body > div {
 }
 
 .shrinked .background {
-  height: 27rem;
+  height: 22.5rem;
   top: -15rem;
   border-bottom: 0.3rem solid #4e677d;
 }
@@ -268,6 +268,10 @@ body > div {
     background: white;
     color: black;
   }
+}
+
+.q-dialog .modal-layout-wrapper {
+  height: calc(100vh - 2.5rem)!important;
 }
 
 .light-modal .header-section {
@@ -295,6 +299,9 @@ body > div {
   background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%)
 }
 
+.q-dialog__inner .header-section {
+  height: 2.5rem!important;
+}
 
 .modal-layout-wrapper {
   display: flex;

@@ -6,7 +6,7 @@
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
-      class="dark-modal"
+      content-class="dark-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -485,7 +485,7 @@ export default {
 </script>
 
 <style>
-.close-btn .q-btn-inner {
+.close-btn .q-btn__content {
   justify-content: flex-start;
 }
 

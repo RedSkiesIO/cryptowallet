@@ -5,7 +5,7 @@
     :maximized="true"
     transition-show="slide-up"
     transition-hide="slide-down"
-    class="dark-modal"
+    content-class="dark-modal"
   >
     <div class="header-section">
       <div class="header-back-button-wrapper">
