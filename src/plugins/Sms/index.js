@@ -16,7 +16,7 @@ class SMS {
       },
     };
 
-    if (manual) this.options.android.intent = 'INTENT';
+    if (manual) { this.options.android.intent = 'INTENT'; }
   }
 
   /**
@@ -24,7 +24,7 @@ class SMS {
    */
   async send() {
     let hasPermission = await this.vm.permissions.sms.detect();
-    if (!hasPermission) hasPermission = await this.vm.permissions.sms.request();
+    if (!hasPermission) { hasPermission = await this.vm.permissions.sms.request(); }
     if (!hasPermission) {
       this.vm.$toast.create(420, this.vm.$t('needsSmsPermissions'), 500);
     } else {

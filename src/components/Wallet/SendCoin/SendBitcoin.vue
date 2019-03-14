@@ -213,13 +213,13 @@ export default {
   },
   watch: {
     inCoin(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
+      if (val === null || val === '') { return false; }
+      if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
       this.updateFee(this.feeSetting, this);
       return false;
     },
     inCurrency(val) {
-      if (val === null || val === '') return false;
+      if (val === null || val === '') { return false; }
       if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       this.updateFee(this.feeSetting, this);
       return false;
@@ -332,8 +332,8 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return this.$t('lowFeeLabel');
-      if (feeSetting === 1) return this.$t('mediumFeeLabel');
+      if (feeSetting === 0) { return this.$t('lowFeeLabel'); }
+      if (feeSetting === 1) { return this.$t('mediumFeeLabel'); }
       return this.$t('highFeeLabel');
     },
 
@@ -341,8 +341,8 @@ export default {
      * Calls update fee with context passed when user adjusts fee
      */
     feeChange(fee) {
-      if (!this.maxed) this.updateFee(fee, this);
-      if (this.maxed) this.updateMax();
+      if (!this.maxed) { this.updateFee(fee, this); }
+      if (this.maxed) { this.updateMax(); }
     },
 
     /**
@@ -355,13 +355,14 @@ export default {
         filteredUtxos,
         pendingCount,
       );
+
       const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
       const accounts = that.getAccounts();
 
       let { address } = that.getAddresses()[0];
-      if (that.address) ({ address } = that);
+      if (that.address) { ({ address } = that); }
       let amount = that.wallet.confirmedBalance / 2;
-      if (that.inCoin) amount = that.inCoin;
+      if (that.inCoin) { amount = that.inCoin; }
 
       that.createRawTx(
         accounts,
@@ -430,7 +431,7 @@ export default {
           .where('wallet_id', this.wallet.id)
           .get();
 
-        if (found) return false;
+        if (found) { return false; }
         utxo.account_id = this.authenticatedAccount;
         utxo.wallet_id = this.wallet.id;
         Utxo.$insert({ data: utxo });
@@ -450,7 +451,7 @@ export default {
           return false;
         });
 
-        if (!found) return true;
+        if (!found) { return true; }
         return false;
       });
 
@@ -470,9 +471,7 @@ export default {
       const quantityToGenerate = 1;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const wallet = this.activeWallets[this.authenticatedAccount][
-        this.wallet.name
-      ];
+      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
 
       const changeAddresses = [];
 
@@ -503,24 +502,17 @@ export default {
       address,
       amount,
     ) {
-      if (!address || !amount) return false;
+      if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
 
-      let fees;
-      try {
-        fees = await coinSDK.getTransactionFee(this.wallet.network);
-      } catch (e) {
-        // this.errorHandler(e);
-      } finally {
-        if (!fees) {
-          fees = {
-            low: 3.0,
-            medium: 12.0,
-            high: 13.78,
-          };
-        }
-      }
+      const fees = response.data.data;
+      const kbToBytes = 1000;
+
+      Object.keys(fees).forEach((key) => {
+        fees[key] /= kbToBytes;
+      });
 
 
       let fee = fees.medium;
@@ -530,8 +522,8 @@ export default {
       if (this.feeSetting === 2) {
         fee = fees.high;
       }
-      fee = Math.round(fee);
 
+      fee = Math.round(fee);
 
       if (this.maxed) {
         amount = 0;
@@ -691,7 +683,7 @@ export default {
       ];
       const accounts = this.getAccounts();
       let { address } = this.getAddresses()[0];
-      if (this.address) ({ address } = this);
+      if (this.address) { ({ address } = this); }
       const amount = this.wallet.confirmedBalance;
 
       const { transaction } = await this.createRawTx(

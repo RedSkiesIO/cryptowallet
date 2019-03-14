@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import VuexORM from '@vuex-orm/core';
-import VuexORMLoki from 'vuex-orm-lokijs';
+import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
 
 // import entities.
 import Account from './wallet/entities/account';

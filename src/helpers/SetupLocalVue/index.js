@@ -43,7 +43,7 @@ const createRouter = (store = null) => {
     ],
   });
 
-  if (store) sync(store, router);
+  if (store) { sync(store, router); }
   return router;
 };
 

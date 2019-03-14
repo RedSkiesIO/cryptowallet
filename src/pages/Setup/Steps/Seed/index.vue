@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="setup">
-      Seed Phrase
+      {{ $t('seedPhrase') }}
     </h1>
     <p class="setup">
       {{ $t('writeSeed') }}
@@ -65,10 +65,10 @@ export default {
 
     done() {
       this.$q.dialog({
-        title: 'Confirm',
-        message: 'Have you stored your seed?',
-        ok: 'Yes',
-        cancel: 'No',
+        title: this.$t('confirm'),
+        message: this.$t('seedConfirmation'),
+        ok: this.$t('acceptConfirm'),
+        cancel: this.$t('cancelConfirm'),
         color: 'blueish',
       }).then(() => {
         this.$router.push({ path: `/setup/${this.id + 1}` });

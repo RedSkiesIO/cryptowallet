@@ -50,12 +50,11 @@ async function discoverBitcoin(wallet, coinSDK, network) {
       address: txHistory.address.concat(history.address),
       txs: txHistory.txs.concat(history.txs),
     };
-    if (txHistory.more) await collectHistory(to + 1, to + 49);
+    if (txHistory.more) { await collectHistory(to + 1, to + 49); }
   };
 
-  if (combinedUsedAddresses.length > 0) {
-    await collectHistory(0, 50);
-  }
+  if (combinedUsedAddresses.length > 0) { await collectHistory(0, 50); }
+
   const externalChainAddressIndex = externalAccountDiscovery.nextAddress;
   const internalChainAddressIndex = internalAccountDiscovery.nextAddress;
 

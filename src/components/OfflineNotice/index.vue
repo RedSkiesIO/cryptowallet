@@ -53,16 +53,14 @@ export default {
     });
   },
   beforeDestroy() {
-    if (this.onlineInterval) clearInterval(this.onlineInterval);
+    if (this.onlineInterval) { clearInterval(this.onlineInterval); }
   },
   methods: {
     showOfflineNotice() {
       this.dissmis = this.$q.notify({
-        message: 'No Internet connection',
+        message: this.$t('noConnection'),
         timeout: 0,
         type: 'negative',
-        // color: 'positive',
-        // textColor: 'black',
         position: 'top',
         closeBtn: false,
         onDismiss() {

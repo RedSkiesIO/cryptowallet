@@ -255,7 +255,7 @@ export default {
         return false;
       }
 
-      if (this.wallet.sdk === 'Ethereum' || 'ERC20') {
+      if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {
           throw new Error(this.$t('transactionBroadcastFail'));

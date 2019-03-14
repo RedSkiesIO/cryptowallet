@@ -14,7 +14,7 @@
         />
       </div>
       <h1 class="header-h1">
-        {{ $t('CatalystNode') }}
+        {{ $t('catalystNode') }}
       </h1>
     </div>
 

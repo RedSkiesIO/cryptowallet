@@ -17,7 +17,7 @@ class Email {
    */
   async send() {
     let hasPermission = await this.vm.permissions.email.detect();
-    if (!hasPermission) hasPermission = await this.vm.permissions.email.request();
+    if (!hasPermission) { hasPermission = await this.vm.permissions.email.request(); }
     if (!hasPermission) {
       this.vm.$toast.create(420, this.vm.$t('needsEmailPermissions'), 500);
     } else {

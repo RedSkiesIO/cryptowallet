@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Add Token
+          {{ $t('addToken') }}
         </h1>
       </div>
       <q-tabs
@@ -57,7 +57,7 @@
           >
             <div class="send-coin-box">
               <div class="send-modal-heading">
-                <h4>Contract Address</h4>
+                <h4>{{ $t('contractAddress') }}</h4>
                 <span class="h3-line" />
                 <q-btn
                   :label="$t('paste')"
@@ -89,7 +89,7 @@
               </div>
               <span class="error">{{ contractError }}</span>
               <div class="send-modal-heading">
-                <h4>Name</h4>
+                <h4>{{ $t('name') }}</h4>
                 <span class="h3-line" />
               </div>
               <div class="to">
@@ -108,7 +108,7 @@
               <span class="error">{{ nameError }}</span>
 
               <div class="send-modal-heading">
-                <h4>Symbol</h4>
+                <h4>{{ $t('tokenSymbol') }}</h4>
                 <span class="h3-line" />
               </div>
               <div class="to">
@@ -127,7 +127,7 @@
               </div>
               <span class="error">{{ symbolError }}</span>
               <div class="send-modal-heading">
-                <h4>Decimals</h4>
+                <h4>{{ $t('tokenDecimal') }}</h4>
                 <span class="h3-line" />
               </div>
               <div class="to">
@@ -172,16 +172,12 @@ import {
   maxLength,
 } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
-import CoinHeader from '@/components/Wallet/CoinHeader';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
 import tokens from '@/statics/contractMeta/contract-map.json';
 
 export default {
   name: 'AddErc20',
-  components: {
-    CoinHeader,
-  },
   data() {
     return {
       addErc20ModalOpened: false,
@@ -251,7 +247,7 @@ export default {
         if (this.$v.form.tokenContract.$error) {
           this.disableInputs = true;
           this.disableButton = true;
-          this.contractError = 'The contract address must be 42 characters in length.';
+          this.contractError = this.$t('invalidContractLength');
           return;
         }
         this.loadingInputs = true;
@@ -282,7 +278,7 @@ export default {
         this.$v.form.tokenName.$touch();
 
         if (this.$v.form.tokenName.$error) {
-          this.nameError = 'Token name is required';
+          this.nameError = this.$t('invalidTokenName');
           return;
         }
         this.nameError = ' ';
@@ -290,7 +286,7 @@ export default {
       if (field === 'symbol') {
         this.$v.form.tokenSymbol.$touch();
         if (this.$v.form.tokenSymbol.$error) {
-          this.symbolError = 'Token Symbol must be between 0 and 12 characters';
+          this.symbolError = this.$t('invalidTokenSymbol');
           return;
         }
         this.symbolError = ' ';
@@ -298,7 +294,7 @@ export default {
       if (field === 'decimals') {
         this.$v.form.tokenDecimals.$touch();
         if (this.$v.form.tokenDecimals.$error) {
-          this.decimalsError = 'Token Decimals must be at least 0, and not over 36.';
+          this.decimalsError = this.$t('invalidTokenDecimals');
           return;
         }
         this.decimalsError = ' ';
@@ -308,16 +304,16 @@ export default {
       this.$v.form.$touch();
       if (this.$v.form.$error) {
         if (this.$v.form.tokenContract.$error) {
-          this.contractError = 'The contract address must be 42 characters in length.';
+          this.contractError = this.$t('invalidContractLength');
         }
         if (this.$v.form.tokenName.$error) {
-          this.nameError = 'Token name is required';
+          this.nameError = this.$t('invalidTokenName');
         }
         if (this.$v.form.tokenSymbol.$error) {
-          this.symbolError = 'Token Symbol must be between 0 and 12 characters';
+          this.symbolError = this.$t('invalidTokenSymbol');
         }
         if (this.$v.form.tokenDecimals.$error) {
-          this.decimalsError = 'Token Decimals must be at least 0, and not over 36.';
+          this.decimalsError = this.$t('invalidTokenDecimals');
         }
         return false;
       }
@@ -390,7 +386,7 @@ export default {
           },
         });
       } else {
-        this.$q.notify('This token has already been enabled');
+        this.$q.notify(this.$t('tokenAlreadyEnabled'));
       }
     },
 

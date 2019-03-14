@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1 class="setup">
-      Pin Confirmation
+      {{ $t('pinConfirmationTitle') }}
     </h1>
     <h4 class="setup">
-      Confirm your pin
+      {{ $t('confirmPin') }}
     </h4>
     <PinPad mode="pin-confirm" />
   </div>

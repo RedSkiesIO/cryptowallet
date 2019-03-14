@@ -16,11 +16,11 @@ export default class Network {
   }
 
   wentOnline() {
-    if (typeof this.online === 'function') this.online();
+    if (typeof this.online === 'function') { this.online(); }
   }
 
   wentOffline() {
-    if (typeof this.offline === 'function') this.offline();
+    if (typeof this.offline === 'function') { this.offline(); }
   }
 
   getConnectionType() {
@@ -33,11 +33,11 @@ export default class Network {
     }
 
     if (Platform.is.android || Platform.is.ios) {
-      if (this.getConnectionType() === 'none') return false;
+      if (this.getConnectionType() === 'none') { return false; }
       return true;
     }
 
-    return throw new Error('Platform not detected');
+    throw new Error('Platform not detected');
   }
 
   on(event, callback) {

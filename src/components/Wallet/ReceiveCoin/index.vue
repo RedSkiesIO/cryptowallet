@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     getAddress() {
-      if (this.wallet.externalAddress) return this.wallet.externalAddress;
+      if (this.wallet.externalAddress) { return this.wallet.externalAddress; }
       return this.generateExternalAddress();
     },
     generateExternalAddress() {
@@ -122,7 +122,7 @@ export default {
         height: 250,
       };
 
-      if (typeof this.address !== 'string') return false;
+      if (typeof this.address !== 'string') { return false; }
 
       QRCode.toDataURL(this.address, options, (err, url) => {
         if (err) {

@@ -14,7 +14,7 @@
         />
       </div>
       <h1 class="header-h1">
-        {{ $t(pinCode) }}
+        {{ $t('pinCode') }}
       </h1>
     </div>
 
@@ -116,7 +116,7 @@ export default {
      * @return {String}
      */
     getSalt() {
-      if (this.salt) return this.salt;
+      if (this.salt) { return this.salt; }
       this.salt = bcrypt.genSaltSync(10);
       return this.salt;
     },

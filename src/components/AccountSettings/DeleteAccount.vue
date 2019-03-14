@@ -94,7 +94,7 @@ export default {
 
         this.$q.dialog({
           title: this.$t('confirm'),
-          message: `${this.$t('confirmMessage')}\${this.account.name}${this.$t('questionMark')}`,
+          message: `${this.$t('confirmMessage')} ${this.account.name}${this.$t('questionMark')}`,
           ok: this.$t('acceptConfirm'),
           cancel: this.$t('cancelConfirm'),
           color: 'blueish',
