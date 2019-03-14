@@ -117,18 +117,16 @@ export default {
       const wherePrice = (record, item) => {
         return (
           record.coin === item.coin
-        && record.currency === item.currency
-        && record.period === item.period
+          && record.currency === item.currency
+          && record.period === item.period
         );
       };
 
-      let coinSDK = this.coinSDKS[this.wallet.sdk];
-      if (this.wallet.sdk === 'ERC20') {
-        coinSDK = this.coinSDKS[this.wallet.parentSdk];
-      }
       let dataset;
+
       try {
-        dataset = await coinSDK.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+        const result = await this.backEndService.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+        dataset = result.data;
       } catch (e) {
         this.errorHandler(e);
       }
@@ -161,9 +159,8 @@ export default {
         });
         this.chartData = dataset.map((item) => { return item.y; });
       } else if (price && !dataset) {
-        this.chartData = price;
+        this.chartData = price.data.map((item) => { return item.y; });
       }
-      // const dataset = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
     } catch (err) {
       this.errorHandler(err);
     }

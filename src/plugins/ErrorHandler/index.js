@@ -25,10 +25,11 @@ export default ({ Vue, store }) => {
   /**
    * Add an error handling callback that creates toast.
    * @param err
+   * @param showToast
    * @param vm
    * @param info
    */
-  Vue.config.errorHandler = (err, vm = new Vue()) => {
+  Vue.config.errorHandler = (err, showToast = true, vm = new Vue()) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
@@ -42,7 +43,13 @@ export default ({ Vue, store }) => {
     });
 
     Vue.rollbar.error(err.message);
-    vm.$toast.create(10, err.message, 500);
+
+    if (showToast) {
+      vm.$toast.create(10, err.message, 500);
+      // this console.error is needed, otherwise we don't have debugging information, just a toast
+      /* eslint-disable-next-line */
+      console.error(err);
+    }
   };
 
   Vue.prototype.errorHandler = Vue.config.errorHandler;

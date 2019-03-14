@@ -44,7 +44,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import Latest from '@/store/latestPrice';
 import Coin from '@/store/wallet/entities/coin';
 import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
@@ -127,13 +126,12 @@ export default {
         if (value) { return false; }
         if (this.accounts.length < 1) { this.$router.push({ path: '/setup/0' }); }
         this.storeSupportedCoins();
-        this.fetchPrices();
         return true;
       },
     },
   },
 
-  mounted() {
+  async mounted() {
     window.store = this.$store;
     window.app = this;
 
@@ -198,77 +196,6 @@ export default {
         }
       });
     },
-
-    storePriceData(coin, latestPrice) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const checkPriceExists = (symbol, data) => {
-            const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
-            if (!price) {
-              Latest.$insert({
-                data: {
-                  coin,
-                  currency: this.selectedCurrency.code,
-                  updated: +new Date(),
-                  data,
-                },
-              });
-              return false;
-            }
-            return true;
-          };
-          const whereLatestPrice = (record, item) => {
-            return (
-              record.coin === item.coin
-             && record.currency === item.currency
-            );
-          };
-
-          if (checkPriceExists(coin, latestPrice)) {
-            Latest.$update({
-              where: (record) => {
-                return whereLatestPrice(record, {
-                  coin,
-                  currency: this.selectedCurrency.code,
-                });
-              },
-              data: {
-                updated: +new Date(),
-                data: latestPrice,
-              },
-            });
-          }
-          resolve();
-        } catch (e) {
-          reject(e);
-        }
-      });
-    },
-
-    async fetchPrices() {
-      const coins = this.supportedCoins.map((x) => { return x.symbol; });
-      const coinSDK = this.coinSDKS.Bitcoin;
-
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-      coins.filter(onlyUnique);
-
-      try {
-        const prices = await coinSDK.getPriceFeed(coins, ['GBP', 'USD', 'EUR']);
-        const promises = [];
-        coins.forEach((coin) => {
-          promises.push(new Promise(async (res) => {
-            return res(await this.storePriceData(coin, prices[coin][this.selectedCurrency.code]));
-          }));
-        });
-
-        await Promise.all(promises);
-      } catch (e) {
-        this.$toast.create(10, e.message, 500);
-      }
-    },
-
   },
 };
 </script>

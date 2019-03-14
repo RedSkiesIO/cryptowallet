@@ -355,6 +355,7 @@ export default {
         filteredUtxos,
         pendingCount,
       );
+
       const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
       const accounts = that.getAccounts();
 
@@ -470,9 +471,7 @@ export default {
       const quantityToGenerate = 1;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const wallet = this.activeWallets[this.authenticatedAccount][
-        this.wallet.name
-      ];
+      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
 
       const changeAddresses = [];
 
@@ -506,21 +505,14 @@ export default {
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
 
-      let fees;
-      try {
-        fees = await coinSDK.getTransactionFee(this.wallet.network);
-      } catch (e) {
-        // this.errorHandler(e);
-      } finally {
-        if (!fees) {
-          fees = {
-            low: 3.0,
-            medium: 12.0,
-            high: 13.78,
-          };
-        }
-      }
+      const fees = response.data.data;
+      const kbToBytes = 1000;
+
+      Object.keys(fees).forEach((key) => {
+        fees[key] /= kbToBytes;
+      });
 
 
       let fee = fees.medium;
@@ -530,8 +522,8 @@ export default {
       if (this.feeSetting === 2) {
         fee = fees.high;
       }
-      fee = Math.round(fee);
 
+      fee = Math.round(fee);
 
       if (this.maxed) {
         amount = 0;
