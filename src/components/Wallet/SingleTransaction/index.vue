@@ -20,12 +20,12 @@
           {{ $t('status') }}:
           <span
             :class="{
-              'unconfirmed-tx': data.confirmations < 6,
-              'confirmed-tx': data.confirmations >= 6,
+              'unconfirmed-tx': data.confirmations < minConfirmations,
+              'confirmed-tx': data.confirmations >= minConfirmations,
             }"
             class="status"
           >
-            {{ $t(status) }}
+            {{ $t('status') }}
           </span>
         </p>
         <p>
@@ -64,25 +64,25 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
     }),
-
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
-
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
-
     supportedCoins() {
       return Coin.all();
     },
-
     coinDenomination() {
       return this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
       }).denomination;
     },
-
+    minConfirmations() {
+      return this.supportedCoins.find((coin) => {
+        return coin.name === this.wallet.name;
+      }).minConfirmations;
+    },
     coinSymbol() {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
@@ -101,18 +101,18 @@ export default {
     paymentDirection() {
       if (this.data.sent) {
         let { receiver } = this.data;
-        if (Array.isArray(receiver)) [receiver] = receiver;
+        if (Array.isArray(receiver)) { [receiver] = receiver; }
         return `${this.$t('to')}: ${receiver}`;
       }
 
       let { sender } = this.data;
-      if (Array.isArray(sender)) [sender] = sender;
+      if (Array.isArray(sender)) { [sender] = sender; }
       return `${this.$t('from')}: ${sender}`;
     },
 
     to() {
       let { receiver } = this.data;
-      if (Array.isArray(receiver)) [receiver] = receiver;
+      if (Array.isArray(receiver)) { [receiver] = receiver; }
       return receiver;
     },
 
@@ -121,10 +121,11 @@ export default {
      * @return {String}
      */
     date() {
+      const msToS = 1000;
       if (this.data.receivedTime) {
-        return dateTranslater(new Date(this.data.receivedTime * 1000).valueOf(), 'DD MMMM HH:mm YYYY', this);
+        return dateTranslater(new Date(this.data.receivedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);
       }
-      return dateTranslater(new Date(this.data.confirmedTime * 1000).valueOf(), 'DD MMMM HH:mm YYYY', this);
+      return dateTranslater(new Date(this.data.confirmedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);
     },
 
     /**
@@ -134,7 +135,7 @@ export default {
     amount() {
       const { value } = this.data;
       let inCoin = value;
-      if (this.data.sent) inCoin = -Math.abs(inCoin);
+      if (this.data.sent) { inCoin = -Math.abs(inCoin); }
 
       const amountInCoin = new AmountFormatter({
         amount: inCoin,
@@ -229,9 +230,9 @@ export default {
      * @return {String}
      */
     status() {
-      if (this.data.confirmations > 5) return 'confirmed';
-      if (this.data.confirmations > 0) return 'unconfirmed';
-      return 'pending';
+      if (this.data.confirmations > this.minConfirmations) { return this.$t('confirmed'); }
+      if (this.data.confirmations > 0) { return this.$t('unconfirmed'); }
+      return this.$t('pending');
     },
   },
 };

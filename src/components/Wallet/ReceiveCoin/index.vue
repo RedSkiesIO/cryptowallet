@@ -3,7 +3,7 @@
     <CoinHeader :wallet="wallet" />
 
     <div class="send-modal-heading">
-      <h3>Your Address</h3>
+      <h3>{{ $t('yourAddress') }}</h3>
       <span class="h3-line" />
     </div>
     <div class="address break">
@@ -26,7 +26,7 @@
     />
 
     <div class="send-modal-heading">
-      <h3>Scan QR Code</h3>
+      <h3>{{ $t('scanQR') }}</h3>
       <span class="h3-line" />
     </div>
 
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     getAddress() {
-      if (this.wallet.externalAddress) return this.wallet.externalAddress;
+      if (this.wallet.externalAddress) { return this.wallet.externalAddress; }
       return this.generateExternalAddress();
     },
     generateExternalAddress() {
@@ -122,7 +122,7 @@ export default {
         height: 250,
       };
 
-      if (typeof this.address !== 'string') return false;
+      if (typeof this.address !== 'string') { return false; }
 
       QRCode.toDataURL(this.address, options, (err, url) => {
         if (err) {

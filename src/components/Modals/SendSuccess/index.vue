@@ -15,7 +15,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Success
+          {{ $t('success') }}
         </h1>
       </div>
       <div
@@ -31,7 +31,7 @@
           </div>
 
           <div class="done-msg-wrapper">
-            <h1>PLAYFUL SUCCESS MESSAGE HERE</h1>
+            <h1>{{ $t('successMessage') }}</h1>
           </div>
 
           <div class="done-tx-details-wrapper">
@@ -53,7 +53,7 @@
 
             <div class="tx-details-row">
               <div class="detail">
-                Recipient
+                {{ $t('recipient') }}
               </div>
               <div class="break">
                 {{ recipient }}
@@ -62,7 +62,7 @@
 
             <div class="tx-details-row">
               <div class="detail">
-                Amount
+                {{ $t('amount') }}
               </div>
               <div class="nowrap">
                 {{ amount }}

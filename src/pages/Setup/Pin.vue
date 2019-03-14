@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div>pin setup page</div>
-    <PinPad />
-    <q-btn
-      v-if="pin.length >= 6"
-      :label="$t('continue')"
-      style="color: goldenrod;"
-      outline
-      @click="hashPin"
-    />
+    <div>
+      {{ $t('pinSetupPage') }}/div>
+      <PinPad />
+      <q-btn
+        v-if="pin.length >= 6"
+        :label="$t('continue')"
+        style="color: goldenrod;"
+        outline
+        @click="hashPin"
+      />
+    </div>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div>
     <div class="send-coin-box">
       <div class="send-modal-heading">
-        <h3>Recipient</h3>
+        <h3>{{ $t('recipient') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('paste')"
@@ -32,7 +32,7 @@
       </div>
       <span class="error-label">{{ addressError }}</span>
       <div class="send-modal-heading">
-        <h3>Amount</h3>
+        <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
         <q-btn
           :label="$t('max')"
@@ -81,7 +81,7 @@
 
       <div class="send-modal-heading">
         <h3>
-          Fee
+          {{ $t('fee') }}
           <q-icon
             name="help_outline"
             size="1.1rem"
@@ -108,7 +108,7 @@
           />
         </div>
         <div class="estimated-fee">
-          Estimated transaction cost: {{ estimatedFee }}
+          {{ $t('estimatedTransaction') }} {{ estimatedFee }}
         </div>
       </div>
 
@@ -213,13 +213,13 @@ export default {
   },
   watch: {
     inCoin(val) {
-      if (val === null || val === '') return false;
-      if (!this.inCurrencyFocus) this.inCurrency = this.amountToCurrency(val);
+      if (val === null || val === '') { return false; }
+      if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
       this.updateFee(this.feeSetting, this);
       return false;
     },
     inCurrency(val) {
-      if (val === null || val === '') return false;
+      if (val === null || val === '') { return false; }
       if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       this.updateFee(this.feeSetting, this);
       return false;
@@ -242,9 +242,9 @@ export default {
   methods: {
     helpFee() {
       this.$q.dialog({
-        title: 'Fees',
+        title: this.$t('fees'),
         message: this.$t('helpFeesBitcoin'),
-        ok: 'OK',
+        ok: this.$t('ok'),
         color: 'blueish',
       });
     },
@@ -262,13 +262,13 @@ export default {
       if (field === 'address') {
         this.$v.address.$touch();
         if (this.$v.address.$error) {
-          this.addressError = 'The address must be 34 characters in length';
+          this.addressError = this.$t('bitcoinAddressInvalidLength');
           return false;
         }
         const coinSDK = this.coinSDKS[this.wallet.sdk];
         const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
         if (!isValid) {
-          this.addressError = 'Invalid Bitcoin address';
+          this.addressError = this.$t('bitcoinAddressInvalid');
           return false;
         }
         this.addressError = '';
@@ -276,7 +276,7 @@ export default {
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
         if (this.$v.inCoin.$error) {
-          this.amountError = 'You must provide an amount';
+          this.amountError = this.$t('noAmount');
           return false;
         }
         this.amountError = '';
@@ -332,17 +332,17 @@ export default {
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
-      if (feeSetting === 0) return 'low';
-      if (feeSetting === 1) return 'recommended';
-      return 'high';
+      if (feeSetting === 0) { return this.$t('lowFeeLabel'); }
+      if (feeSetting === 1) { return this.$t('mediumFeeLabel'); }
+      return this.$t('highFeeLabel');
     },
 
     /**
      * Calls update fee with context passed when user adjusts fee
      */
     feeChange(fee) {
-      if (!this.maxed) this.updateFee(fee, this);
-      if (this.maxed) this.updateMax();
+      if (!this.maxed) { this.updateFee(fee, this); }
+      if (this.maxed) { this.updateMax(); }
     },
 
     /**
@@ -359,9 +359,9 @@ export default {
       const accounts = that.getAccounts();
 
       let { address } = that.getAddresses()[0];
-      if (that.address) ({ address } = that);
+      if (that.address) { ({ address } = that); }
       let amount = that.wallet.confirmedBalance / 2;
-      if (that.inCoin) amount = that.inCoin;
+      if (that.inCoin) { amount = that.inCoin; }
 
       that.createRawTx(
         accounts,
@@ -430,7 +430,7 @@ export default {
           .where('wallet_id', this.wallet.id)
           .get();
 
-        if (found) return false;
+        if (found) { return false; }
         utxo.account_id = this.authenticatedAccount;
         utxo.wallet_id = this.wallet.id;
         Utxo.$insert({ data: utxo });
@@ -450,7 +450,7 @@ export default {
           return false;
         });
 
-        if (!found) return true;
+        if (!found) { return true; }
         return false;
       });
 
@@ -503,7 +503,7 @@ export default {
       address,
       amount,
     ) {
-      if (!address || !amount) return false;
+      if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
@@ -691,7 +691,7 @@ export default {
       ];
       const accounts = this.getAccounts();
       let { address } = this.getAddresses()[0];
-      if (this.address) ({ address } = this);
+      if (this.address) { ({ address } = this); }
       const amount = this.wallet.confirmedBalance;
 
       const { transaction } = await this.createRawTx(

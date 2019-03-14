@@ -12,7 +12,6 @@
 
       <div class="modal-layout-wrapper">
         <div class="terms-wrapper">
-
           <div class="checkbox-wrapper">
             <q-checkbox
               v-model="terms"

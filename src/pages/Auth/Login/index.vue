@@ -60,7 +60,7 @@ export default {
   mounted() {
     if (!this.selectedAccount) {
       const defaultAccount = this.accounts.find((account) => { return account.default; });
-      if (defaultAccount) this.$store.dispatch('settings/setSelectedAccount', defaultAccount.name);
+      if (defaultAccount) { this.$store.dispatch('settings/setSelectedAccount', defaultAccount.name); }
     }
   },
 
@@ -81,7 +81,7 @@ export default {
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
-      if (this.pin.length < 6) return false;
+      if (this.pin.length < 6) { return false; }
 
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {

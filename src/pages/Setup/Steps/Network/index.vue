@@ -1,15 +1,13 @@
 <template>
   <div>
     <h1 class="setup">
-      Seed Setup
+      {{ $t('seedSetup') }}
     </h1>
     <p class="setup">
-      We're going to create a recovery seed for you that can be
-      used to restore your wallets.
+      {{ $t('createRecoverySeed') }}
     </p>
     <p class="setup">
-      First we need to go offline, put your phone into airplane mode,
-      and make sure all network connections are switched off.
+      {{ $t('goOffline') }}
     </p>
   </div>
 </template>

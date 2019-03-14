@@ -4,8 +4,8 @@ export default ({ Vue }) => {
   const SDK = new CryptoWalletSDK();
 
   Vue.prototype.coinSDKS = {
-    Bitcoin: SDK.SDKFactory.CryptoWallet.createSDK('Bitcoin'),
-    Ethereum: SDK.SDKFactory.CryptoWallet.createSDK('Ethereum'),
-    ERC20: SDK.SDKFactory.CryptoWallet.createSDK('ERC20'),
+    Bitcoin: SDK.SDKFactory.createSDK('Bitcoin'),
+    Ethereum: SDK.SDKFactory.createSDK('Ethereum'),
+    ERC20: SDK.SDKFactory.createSDK('ERC20'),
   };
 };

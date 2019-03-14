@@ -27,7 +27,7 @@
       >
         <div class="initialize-wallet-modal">
           <Spinner />
-          <span>Enabling wallet</span>
+          <span>{{ $t('enablingWallet') }}</span>
         </div>
       </q-modal>
     </div>
@@ -93,7 +93,7 @@ export default {
         if (val) {
           this.enableWallet();
         }
-        if (!val) this.disableWallet();
+        if (!val) { this.disableWallet(); }
       },
     },
 

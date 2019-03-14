@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1 class="setup">
-      Pin Setup
+      {{ $t('pinSetupTitle') }}
     </h1>
     <h4 class="setup">
-      Set your pin. Minimum 6 digits asd.
+      {{ $t('setupPin') }}
     </h4>
     <PinPad mode="pin-setup" />
   </div>

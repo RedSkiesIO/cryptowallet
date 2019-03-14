@@ -93,16 +93,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import SelectAccount from '@/components/Modals/SelectAccount';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'Header',
-  components: {
-    SelectAccount,
-  },
-
   data() {
     return {
       isBackButtonEnabled: false,
@@ -140,7 +135,7 @@ export default {
         const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
           return this.$route.name === 'walletSingle'
-                 || this.$route.name === 'sendCoinSingle';
+                || this.$route.name === 'sendCoinSingle';
         }
       }
       return false;
@@ -151,9 +146,9 @@ export default {
     },
 
     heading() {
-      if (this.$route.name === 'setup') return '';
-      if (this.$route.name === 'exchange') return 'Exchange';
-      if (this.$route.name === 'settings') return 'Settings';
+      if (this.$route.name === 'setup') { return ''; }
+      if (this.$route.name === 'exchange') { return 'Exchange'; }
+      if (this.$route.name === 'settings') { return 'Settings'; }
       return 'CryptoWallet';
     },
 

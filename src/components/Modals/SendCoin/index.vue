@@ -16,7 +16,7 @@
           />
         </div>
         <h1 class="header-h1">
-          Send
+          {{ $t('send') }}
         </h1>
       </div>
       <div
@@ -83,7 +83,7 @@ export default {
     sendCoinModalOpened: {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
-          if (this.$store.state.route.name === 'sendCoin' && !this.$q.scanning) this.$router.go(-1);
+          if (this.$store.state.route.name === 'sendCoin' && !this.$q.scanning) { this.$router.go(-1); }
         }
       },
     },

@@ -19,3 +19,4 @@ tests/unit/__coverage__/*
 *.njsproj
 *.sln
 *.log
+app-env
