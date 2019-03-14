@@ -321,15 +321,15 @@ export default {
         }
       }
       if (coinSDK.getPriceFeed) {
-        const dayData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-        const weekData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-        const monthData = await coinSDK.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
 
         if (dayData && weekData && monthData) {
-          this.storeChartData(wallet.symbol, 'day', dayData);
-          this.storeChartData(wallet.symbol, 'week', weekData);
-          this.storeChartData(wallet.symbol, 'month', monthData);
+          this.storeChartData(wallet.symbol, 'day', dayData.data);
+          this.storeChartData(wallet.symbol, 'week', weekData.data);
+          this.storeChartData(wallet.symbol, 'month', monthData.data);
         }
       }
       const initializedWallet = wallet.hdWallet;

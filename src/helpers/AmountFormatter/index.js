@@ -57,7 +57,7 @@ export default class AmountFormatter {
    */
   coinToCurrency() {
     if (this.rate) {
-      return this.amount * Number(this.rate.replace(/[^0-9.-]+/g, ''));
+      return this.amount * this.rate;
     }
     return this.amount;
   }
@@ -68,7 +68,7 @@ export default class AmountFormatter {
    */
   currencyToCoin() {
     if (this.rate) {
-      return this.amount / Number(this.rate.replace(/[^0-9.-]+/g, ''));
+      return this.amount / this.rate;
     }
     return this.amount;
   }
