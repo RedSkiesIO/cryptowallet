@@ -65,6 +65,7 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -138,7 +139,6 @@ export default {
       }
 
       this.$store.dispatch('settings/setLayout', 'dark');
-
       setTimeout(() => {
         Account.$delete(id);
 
@@ -159,7 +159,7 @@ export default {
 
 
         this.$store.dispatch('settings/setLoading', false);
-      }, 1000);
+      }, this.delay.long);
 
       return false;
     },

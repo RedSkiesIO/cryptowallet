@@ -17,13 +17,14 @@ class Email {
    */
   async send() {
     let hasPermission = await this.vm.permissions.email.detect();
+    const delay = 500;
     if (!hasPermission) { hasPermission = await this.vm.permissions.email.request(); }
     if (!hasPermission) {
-      this.vm.$toast.create(420, this.vm.$t('needsEmailPermissions'), 500);
+      this.vm.$toast.create(420, this.vm.$t('needsEmailPermissions'), delay);
     } else {
       const hasConfiguredEmail = await this.vm.permissions.email.hasConfiguredEmail();
       if (!hasConfiguredEmail) {
-        this.vm.$toast.create(420, this.vm.$t('needsEmailAccount'), 500);
+        this.vm.$toast.create(420, this.vm.$t('needsEmailAccount'), delay);
       } else {
         this.email.open({
           to: this.to,

@@ -164,19 +164,21 @@ export default {
     };
   },
 
-  validations: {
-    address: {
-      required,
-      alphaNum,
-      minLength: minLength(this.addressLength),
-      maxLength: maxLength(this.addressLength),
-    },
-    inCoin: {
-      required,
-    },
-    inCurrency: {
-      required,
-    },
+  validations() {
+    return {
+      address: {
+        required,
+        alphaNum,
+        minLength: minLength(this.addressLength),
+        maxLength: maxLength(this.addressLength),
+      },
+      inCoin: {
+        required,
+      },
+      inCurrency: {
+        required,
+      },
+    };
   },
 
   computed: {
@@ -184,10 +186,10 @@ export default {
       id: (state) => {
         return state.route.params.id;
       },
-
       authenticatedAccount: (state) => {
         return state.settings.authenticatedAccount;
       },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallet() {
@@ -371,13 +373,16 @@ export default {
       } finally {
         const gweiToWei = 10000;
         if (!fees) {
+          const low = this.delay.normal0000000;
+          const medium = 5195324266;
+          const high = 5195324266;
           fees = {
-            low: 5000000000,
-            medium: 5195324266,
-            high: 5195324266,
-            txLow: (5000000000 * gweiToWei) / this.weiMultiplier,
-            txMedium: (5195324266 * gweiToWei) / this.weiMultiplier,
-            txHigh: (6000000000 * gweiToWei) / this.weiMultiplier,
+            low,
+            medium,
+            high,
+            txLow: (low * gweiToWei) / this.weiMultiplier,
+            txMedium: (medium * gweiToWei) / this.weiMultiplier,
+            txHigh: (high * gweiToWei) / this.weiMultiplier,
           };
         }
       }
@@ -434,12 +439,12 @@ export default {
      */
     async send() {
       if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), 500);
+        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
         return false;
       }
 
       if (this.wallet.confirmedBalance < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), 500);
+        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
 
@@ -522,7 +527,7 @@ export default {
               this.$root.$emit('sendCoinModalOpened', true);
             }
           });
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },

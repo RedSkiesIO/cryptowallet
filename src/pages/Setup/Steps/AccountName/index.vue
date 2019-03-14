@@ -38,6 +38,7 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
     }),
   },
   methods: {
@@ -49,7 +50,7 @@ export default {
       });
 
       if (nameAlreadyInUse) {
-        this.$toast.create(10, this.$t('accountNameTaken'), 500);
+        this.$toast.create(10, this.$t('accountNameTaken'), this.delay.normal);
         return false;
       }
 

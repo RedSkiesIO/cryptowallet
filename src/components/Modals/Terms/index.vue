@@ -51,7 +51,7 @@ export default {
         setTimeout(() => {
           this.$router.push({ path: `/setup/${this.id + 1}` });
           this.termsModalOpened = false;
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },

@@ -67,6 +67,7 @@ export default {
       pinConfirm: (state) => { return state.setup.pinConfirmArray; },
       salt: (state) => { return state.setup.salt; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
     }),
     canProceed() {
       return this.input.length < this.minLength;
@@ -90,7 +91,8 @@ export default {
         btn.classList.remove('active');
       }, 200); */
       if (navigator && navigator.vibrate) {
-        navigator.vibrate(25);
+        const onInputVibrate = 25;
+        navigator.vibrate(onInputVibrate);
       }
 
       this.input.push(Math.random());
@@ -119,7 +121,7 @@ export default {
         if (this.mode === 'confirm-new-pin') {
           this.$emit('inputPin', pin);
         }
-      }, 50);
+      }, this.delay.vshort);
     },
     confirmPin() {
       setTimeout(() => {
@@ -134,7 +136,7 @@ export default {
         if (this.mode === 'access') {
           this.$emit('attemptUnlock');
         }
-      }, 50);
+      }, this.delay.vshort);
     },
     clearPinArray() {
       this.input = [];

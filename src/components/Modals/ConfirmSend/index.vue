@@ -124,6 +124,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallet() {
@@ -144,16 +145,15 @@ export default {
 
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
-        // @todo Konrad, explain the mysterious code below
         const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
                            - ((this.txData.transaction.value * this.weiMultiplier)
                            + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
         return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'ERC20') {
-        const newBalance = this.wallet.confirmedBalance
-        - this.txData.transaction.value;
-        return newBalance;
+        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+                           - (this.txData.transaction.value * this.weiMultiplier);
+        return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
@@ -318,7 +318,7 @@ export default {
         } catch (err) {
           this.errorHandler(err);
         }
-      }, 250);
+      }, this.delay.short);
     },
     completeTransaction() {
       this.$root.$emit('sendSuccessModalOpened', true, this.txData);
@@ -326,7 +326,7 @@ export default {
       setTimeout(() => {
         this.loading = false;
         this.confirmSendModalOpened = false;
-      }, 250);
+      }, this.delay.short);
     },
   },
 };

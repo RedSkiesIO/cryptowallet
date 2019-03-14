@@ -28,6 +28,7 @@ export default {
       pinHashConfirm: (state) => { return state.setup.pinHashConfirm; },
       accountType: (state) => { return state.setup.accountType; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
     }),
   },
   methods: {
@@ -35,7 +36,7 @@ export default {
       if (this.pin.join('') === this.pinConfirm.join('')) {
         this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), 500, 'top');
+        this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
       }
     },
   },

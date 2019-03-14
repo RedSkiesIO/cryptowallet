@@ -32,6 +32,7 @@ export default {
   computed: {
     ...mapState({
       selectedAccount: (state) => { return state.settings.selectedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     accounts() {
@@ -96,7 +97,7 @@ export default {
 
           setTimeout(() => {
             this.$store.dispatch('settings/setLoading', false);
-          }, 1000);
+          }, this.delay.long);
         }
       } catch (err) {
         this.errorHandler(err);
@@ -193,7 +194,7 @@ export default {
 
           resolve();
           return false;
-        }, 50);
+        }, this.delay.vshort);
       });
     },
 

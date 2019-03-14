@@ -177,6 +177,7 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -218,7 +219,7 @@ export default {
         this.$store.dispatch('settings/setAuthenticatedAccount', null);
         setTimeout(() => {
           this.$store.dispatch('settings/setLoading', false);
-        }, 250);
+        }, this.delay.short);
       } catch (err) {
         this.errorHandler(err);
       }

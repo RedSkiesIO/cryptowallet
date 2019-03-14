@@ -72,6 +72,7 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -97,7 +98,7 @@ export default {
         this.resetPin();
         this.mode = 'new-pin';
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), 500, 'top');
+        this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
       }
     },
     /**
@@ -131,7 +132,7 @@ export default {
         this.resetPin();
         this.mode = 'new-pin';
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), 500);
+        this.$toast.create(10, this.$t('wrongPin'), this.delay);
       }
       return false;
     },
@@ -153,7 +154,7 @@ export default {
      */
     updateAccount() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
-        this.$toast.create(0, this.$t('pinChanged'), 200);
+        this.$toast.create(0, this.$t('pinChanged'), this.delay.short);
         Account.$update({
           where: (record) => { return record.id === this.authenticatedAccount; },
           data: { pinHash: this.newPinHash },
@@ -162,7 +163,7 @@ export default {
         this.resetPin();
         this.closeModal();
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), 500, 'top');
+        this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
       }
     },
   },

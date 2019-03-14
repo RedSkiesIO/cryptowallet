@@ -70,11 +70,13 @@ export default {
     return {
       addWalletModalOpened: false,
       loading: false,
+      msToS: this.msToS,
     };
   },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -145,7 +147,7 @@ export default {
       });
 
       function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
+        return new Date(timestamp * this.msToS).getTime();
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
@@ -212,7 +214,7 @@ export default {
       });
 
       function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
+        return new Date(timestamp * this.msToS).getTime();
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
@@ -413,7 +415,7 @@ export default {
       });
 
       function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
+        return new Date(timestamp * this.msToS).getTime();
       }
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
@@ -467,11 +469,11 @@ export default {
 
             setTimeout(() => {
               this.addWalletModalOpened = false;
-            }, 250);
+            }, this.delay.short);
           } catch (err) {
             this.errorHandler(err);
           }
-        }, 500);
+        }, this.delay.normal);
       } else {
         this.addWalletModalOpened = false;
       }

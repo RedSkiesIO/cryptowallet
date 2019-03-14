@@ -157,6 +157,7 @@ export default {
   data() {
     return {
       address: '',
+      addressLength: 34,
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
@@ -170,21 +171,27 @@ export default {
       amountError: '',
     };
   },
-  validations: {
-    address: {
-      required, alphaNum, minLength: minLength(34), maxLength: maxLength(34),
-    },
-    inCoin: {
-      required,
-    },
-    inCurrency: {
-      required,
-    },
+  validations() {
+    return {
+      address: {
+        required,
+        alphaNum,
+        minLength: minLength(this.addressLength),
+        maxLength: maxLength(this.addressLength),
+      },
+      inCoin: {
+        required,
+      },
+      inCurrency: {
+        required,
+      },
+    };
   },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -348,31 +355,34 @@ export default {
     /**
      * Creates a raw transaction which will calculate and update the fee
      */
-    updateFee: debounce((fee, that) => {
-      const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
+    updateFee(fee, that) {
+      debounce(() => {
+        console.log(fee);
+        const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
 
-      const changeAddresses = that.generateChangeAddresses(
-        filteredUtxos,
-        pendingCount,
-      );
-      const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
-      const accounts = that.getAccounts();
+        const changeAddresses = that.generateChangeAddresses(
+          filteredUtxos,
+          pendingCount,
+        );
+        const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
+        const accounts = that.getAccounts();
 
-      let { address } = that.getAddresses()[0];
-      if (that.address) { ({ address } = that); }
-      const halfBalance = 2;
-      let amount = that.wallet.confirmedBalance / halfBalance;
-      if (that.inCoin) { amount = that.inCoin; }
-      // TODO: change this to calculate fee using max boolean
-      that.createRawTx(
-        accounts,
-        changeAddresses,
-        filteredUtxos,
-        wallet,
-        address,
-        amount,
-      );
-    }, 250),
+        let { address } = that.getAddresses()[0];
+        if (that.address) { ({ address } = that); }
+        const halfBalance = 2;
+        let amount = that.wallet.confirmedBalance / halfBalance;
+        if (that.inCoin) { amount = that.inCoin; }
+        // TODO: change this to calculate fee using max boolean
+        that.createRawTx(
+          accounts,
+          changeAddresses,
+          filteredUtxos,
+          wallet,
+          address,
+          amount,
+        );
+      }, that.delay.short);
+    },
 
     /**
      * Returns addresses
@@ -602,12 +612,12 @@ export default {
      */
     async send() {
       if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), 500);
+        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
         return false;
       }
 
       if (this.wallet.confirmedBalance < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), 500);
+        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
 
@@ -617,7 +627,7 @@ export default {
 
       // there are no UTXOs available, wallet is empty
       if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t('noFunds'), 500);
+        this.$toast.create(10, this.$t('noFunds'), this.delay.normal);
         return false;
       }
 
@@ -625,7 +635,7 @@ export default {
 
       // there is enough funds, but UTXOs are pending
       if (filteredUtxos.length === 0) {
-        this.$toast.create(10, this.$t('fundsPending'), 500);
+        this.$toast.create(10, this.$t('fundsPending'), this.delay.normal);
         return false;
       }
 
@@ -741,7 +751,7 @@ export default {
               this.$root.$emit('sendCoinModalOpened', true);
             }
           });
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },
