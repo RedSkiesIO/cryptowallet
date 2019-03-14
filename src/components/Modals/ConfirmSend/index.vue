@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="confirmSendModalOpened"
-      class="light-modal modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      class="light-modal"
     >
       <div
         :class="{ active: loading }"
@@ -89,7 +93,7 @@
           />
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

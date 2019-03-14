@@ -1,7 +1,11 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="addWalletModalOpened"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
       class="dark-modal"
     >
       <div class="header-section">
@@ -37,7 +41,7 @@
           click-item-action="addWallet"
         />
       </div>
-    </q-modal>
+    </q-dialog>
 
     <div
       v-if="loading"

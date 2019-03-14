@@ -47,7 +47,7 @@ class BackEndService {
    */
   connect(attempts = 0) {
     return new Promise(async (resolve) => {
-      if (attempts >= 100) {
+      if (attempts >= 10) {
         this.vm.errorHandler(new Error('Failed to connect to the server'), false);
         return false;
       }
@@ -92,7 +92,9 @@ class BackEndService {
    * @return {String}
    */
   async auth() {
-    const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/fake`);
+    console.log('process.env.BACKEND_SERVICE_URL', `${process.env.BACKEND_SERVICE_URL}/auth/token/fake2`);
+
+    const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/fake2`);
 
     if (response.data) {
       this.accessToken = response.data.accessToken;
@@ -137,7 +139,7 @@ class BackEndService {
    * @return {Object}
    */
   async try(URL, attempts = 0) {
-    if (attempts >= 50) {
+    if (attempts >= 10) {
       this.vm.errorHandler(new Error('Failed to connect to the server'), false);
     }
 

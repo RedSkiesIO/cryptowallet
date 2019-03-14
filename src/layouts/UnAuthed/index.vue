@@ -1,11 +1,29 @@
 <template>
   <q-layout>
-    test
+    <!-- <div
+      v-if="showParticles"
+      class="particles"
+    >
+      <vue-particles
+        :particles-number="125"
+        :move-speed="2"
+        color="#c7c7c7"
+      />
+    </div> -->
+    <q-header>
+      <Header />
+    </q-header>
+
+    <div
+      :class="{ 'no-footer': !isMainNavVisible }"
+      class="layout-wrapper background"
+    >
+      <router-view />
+    </div>
   </q-layout>
 </template>
 
 <script>
-/* eslint-disable */
 import Header from '@/layouts/Header';
 
 export default {

@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="priceChartModalOpened"
-      class="dark-modal modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      class="dark-modal"
     >
       <div
         :class="{ active: loading }"
@@ -86,7 +90,7 @@
           :gradient="gradientStroke"
         />
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

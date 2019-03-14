@@ -7,9 +7,7 @@
     }"
     view="lHh Lpr lFf"
   >
-    <q-layout-header>
-      <Header />
-    </q-layout-header>
+    <Header />
 
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
@@ -58,9 +56,9 @@
       enter-active-class="animated slideInUp"
       leave-active-class="animated slideOutDown"
     >
-      <q-layout-footer v-show="isMainNavVisible">
+      <q-footer v-show="isMainNavVisible">
         <MainNav />
-      </q-layout-footer>
+      </q-footer>
     </transition>
   </q-layout>
 </template>

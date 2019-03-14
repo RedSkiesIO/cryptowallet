@@ -23,7 +23,7 @@
         :wallet="wallet"
         :currency="selectedCurrency"
       />
-      <q-scroll-observable @scroll="scrolled" />
+      <q-scroll-observer @scroll="scrolled" />
     </q-scroll-area>
   </div>
 </template>

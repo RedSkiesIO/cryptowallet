@@ -78,6 +78,8 @@ module.exports = (ctx) => {
         'QTabs',
         'QTab',
         //'QTabPane',
+        'QTabPanels',
+        'QTabPanel',
         'QRouteTab',
         'QPullToRefresh',
         'QTimeline',
