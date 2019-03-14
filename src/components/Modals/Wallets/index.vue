@@ -314,24 +314,29 @@ export default {
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
-      if (coinSDK.getPriceFeed) {
-        const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-        if (prices) {
-          this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
-        }
+
+      const response = await this.backEndService.getPriceFeed(
+        [wallet.symbol],
+        [this.selectedCurrency.code],
+      );
+      const prices = response.data[0];
+      console.log(prices);
+      console.log(prices[this.selectedCurrency.code]);
+      if (response) {
+        this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
-      if (coinSDK.getPriceFeed) {
-        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+
+      const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+      const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+      const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
 
-        if (dayData && weekData && monthData) {
-          this.storeChartData(wallet.symbol, 'day', dayData.data);
-          this.storeChartData(wallet.symbol, 'week', weekData.data);
-          this.storeChartData(wallet.symbol, 'month', monthData.data);
-        }
+      if (dayData && weekData && monthData) {
+        this.storeChartData(wallet.symbol, 'day', dayData.data);
+        this.storeChartData(wallet.symbol, 'week', weekData.data);
+        this.storeChartData(wallet.symbol, 'month', monthData.data);
       }
+
       const initializedWallet = wallet.hdWallet;
 
       if (!this.activeWallets[this.authenticatedAccount]) {
@@ -360,10 +365,14 @@ export default {
     async enableErc20Wallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const parentSDK = this.coinSDKS[wallet.parentSdk];
-      const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-
-      if (prices) {
-        this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      const response = await this.backEndService.getPriceFeed(
+        [wallet.symbol],
+        [this.selectedCurrency.code],
+      );
+      const prices = response.data[0];
+      console.log(prices);
+      if (response) {
+        this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
       if (!wallet.erc20Wallet) {
         const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];

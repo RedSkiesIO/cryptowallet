@@ -103,7 +103,6 @@ export default {
 
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
-
           this.$router.push({ path: '/wallet' });
           this.$store.dispatch('settings/setLayout', 'light');
 

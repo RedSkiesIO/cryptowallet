@@ -362,30 +362,19 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
       const gasLimit = 21000;
+      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+      const { data } = response.data;
+      const gweiToWei = 10000;
 
-      let fees;
-      try {
-        fees = await coinSDK.getTransactionFee(this.wallet.network);
-      } catch (e) {
-        fees = null;
-      } finally {
-        const gweiToWei = 10000;
-        if (!fees) {
-          const low = this.delay.normal0000000;
-          const medium = 5195324266;
-          const high = 5195324266;
-          fees = {
-            low,
-            medium,
-            high,
-            txLow: (low * gweiToWei) / this.weiMultiplier,
-            txMedium: (medium * gweiToWei) / this.weiMultiplier,
-            txHigh: (high * gweiToWei) / this.weiMultiplier,
-          };
-        }
-      }
+      const fees = {
+        low: data.low,
+        medium: data.medium,
+        high: data.high,
+        txLow: (data.low * gweiToWei) / this.weiMultiplier,
+        txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
+        txHigh: (data.high * gweiToWei) / this.weiMultiplier,
+      };
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) {

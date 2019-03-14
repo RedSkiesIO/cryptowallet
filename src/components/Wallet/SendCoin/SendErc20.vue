@@ -340,27 +340,20 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      const coinSDK = this.coinSDKS[this.wallet.parentSdk];
-      let fees;
-      try {
-        fees = await coinSDK.getTransactionFee(this.wallet.network);
-      } catch (e) {
-        // this.errorHandler(e);
-      } finally {
-        if (!fees) {
-          const low = 5000000000;
-          const medium = 5195324266;
-          const high = 5195324266;
-          fees = {
-            low,
-            medium,
-            high,
-            txLow: (low * this.gweiToWei) / this.weiMultiplier,
-            txMedium: (medium * this.gweiToWei) / this.weiMultiplier,
-            txHigh: (high * this.gweiToWei) / this.weiMultiplier,
-          };
-        }
-      }
+      // TODO: Move this in to ERC20 wallet object
+      const ethSymbol = 'ETH';
+      const response = await this.backEndService.getTransactionFee(ethSymbol);
+      const { data } = response.data;
+      const gweiToWei = 10000;
+
+      const fees = {
+        low: data.low,
+        medium: data.medium,
+        high: data.high,
+        txLow: (data.low * gweiToWei) / this.weiMultiplier,
+        txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
+        txHigh: (data.high * gweiToWei) / this.weiMultiplier,
+      };
 
       let fee = fees.txMedium;
       if (this.feeSetting === 0) {

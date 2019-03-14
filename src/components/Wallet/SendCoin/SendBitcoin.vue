@@ -515,22 +515,12 @@ export default {
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-
-      let fees;
-      try {
-        fees = await coinSDK.getTransactionFee(this.wallet.network);
-      } catch (e) {
-        // this.errorHandler(e);
-      } finally {
-        if (!fees) {
-          fees = {
-            low: 3.0,
-            medium: 12.0,
-            high: 13.78,
-          };
-        }
-      }
-
+      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+      const fees = response.data.data;
+      const kbToBytes = 1000;
+      Object.keys(fees).forEach((key) => {
+        fees[key] /= kbToBytes;
+      });
 
       let fee = fees.medium;
       if (this.feeSetting === 0) {
