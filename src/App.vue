@@ -296,7 +296,11 @@ body > div {
 }
 
 .dark-modal .modal-layout-wrapper {
-  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%)
+  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%);
+}
+
+.light-modal .modal-layout-wrapper {
+  background: white;
 }
 
 .q-dialog__inner .header-section {
@@ -310,6 +314,10 @@ body > div {
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
+}
+
+.modal-layout-wrapper.full {
+  height: 100vh!important;
 }
 
 .modal-layout-wrapper.center {

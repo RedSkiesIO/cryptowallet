@@ -1,49 +1,59 @@
 <template>
+  <!-- eslint-disable -->
   <section class="recent-transactions">
     <q-tabs
+      v-model="tab"
       color="blueish"
       inverted
     >
       <q-tab
-        slot="title"
         :label="$t('all')"
         default
-        name="tab-1"
+        name="all"
       />
       <q-tab
-        slot="title"
         :label="$t('sent')"
-        name="tab-2"
+        name="sent"
       />
       <q-tab
-        slot="title"
         :label="$t('received')"
-        name="tab-3"
+        name="received"
       />
-      <q-tab-pane name="tab-1">
-        <TransactionsList :wallet="wallet" />
-      </q-tab-pane>
-      <q-tab-pane name="tab-2">
+    </q-tabs>
+
+    <q-tab-panels v-model="tab" animated>
+      <q-tab-panel name="all">
+         <TransactionsList :wallet="wallet" />
+      </q-tab-panel>
+
+      <q-tab-panel name="sent">
         <TransactionsList
           :wallet="wallet"
           filter="sent"
         />
-      </q-tab-pane>
-      <q-tab-pane name="tab-3">
+      </q-tab-panel>
+
+      <q-tab-panel name="received">
         <TransactionsList
           :wallet="wallet"
           filter="received"
         />
-      </q-tab-pane>
-    </q-tabs>
+      </q-tab-panel>
+    </q-tab-panels>
   </section>
 </template>
 
 <script>
+/* eslint-disable */
 import TransactionsList from '@/components/Wallet/TransactionsList';
 
 export default {
   name: 'Transactions',
+  data() {
+    return {
+      tab: 'all',
+    };
+  },
   components: {
     TransactionsList,
   },
@@ -72,6 +82,11 @@ export default {
   padding: 0 1rem;
 }
 
+.q-tabs, .q-tabs__content {
+  width: 100%!important;
+}
+
+/*
 .q-tabs {
   height: 100%;
   display: flex;
@@ -87,7 +102,7 @@ export default {
   flex: 1;
   font-size: 0.7rem;
   padding: 0 0.2rem;
-}
+}*/
 
 .q-tab-label {
   font-family: Montserrat-SemiBold;

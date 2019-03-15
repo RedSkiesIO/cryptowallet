@@ -8,26 +8,19 @@
       transition-hide="slide-down"
       content-class="dark-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click.prevent="closeModal"
-          />
-        </div>
-      </div>
-
-      <div class="modal-layout-wrapper no-padding">
+      <div class="modal-layout-wrapper full no-padding">
         <q-carousel
+          v-model="slide"
           class="q-carousel-full"
-          color="primary"
-          quick-nav
-          @slide="updateSlideIndex"
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          swipeable
+          animated
+          control-color="white"
+          navigation
+          padding
         >
-          <q-carousel-slide class="full-slide">
+          <q-carousel-slide name="coins-tokens" class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('CoinsTokens') }}
@@ -46,9 +39,22 @@
                 {{ $t('getStartedCoinsTokens') }}
               </p>
             </div>
+
+            <div class="absolute-bottom">
+              <div class="next-button-wrapper">
+                <q-btn
+                  v-if="slide !== 'security'"
+                  :label="$t('next')"
+                  color="yellow"
+                  text-color="blueish"
+                  class="splash-btn"
+                  @click="next"
+                />
+              </div>
+            </div>
           </q-carousel-slide>
 
-          <q-carousel-slide class="full-slide">
+          <q-carousel-slide name="your-wallet" class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('yourWallet') }}
@@ -67,9 +73,22 @@
                 {{ $t('getStartedYourWallet') }}
               </p>
             </div>
+
+            <div class="absolute-bottom">
+              <div class="next-button-wrapper">
+                <q-btn
+                  v-if="slide !== 'security'"
+                  :label="$t('next')"
+                  color="yellow"
+                  text-color="blueish"
+                  class="splash-btn"
+                  @click="next"
+                />
+              </div>
+            </div>
           </q-carousel-slide>
 
-          <q-carousel-slide class="full-slide">
+          <q-carousel-slide name="backup-your-wallet" class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('backupYourWallet') }}
@@ -88,9 +107,22 @@
                 {{ $t('getStartedBackupYourWallet') }}
               </p>
             </div>
+
+            <div class="absolute-bottom">
+              <div class="next-button-wrapper">
+                <q-btn
+                  v-if="slide !== 'security'"
+                  :label="$t('next')"
+                  color="yellow"
+                  text-color="blueish"
+                  class="splash-btn"
+                  @click="next"
+                />
+              </div>
+            </div>
           </q-carousel-slide>
 
-          <q-carousel-slide class="full-slide">
+          <q-carousel-slide name="security" class="full-slide">
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('security') }}
@@ -111,42 +143,32 @@
                     {{ $t('getStartedSecurity') }}
                   </p>
                 </div>
+              </div>
+            </div>
 
-                <div :class="{ offline: !online }">
-                  <q-alert type="negative">
+            <div class="absolute-bottom">
+              <div class="next-button-wrapper">
+                <div
+                  class="banner-wrapper"
+                  :class="{ offline: !online }"
+                >
+                  <q-banner class="negative">
                     {{ $t('enableAirplaneDisableInternet') }}
-                  </q-alert>
+                  </q-banner>
                 </div>
+
+                <q-btn
+                  v-if="slide === 'security'"
+                  :disabled="online"
+                  :label="$t('activateYourWallet')"
+                  color="yellow"
+                  text-color="blueish"
+                  class="splash-btn"
+                  @click="done"
+                />
               </div>
             </div>
           </q-carousel-slide>
-
-          <q-carousel-control
-            slot="control-button"
-            slot-scope="carousel"
-            :offset="[0, 0]"
-            position="bottom"
-            class="next-button-wrapper"
-          >
-            <q-btn
-              v-if="slide !== 3"
-              :label="$t('next')"
-              color="yellow"
-              text-color="blueish"
-              class="splash-btn"
-              @click="carousel.next"
-            />
-
-            <q-btn
-              v-if="slide === 3"
-              :disabled="online"
-              :label="$t('activateYourWallet')"
-              color="yellow"
-              text-color="blueish"
-              class="splash-btn"
-              @click="done"
-            />
-          </q-carousel-control>
         </q-carousel>
       </div>
     </q-dialog>
@@ -161,7 +183,13 @@ export default {
   data() {
     return {
       getStartedModalOpened: false,
-      slide: 0,
+      slides: [
+        'coins-tokens',
+        'your-wallet',
+        'backup-your-wallet',
+        'security',
+      ],
+      slide: 'coins-tokens',
       online: null,
     };
   },
@@ -182,6 +210,9 @@ export default {
     });
   },
   methods: {
+    next() {
+      this.slide = this.slides[this.slides.indexOf(this.slide) + 1];
+    },
     closeModal() {
       this.$root.$emit('getStartedModalOpened', false);
     },
@@ -251,7 +282,17 @@ export default {
   overflow: visible;
 }
 
-.slide-wrapper .offline .q-alert {
+.slide-wrapper .offline .q-banner {
+  display: none;
+}
+
+.banner-wrapper {
+  position: absolute;
+  z-index: 999;
+  margin: 0 1rem;
+}
+
+.banner-wrapper.offline {
   display: none;
 }
 
@@ -274,7 +315,8 @@ export default {
 
 .next-button-wrapper {
   text-align: center;
-  bottom: 2.6rem;
+  bottom: 3.5rem;
+  position: relative;
 }
 
 .q-carousel-quick-nav .q-btn.inactive .q-icon,

@@ -92,8 +92,6 @@ class BackEndService {
    * @return {String}
    */
   async auth() {
-    console.log('process.env.BACKEND_SERVICE_URL', `${process.env.BACKEND_SERVICE_URL}/auth/token/fake2`);
-
     const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/fake2`);
 
     if (response.data) {

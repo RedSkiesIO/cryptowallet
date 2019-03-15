@@ -25,9 +25,9 @@
             v-if="filteredPaginated.length === 0"
             class="no-tx-alert"
           >
-            <q-alert color="info">
+            <q-banner class="info bg-primary">
               {{ $t('emptyTransactionHistory') }}
-            </q-alert>
+            </q-banner>
           </div>
         </q-timeline>
         <q-spinner-dots
@@ -184,5 +184,9 @@ export default {
 
 .no-tx-alert .q-alert-content {
   font-size: 0.8rem;
+}
+
+.q-tab-panel {
+  padding: 0;
 }
 </style>
