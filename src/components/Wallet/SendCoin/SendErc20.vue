@@ -354,7 +354,6 @@ export default {
         txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
         txHigh: (data.high * gweiToWei) / this.weiMultiplier,
       };
-
       let fee = fees.txMedium;
       if (this.feeSetting === 0) {
         fee = fees.txLow;
@@ -362,12 +361,10 @@ export default {
       if (this.feeSetting === 2) {
         fee = fees.txHigh;
       }
-
       let rawFee = fees.medium;
       if (this.feeSetting === 0) {
         rawFee = fees.low;
       }
-
       if (this.feeSetting === 2) {
         rawFee = fees.high;
       }

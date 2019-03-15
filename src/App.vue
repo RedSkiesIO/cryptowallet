@@ -137,7 +137,6 @@ export default {
     window.store = this.$store;
     window.app = this;
 
-
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
 
     this.$root.$on('scanQRCode', (origin) => {

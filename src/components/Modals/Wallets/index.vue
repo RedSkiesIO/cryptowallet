@@ -70,7 +70,7 @@ export default {
     return {
       addWalletModalOpened: false,
       loading: false,
-      msToS: this.msToS,
+      msToS: 1000,
     };
   },
   computed: {
@@ -146,9 +146,9 @@ export default {
         Utxo.$insert({ data: utxo });
       });
 
-      function createDate(timestamp) {
+      const createDate = ((timestamp) => {
         return new Date(timestamp * this.msToS).getTime();
-      }
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.receivedTime) - createDate(a.receivedTime); });
@@ -213,9 +213,9 @@ export default {
         if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
-      function createDate(timestamp) {
+      const createDate = ((timestamp) => {
         return new Date(timestamp * this.msToS).getTime();
-      }
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
@@ -423,9 +423,9 @@ export default {
         if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
-      function createDate(timestamp) {
+      const createDate = ((timestamp) => {
         return new Date(timestamp * this.msToS).getTime();
-      }
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
