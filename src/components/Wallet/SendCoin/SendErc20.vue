@@ -340,7 +340,7 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      // TODO: Move this in to ERC20 wallet object
+      // TODO: Move ethSymbol in to ERC20 wallet object as parentSymbol
       const ethSymbol = 'ETH';
       const response = await this.backEndService.getTransactionFee(ethSymbol);
       const { data } = response.data;

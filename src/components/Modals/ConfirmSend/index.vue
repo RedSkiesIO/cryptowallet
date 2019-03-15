@@ -66,7 +66,7 @@
           v-if="isErc20"
           class="small-text"
         >
-          {{ txData.transaction.fee / weiMultiplier }}  ETH
+          {{ txData.transaction.fee / weiMultiplier }}  {{ $t('ethSymbol') }}
           ({{ coinToCurrency(txData.transaction.fee / weiMultiplier, true) }})
         </div>
 
