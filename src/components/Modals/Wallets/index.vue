@@ -320,8 +320,6 @@ export default {
         [this.selectedCurrency.code],
       );
       const prices = response.data[0];
-      console.log(prices);
-      console.log(prices[this.selectedCurrency.code]);
       if (response) {
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
@@ -370,7 +368,6 @@ export default {
         [this.selectedCurrency.code],
       );
       const prices = response.data[0];
-      console.log(prices);
       if (response) {
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
