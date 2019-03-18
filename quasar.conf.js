@@ -86,6 +86,7 @@ module.exports = (ctx) => {
         'QTimelineEntry',
         'QInfiniteScroll',
         'QSpinnerDots',
+        'QExpansionItem',
         // 'QCollapsible',
         // 'QModal',
         'QDialog',
@@ -102,8 +103,11 @@ module.exports = (ctx) => {
         'QCarouselSlide',
         'QCarouselControl',
         'QCheckbox',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
       ],
-      directives: ['Ripple'],
+      directives: ['Ripple', 'CloseDialog'],
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'BottomSheet', 'AppVisibility'], // ActionSheet is now BottomSheet
       // iconSet: 'material-icons'

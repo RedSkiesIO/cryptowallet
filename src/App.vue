@@ -132,7 +132,7 @@ export default {
     },
   },
 
-  async mounted() {
+  mounted() {
     window.store = this.$store;
     window.app = this;
 

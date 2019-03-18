@@ -75,6 +75,7 @@ export default {
       default: false,
     },
   },
+
   computed: {
     ...mapState({
       authenticatedAccount: (state) => {

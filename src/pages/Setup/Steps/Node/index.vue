@@ -11,8 +11,9 @@
       <q-input
         v-model="nodeIp"
         :float-label="$t('IPAddress')"
-        inverted
-        color="blueish"
+        outlined
+        dark
+        color="primary"
       />
     </div>
 

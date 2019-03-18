@@ -35,6 +35,7 @@
             <q-radio
               v-model="selectedLocale"
               :val="key"
+              dark
             />
           </div>
         </div>

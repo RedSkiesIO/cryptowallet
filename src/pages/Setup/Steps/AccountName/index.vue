@@ -9,9 +9,9 @@
       <q-input
         v-model="accountName"
         :float-label="$t('accountName')"
-        inverted
-        clearable
-        color="blueish"
+        outlined
+        dark
+        color="primary"
       />
     </div>
     <div class="btns-wrapper">

@@ -160,8 +160,9 @@ export default {
      * the top scroll position
      * @param  {Object} event
      */
+    /*eslint-disable*/
     prevent(event) {
-      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop > 0) {
+      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop !== 0) {
         event.stopPropagation();
       }
     },

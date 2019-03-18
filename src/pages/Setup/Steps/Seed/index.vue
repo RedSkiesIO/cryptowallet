@@ -28,9 +28,39 @@
         color="yellow"
         text-color="blueish"
         label="Done"
-        @click="done"
+        @click="confirmed"
       />
     </div>
+
+    <q-dialog
+      v-model="confirm"
+      persistent
+    >
+      <q-card
+        style="width: 300px"
+        class="dialog"
+       >
+        <q-card-section>
+          <h2>{{ $t('confirm') }}</h2>
+          <p class="">{{ $t('seedConfirmation') }}</p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            :label="$t('cancelConfirm')"
+            color="blueish"
+            v-close-dialog
+           />
+          <q-btn
+            flat
+            :label="$t('acceptConfirm')"
+            color="blueish"
+            @click="done"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -44,6 +74,7 @@ export default {
       generateble: true,
       seedPhrase: [],
       valid: false,
+      confirm: false,
     };
   },
 
@@ -60,21 +91,17 @@ export default {
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
+      console.log('what', this.seedPhrase);
       this.$store.dispatch('setup/setSeed', this.seedPhrase);
     },
 
+    confirmed() {
+      this.confirm = true;
+    },
+
     done() {
-      this.$q.dialog({
-        title: this.$t('confirm'),
-        message: this.$t('seedConfirmation'),
-        ok: this.$t('acceptConfirm'),
-        cancel: this.$t('cancelConfirm'),
-        color: 'blueish',
-      }).then(() => {
-        this.$router.push({ path: `/setup/${this.id + 1}` });
-      }).catch(() => {
-        this.closeModal();
-      });
+      this.confirm = false;
+      this.$router.push({ path: `/setup/${this.id + 1}` });
     },
 
     anotherSeed() {

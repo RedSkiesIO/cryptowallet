@@ -27,9 +27,9 @@
         <q-input
           v-model="newNodeIp"
           :float-label="$t('IPAddress')"
-          inverted
-          clearable
-          color="blueish"
+          outlined
+          dark
+          color="primary"
         />
       </div>
 
@@ -73,6 +73,9 @@ export default {
     }),
     newNodeIp: {
       get() {
+        if (this.ip) {
+          return this.ip;
+        }
         return this.current;
       },
       set(ip) {

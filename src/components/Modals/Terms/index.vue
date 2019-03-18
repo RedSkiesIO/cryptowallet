@@ -6,7 +6,7 @@
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
-      class="light-modal"
+      content-class="light-modal"
     >
       <div class="header-section">
         <h1 class="header-h1">
@@ -24,7 +24,6 @@
               label="I have read and I accept the Terms & Conditions"
               true-value="yes"
               false-value="no"
-              dark
             />
           </div>
         </div>
@@ -75,7 +74,7 @@ export default {
   border-radius: 0.3rem;
 }
 
-.checkbox-wrapper .q-option-label {
+.checkbox-wrapper .q-checkbox__label {
   opacity: 1;
   font-family: Montserrat-Medium;
   margin-left: 0.8rem;

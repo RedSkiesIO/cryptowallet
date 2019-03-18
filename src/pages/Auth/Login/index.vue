@@ -16,6 +16,7 @@ import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 import Wallet from '@/store/wallet/entities/wallet';
+// import Vue from 'vue';
 
 export default {
 
@@ -80,13 +81,12 @@ export default {
         this.pin.push(pin);
       });
     },
-    /*eslint-disable*/
     /**
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
       if (this.pin.length < 6) { return false; }
-
+      /*eslint-disable*/
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
           this.$store.dispatch('settings/setLoading', true);
@@ -96,8 +96,8 @@ export default {
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
 
-          this.$root.__proto__.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''))
-
+          //Vue.prototype.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
+          this.$root.__proto__.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
 

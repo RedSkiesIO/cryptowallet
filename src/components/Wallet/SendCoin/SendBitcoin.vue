@@ -121,16 +121,6 @@
         />
       </div>
     </div>
-
-    <q-modal
-      v-model="sendingModalOpened"
-      minimized
-    >
-      <div class="sending-wallet-modal">
-        <Spinner />
-        <h1>Sending</h1>
-      </div>
-    </q-modal>
   </div>
 </template>
 
@@ -146,14 +136,10 @@ import { debounce } from 'quasar';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
-import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendCoin',
-  components: {
-    Spinner,
-  },
   data() {
     return {
       address: '',
@@ -161,7 +147,6 @@ export default {
       inCurrency: '',
       inCoinFocus: false,
       inCurrencyFocus: false,
-      sendingModalOpened: false,
       feeSetting: 1,
       estimatedFee: 'N/A',
       utxos: [],
@@ -172,7 +157,7 @@ export default {
   },
   validations: {
     address: {
-      required, alphaNum, minLength: minLength(34), maxLength: maxLength(34),
+      required, alphaNum, minLength: minLength(35), maxLength: maxLength(35),
     },
     inCoin: {
       required,
@@ -591,6 +576,8 @@ export default {
     /**
      * Creates and sends a transaction
      */
+    /*eslint-disable*/
+
     async send() {
       if (!this.isValid()) {
         this.$toast.create(10, this.$t('fillAllInputs'), 500);
@@ -635,7 +622,8 @@ export default {
         this.inCoin,
       );
 
-      this.$root.$emit('confirmSendModalOpened', true, {
+      // @todo, don't use app global, should work with this.$root, leave for now, quasar bug suspected
+      app.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
         transaction,
         changeAddresses,

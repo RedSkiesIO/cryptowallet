@@ -2,7 +2,6 @@
   <div>
     <q-dialog
       v-model="open"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -35,6 +34,7 @@
             <q-radio
               v-model="selectedLocale"
               :val="key"
+              dark
             />
           </div>
         </div>

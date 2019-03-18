@@ -77,6 +77,11 @@ export default {
   position: relative;
 }
 
+.recent-transactions .q-tab-panels {
+  height: 100%;
+  position: relative;
+}
+
 .scroll-content {
   overflow: hidden;
   padding: 0 1rem;

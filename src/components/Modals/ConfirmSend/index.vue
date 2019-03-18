@@ -187,6 +187,7 @@ export default {
 
   mounted() {
     this.$root.$on('confirmSendModalOpened', (value, txData) => {
+      console.log('txData', txData);
       this.confirmSendModalOpened = value;
       this.txData = txData;
     });
@@ -202,7 +203,6 @@ export default {
       } = this.txData;
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-
       if (this.wallet.sdk === 'Bitcoin') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {
@@ -324,7 +324,10 @@ export default {
       }, 250);
     },
     completeTransaction() {
-      this.$root.$emit('sendSuccessModalOpened', true, this.txData);
+      // @todo, don't use app global, should work
+      // with this.$root, leave for now, quasar bug suspected
+      /* eslint-disable-next-line */
+      app.$root.$emit('sendSuccessModalOpened', true, this.txData);
 
       setTimeout(() => {
         this.loading = false;
