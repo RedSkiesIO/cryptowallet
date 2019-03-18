@@ -30,11 +30,21 @@
       />
 
       <q-btn
-        v-if="mode != 'pin-setup' && mode != 'new-pin' && mode != 'confirm-new-pin'"
+        v-if="mode != 'pin-setup' &&
+          mode != 'new-pin' && mode != 'confirm-new-pin' && mode != 'delete'"
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"
         label="Unlock"
+        @click="confirmPin"
+      />
+
+      <q-btn
+        v-if="mode === 'delete'"
+        :disabled="canProceed"
+        color="red"
+        text-color="white"
+        label="Delete"
         @click="confirmPin"
       />
     </div>
@@ -110,7 +120,7 @@ export default {
           this.$root.$emit('inputPin', pin);
         }
 
-        if (this.mode === 'access') {
+        if (this.mode === 'access' || this.mode === 'delete') {
           this.$emit('inputPin', pin);
         }
 
@@ -136,6 +146,10 @@ export default {
         if (this.mode === 'access') {
           this.$emit('attemptUnlock');
         }
+
+        if (this.mode === 'delete') {
+          this.$parent.attemptUnlock();
+        }
       }, this.delay.vshort);
     },
     clearPinArray() {
@@ -143,7 +157,7 @@ export default {
       if (this.mode === 'pin-setup') { this.$store.dispatch('setup/resetPin'); }
       if (this.mode === 'pin-confirm') { this.$store.dispatch('setup/resetPinConfirm'); }
       if (this.mode === 'auth') { this.$parent.resetPin(); }
-      if (this.mode === 'access') { this.$emit('resetPin'); }
+      if (this.mode === 'access' || this.mode === 'delete') { this.$emit('resetPin'); }
       if (this.mode === 'new-pin') { this.$emit('resetPin'); }
       if (this.mode === 'confirm-new-pin') { this.$emit('resetPin'); }
     },

@@ -55,6 +55,7 @@ export default {
       }
 
       this.$store.dispatch('setup/setAccountName', this.accountName);
+      // this.$router.push({ path: `/setup/${this.id + 1}` });
       this.$root.$emit('termsModalOpened', true);
       return true;
     },

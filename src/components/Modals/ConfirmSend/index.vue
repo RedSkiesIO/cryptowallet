@@ -198,6 +198,9 @@ export default {
         changeAddresses,
       } = this.txData;
 
+      console.log(hexTx);
+      console.log(utxo);
+
       const coinSDK = this.coinSDKS[this.wallet.sdk];
 
       if (this.wallet.sdk === 'Bitcoin') {

@@ -318,8 +318,7 @@ export default {
             } else if (wallet.sdk === 'Ethereum') {
               newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
             } else if (wallet.sdk === 'ERC20') {
-              const activeWallet = this.activeWallets[this.authenticatedAccount][wallet.name];
-              newBalance = await coinSDK.getBalance(activeWallet);
+              newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
             }
 
             // update balance

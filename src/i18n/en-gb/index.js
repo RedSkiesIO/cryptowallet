@@ -175,6 +175,7 @@ export default {
   invalidTokenSymbol: 'Token Symbol must be between 0 and 12 characters',
   invalidTokenDecimals: 'Token Decimals must be at least 0, and not over 36.',
   tokenAlreadyEnabled: 'This token has already been enabled',
+  ethSymbol: 'ETH',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',

@@ -42,7 +42,7 @@ export default {
         Pin,
         PinConfirm,
         /* Network, */
-        Node,
+        // Node,
         AccountName,
         Complete,
       ],

@@ -99,7 +99,7 @@ export default {
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
 
-          this.$root.__proto__.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''))
+          Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
 
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();

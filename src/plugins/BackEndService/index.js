@@ -142,7 +142,7 @@ class BackEndService {
    * @return {Object}
    */
   async try(URL, attempts = 0) {
-    const attemptLimit = 10;
+    const attemptLimit = 3;
     if (attempts >= attemptLimit) {
       this.vm.errorHandler(new Error('Failed to connect to the server'), false);
     }
