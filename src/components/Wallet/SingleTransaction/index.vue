@@ -42,7 +42,6 @@
         </q-card-section>
       </q-card>
     </q-expansion-item>
-
   </q-timeline-entry>
 </template>
 

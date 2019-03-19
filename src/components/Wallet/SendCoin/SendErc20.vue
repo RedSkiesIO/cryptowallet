@@ -100,7 +100,7 @@
         <FeeDialog
           :opened="feeDialogOpened"
           :message="$t('helpFeesEtheruem')"
-          v-on:closeFeeDialog="feeDialogOpened = false"
+          @closeFeeDialog="feeDialogOpened = false"
         />
         <span class="h3-line" />
       </div>

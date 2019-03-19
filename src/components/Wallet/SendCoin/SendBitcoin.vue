@@ -98,7 +98,7 @@
         <FeeDialog
           :opened="feeDialogOpened"
           :message="$t('helpFeesBitcoin')"
-          v-on:closeFeeDialog="feeDialogOpened = false"
+          @closeFeeDialog="feeDialogOpened = false"
         />
         <span class="h3-line" />
       </div>

@@ -11,9 +11,9 @@
 
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
-        @refresh="refresher"
         :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
+        @refresh="refresher"
       >
         <div class="background" />
         <div

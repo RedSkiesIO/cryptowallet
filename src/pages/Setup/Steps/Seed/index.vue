@@ -39,19 +39,21 @@
       <q-card
         style="width: 300px"
         class="dialog"
-       >
+      >
         <q-card-section>
           <h2>{{ $t('confirm') }}</h2>
-          <p class="">{{ $t('seedConfirmation') }}</p>
+          <p class="">
+            {{ $t('seedConfirmation') }}
+          </p>
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn
+            v-close-dialog
             flat
             :label="$t('cancelConfirm')"
             color="blueish"
-            v-close-dialog
-           />
+          />
           <q-btn
             flat
             :label="$t('acceptConfirm')"
@@ -91,7 +93,6 @@ export default {
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
-      console.log('what', this.seedPhrase);
       this.$store.dispatch('setup/setSeed', this.seedPhrase);
     },
 

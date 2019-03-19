@@ -20,7 +20,10 @@
           navigation
           padding
         >
-          <q-carousel-slide name="coins-tokens" class="full-slide">
+          <q-carousel-slide
+            name="coins-tokens"
+            class="full-slide"
+          >
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('CoinsTokens') }}
@@ -54,7 +57,10 @@
             </div>
           </q-carousel-slide>
 
-          <q-carousel-slide name="your-wallet" class="full-slide">
+          <q-carousel-slide
+            name="your-wallet"
+            class="full-slide"
+          >
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('yourWallet') }}
@@ -88,7 +94,10 @@
             </div>
           </q-carousel-slide>
 
-          <q-carousel-slide name="backup-your-wallet" class="full-slide">
+          <q-carousel-slide
+            name="backup-your-wallet"
+            class="full-slide"
+          >
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('backupYourWallet') }}
@@ -122,7 +131,10 @@
             </div>
           </q-carousel-slide>
 
-          <q-carousel-slide name="security" class="full-slide">
+          <q-carousel-slide
+            name="security"
+            class="full-slide"
+          >
             <div class="slide-header">
               <h1 class="setup">
                 {{ $t('security') }}
