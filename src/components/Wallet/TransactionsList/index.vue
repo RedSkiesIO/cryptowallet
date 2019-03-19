@@ -1,7 +1,8 @@
 <template>
   <section
     class="scroll-area static"
-    @touchmove="prevent"
+    @touchstart="touchStart"
+    @touchmove="touchMove"
   >
     <q-scroll-area
       ref="scrollArea"
@@ -155,13 +156,15 @@ export default {
       });
     },
 
-    /**
-     * Stops q-pull-to-refresh from firing until TransactionsList reaches
-     * the top scroll position
-     * @param  {Object} event
-     */
-    /*eslint-disable*/
-    prevent(event) {
+    touchStart(event) {
+      this.touchStartY = event.touches[0].clientY;
+    },
+
+    touchMove(event) {
+      if (event.touches[0].clientY <= this.touchStartY) {
+        event.stopPropagation();
+      }
+
       if (this.$refs.scrollArea.$el.childNodes[0].scrollTop !== 0) {
         event.stopPropagation();
       }
