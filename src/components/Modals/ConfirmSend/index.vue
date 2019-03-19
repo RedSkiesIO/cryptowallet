@@ -187,7 +187,6 @@ export default {
 
   mounted() {
     this.$root.$on('confirmSendModalOpened', (value, txData) => {
-      console.log('txData', txData);
       this.confirmSendModalOpened = value;
       this.txData = txData;
     });
@@ -201,6 +200,7 @@ export default {
         utxo,
         changeAddresses,
       } = this.txData;
+
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       if (this.wallet.sdk === 'Bitcoin') {
@@ -229,7 +229,6 @@ export default {
             where: (record) => {
               return whereUtxo(record, usedUtxo);
             },
-
             data: {
               pending: true,
             },
@@ -325,7 +324,6 @@ export default {
     },
     completeTransaction() {
       // @todo, don't use app global, should work
-      // with this.$root, leave for now, quasar bug suspected
       /* eslint-disable-next-line */
       app.$root.$emit('sendSuccessModalOpened', true, this.txData);
 

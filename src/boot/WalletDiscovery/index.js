@@ -1,6 +1,6 @@
 async function discoverBitcoin(wallet, coinSDK, network) {
-  const externalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network);
-  const internalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network, true);
+  const externalAccountDiscovery = await coinSDK.accountDiscovery(wallet);
+  const internalAccountDiscovery = await coinSDK.accountDiscovery(wallet, true);
 
   let combinedUsedAddresses = [
     ...externalAccountDiscovery.active.map((item) => {

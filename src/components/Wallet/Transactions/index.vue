@@ -78,7 +78,7 @@ export default {
 }
 
 .recent-transactions .q-tab-panels {
-  height: 100%;
+  height: calc(100% - 48px);
   position: relative;
 }
 

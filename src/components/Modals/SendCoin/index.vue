@@ -15,7 +15,6 @@
             icon="arrow_back"
             size="lg"
             class="icon-btn back-arrow-btn"
-            flat
             @click.prevent="goBack"
           />
         </div>
@@ -107,7 +106,7 @@ export default {
 
 <style>
 .send-coin-box {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   width: 100%;
 }
 
@@ -138,7 +137,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.5rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
   overflow: hidden;
 }
 

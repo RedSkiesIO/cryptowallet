@@ -65,11 +65,17 @@ export default {
       this.$root.$emit('newAccountModalOpened', false);
     },
     createAccount() {
+      // @todo, don't use app global, should work
+      /* eslint-disable-next-line */
+      app.$root.$emit('selectAccountModalOpened', false);
       this.$root.$emit('newAccountModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'new');
       this.$router.push({ path: '/setup/2' });
     },
     importAccount() {
+      // @todo, don't use app global, should work
+      /* eslint-disable-next-line */
+      app.$root.$emit('selectAccountModalOpened', false);
       this.$root.$emit('newAccountModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: '/setup/1' });

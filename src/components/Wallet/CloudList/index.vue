@@ -1,5 +1,8 @@
 <template>
-  <div @touchmove="prevent">
+  <div
+    @touchstart="touchStart"
+    @touchmove="touchMove"
+  >
     <div v-if="wallets.length === 0">
       <q-btn
         icon="add_circle_outline"
@@ -71,12 +74,21 @@ export default {
       this.$root.$emit('walletsModalOpened', true);
     },
 
-    prevent(event) {
-      if (this.wallets.length === 0 || !this.$refs.scrollArea) { return false; }
-      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop > 0) {
+    touchStart(event) {
+      this.touchStartY = event.touches[0].clientY;
+    },
+
+    touchMove(event) {
+      if (event.touches[0].clientY <= this.touchStartY) {
         event.stopPropagation();
       }
-      return false;
+
+      if (this.wallets.length === 0 || !this.$refs.scrollArea) { return false; }
+      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop !== 0) {
+        event.stopPropagation();
+      }
+
+      return true;
     },
 
     scrolled(data) {
@@ -99,10 +111,6 @@ export default {
   width: 100%;
   left: 0;
   top: 0;
-}
-
-.scroll-area .scroll {
-  padding-bottom: 1rem;
 }
 
 .large-cloud-btn {

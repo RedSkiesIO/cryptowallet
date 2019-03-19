@@ -16,8 +16,10 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input grey-input"
-          inverted
+          class="sm-input"
+          outlined
+          dense
+          color="primary"
           @blur="checkField('address')"
         />
         <div
@@ -49,8 +51,10 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false) && checkField('inCoin')"
           />
@@ -64,8 +68,10 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
           />
@@ -82,9 +88,14 @@
             name="help_outline"
             size="1.1rem"
             class="help-icon"
-            @click.native="helpFee"
+            @click="feeDialogOpened = true"
           />
         </h3>
+        <FeeDialog
+          :opened="feeDialogOpened"
+          :message="$t('helpFeesEtheruem')"
+          v-on:closeFeeDialog="feeDialogOpened = false"
+        />
         <span class="h3-line" />
       </div>
       <div>
@@ -115,15 +126,6 @@
         />
       </div>
     </div>
-    <q-modal
-      v-model="sendingModalOpened"
-      minimized
-    >
-      <div class="sending-wallet-modal">
-        <Spinner />
-        <h1>{{ $t('sending') }}</h1>
-      </div>
-    </q-modal>
   </div>
 </template>
 
@@ -136,15 +138,14 @@ import {
 } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 import AmountFormatter from '@/helpers/AmountFormatter';
-import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
+import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
 export default {
   name: 'SendEthereum',
   components: {
-    Spinner,
+    FeeDialog,
   },
-
   data() {
     return {
       address: '',
@@ -159,6 +160,7 @@ export default {
       maxed: false,
       addressError: '',
       amountError: '',
+      feeDialogOpened: false,
     };
   },
 
@@ -246,15 +248,6 @@ export default {
   },
 
   methods: {
-    helpFee() {
-      this.$q.dialog({
-        title: this.$t('fees'),
-        message: this.$t('helpFeesEtheruem'),
-        ok: this.$t('ok'),
-        color: 'blueish',
-      });
-    },
-
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
       if (!val) {
@@ -498,8 +491,12 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      this.$root.$emit('scanQRCode');
-      this.$root.$emit('sendCoinModalOpened', false);
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('scanQRCode');
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('sendCoinModalOpened', false);
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -512,8 +509,12 @@ export default {
                 this.address = text;
                 this.addressError = '';
               }
-              this.$root.$emit('cancelScanning');
-              this.$root.$emit('sendCoinModalOpened', true);
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('cancelScanning');
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('sendCoinModalOpened', true);
             }
           });
         }, 500);

@@ -16,7 +16,6 @@ module.exports = (ctx) => {
       'Sms',
       'Email',
       'ContactsImport',
-      'AppDataEncryption',
       'CryptoWalletSDK',
       'WalletDiscovery',
       'CoinFormatter',
@@ -57,8 +56,7 @@ module.exports = (ctx) => {
     framework: {
       components: [
         'QLayout',
-        'QHeader', //renamed, was QHeaderLayout
-        //'QLayoutDrawer',
+        'QHeader',
         'QPageContainer',
         'QPage',
         'QToolbar',
@@ -67,17 +65,13 @@ module.exports = (ctx) => {
         'QBtn',
         'QIcon',
         'QList',
-        //'QListHeader',
         'QItem',
-        // 'QItemMain',
-        // 'QItemSide',
         'QPageSticky',
         'QScrollArea',
-        'QFooter', // renamed, was QFooterLayout
+        'QFooter',
         'QInput',
         'QTabs',
         'QTab',
-        //'QTabPane',
         'QTabPanels',
         'QTabPanel',
         'QRouteTab',
@@ -87,18 +81,13 @@ module.exports = (ctx) => {
         'QInfiniteScroll',
         'QSpinnerDots',
         'QExpansionItem',
-        // 'QCollapsible',
-        // 'QModal',
         'QDialog',
-        // 'QModalLayout',
         'QToggle',
         'QRadio',
         'QSelect',
         'QSlider',
-        'QScrollObserver', // renamed, was QScrollObservable
-        'QBanner', // renamed, was QAllert
-        // 'QSearch',
-        // 'QAutocomplete',
+        'QScrollObserver',
+        'QBanner',
         'QCarousel',
         'QCarouselSlide',
         'QCarouselControl',
@@ -109,7 +98,7 @@ module.exports = (ctx) => {
       ],
       directives: ['Ripple', 'CloseDialog'],
       // Quasar plugins
-      plugins: ['Notify', 'Dialog', 'BottomSheet', 'AppVisibility'], // ActionSheet is now BottomSheet
+      plugins: ['Notify', 'Dialog', 'BottomSheet'],
       // iconSet: 'material-icons'
       lang: 'en-gb',
     },

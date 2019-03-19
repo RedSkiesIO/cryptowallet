@@ -17,8 +17,10 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input grey-input"
-          inverted
+          class="sm-input"
+          outlined
+          dense
+          color="primary"
           @blur="checkField('address')"
         />
         <div
@@ -52,8 +54,10 @@
             :error="$v.inCoin.$error"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
           />
@@ -67,8 +71,10 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
           />
@@ -86,9 +92,14 @@
             name="help_outline"
             size="1.1rem"
             class="help-icon"
-            @click.native="helpFee"
+            @click="feeDialogOpened = true"
           />
         </h3>
+        <FeeDialog
+          :opened="feeDialogOpened"
+          :message="$t('helpFeesBitcoin')"
+          v-on:closeFeeDialog="feeDialogOpened = false"
+        />
         <span class="h3-line" />
       </div>
 
@@ -137,9 +148,13 @@ import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
+import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
 export default {
   name: 'SendCoin',
+  components: {
+    FeeDialog,
+  },
   data() {
     return {
       address: '',
@@ -153,11 +168,12 @@ export default {
       maxed: false,
       addressError: '',
       amountError: '',
+      feeDialogOpened: false,
     };
   },
   validations: {
     address: {
-      required, alphaNum, minLength: minLength(35), maxLength: maxLength(35),
+      required, alphaNum, minLength: minLength(24), maxLength: maxLength(35),
     },
     inCoin: {
       required,
@@ -225,14 +241,6 @@ export default {
   },
 
   methods: {
-    helpFee() {
-      this.$q.dialog({
-        title: this.$t('fees'),
-        message: this.$t('helpFeesBitcoin'),
-        ok: this.$t('ok'),
-        color: 'blueish',
-      });
-    },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
       if (!val) {
@@ -576,8 +584,6 @@ export default {
     /**
      * Creates and sends a transaction
      */
-    /*eslint-disable*/
-
     async send() {
       if (!this.isValid()) {
         this.$toast.create(10, this.$t('fillAllInputs'), 500);
@@ -622,7 +628,8 @@ export default {
         this.inCoin,
       );
 
-      // @todo, don't use app global, should work with this.$root, leave for now, quasar bug suspected
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
       app.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
         transaction,
@@ -702,8 +709,12 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      this.$root.$emit('scanQRCode');
-      this.$root.$emit('sendCoinModalOpened', false);
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('scanQRCode');
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('sendCoinModalOpened', false);
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -716,8 +727,12 @@ export default {
                 this.address = text;
                 this.addressError = '';
               }
-              this.$root.$emit('cancelScanning');
-              this.$root.$emit('sendCoinModalOpened', true);
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('cancelScanning');
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('sendCoinModalOpened', true);
             }
           });
         }, 500);

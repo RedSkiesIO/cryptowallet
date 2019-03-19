@@ -3,7 +3,7 @@
 </template>
 
 <script>
-// import Vue from 'vue';
+import Vue from 'vue';
 import { uid } from 'quasar';
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
@@ -107,9 +107,7 @@ export default {
         await Promise.all(promises);
         await Promise.all(erc20Promises);
 
-        /*eslint-disable*/
-        this.$root.__proto__.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
-        //Vue.prototype.backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
+        Vue.prototype.backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
         await this.backEndService.connect();
         await this.backEndService.loadPriceFeed();
 

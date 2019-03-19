@@ -45,7 +45,6 @@
 <script>
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import toEncryptConfig from '@/boot/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
@@ -103,20 +102,6 @@ export default {
   },
 
   watch: {
-    /**
-     * Encrypts and decrypts app data according to toEncryptConfig
-     *
-     * @todo Konrad Make it so the data in the Loki database is always encrypted
-     * Meaning, ecrypt when saved to Loki, decrypt when hydrating
-     */
-    '$q.appVisible': {
-      handler(visible) {
-        const encryptionUtil = new this.AppDataEncryption(toEncryptConfig);
-        if (visible) { encryptionUtil.decrypt('pin hash'); }
-        if (!visible) { encryptionUtil.encrypt('pin hash'); }
-      },
-    },
-
     /**
      * Waits until hydration is completed,
      * If there are no Accounts, got to setup
@@ -184,6 +169,7 @@ export default {
             symbol: coin.symbol,
             network: coin.network,
             denomination: coin.denomination,
+            minConfirmations: coin.minConfirmations,
           };
           if (coin.sdk === 'ERC20') {
             data.parentName = coin.parentName;

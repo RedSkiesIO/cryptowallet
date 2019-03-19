@@ -13,10 +13,11 @@ export class Toast {
    * @param stackTrace obj
    * @param debug array
    */
-  constructor(msg, code, type = 'error', position = 'bottom', stackTrace = null, debug = []) {
+  constructor(msg, code, type = 'error', icon = 'report_problem', position = 'bottom', stackTrace = null, debug = []) {
     this.msg = msg;
     this.code = code;
     this.type = type;
+    this.icon = icon;
     this.position = position;
     this.stackTrace = stackTrace;
     this.debug = debug;
@@ -32,11 +33,12 @@ class Toaster {
    */
   constructor(toast) {
     const {
-      msg, code, type, position,
+      msg, code, type, icon, position,
     } = toast;
     this.msg = msg;
     this.code = code;
     this.type = type;
+    this.icon = icon;
     this.position = position;
     this.pop();
   }
@@ -48,8 +50,9 @@ class Toaster {
     Notify.create({
       message: this.msg,
       position: this.position,
-      type: this.type,
+      color: this.type,
       timeout: 5000,
+      icon: this.icon,
     });
   }
 }
@@ -78,22 +81,22 @@ class ToasterFactory {
   create(status, msg, code, position = 'bottom', stackTrace = null, debug = []) {
     switch (status) {
       case 5:
-        this.vm.$emit('WARN', new Toaster(new Toast(msg, code, 'warning', position, stackTrace, debug)));
+        this.vm.$emit('WARN', new Toaster(new Toast(msg, code, 'warning', 'report_problem', position, stackTrace, debug)));
         break;
       case 10:
-        this.vm.$emit('ERROR', new Toaster(new Toast(msg, code, 'negative', position, stackTrace, debug)));
+        this.vm.$emit('ERROR', new Toaster(new Toast(msg, code, 'negative', 'report_problem', position, stackTrace, debug)));
         break;
       case 20:
-        this.vm.$emit('FAILURE', new Toaster(new Toast(msg, code, 'negative', position, stackTrace, debug)));
+        this.vm.$emit('FAILURE', new Toaster(new Toast(msg, code, 'negative', 'report_problem', position, stackTrace, debug)));
         break;
       case 420:
-        this.vm.$emit('GENERAL', new Toaster(new Toast(msg, code, 'info', position)));
+        this.vm.$emit('GENERAL', new Toaster(new Toast(msg, code, 'info', 'info', position)));
         break;
       case 0:
-        this.vm.$emit('SUCCESS', new Toaster(new Toast(msg, code, 'positive', position)));
+        this.vm.$emit('SUCCESS', new Toaster(new Toast(msg, code, 'positive', 'thumb_up', position)));
         break;
       case 418:
-        this.vm.$emit('TEAPOT', new Toaster(new Toast("I'm a techno teapot.", 808, 'info', 'bottom')));
+        this.vm.$emit('TEAPOT', new Toaster(new Toast("I'm a techno teapot.", 808, 'info', 'info', 'bottom')));
         break;
       default:
         this.vm.$emit('1');

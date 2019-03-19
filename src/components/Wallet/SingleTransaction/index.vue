@@ -1,5 +1,4 @@
 <template>
-  <!-- eslitn-disable -->
   <q-timeline-entry
     :title="date"
     side="left"
@@ -13,7 +12,7 @@
           <div class="single-transaction-content">
             <p>
               TX Hash:
-              <span class="tx-hash">{{ data.hash }}</span>
+              <span class="tx-hash break">{{ data.hash }}</span>
             </p>
             <p>
               {{ $t('status') }}:
@@ -24,7 +23,7 @@
                 }"
                 class="status"
               >
-                {{ $t('status') }}
+                {{ status }}
               </span>
             </p>
             <p>
@@ -241,11 +240,13 @@ export default {
 </script>
 
 <style>
-.positive-amount .q-item-sublabel, .confirmed-tx  {
+.positive-amount .q-item__label,
+.status.confirmed-tx {
   color: green;
 }
 
-.negative-amount .q-item-sublabel, .unconfirmed-tx {
+.negative-amount .q-item__label,
+.status.unconfirmed-tx {
   color: red;
 }
 
@@ -291,17 +292,6 @@ export default {
   padding: 0.5rem;
 }
 
-/*.q-collapsible-sub-item {
-  padding: 0;
-  word-break: break-all;
-}
-
-.q-collapsible-sub-item p {
-  margin: 0;
-  padding: 0.5rem;
-  border-top: 1px solid whitesmoke;
-}*/
-
 .single-transaction-content {
   font-size: 0.8rem;
 }
@@ -337,5 +327,9 @@ export default {
 
 .q-expansion-item__container {
   border-top: 1px solid white;
+}
+
+.break {
+  word-break: break-all;
 }
 </style>

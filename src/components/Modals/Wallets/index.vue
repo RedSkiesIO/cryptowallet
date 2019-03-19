@@ -24,14 +24,14 @@
         <div
           class="header-settings-button-wrapper"
         >
-          <q-btn
+          <!-- <q-btn
             icon="add"
             color="secondary"
             size="lg"
             class="icon-btn icon-btn-right"
             flat
             @click.prevent="openAddWalletModal"
-          />
+          /> -->
         </div>
       </div>
 

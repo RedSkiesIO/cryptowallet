@@ -438,11 +438,6 @@ export default {
 </script>
 
 <style>
-.send-coin-box {
-  margin-top: 2rem;
-  width: 100%;
-}
-
 .to {
   display: flex;
   justify-content: space-between;
@@ -464,14 +459,6 @@ export default {
   justify-content: space-around;
   font-size: 1.1em;
   line-height: 1;
-}
-
-.fee {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 2rem;
-  overflow: hidden;
 }
 
 .fee > .label {
