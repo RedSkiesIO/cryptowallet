@@ -92,11 +92,10 @@ export default {
         .where('wallet_id', this.wallet.id)
         .where('used', false)
         .get();
-
       let addressesRaw = addresses.map((item) => { return item.address; });
 
-      addressesRaw = addressesRaw.filter(onlyUnique);
 
+      addressesRaw = addressesRaw.filter(onlyUnique);
       let newBalance;
 
       if (this.wallet.sdk === 'Bitcoin') {

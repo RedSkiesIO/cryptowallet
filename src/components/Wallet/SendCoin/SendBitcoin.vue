@@ -158,7 +158,8 @@ export default {
   data() {
     return {
       address: '',
-      addressLength: 34,
+      addressLengthMin: 26,
+      addressLengthMax: 35,
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
@@ -177,8 +178,8 @@ export default {
       address: {
         required,
         alphaNum,
-        minLength: minLength(this.addressLength),
-        maxLength: maxLength(this.addressLength),
+        minLength: minLength(this.addressLengthMin),
+        maxLength: maxLength(this.addressLengthMax),
       },
       inCoin: {
         required,

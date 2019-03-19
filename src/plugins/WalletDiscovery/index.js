@@ -1,6 +1,6 @@
 async function discoverBitcoin(wallet, coinSDK, network) {
-  const externalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network);
-  const internalAccountDiscovery = await coinSDK.accountDiscovery(wallet, network, true);
+  const externalAccountDiscovery = await coinSDK.accountDiscovery(wallet);
+  const internalAccountDiscovery = await coinSDK.accountDiscovery(wallet, true);
 
   let combinedUsedAddresses = [
     ...externalAccountDiscovery.active.map((item) => {
@@ -72,7 +72,7 @@ async function discoverBitcoin(wallet, coinSDK, network) {
 }
 
 async function discoverEthereum(wallet, coinSDK, network) {
-  const accounts = await coinSDK.accountDiscovery(wallet, network);
+  const accounts = await coinSDK.accountDiscovery(wallet);
   const txHistory = await coinSDK.getTransactionHistory([accounts[0].address], network, 0);
   const balance = await coinSDK.getBalance([accounts[0].address], network);
 
