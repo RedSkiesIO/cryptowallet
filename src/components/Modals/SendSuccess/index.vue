@@ -106,6 +106,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -162,7 +163,7 @@ export default {
     copyToClipboard() {
       try {
         cordova.plugins.clipboard.copy(this.address);
-        this.$toast.create(0, this.$t('copied'), 200);
+        this.$toast.create(0, this.$t('copied'), this.delay.short);
       } catch (err) {
         this.errorHandler(err);
       }

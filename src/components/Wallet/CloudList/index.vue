@@ -93,10 +93,11 @@ export default {
 
     scrolled(data) {
       this.scrollPosition = data.position;
-      if (data.position > 100 && data.direction === 'down') {
+      const pixels = 100;
+      if (data.position > pixels && data.direction === 'down') {
         this.$root.$emit('isHomeBalanceVisible', false);
       }
-      if (data.position <= 100 && data.direction === 'up') {
+      if (data.position <= pixels && data.direction === 'up') {
         this.$root.$emit('isHomeBalanceVisible', true);
       }
     },

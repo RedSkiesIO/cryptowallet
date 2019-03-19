@@ -96,6 +96,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallets() {
@@ -243,14 +244,14 @@ export default {
             this.errorHandler(err);
             done();
           }
-        }, 1000);
+        }, this.delay.long);
         return false;
       }
 
       if (this.$route.name === 'walletSingle') {
         setTimeout(() => {
           this.$root.$emit('updateWalletSingle', done);
-        }, 1000);
+        }, this.delay.long);
       }
 
       return false;
@@ -315,8 +316,7 @@ export default {
             } else if (wallet.sdk === 'Ethereum') {
               newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
             } else if (wallet.sdk === 'ERC20') {
-              const activeWallet = this.activeWallets[this.authenticatedAccount][wallet.name];
-              newBalance = await coinSDK.getBalance(activeWallet);
+              newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
             }
 
             // update balance

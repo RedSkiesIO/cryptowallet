@@ -59,7 +59,7 @@
               1 {{ coinSymbol }} / {{ selectedCurrency.code }}
             </div>
             <div
-              v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
+              v-if="latestPrice.data.VOLUME24HOURTO !== 0"
               class="col-6"
             >
               {{ $t('volume24h') }} {{ selectedCurrency.code }}
@@ -67,13 +67,13 @@
           </div>
           <div class="row price">
             <div class="col-6">
-              {{ latestPrice.data.PRICE }}
+              {{ selectedCurrency.symbol }}{{ latestPrice.data.PRICE.toFixed(2) }}
             </div>
             <div
-              v-if="latestPrice.data.VOLUME24HOURTO !== '£ 0'"
+              v-if="latestPrice.data.VOLUME24HOURTO !== 0"
               class="col-6"
             >
-              {{ latestPrice.data.VOLUME24HOURTO }}
+              {{ selectedCurrency.symbol }}{{ latestPrice.data.VOLUME24HOURTO.toFixed(0) }}
             </div>
           </div>
           <div
@@ -81,7 +81,7 @@
             class="row"
           >
             <div class="col-6">
-              {{ latestPrice.data.CHANGEPCT24HOUR }}%
+              {{ latestPrice.data.CHANGEPCT24HOUR.toFixed(2) }}%
             </div>
           </div>
         </div>

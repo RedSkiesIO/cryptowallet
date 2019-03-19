@@ -30,7 +30,7 @@
       </h1>
       <PinPad
         ref="PinPad"
-        mode="access"
+        mode="delete"
         @inputPin="pinInputListener"
         @attemptUnlock="attemptUnlock"
       />
@@ -44,6 +44,7 @@ import Account from '@/store/wallet/entities/account';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
+import Wallet from '@/store/wallet/entities/wallet';
 import PinPad from '@/components/Auth/PinPad';
 
 export default {
@@ -69,6 +70,7 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -142,9 +144,13 @@ export default {
       }
 
       this.$store.dispatch('settings/setLayout', 'dark');
-
       setTimeout(() => {
         Account.$delete(id);
+
+        const wallets = Wallet.query().where('account_id', id).get();
+        wallets.forEach((wallet) => {
+          Wallet.$delete(wallet.id);
+        });
 
         const transactions = Tx.query().where('account_id', id).get();
         transactions.forEach((tx) => {
@@ -163,7 +169,7 @@ export default {
 
 
         this.$store.dispatch('settings/setLoading', false);
-      }, 1000);
+      }, this.delay.long);
 
       return false;
     },

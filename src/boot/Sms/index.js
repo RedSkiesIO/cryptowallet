@@ -24,16 +24,17 @@ class SMS {
    */
   async send() {
     let hasPermission = await this.vm.permissions.sms.detect();
+    const delay = 500;
     if (!hasPermission) { hasPermission = await this.vm.permissions.sms.request(); }
     if (!hasPermission) {
-      this.vm.$toast.create(420, this.vm.$t('needsSmsPermissions'), 500);
+      this.vm.$toast.create(420, this.vm.$t('needsSmsPermissions'), delay);
     } else {
       try {
         this.sms.send(this.number, this.message, this.options, () => {}, (err) => {
           throw err;
         });
       } catch (err) {
-        this.vm.$toast.create(10, `ERROR ${err.message}`, 500);
+        this.vm.$toast.create(10, `ERROR ${err.message}`, delay);
       }
     }
   }

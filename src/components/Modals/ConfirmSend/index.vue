@@ -70,8 +70,8 @@
           v-if="isErc20"
           class="small-text"
         >
-          {{ txData.transaction.fee / 1000000000000000000 }}  ETH
-          ({{ coinToCurrency(txData.transaction.fee / 1000000000000000000, true) }})
+          {{ txData.transaction.fee / weiMultiplier }}  {{ $t('ethSymbol') }}
+          ({{ coinToCurrency(txData.transaction.fee / weiMultiplier, true) }})
         </div>
 
         <div class="send-modal-heading">
@@ -120,6 +120,7 @@ export default {
       confirmSendModalOpened: false,
       txData: null,
       loading: false,
+      weiMultiplier: 1000000000000000000,
     };
   },
 
@@ -127,6 +128,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallet() {
@@ -147,16 +149,15 @@ export default {
 
     newBalance() {
       if (this.wallet.sdk === 'Ethereum') {
-        // @todo Konrad, explain the mysterious code below
-        const newBalance = (this.wallet.confirmedBalance * 1000000000000000000)
-                           - ((this.txData.transaction.value * 1000000000000000000)
-                           + (parseFloat(this.txData.transaction.fee) * 1000000000000000000));
-        return newBalance / 1000000000000000000;
+        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+                           - ((this.txData.transaction.value * this.weiMultiplier)
+                           + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
+        return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'ERC20') {
-        const newBalance = this.wallet.confirmedBalance
-        - this.txData.transaction.value;
-        return newBalance;
+        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+                           - (this.txData.transaction.value * this.weiMultiplier);
+        return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
@@ -320,7 +321,7 @@ export default {
         } catch (err) {
           this.errorHandler(err);
         }
-      }, 250);
+      }, this.delay.short);
     },
     completeTransaction() {
       // @todo, don't use app global, should work
@@ -330,7 +331,7 @@ export default {
       setTimeout(() => {
         this.loading = false;
         this.confirmSendModalOpened = false;
-      }, 250);
+      }, this.delay.short);
     },
   },
 };

@@ -7,6 +7,7 @@
 
 <script>
 import { Network } from '@/helpers';
+import { mapState } from 'vuex';
 
 export default {
   name: 'OfflineNotice',
@@ -16,6 +17,11 @@ export default {
       dissmis: null,
       onlineInterval: null,
     };
+  },
+  computed: {
+    ...mapState({
+      delay: (state) => { return state.settings.delay; },
+    }),
   },
   mounted() {
     this.network = new Network();
@@ -46,7 +52,7 @@ export default {
           this.dissmis();
         }
       }
-    }, 3000);
+    }, this.delay.vlong);
 
     this.$root.$on('getStartedModalOpened', (value) => {
       this.getStartedModalOpened = value;

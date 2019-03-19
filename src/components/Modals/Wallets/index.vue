@@ -74,11 +74,13 @@ export default {
     return {
       addWalletModalOpened: false,
       loading: false,
+      msToS: 1000,
     };
   },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -148,9 +150,9 @@ export default {
         Utxo.$insert({ data: utxo });
       });
 
-      function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
-      }
+      const createDate = ((timestamp) => {
+        return new Date(timestamp * this.msToS).getTime();
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.receivedTime) - createDate(a.receivedTime); });
@@ -215,9 +217,9 @@ export default {
         if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
-      function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
-      }
+      const createDate = ((timestamp) => {
+        return new Date(timestamp * this.msToS).getTime();
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
@@ -316,17 +318,23 @@ export default {
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
-      if (coinSDK.getPriceFeed) {
-        const prices = await coinSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-        if (prices) {
-          this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
-        }
+
+      const response = await this.backEndService.getPriceFeed(
+        [wallet.symbol],
+        [this.selectedCurrency.code],
+      );
+      const prices = response.data[0];
+      if (response) {
+        this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
       if (coinSDK.getPriceFeed) {
         const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
         const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
         const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
+        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
         if (dayData && weekData && monthData) {
           this.storeChartData(wallet.symbol, 'day', dayData.data);
@@ -334,6 +342,7 @@ export default {
           this.storeChartData(wallet.symbol, 'month', monthData.data);
         }
       }
+
       const initializedWallet = wallet.hdWallet;
 
       if (!this.activeWallets[this.authenticatedAccount]) {
@@ -362,10 +371,13 @@ export default {
     async enableErc20Wallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
       const parentSDK = this.coinSDKS[wallet.parentSdk];
-      const prices = await parentSDK.getPriceFeed([wallet.symbol], [this.selectedCurrency.code]);
-
-      if (prices) {
-        this.storePriceData(wallet.symbol, prices[wallet.symbol][this.selectedCurrency.code]);
+      const response = await this.backEndService.getPriceFeed(
+        [wallet.symbol],
+        [this.selectedCurrency.code],
+      );
+      const prices = response.data[0];
+      if (response) {
+        this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
       if (!wallet.erc20Wallet) {
         const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
@@ -416,9 +428,9 @@ export default {
         if (!tx.confirmed) { unconfirmedTx.push(tx); }
       });
 
-      function createDate(timestamp) {
-        return new Date(timestamp * 1000).getTime();
-      }
+      const createDate = ((timestamp) => {
+        return new Date(timestamp * this.msToS).getTime();
+      });
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
@@ -471,11 +483,11 @@ export default {
 
             setTimeout(() => {
               this.addWalletModalOpened = false;
-            }, 250);
+            }, this.delay.short);
           } catch (err) {
             this.errorHandler(err);
           }
-        }, 500);
+        }, this.delay.normal);
       } else {
         this.addWalletModalOpened = false;
       }

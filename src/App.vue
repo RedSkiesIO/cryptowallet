@@ -89,6 +89,8 @@ export default {
   computed: {
     ...mapState({
       settings: (state) => { return state.settings; },
+      delay: (state) => { return state.settings.delay; },
+
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -117,7 +119,7 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     window.store = this.$store;
     window.app = this;
 
@@ -141,18 +143,18 @@ export default {
           this.$q.scanning = false;
           this.$root.$emit('walletsModalOpened', true);
           this.$root.$emit('erc20ModalOpened', true);
-        }, 500);
+        }, this.delay.short);
       } else {
         setTimeout(() => {
           this.$q.scanning = false;
           this.$root.$emit('sendCoinModalOpened', true);
-        }, 500);
+        }, this.delay.short);
       }
 
       setTimeout(() => {
         this.$q.scanning = false;
         this.hidden = false;
-      }, 1000);
+      }, this.delay.long);
     });
   },
 

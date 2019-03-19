@@ -51,10 +51,11 @@ export default {
   watch: {
     terms(val) {
       if (val === 'yes') {
+        const delay = 500;
         setTimeout(() => {
           this.$router.push({ path: `/setup/${this.id + 1}` });
           this.termsModalOpened = false;
-        }, 500);
+        }, delay);
       }
     },
   },

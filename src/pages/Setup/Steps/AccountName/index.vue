@@ -38,6 +38,7 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
     }),
   },
   methods: {
@@ -49,11 +50,12 @@ export default {
       });
 
       if (nameAlreadyInUse) {
-        this.$toast.create(10, this.$t('accountNameTaken'), 500);
+        this.$toast.create(10, this.$t('accountNameTaken'), this.delay.normal);
         return false;
       }
 
       this.$store.dispatch('setup/setAccountName', this.accountName);
+      // this.$router.push({ path: `/setup/${this.id + 1}` });
       this.$root.$emit('termsModalOpened', true);
       return true;
     },

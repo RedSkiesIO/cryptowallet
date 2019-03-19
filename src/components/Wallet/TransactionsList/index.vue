@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SingleTransaction from '@/components/Wallet/SingleTransaction';
 import Tx from '@/store/wallet/entities/tx';
 
@@ -69,6 +70,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      delay: (state) => { return state.settings.delay; },
+    }),
     transactions() {
       const msTos = 1000;
       const txs = Tx.query()
@@ -150,7 +154,7 @@ export default {
         return false;
       }
 
-      return this.sleeper(500)().then(() => {
+      return this.sleeper(this.delay.normal)().then(() => {
         this.page = this.page + 1;
         done(false);
       });

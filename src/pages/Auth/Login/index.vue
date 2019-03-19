@@ -15,9 +15,9 @@ import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
-import Wallet from '@/store/wallet/entities/wallet';
-import Vue from 'vue';
+import Wallet from '@/store/wallet/entities/wallet';;
 
+const delay = 500;
 export default {
 
   components: {
@@ -33,6 +33,7 @@ export default {
   computed: {
     ...mapState({
       selectedAccount: (state) => { return state.settings.selectedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     accounts() {
@@ -85,7 +86,8 @@ export default {
      * Compares bcrypt pin string to try and unlock an account
      */
     async attemptUnlock() {
-      if (this.pin.length < 6) { return false; }
+      const minPinLength = 6;
+      if (this.pin.length < minPinLength) { return false; }
       try {
         if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
           this.$store.dispatch('settings/setLoading', true);
@@ -95,16 +97,15 @@ export default {
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
 
-          Vue.prototype.backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
+          Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
-
           this.$router.push({ path: '/wallet' });
           this.$store.dispatch('settings/setLayout', 'light');
 
           setTimeout(() => {
             this.$store.dispatch('settings/setLoading', false);
-          }, 1000);
+          }, this.delay.long);
         }
       } catch (err) {
         this.errorHandler(err);
@@ -115,7 +116,7 @@ export default {
 
     debouncedUnlock: debounce(function callback() {
       this.attemptUnlock();
-    }, 500),
+    }, delay),
 
     /**
      * Decrypts and returns a piece of data
@@ -204,7 +205,7 @@ export default {
 
           resolve();
           return false;
-        }, 50);
+        }, this.delay.vshort);
       });
     },
 

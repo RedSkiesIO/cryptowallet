@@ -150,6 +150,7 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
+const delay = 500;
 export default {
   name: 'SendCoin',
   components: {
@@ -158,6 +159,8 @@ export default {
   data() {
     return {
       address: '',
+      addressLengthMin: 26,
+      addressLengthMax: 35,
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
@@ -171,21 +174,27 @@ export default {
       feeDialogOpened: false,
     };
   },
-  validations: {
-    address: {
-      required, alphaNum, minLength: minLength(24), maxLength: maxLength(35),
-    },
-    inCoin: {
-      required,
-    },
-    inCurrency: {
-      required,
-    },
+  validations() {
+    return {
+      address: {
+        required,
+        alphaNum,
+        minLength: minLength(this.addressLengthMin),
+        maxLength: maxLength(this.addressLengthMax),
+      },
+      inCoin: {
+        required,
+      },
+      inCurrency: {
+        required,
+      },
+    };
   },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -354,9 +363,10 @@ export default {
 
       let { address } = that.getAddresses()[0];
       if (that.address) { ({ address } = that); }
-      let amount = that.wallet.confirmedBalance / 2;
+      const halfBalance = 2;
+      let amount = that.wallet.confirmedBalance / halfBalance;
       if (that.inCoin) { amount = that.inCoin; }
-
+      // TODO: change this to calculate fee using max boolean
       that.createRawTx(
         accounts,
         changeAddresses,
@@ -365,7 +375,7 @@ export default {
         address,
         amount,
       );
-    }, 250),
+    }, delay),
 
     /**
      * Returns addresses
@@ -499,14 +509,11 @@ export default {
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
-
       const fees = response.data.data;
       const kbToBytes = 1000;
-
       Object.keys(fees).forEach((key) => {
         fees[key] /= kbToBytes;
       });
-
 
       let fee = fees.medium;
       if (this.feeSetting === 0) {
@@ -586,12 +593,12 @@ export default {
      */
     async send() {
       if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), 500);
+        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
         return false;
       }
 
       if (this.wallet.confirmedBalance < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), 500);
+        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
 
@@ -601,7 +608,7 @@ export default {
 
       // there are no UTXOs available, wallet is empty
       if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t('noFunds'), 500);
+        this.$toast.create(10, this.$t('noFunds'), this.delay.normal);
         return false;
       }
 
@@ -609,7 +616,7 @@ export default {
 
       // there is enough funds, but UTXOs are pending
       if (filteredUtxos.length === 0) {
-        this.$toast.create(10, this.$t('fundsPending'), 500);
+        this.$toast.create(10, this.$t('fundsPending'), this.delay.normal);
         return false;
       }
 
@@ -735,7 +742,7 @@ export default {
               app.$root.$emit('sendCoinModalOpened', true);
             }
           });
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },

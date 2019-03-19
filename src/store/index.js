@@ -66,10 +66,11 @@ const options = {
 
 // @TODO WHY IS THIS DEFINED BEFORE USE???
 function hydrationCompletedCallback() {
+  const delay = 1000;
   setTimeout(() => {
     /* eslint-disable-next-line */
     store.dispatch('settings/setLoading', false);
-  }, 1000);
+  }, delay);
 }
 
 VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
