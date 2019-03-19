@@ -1,9 +1,13 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="sendCoinModalOpened"
-      class="light-modal modal"
+      persistent
       no-route-dismiss
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="light-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -37,7 +41,7 @@
           <SendErc20 />
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

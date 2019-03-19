@@ -222,7 +222,7 @@ export default {
   white-space: nowrap;
 }
 
-.wallet-buttons .q-btn-inner {
+.wallet-buttons .q-btn__content {
   font-size: 1.1em;
   color: #1e3c57;
   display: flex;
@@ -251,7 +251,7 @@ export default {
   text-align: right;
 }
 
-.wallet-group-btn .q-btn-inner {
+.wallet-group-btn .q-btn__content {
   font-size: 0.8rem;
 }
 </style>

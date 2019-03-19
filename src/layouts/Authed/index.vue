@@ -7,13 +7,11 @@
     }"
     view="lHh Lpr lFf"
   >
-    <q-layout-header>
-      <Header />
-    </q-layout-header>
+    <Header />
 
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
-        :handler="refresher"
+        @refresh="refresher"
         :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
       >
@@ -58,9 +56,9 @@
       enter-active-class="animated slideInUp"
       leave-active-class="animated slideOutDown"
     >
-      <q-layout-footer v-show="isMainNavVisible">
+      <q-footer v-show="isMainNavVisible">
         <MainNav />
-      </q-layout-footer>
+      </q-footer>
     </transition>
   </q-layout>
 </template>
@@ -417,16 +415,16 @@ export default {
 
 .no-balance .background,
 .short-top .background {
-  height: 21rem;
+  height: 17rem;
 }
 
 .single-wallet-top .background {
   height: 28.5rem;
 }
 
-.q-pull-to-refresh-wrapper {
+/*.q-pull-to-refresh-wrapper {
   padding-top: 2.5rem;
-}
+}*/
 
 .q-pull-to-refresh-wrapper .pull-to-refresh-message {
   position: relative;

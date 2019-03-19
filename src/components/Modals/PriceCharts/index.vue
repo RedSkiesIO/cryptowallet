@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="priceChartModalOpened"
-      class="dark-modal modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal"
     >
       <div
         :class="{ active: loading }"
@@ -86,7 +90,7 @@
           :gradient="gradientStroke"
         />
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -340,7 +344,7 @@ export default {
 </script>
 
 <style lang="scss">
-.close-btn .q-btn-inner .modal-layout-wrapper{
+.close-btn .q-btn__content .modal-layout-wrapper{
   justify-content: flex-start;
 }
 

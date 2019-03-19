@@ -45,7 +45,7 @@
 <script>
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
+import toEncryptConfig from '@/boot/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
@@ -124,9 +124,10 @@ export default {
      * If there are no Accounts, got to setup
      */
     'settings.loading': {
-      handler(value) {
-        if (value) { return false; }
-        if (this.accounts.length < 1) { this.$router.push({ path: '/setup/0' }); }
+      handler() {
+        if (this.accounts.length < 1) {
+          this.$router.push({ path: '/setup/0' });
+        }
         this.storeSupportedCoins();
         return true;
       },
@@ -245,7 +246,7 @@ body > div {
 }
 
 .shrinked .background {
-  height: 27rem;
+  height: 22.5rem;
   top: -15rem;
   border-bottom: 0.3rem solid #4e677d;
 }
@@ -271,6 +272,10 @@ body > div {
   }
 }
 
+.q-dialog .modal-layout-wrapper {
+  height: calc(100vh - 2.5rem)!important;
+}
+
 .light-modal .header-section {
   background: whitesmoke;
 }
@@ -293,9 +298,16 @@ body > div {
 }
 
 .dark-modal .modal-layout-wrapper {
-  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%)
+  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%);
 }
 
+.light-modal .modal-layout-wrapper {
+  background: white;
+}
+
+.q-dialog__inner .header-section {
+  height: 2.5rem!important;
+}
 
 .modal-layout-wrapper {
   display: flex;
@@ -304,6 +316,10 @@ body > div {
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
+}
+
+.modal-layout-wrapper.full {
+  height: 100vh!important;
 }
 
 .modal-layout-wrapper.center {

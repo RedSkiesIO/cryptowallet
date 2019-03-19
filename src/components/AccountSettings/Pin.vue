@@ -1,7 +1,11 @@
 <template>
-  <q-modal
+  <q-dialog
     v-model="open"
-    class="dark-modal"
+    persistent
+    :maximized="true"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    content-class="dark-modal"
   >
     <div class="header-section">
       <div class="header-back-button-wrapper">
@@ -35,7 +39,7 @@
         @attemptConfirm="updateAccount"
       />
     </div>
-  </q-modal>
+  </q-dialog>
 </template>
 
 <script>

@@ -16,6 +16,7 @@ import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 import Wallet from '@/store/wallet/entities/wallet';
+// import Vue from 'vue';
 
 const delay = 500;
 export default {
@@ -82,7 +83,6 @@ export default {
         this.pin.push(pin);
       });
     },
-    /*eslint-disable*/
     /**
      * Compares bcrypt pin string to try and unlock an account
      */

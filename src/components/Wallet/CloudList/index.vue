@@ -23,7 +23,7 @@
         :wallet="wallet"
         :currency="selectedCurrency"
       />
-      <q-scroll-observable @scroll="scrolled" />
+      <q-scroll-observer @scroll="scrolled" />
     </q-scroll-area>
   </div>
 </template>
@@ -121,7 +121,7 @@ export default {
   color: #1e3c57;
 }
 
-.large-cloud-btn .q-btn-inner{
+.large-cloud-btn .q-btn__content{
   color: #1e3c57;
 }
 

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="open"
-      class="dark-modal"
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -31,11 +34,12 @@
             <q-radio
               v-model="selectedLocale"
               :val="key"
+              dark
             />
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = (ctx) => {
   return {
-    plugins: [
+    boot: [
       'i18n',
       'Axios',
       'CWCrypto',
@@ -27,7 +27,7 @@ module.exports = (ctx) => {
     ],
     css: ['app.styl'],
     extras: [
-      ctx.theme.mat ? 'roboto-font' : null,
+      'roboto-font',
       'material-icons',
     ],
     supportIE: false,
@@ -57,8 +57,8 @@ module.exports = (ctx) => {
     framework: {
       components: [
         'QLayout',
-        'QLayoutHeader',
-        'QLayoutDrawer',
+        'QHeader', //renamed, was QHeaderLayout
+        //'QLayoutDrawer',
         'QPageContainer',
         'QPage',
         'QToolbar',
@@ -67,44 +67,51 @@ module.exports = (ctx) => {
         'QBtn',
         'QIcon',
         'QList',
-        'QListHeader',
+        //'QListHeader',
         'QItem',
-        'QItemMain',
-        'QItemSide',
+        // 'QItemMain',
+        // 'QItemSide',
         'QPageSticky',
         'QScrollArea',
-        'QLayoutFooter',
+        'QFooter', // renamed, was QFooterLayout
         'QInput',
         'QTabs',
         'QTab',
-        'QTabPane',
+        //'QTabPane',
+        'QTabPanels',
+        'QTabPanel',
         'QRouteTab',
         'QPullToRefresh',
         'QTimeline',
         'QTimelineEntry',
         'QInfiniteScroll',
         'QSpinnerDots',
-        'QCollapsible',
-        'QModal',
-        'QModalLayout',
+        'QExpansionItem',
+        // 'QCollapsible',
+        // 'QModal',
+        'QDialog',
+        // 'QModalLayout',
         'QToggle',
         'QRadio',
         'QSelect',
         'QSlider',
-        'QScrollObservable',
-        'QAlert',
-        'QSearch',
-        'QAutocomplete',
+        'QScrollObserver', // renamed, was QScrollObservable
+        'QBanner', // renamed, was QAllert
+        // 'QSearch',
+        // 'QAutocomplete',
         'QCarousel',
         'QCarouselSlide',
         'QCarouselControl',
         'QCheckbox',
+        'QCard',
+        'QCardSection',
+        'QCardActions',
       ],
-      directives: ['Ripple', 'CloseOverlay'],
+      directives: ['Ripple', 'CloseDialog'],
       // Quasar plugins
-      plugins: ['Notify', 'Dialog', 'ActionSheet', 'AppVisibility'],
-      // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
-      i18n: 'en-uk',
+      plugins: ['Notify', 'Dialog', 'BottomSheet', 'AppVisibility'], // ActionSheet is now BottomSheet
+      // iconSet: 'material-icons'
+      lang: 'en-gb',
     },
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],

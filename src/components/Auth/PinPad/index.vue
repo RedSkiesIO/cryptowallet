@@ -21,7 +21,10 @@
       />
 
       <q-btn
-        v-if="mode === 'pin-setup' || mode === 'new-pin' || mode === 'confirm-new-pin'"
+        v-if="(mode === 'pin-setup'
+          || mode === 'new-pin'
+          || mode === 'pin-confirm'
+          || mode === 'confirm-new-pin')"
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"
@@ -165,6 +168,7 @@ export default {
       if (this.mode === 'pin-setup') { this.$router.push({ path: `/setup/${this.id + 1}` }); }
       if (this.mode === 'new-pin') { this.$emit('newPinSet'); }
       if (this.mode === 'confirm-new-pin') { this.$emit('attemptConfirm'); }
+      if (this.mode === 'pin-confirm') { this.confirmPin(); }
     },
 
     /**

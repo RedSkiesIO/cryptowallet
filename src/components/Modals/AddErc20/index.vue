@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="addErc20ModalOpened"
-      class="light-modal modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="light-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -158,7 +162,7 @@
           </div>
         </q-tab-pane>
       </q-tabs>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

@@ -112,7 +112,7 @@ export default {
   getStartedYourWallet: 'Only you can access your multi-currency crypto-wallet. Your wallet holds your coins and tokens, and allows you to easily and securely transfer your digital money.',
   getStartedBackupYourWallet: 'Create a list of words to help you recover your wallet, should you lose it. We strongly recommend you write these backup words on papers and hide these in several secret places or use cryptographic algorithm (e.g. Shamir secret sharing techniques).',
   getStartedSecurity: 'You are about to create the wallet. Some security precautions have to be made. Please make sure no one is watching you. Please disconnect from the Internet.',
-  enableAirplaneDisableInternet: 'Enable the Airplane Mode or disable your Internet connection before continuing',
+  enableAirplaneDisableInternet: 'Enable the Airplane Mode or disable your Internet connection',
   activateYourWallet: 'Activate Your Wallet',
   termsAndConditions: 'Terms & Conditions',
   notEnoughWords: 'Please enter 12 words',

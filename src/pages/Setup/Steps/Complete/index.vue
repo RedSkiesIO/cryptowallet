@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// import Vue from 'vue';
 import { uid } from 'quasar';
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';

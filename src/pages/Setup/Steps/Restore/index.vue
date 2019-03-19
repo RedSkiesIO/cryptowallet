@@ -14,10 +14,10 @@
         <q-input
           v-model="seedPhrase"
           type="textarea"
-          color="blueish"
           float-label="Backup Phrase"
-          rows="1"
-          inverted
+          outlined
+          dark
+          color="primary"
         />
       </div>
     </div>

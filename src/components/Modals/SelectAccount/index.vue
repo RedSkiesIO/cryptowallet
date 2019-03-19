@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="selectAccountModalOpened"
-      class="dark-modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -64,7 +68,7 @@
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -170,7 +174,7 @@ export default {
   right: -0.25em;
 }
 
-.list-chevron .q-btn-inner {
+.list-chevron .q-btn__content {
   justify-content: flex-end;
 }
 </style>

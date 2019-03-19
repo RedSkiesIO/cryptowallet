@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="addWalletModalOpened"
-      class="dark-modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -37,7 +41,7 @@
           click-item-action="addWallet"
         />
       </div>
-    </q-modal>
+    </q-dialog>
 
     <div
       v-if="loading"
@@ -323,16 +327,20 @@ export default {
       if (response) {
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
+      if (coinSDK.getPriceFeed) {
+        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
-      const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-      const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-      const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
-
-      if (dayData && weekData && monthData) {
-        this.storeChartData(wallet.symbol, 'day', dayData.data);
-        this.storeChartData(wallet.symbol, 'week', weekData.data);
-        this.storeChartData(wallet.symbol, 'month', monthData.data);
+        if (dayData && weekData && monthData) {
+          this.storeChartData(wallet.symbol, 'day', dayData.data);
+          this.storeChartData(wallet.symbol, 'week', weekData.data);
+          this.storeChartData(wallet.symbol, 'month', monthData.data);
+        }
       }
 
       const initializedWallet = wallet.hdWallet;
@@ -489,7 +497,7 @@ export default {
 </script>
 
 <style>
-.close-btn .q-btn-inner {
+.close-btn .q-btn__content {
   justify-content: flex-start;
 }
 

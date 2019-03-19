@@ -1,7 +1,11 @@
 <template>
-  <q-modal
+  <q-dialog
     v-model="open"
-    class="dark-modal"
+    persistent
+    :maximized="true"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    content-class="dark-modal"
   >
     <div class="header-section">
       <div class="header-back-button-wrapper">
@@ -23,9 +27,9 @@
         <q-input
           v-model="newNodeIp"
           :float-label="$t('IPAddress')"
-          inverted
-          clearable
-          color="blueish"
+          outlined
+          dark
+          color="primary"
         />
       </div>
 
@@ -39,7 +43,7 @@
         />
       </div>
     </div>
-  </q-modal>
+  </q-dialog>
 </template>
 
 <script>
@@ -70,6 +74,9 @@ export default {
     }),
     newNodeIp: {
       get() {
+        if (this.ip) {
+          return this.ip;
+        }
         return this.current;
       },
       set(ip) {

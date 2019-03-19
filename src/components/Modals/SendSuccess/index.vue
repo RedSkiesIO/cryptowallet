@@ -1,8 +1,13 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="sendSuccessModalOpened"
-      class="dark-modal modal"
+      persistent
+      no-route-dismiss
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -80,7 +85,7 @@
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

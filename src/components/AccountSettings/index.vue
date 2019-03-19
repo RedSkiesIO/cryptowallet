@@ -265,7 +265,7 @@ export default {
   right: -0.25em;
 }
 
-.settings-chevron .q-btn-inner {
+.settings-chevron .q-btn__content {
   justify-content: flex-end;
 }
 
