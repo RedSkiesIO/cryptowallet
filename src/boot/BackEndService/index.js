@@ -2,7 +2,6 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import LatestPrice from '@/store/latestPrice';
 
-/*eslint-disable*/
 
 class BackEndService {
   vm = null;
@@ -23,6 +22,8 @@ class BackEndService {
     this.account = this.vm.$store.getters['entities/account/find'](this.accountId);
     this.password = password;
     this.setRefreshToken(this.account.refresh_token);
+    this.delay = 500;
+    this.longDelay = 2500;
   }
 
   /**
@@ -49,7 +50,8 @@ class BackEndService {
    */
   connect(attempts = 0) {
     return new Promise(async (resolve) => {
-      if (attempts >= 10) {
+      const attemptLimit = 10;
+      if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error('Failed to connect to the server'), false);
         return false;
       }
@@ -59,7 +61,8 @@ class BackEndService {
           try {
             // access denied, refresh access token
             const code = await this.refreshAuth();
-            if (code === 201) {
+            const created = 201;
+            if (code === created) {
               resolve(true);
               return false;
             }
@@ -71,7 +74,8 @@ class BackEndService {
           }
         } else {
           const code = await this.auth();
-          if (code === 200) {
+          const ok = 200;
+          if (code === ok) {
             resolve(true);
             return false;
           }
@@ -79,11 +83,11 @@ class BackEndService {
       } catch (err) {
         this.vm.errorHandler(err);
       }
-
+      const timeout = 2500;
       setTimeout(() => {
-        this.vm.$toast.create(10, 'Failed to connect to the server', 500);
+        this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
         this.connect(attempts += 1);
-      }, 2500);
+      }, timeout);
 
       return false;
     });
@@ -139,9 +143,11 @@ class BackEndService {
    * @return {Object}
    */
   async try(URL, attempts = 0) {
-    if (attempts >= 10) {
+    const attemptLimit = 3;
+    if (attempts >= attemptLimit) {
       this.vm.errorHandler(new Error('Failed to connect to the server'), false);
     }
+
 
     try {
       const config = await this.getAxiosConfig();
@@ -152,7 +158,8 @@ class BackEndService {
       attempts += 1;
 
       if (err.response) {
-        if (err.response.status === 401) {
+        const unauthorized = 401;
+        if (err.response.status === unauthorized) {
           if (this.refreshToken) {
             try {
               // access denied, refresh access token
@@ -175,7 +182,7 @@ class BackEndService {
           const result = await this.try(URL, attempts);
           resolve(result);
           return false;
-        }, 1000);
+        }, this.longDelay);
       });
     }
   }
@@ -200,9 +207,9 @@ class BackEndService {
    */
   async getHistoricalData(coin, currency, period) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`);
-
+    const msToS = 1000;
     result.data.data = result.data.data.map((x) => {
-      return { t: x.time * 1000, y: x.close };
+      return { t: x.time * msToS, y: x.close };
     });
 
     return result.data;
@@ -302,7 +309,7 @@ class BackEndService {
 
       await Promise.all(promises);
     } catch (e) {
-      this.vm.$toast.create(10, e.message, 500);
+      this.vm.$toast.create(10, e.message, this.delay);
     }
   }
 }
