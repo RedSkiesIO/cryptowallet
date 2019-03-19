@@ -2,6 +2,8 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import LatestPrice from '@/store/latestPrice';
 
+/*eslint-disable*/
+
 class BackEndService {
   vm = null;
 

@@ -15,7 +15,7 @@ import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
-import Wallet from '@/store/wallet/entities/wallet';;
+import Wallet from '@/store/wallet/entities/wallet';
 
 const delay = 500;
 export default {

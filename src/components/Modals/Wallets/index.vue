@@ -332,10 +332,6 @@ export default {
         const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
         const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
-        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
-
         if (dayData && weekData && monthData) {
           this.storeChartData(wallet.symbol, 'day', dayData.data);
           this.storeChartData(wallet.symbol, 'week', weekData.data);
