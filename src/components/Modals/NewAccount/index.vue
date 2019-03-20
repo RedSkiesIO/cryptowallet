@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="newAccountModalOpened"
-      class="dark-modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -39,7 +43,7 @@
           />
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -61,11 +65,17 @@ export default {
       this.$root.$emit('newAccountModalOpened', false);
     },
     createAccount() {
+      // @todo, don't use app global, should work
+      /* eslint-disable-next-line */
+      app.$root.$emit('selectAccountModalOpened', false);
       this.$root.$emit('newAccountModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'new');
       this.$router.push({ path: '/setup/2' });
     },
     importAccount() {
+      // @todo, don't use app global, should work
+      /* eslint-disable-next-line */
+      app.$root.$emit('selectAccountModalOpened', false);
       this.$root.$emit('newAccountModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: '/setup/1' });

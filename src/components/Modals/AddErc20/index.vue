@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="addErc20ModalOpened"
-      class="light-modal modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="light-modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -158,7 +162,7 @@
           </div>
         </q-tab-pane>
       </q-tabs>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -183,9 +187,12 @@ export default {
       addErc20ModalOpened: false,
       form: {
         tokenContract: '',
+        tokenContractLength: 42,
         tokenName: '',
         tokenSymbol: '',
+        tokenSymbolMax: 11,
         tokenDecimals: '',
+        tokenDecimalsMax: 36,
         tokenNetwork: 'ETHEREUM_ROPSTEN',
       },
       disableInputs: true,
@@ -200,22 +207,37 @@ export default {
       decimalsError: '',
     };
   },
-  validations: {
-    form: {
-      tokenContract: {
-        required, alphaNum, minLength: minLength(42), maxLength: maxLength(42),
+  validations() {
+    return {
+      form: {
+        tokenContract: {
+          required,
+          alphaNum,
+          minLength: minLength(this.form.tokenDecimalsMax),
+          maxLength: maxLength(this.form.tokenDecimalsMax),
+        },
+        tokenName: {
+          required,
+        },
+        tokenSymbol: {
+          required,
+          alphaNum,
+          between: minLength(1),
+          maxLength: maxLength(this.form.tokenSymbolMax),
+        },
+        tokenDecimals: {
+          required,
+          numeric,
+          between: between(0, this.form.tokenDecimalsMax),
+        },
       },
-      tokenName: { required },
-      tokenSymbol: {
-        required, alphaNum, between: minLength(1), maxLength: maxLength(11),
-      },
-      tokenDecimals: { required, numeric, between: between(0, 36) },
-    },
+    };
   },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -418,7 +440,7 @@ export default {
               this.addErc20ModalOpened = true;
             }
           });
-        }, 500);
+        }, this.delay.normal);
       }
     },
 
@@ -434,11 +456,6 @@ export default {
 </script>
 
 <style>
-.send-coin-box {
-  margin-top: 2rem;
-  width: 100%;
-}
-
 .to {
   display: flex;
   justify-content: space-between;
@@ -460,14 +477,6 @@ export default {
   justify-content: space-around;
   font-size: 1.1em;
   line-height: 1;
-}
-
-.fee {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 2rem;
-  overflow: hidden;
 }
 
 .fee > .label {

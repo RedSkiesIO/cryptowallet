@@ -19,17 +19,6 @@
           />
         </div>
       </div>
-
-      <q-modal
-        v-model="initializingModalOpened"
-        minimized
-        @show="enableWallet()"
-      >
-        <div class="initialize-wallet-modal">
-          <Spinner />
-          <span>{{ $t('enablingWallet') }}</span>
-        </div>
-      </q-modal>
     </div>
   </div>
 </template>
@@ -40,7 +29,6 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
-import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
@@ -48,7 +36,6 @@ export default {
   name: 'WalletItem',
 
   components: {
-    Spinner,
   },
 
   props: {

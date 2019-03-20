@@ -1,8 +1,12 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="termsModalOpened"
-      class="light-modal"
+      persistent
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="light-modal"
     >
       <div class="header-section">
         <h1 class="header-h1">
@@ -20,12 +24,11 @@
               label="I have read and I accept the Terms & Conditions"
               true-value="yes"
               false-value="no"
-              dark
             />
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -48,10 +51,11 @@ export default {
   watch: {
     terms(val) {
       if (val === 'yes') {
+        const delay = 500;
         setTimeout(() => {
           this.$router.push({ path: `/setup/${this.id + 1}` });
           this.termsModalOpened = false;
-        }, 500);
+        }, delay);
       }
     },
   },
@@ -71,7 +75,7 @@ export default {
   border-radius: 0.3rem;
 }
 
-.checkbox-wrapper .q-option-label {
+.checkbox-wrapper .q-checkbox__label {
   opacity: 1;
   font-family: Montserrat-Medium;
   margin-left: 0.8rem;

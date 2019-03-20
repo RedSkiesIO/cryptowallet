@@ -45,7 +45,6 @@
 <script>
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import toEncryptConfig from '@/plugins/AppDataEncryption/config.js';
 import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
@@ -90,6 +89,8 @@ export default {
   computed: {
     ...mapState({
       settings: (state) => { return state.settings; },
+      delay: (state) => { return state.settings.delay; },
+
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -104,27 +105,14 @@ export default {
 
   watch: {
     /**
-     * Encrypts and decrypts app data according to toEncryptConfig
-     *
-     * @todo Konrad Make it so the data in the Loki database is always encrypted
-     * Meaning, ecrypt when saved to Loki, decrypt when hydrating
-     */
-    '$q.appVisible': {
-      handler(visible) {
-        const encryptionUtil = new this.AppDataEncryption(toEncryptConfig);
-        if (visible) { encryptionUtil.decrypt('pin hash'); }
-        if (!visible) { encryptionUtil.encrypt('pin hash'); }
-      },
-    },
-
-    /**
      * Waits until hydration is completed,
      * If there are no Accounts, got to setup
      */
     'settings.loading': {
-      handler(value) {
-        if (value) { return false; }
-        if (this.accounts.length < 1) { this.$router.push({ path: '/setup/0' }); }
+      handler() {
+        if (this.accounts.length < 1) {
+          this.$router.push({ path: '/setup/0' });
+        }
         this.storeSupportedCoins();
         return true;
       },
@@ -155,18 +143,18 @@ export default {
           this.$q.scanning = false;
           this.$root.$emit('walletsModalOpened', true);
           this.$root.$emit('erc20ModalOpened', true);
-        }, 500);
+        }, this.delay.short);
       } else {
         setTimeout(() => {
           this.$q.scanning = false;
           this.$root.$emit('sendCoinModalOpened', true);
-        }, 500);
+        }, this.delay.short);
       }
 
       setTimeout(() => {
         this.$q.scanning = false;
         this.hidden = false;
-      }, 1000);
+      }, this.delay.long);
     });
   },
 
@@ -183,6 +171,7 @@ export default {
             symbol: coin.symbol,
             network: coin.network,
             denomination: coin.denomination,
+            minConfirmations: coin.minConfirmations,
           };
           if (coin.sdk === 'ERC20') {
             data.parentName = coin.parentName;
@@ -243,7 +232,7 @@ body > div {
 }
 
 .shrinked .background {
-  height: 27rem;
+  height: 22.5rem;
   top: -15rem;
   border-bottom: 0.3rem solid #4e677d;
 }
@@ -269,6 +258,10 @@ body > div {
   }
 }
 
+.q-dialog .modal-layout-wrapper {
+  height: calc(100vh - 2.5rem)!important;
+}
+
 .light-modal .header-section {
   background: whitesmoke;
 }
@@ -291,9 +284,16 @@ body > div {
 }
 
 .dark-modal .modal-layout-wrapper {
-  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%)
+  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%);
 }
 
+.light-modal .modal-layout-wrapper {
+  background: white;
+}
+
+.q-dialog__inner .header-section {
+  height: 2.5rem!important;
+}
 
 .modal-layout-wrapper {
   display: flex;
@@ -302,6 +302,10 @@ body > div {
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
+}
+
+.modal-layout-wrapper.full {
+  height: 100vh!important;
 }
 
 .modal-layout-wrapper.center {

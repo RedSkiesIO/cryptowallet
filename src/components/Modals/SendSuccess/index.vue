@@ -1,8 +1,13 @@
 <template>
   <div>
-    <q-modal
+    <q-dialog
       v-model="sendSuccessModalOpened"
-      class="dark-modal modal"
+      persistent
+      no-route-dismiss
+      :maximized="true"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+      content-class="dark-modal modal"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -80,7 +85,7 @@
           </div>
         </div>
       </div>
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 
@@ -101,6 +106,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -157,7 +163,7 @@ export default {
     copyToClipboard() {
       try {
         cordova.plugins.clipboard.copy(this.address);
-        this.$toast.create(0, this.$t('copied'), 200);
+        this.$toast.create(0, this.$t('copied'), this.delay.short);
       } catch (err) {
         this.errorHandler(err);
       }

@@ -1,7 +1,11 @@
 <template>
-  <q-modal
+  <q-dialog
     v-model="open"
-    class="dark-modal"
+    persistent
+    :maximized="true"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    content-class="dark-modal"
   >
     <div class="header-section">
       <div class="header-back-button-wrapper">
@@ -23,9 +27,9 @@
         <q-input
           v-model="newNodeIp"
           :float-label="$t('IPAddress')"
-          inverted
-          clearable
-          color="blueish"
+          outlined
+          dark
+          color="primary"
         />
       </div>
 
@@ -39,7 +43,7 @@
         />
       </div>
     </div>
-  </q-modal>
+  </q-dialog>
 </template>
 
 <script>
@@ -66,9 +70,13 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     newNodeIp: {
       get() {
+        if (this.ip) {
+          return this.ip;
+        }
         return this.current;
       },
       set(ip) {
@@ -98,9 +106,9 @@ export default {
           where: (record) => { return record.id === this.authenticatedAccount; },
           data: { node: this.ip },
         });
-        this.$toast.create(0, this.$t('nodeUpdated'), 200);
+        this.$toast.create(0, this.$t('nodeUpdated'), this.delay.short);
       } else {
-        this.$toast.create(10, this.$t('notValidIpAddress'), 500);
+        this.$toast.create(10, this.$t('notValidIpAddress'), this.delay.normal);
       }
     },
   },

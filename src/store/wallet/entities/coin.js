@@ -12,6 +12,7 @@ export default class Coin extends Model {
     return {
       name: this.attr(''),
       displayName: this.attr(''),
+      minConfirmations: this.attr(''),
       sdk: this.attr(''),
       symbol: this.attr(''),
       network: this.attr(''),

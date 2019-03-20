@@ -16,4 +16,11 @@ export default {
   loading: true,
   selectedAccount: null,
   layout: 'dark',
+  delay: {
+    vshort: 50,
+    short: 200,
+    normal: 500,
+    long: 1000,
+    vlong: 3000,
+  },
 };

@@ -1,5 +1,8 @@
 <template>
-  <div @touchmove="prevent">
+  <div
+    @touchstart="touchStart"
+    @touchmove="touchMove"
+  >
     <div v-if="wallets.length === 0">
       <q-btn
         icon="add_circle_outline"
@@ -23,7 +26,7 @@
         :wallet="wallet"
         :currency="selectedCurrency"
       />
-      <q-scroll-observable @scroll="scrolled" />
+      <q-scroll-observer @scroll="scrolled" />
     </q-scroll-area>
   </div>
 </template>
@@ -71,20 +74,30 @@ export default {
       this.$root.$emit('walletsModalOpened', true);
     },
 
-    prevent(event) {
-      if (this.wallets.length === 0 || !this.$refs.scrollArea) { return false; }
-      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop > 0) {
+    touchStart(event) {
+      this.touchStartY = event.touches[0].clientY;
+    },
+
+    touchMove(event) {
+      if (event.touches[0].clientY <= this.touchStartY) {
         event.stopPropagation();
       }
-      return false;
+
+      if (this.wallets.length === 0 || !this.$refs.scrollArea) { return false; }
+      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop !== 0) {
+        event.stopPropagation();
+      }
+
+      return true;
     },
 
     scrolled(data) {
       this.scrollPosition = data.position;
-      if (data.position > 100 && data.direction === 'down') {
+      const pixels = 100;
+      if (data.position > pixels && data.direction === 'down') {
         this.$root.$emit('isHomeBalanceVisible', false);
       }
-      if (data.position <= 100 && data.direction === 'up') {
+      if (data.position <= pixels && data.direction === 'up') {
         this.$root.$emit('isHomeBalanceVisible', true);
       }
     },
@@ -99,10 +112,6 @@ export default {
   width: 100%;
   left: 0;
   top: 0;
-}
-
-.scroll-area .scroll {
-  padding-bottom: 1rem;
 }
 
 .large-cloud-btn {
@@ -120,7 +129,7 @@ export default {
   color: #1e3c57;
 }
 
-.large-cloud-btn .q-btn-inner{
+.large-cloud-btn .q-btn__content{
   color: #1e3c57;
 }
 
