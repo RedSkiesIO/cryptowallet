@@ -11,7 +11,7 @@
         <q-card-section>
           <div class="single-transaction-content">
             <p>
-              TX Hash:
+              {{ $t('txHash') }}:
               <span class="tx-hash break">
                 {{ data.hash }}
               </span>
