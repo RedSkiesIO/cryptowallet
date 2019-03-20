@@ -34,6 +34,7 @@
           <ReceiveCoinModal />
           <ConfirmSendModal />
           <SendSuccessModal />
+          <SendFailureModal />
           <AddErc20Modal />
         </div>
       </div>
@@ -57,6 +58,7 @@ import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
+import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 
@@ -75,6 +77,7 @@ export default {
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
+    SendFailureModal,
     AddErc20Modal,
     OfflineNotice,
   },
@@ -90,7 +93,6 @@ export default {
     ...mapState({
       settings: (state) => { return state.settings; },
       delay: (state) => { return state.settings.delay; },
-
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -115,6 +117,17 @@ export default {
         }
         this.storeSupportedCoins();
         return true;
+      },
+    },
+    /**
+     * Prevent from navigating back to the login screen
+     * if laready logged in
+     */
+    $route: {
+      handler(to) {
+        if (to.path === '/' && this.settings.authenticatedAccount) {
+          this.$router.push({ path: '/wallet' });
+        }
       },
     },
   },

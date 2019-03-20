@@ -116,6 +116,7 @@ export default {
   activateYourWallet: 'Activate Your Wallet',
   termsAndConditions: 'Terms & Conditions',
   notEnoughWords: 'Please enter 12 words',
+  error: 'Error',
   // Settings
   confirmMessage: 'Are you sure you want to delete the account',
   acceptConfirm: 'yes',
@@ -177,6 +178,7 @@ export default {
   invalidTokenDecimals: 'Token Decimals must be at least 0, and not over 36.',
   tokenAlreadyEnabled: 'This token has already been enabled',
   ethSymbol: 'ETH',
+  sendTxFailure: 'Failed to broadcast the transaction',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',

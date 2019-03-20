@@ -319,13 +319,15 @@ export default {
         try {
           await this.broadcastTx();
         } catch (err) {
-          console.log('cought', err);
+          // @todo, don't use app global
+          /* eslint-disable-next-line */
+          app.$root.$emit('sendFailureModalOpened', true);
           this.errorHandler(err);
         }
       }, this.delay.short);
     },
     completeTransaction() {
-      // @todo, don't use app global, should work
+      // @todo, don't use app global
       /* eslint-disable-next-line */
       app.$root.$emit('sendSuccessModalOpened', true, this.txData);
 
