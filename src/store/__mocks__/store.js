@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import wallet from '@/store/wallet';
-import payments from '@/store/payments';
+// import payments from '@/store/payments';
 import contacts from '@/store/contacts/__mocks__/contacts.js';
 import search from '@/store/search/__mocks__/search.js';
 import settings from '@/store/settings/__mocks__/settings.js';
@@ -22,7 +22,7 @@ export function createMocks(custom = {
    */
   const modules = {
     wallet,
-    payments,
+    // payments,
     search,
     settings,
     contacts,
