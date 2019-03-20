@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable -->
   <section class="recent-transactions">
     <q-tabs
       v-model="tab"
@@ -44,7 +43,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import TransactionsList from '@/components/Wallet/TransactionsList';
 
 export default {
@@ -90,24 +88,6 @@ export default {
 .q-tabs, .q-tabs__content {
   width: 100%!important;
 }
-
-/*
-.q-tabs {
-  height: 100%;
-  display: flex;
-}
-
-.q-tabs-panes {
-  flex: 1;
-  display: flex;
-  height: calc(100% - 48px);
-}
-
-.q-tab-pane {
-  flex: 1;
-  font-size: 0.7rem;
-  padding: 0 0.2rem;
-}*/
 
 .q-tab-label {
   font-family: Montserrat-SemiBold;
