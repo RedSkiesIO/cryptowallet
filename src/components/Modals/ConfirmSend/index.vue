@@ -315,10 +315,11 @@ export default {
     },
     confirm() {
       this.loading = true;
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          this.broadcastTx();
+          await this.broadcastTx();
         } catch (err) {
+          console.log('cought', err);
           this.errorHandler(err);
         }
       }, this.delay.short);

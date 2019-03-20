@@ -17,7 +17,9 @@
     "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
-    "test": "snyk test"
+    "test": "snyk test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "@atlascity/vuex-orm-plugin-lokijs": "git+https://github.com/atlascity/vuex-orm-plugin-loki.git#1-prepare-for-opensource",
@@ -105,6 +107,9 @@
       "eslint --ext .js,.vue src",
       "git add"
     ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
   },
   "engines": {
     "node": ">= 8.15.0",
