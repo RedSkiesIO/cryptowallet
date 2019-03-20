@@ -37,7 +37,7 @@
       <div class="wallet-prices">
         <Amount
           v-if="latestPrice"
-          :amount="wallet.confirmedBalance"
+          :amount="unconfirmedBalance()"
           :rate="latestPrice"
           :prepend-plus-or-minus="false"
           :currency="selectedCurrency"
@@ -56,7 +56,10 @@
 <script>
 import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
-import { AmountFormatter } from '@/helpers';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
@@ -119,8 +122,10 @@ export default {
     },
 
     balanceInCoin() {
+      const balance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+
       const balanceInCoin = new AmountFormatter({
-        amount: this.wallet.confirmedBalance,
+        amount: balance,
         rate: this.latestPrice,
         format: '0.00000000',
         prependPlusOrMinus: false,
@@ -141,6 +146,10 @@ export default {
     },
     receive() {
       this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
+    },
+    unconfirmedBalance() {
+      const balance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+      return balance;
     },
   },
 };

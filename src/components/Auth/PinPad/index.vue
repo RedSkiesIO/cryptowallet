@@ -34,7 +34,10 @@
 
       <q-btn
         v-if="mode != 'pin-setup' &&
-          mode != 'new-pin' && mode != 'confirm-new-pin' && mode != 'delete'"
+          mode != 'new-pin' &&
+          mode != 'confirm-new-pin'&&
+          mode != 'delete' &&
+          mode != 'pin-confirm'"
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"

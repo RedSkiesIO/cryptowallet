@@ -93,6 +93,7 @@ export default {
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
+      console.log(this.seedPhrase);
       this.$store.dispatch('setup/setSeed', this.seedPhrase);
     },
 

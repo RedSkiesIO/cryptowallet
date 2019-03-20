@@ -44,13 +44,16 @@ export default {
       const accounts = this.$store.getters['entities/account/query']().get();
       const password = this.setup.pinArray.join('');
       const pinHash = this.$CWCrypto.bcryptHashString(password, this.setup.salt);
+
       const data = {
         uid: uid(),
         name: this.setup.accountName,
         salt: this.setup.salt,
         pinHash,
         default: accounts.length === 0,
-        locale: this.setup.accountLocale || this.accounts[0].locale,
+        /* @todo dont use app global, move locale into vuex */
+        /* eslint-disable-next-line */
+        locale: app.$i18n.locale || this.accounts[0].locale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
       };

@@ -137,6 +137,10 @@ export default {
     };
   },
 
+  mounted() {
+    console.log(this);
+  },
+
   computed: {
 
     ...mapState({

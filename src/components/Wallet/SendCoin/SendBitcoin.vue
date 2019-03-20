@@ -327,6 +327,7 @@ export default {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const addressesRaw = this.getAddressesRaw();
       const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network);
+      console.log('utxos', utxos);
       this.utxos = utxos;
     },
 
@@ -351,6 +352,8 @@ export default {
      * Creates a raw transaction which will calculate and update the fee
      */
     updateFee: debounce((fee, that) => {
+      /*eslint-disable*/
+      return false;
       const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
 
       const changeAddresses = that.generateChangeAddresses(
@@ -596,6 +599,8 @@ export default {
         this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
         return false;
       }
+
+      console.log(this.wallet.confirmedBalance);
 
       if (this.wallet.confirmedBalance < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
