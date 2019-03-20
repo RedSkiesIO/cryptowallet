@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 module.exports = {
   globals: {
     __DEV__: true,
@@ -10,7 +9,7 @@ module.exports = {
   bail: true,
   cache: false,
   verbose: true,
-  collectCoverage: true,
+  collectCoverage: false,
   coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.vue',
@@ -44,7 +43,7 @@ module.exports = {
     '^test-utils$': '<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.js',
     '^quasar$': '<rootDir>/node_modules/quasar/dist/quasar.common.js',
     '^~/(.*)$': '<rootDir>/$1',
-    '^src/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
     '.*css$': '<rootDir>/test/jest/utils/stub.css',
   },
   transform: {

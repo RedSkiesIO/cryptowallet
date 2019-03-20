@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountName.vue renders and matches snapshot 1`] = `
+<div
+  class="container"
+>
+  <div>
+    <h1
+      class="setup"
+    >
+      
+      Set Account Name
+    
+    </h1>
+  </div>
+   
+  <div
+    class="account-name-input-wrapper"
+  >
+    <div
+      class="q-field row no-wrap items-start q-input q-field--outlined q-field--dark"
+      float-label="Account Name"
+    >
+      <div
+        class="q-field__inner relative-position col self-stretch column justify-center"
+      >
+        <div
+          class="q-field__control relative-position row no-wrap text-primary"
+        >
+          <div
+            class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+          >
+            <input
+              class="q-field__native"
+              float-label="Account Name"
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Next
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;

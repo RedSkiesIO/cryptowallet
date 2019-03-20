@@ -59,7 +59,8 @@
     "web3": "1.0.0-beta.34"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
     "@quasar/app": "^1.0.0-beta.12",
     "@quasar/quasar-app-extension-testing": "^1.0.0-rc.1",
     "@quasar/quasar-app-extension-testing-unit-jest": "^1.0.0-beta.15",
@@ -70,9 +71,8 @@
     "@vue/test-utils": "^1.0.0-beta.25",
     "appium": "^1.11.0",
     "appium-doctor": "^1.6.0",
-    "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.1.0",
+    "babel-jest": "^24.5.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "dotenv": "^6.2.0",

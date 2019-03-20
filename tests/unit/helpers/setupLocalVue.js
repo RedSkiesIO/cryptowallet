@@ -17,7 +17,9 @@ localVue.use(Quasar, {
 localVue.use(VueRouter);
 
 const router = new VueRouter();
+console.log(messages);
 const i18n = new VueI18n({ messages, locale: 'en-us' });
+const i18n = {test: 'something'};
 
 export {
   localVue,
