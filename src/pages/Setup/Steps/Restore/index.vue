@@ -14,10 +14,10 @@
         <q-input
           v-model="seedPhrase"
           type="textarea"
-          color="blueish"
           float-label="Backup Phrase"
-          rows="1"
-          inverted
+          outlined
+          dark
+          color="primary"
         />
       </div>
     </div>
@@ -46,19 +46,22 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
+
     }),
   },
   methods: {
     validate() {
+      const seedLength = 12;
       const seedPhrase = this.seedPhrase.trim().split(' ');
 
-      if (seedPhrase.length !== 12) {
-        this.$toast.create(10, this.$t('notEnoughWords'), 500);
+      if (seedPhrase.length !== seedLength) {
+        this.$toast.create(10, this.$t('notEnoughWords'), this.delay.normal);
         return false;
       }
 
       if (!bip39.validateMnemonic(seedPhrase.join(' '))) {
-        this.$toast.create(10, 'Invalid seed phrase', 500);
+        this.$toast.create(10, 'Invalid seed phrase', this.delay.normal);
         return false;
       }
 
@@ -66,7 +69,7 @@ export default {
       const seedAlreadyInUse = accounts.find((account) => { return account.seed === seedPhrase; });
 
       if (seedAlreadyInUse) {
-        this.$toast.create(10, this.$t('accountAlreadyImported'), 500);
+        this.$toast.create(10, this.$t('accountAlreadyImported'), this.delay.normal);
         return false;
       }
       this.$store.dispatch('setup/setSeed', seedPhrase);

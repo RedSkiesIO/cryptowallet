@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SearchContacts from '@/components/Contacts/SearchContacts';
 import ContactsList from '@/components/Contacts/ContactsList';
 
@@ -60,7 +61,11 @@ export default {
       invitationModalOpened: false,
     };
   },
-
+  computed: {
+    ...mapState({
+      delay: (state) => { return state.settings.delay; },
+    }),
+  },
   methods: {
     /**
      * Initiates the sending invitation process
@@ -76,7 +81,7 @@ export default {
           this.permissionsNoticeModalOpened = true;
         }
       }, () => {
-        this.$toast.create(10, this.$t('contactsImportError'), 500);
+        this.$toast.create(10, this.$t('contactsImportError'), this.delay.normal);
       });
     },
 
@@ -98,10 +103,10 @@ export default {
           this.invitationModalOpened = true;
         })
         .on('failure', () => {
-          this.$toast.create(420, this.$t('contactsImportFailure'), 500);
+          this.$toast.create(420, this.$t('contactsImportFailure'), this.delay.normal);
         })
         .on('error', () => {
-          this.$toast.create(10, this.$t('contactsImportError'), 500);
+          this.$toast.create(10, this.$t('contactsImportError'), this.delay.normal);
         })
         .import(this.$store.state.contacts);
     },

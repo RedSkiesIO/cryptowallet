@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div
+    <!-- <div
       class="settings-row"
       @click="changeNodeIP"
     >
@@ -55,7 +55,7 @@
           @click="changeNodeIP"
         />
       </div>
-    </div>
+    </div> -->
 
     <div
       class="settings-row"
@@ -126,11 +126,11 @@
       @closeCurrencyModal="currencyOpen=false"
     />
 
-    <Node
+    <!-- <Node
       :open="nodeOpen"
       :current="nodeIp"
       @closeNodeModal="nodeOpen=false"
-    />
+    /> -->
 
     <Pin
       :open="pinOpen"
@@ -150,7 +150,7 @@
 import { mapState } from 'vuex';
 import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
-import Node from '@/components/AccountSettings/Node';
+// import Node from '@/components/AccountSettings/Node';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
 import Account from '@/store/wallet/entities/account';
@@ -161,7 +161,7 @@ export default {
   components: {
     SelectLanguage,
     SelectCurrency,
-    Node,
+    // Node,
     Pin,
     DeleteAccount,
   },
@@ -176,9 +176,8 @@ export default {
   },
   computed: {
     ...mapState({
-      authenticatedAccount: (state) => {
-        return state.settings.authenticatedAccount;
-      },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
@@ -221,7 +220,7 @@ export default {
         this.$store.dispatch('settings/setAuthenticatedAccount', null);
         setTimeout(() => {
           this.$store.dispatch('settings/setLoading', false);
-        }, 250);
+        }, this.delay.short);
       } catch (err) {
         this.errorHandler(err);
       }
@@ -266,7 +265,7 @@ export default {
   right: -0.25em;
 }
 
-.settings-chevron .q-btn-inner {
+.settings-chevron .q-btn__content {
   justify-content: flex-end;
 }
 

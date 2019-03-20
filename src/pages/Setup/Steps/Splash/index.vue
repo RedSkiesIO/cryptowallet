@@ -6,7 +6,7 @@
      -->
 
     <div class="splash-logo">
-      <h1>{{ $t('CryptoWallet') }}</h1>
+      <h1>{{ $t('cryptoWallet') }}</h1>
       <p class="splash-slogan">
         {{ $t('splashSlogan') }}
       </p>
@@ -189,8 +189,9 @@ export default {
       }
 
       if (type === 'new') {
+        const skipScreen = 2;
         this.$store.dispatch('setup/setAccountType', 'new');
-        this.$router.push({ path: `/setup/${this.id + 2}` });
+        this.$router.push({ path: `/setup/${this.id + skipScreen}` });
         return true;
       }
 

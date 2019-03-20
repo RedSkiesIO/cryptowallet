@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import ContactListItem from '@/components/Contacts/ContactListItem';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import AppInvitationMock from '@/plugins/AppInvitation/mock/';
+import AppInvitationMock from '@/boot/AppInvitation/mock/';
 
 describe('ContactListItem.vue', () => {
   let storeMocks;

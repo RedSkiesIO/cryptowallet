@@ -1,45 +1,48 @@
 {
-  "name": "com.atlascity.wallet.mobile",
-  "displayName": "AC Mobile Wallet",
-  "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
-  "main": "index.js",
-  "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Apache Cordova Team",
-  "license": "Apache-2.0",
-  "dependencies": {
-      "cordova-android": "^7.1.4",
-      "cordova-clipboard": "^1.2.1",
-      "cordova-plugin-android-permissions": "^1.0.0",
-      "cordova-plugin-contacts": "^3.0.1",
-      "cordova-plugin-device": "^2.0.2",
-      "cordova-plugin-email-composer": "^0.8.15",
-      "cordova-plugin-network-information": "^2.0.1",
-      "cordova-plugin-qrscanner": "^2.6.0",
-      "cordova-plugin-vibration": "^3.1.0",
-      "cordova-plugin-whitelist": "^1.3.3",
-      "cordova-plugin-x-socialsharing": "^5.4.4",
-      "cordova-sms-plugin": "^0.1.13",
-      "es6-promise-plugin": "^4.2.2"
-  },
-  "cordova": {
-      "plugins": {
-          "cordova-plugin-whitelist": {},
-          "cordova-plugin-contacts": {},
-          "cordova-plugin-android-permissions": {},
-          "cordova-plugin-device": {},
-          "cordova-plugin-email-composer": {},
-          "cordova-sms-plugin": {},
-          "cordova-clipboard": {},
-          "cordova-plugin-qrscanner": {},
-          "cordova-plugin-x-socialsharing": {},
-          "cordova-plugin-network-information": {}
-      },
-      "platforms": [
-          "android"
-      ]
-  },
-  "devDependencies": {}
+    "name": "com.atlascity.wallet.mobile",
+    "displayName": "AC Mobile Wallet",
+    "version": "1.0.0",
+    "description": "A sample Apache Cordova application that responds to the deviceready event.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Apache Cordova Team",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "cordova-android": "^7.1.4",
+        "cordova-clipboard": "^1.2.1",
+        "cordova-plugin-android-permissions": "^1.0.0",
+        "cordova-plugin-contacts": "^3.0.1",
+        "cordova-plugin-device": "^2.0.2",
+        "cordova-plugin-email-composer": "^0.8.15",
+        "cordova-plugin-network-information": "^2.0.1",
+        "cordova-plugin-qrscanner": "^2.6.0",
+        "cordova-plugin-vibration": "^3.1.0",
+        "cordova-plugin-whitelist": "^1.3.3",
+        "cordova-plugin-x-socialsharing": "^5.4.4",
+        "cordova-sms-plugin": "^0.1.13",
+        "es6-promise-plugin": "^4.2.2"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-contacts": {},
+            "cordova-plugin-android-permissions": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-email-composer": {},
+            "cordova-sms-plugin": {},
+            "cordova-clipboard": {},
+            "cordova-plugin-qrscanner": {},
+            "cordova-plugin-x-socialsharing": {
+                "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
+            },
+            "cordova-plugin-network-information": {},
+            "cordova-plugin-vibration": {}
+        },
+        "platforms": [
+            "android"
+        ]
+    },
+    "devDependencies": {}
 }

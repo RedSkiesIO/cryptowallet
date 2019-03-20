@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VuexPersistence from 'vuex-persist';
 import VuexORM from '@vuex-orm/core';
 import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
 
@@ -50,26 +49,16 @@ window.Prices = Prices;
 window.Account = Account;
 window.Coin = Coin;
 
-// Setup persistant storage.
-// @TODO WHY IS THIS DEFINED AND NOT USED???
-/* eslint-disable-next-line */
-const vuexLocal = new VuexPersistence({
-  supportCircular: true,
-  storage: window.localStorage,
-  modules: [settings],
-});
-
-
 const options = {
   env: 'browser',
 };
 
-// @TODO WHY IS THIS DEFINED BEFORE USE???
 function hydrationCompletedCallback() {
+  const delay = 1000;
   setTimeout(() => {
     /* eslint-disable-next-line */
     store.dispatch('settings/setLoading', false);
-  }, 1000);
+  }, delay);
 }
 
 VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });

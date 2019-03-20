@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout>
     <!-- <div
       v-if="showParticles"
       class="particles"
@@ -10,9 +10,9 @@
         color="#c7c7c7"
       />
     </div> -->
-    <q-layout-header>
+    <q-header>
       <Header />
-    </q-layout-header>
+    </q-header>
 
     <div
       :class="{ 'no-footer': !isMainNavVisible }"

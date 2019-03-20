@@ -17,8 +17,10 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input grey-input"
-          inverted
+          class="sm-input"
+          outlined
+          dense
+          color="primary"
           @blur="checkField('address')"
         />
         <div
@@ -52,8 +54,10 @@
             :error="$v.inCoin.$error"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
           />
@@ -67,8 +71,10 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input grey-input"
-            inverted
+            class="sm-input"
+            outlined
+            dense
+            color="primary"
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
           />
@@ -86,9 +92,14 @@
             name="help_outline"
             size="1.1rem"
             class="help-icon"
-            @click.native="helpFee"
+            @click="feeDialogOpened = true"
           />
         </h3>
+        <FeeDialog
+          :opened="feeDialogOpened"
+          :message="$t('helpFeesBitcoin')"
+          @closeFeeDialog="feeDialogOpened = false"
+        />
         <span class="h3-line" />
       </div>
 
@@ -121,16 +132,6 @@
         />
       </div>
     </div>
-
-    <q-modal
-      v-model="sendingModalOpened"
-      minimized
-    >
-      <div class="sending-wallet-modal">
-        <Spinner />
-        <h1>Sending</h1>
-      </div>
-    </q-modal>
   </div>
 </template>
 
@@ -146,45 +147,54 @@ import { debounce } from 'quasar';
 import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
-import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
+import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
+const delay = 500;
 export default {
   name: 'SendCoin',
   components: {
-    Spinner,
+    FeeDialog,
   },
   data() {
     return {
       address: '',
+      addressLengthMin: 26,
+      addressLengthMax: 35,
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
       inCurrencyFocus: false,
-      sendingModalOpened: false,
       feeSetting: 1,
       estimatedFee: 'N/A',
       utxos: [],
       maxed: false,
       addressError: '',
       amountError: '',
+      feeDialogOpened: false,
     };
   },
-  validations: {
-    address: {
-      required, alphaNum, minLength: minLength(34), maxLength: maxLength(34),
-    },
-    inCoin: {
-      required,
-    },
-    inCurrency: {
-      required,
-    },
+  validations() {
+    return {
+      address: {
+        required,
+        alphaNum,
+        minLength: minLength(this.addressLengthMin),
+        maxLength: maxLength(this.addressLengthMax),
+      },
+      inCoin: {
+        required,
+      },
+      inCurrency: {
+        required,
+      },
+    };
   },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -240,14 +250,6 @@ export default {
   },
 
   methods: {
-    helpFee() {
-      this.$q.dialog({
-        title: this.$t('fees'),
-        message: this.$t('helpFeesBitcoin'),
-        ok: this.$t('ok'),
-        color: 'blueish',
-      });
-    },
     updateInCoinFocus(val) {
       this.inCoinFocus = val;
       if (!val) {
@@ -361,9 +363,10 @@ export default {
 
       let { address } = that.getAddresses()[0];
       if (that.address) { ({ address } = that); }
-      let amount = that.wallet.confirmedBalance / 2;
+      const halfBalance = 2;
+      let amount = that.wallet.confirmedBalance / halfBalance;
       if (that.inCoin) { amount = that.inCoin; }
-
+      // TODO: change this to calculate fee using max boolean
       that.createRawTx(
         accounts,
         changeAddresses,
@@ -372,7 +375,7 @@ export default {
         address,
         amount,
       );
-    }, 250),
+    }, delay),
 
     /**
      * Returns addresses
@@ -506,14 +509,11 @@ export default {
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
-
       const fees = response.data.data;
       const kbToBytes = 1000;
-
       Object.keys(fees).forEach((key) => {
         fees[key] /= kbToBytes;
       });
-
 
       let fee = fees.medium;
       if (this.feeSetting === 0) {
@@ -593,12 +593,12 @@ export default {
      */
     async send() {
       if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), 500);
+        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
         return false;
       }
 
       if (this.wallet.confirmedBalance < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), 500);
+        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
 
@@ -608,7 +608,7 @@ export default {
 
       // there are no UTXOs available, wallet is empty
       if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t('noFunds'), 500);
+        this.$toast.create(10, this.$t('noFunds'), this.delay.normal);
         return false;
       }
 
@@ -616,7 +616,7 @@ export default {
 
       // there is enough funds, but UTXOs are pending
       if (filteredUtxos.length === 0) {
-        this.$toast.create(10, this.$t('fundsPending'), 500);
+        this.$toast.create(10, this.$t('fundsPending'), this.delay.normal);
         return false;
       }
 
@@ -635,7 +635,9 @@ export default {
         this.inCoin,
       );
 
-      this.$root.$emit('confirmSendModalOpened', true, {
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('confirmSendModalOpened', true, {
         hexTx,
         transaction,
         changeAddresses,
@@ -714,8 +716,12 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      this.$root.$emit('scanQRCode');
-      this.$root.$emit('sendCoinModalOpened', false);
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('scanQRCode');
+      // @todo, don't use app global
+      /* eslint-disable-next-line */
+      app.$root.$emit('sendCoinModalOpened', false);
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -728,11 +734,15 @@ export default {
                 this.address = text;
                 this.addressError = '';
               }
-              this.$root.$emit('cancelScanning');
-              this.$root.$emit('sendCoinModalOpened', true);
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('cancelScanning');
+              // @todo, don't use app global
+              /* eslint-disable-next-line */
+              app.$root.$emit('sendCoinModalOpened', true);
             }
           });
-        }, 500);
+        }, this.delay.normal);
       }
     },
   },

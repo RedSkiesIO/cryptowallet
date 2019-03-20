@@ -1,7 +1,8 @@
 <template>
   <section
     class="scroll-area static"
-    @touchmove="prevent"
+    @touchstart="touchStart"
+    @touchmove="touchMove"
   >
     <q-scroll-area
       ref="scrollArea"
@@ -25,9 +26,9 @@
             v-if="filteredPaginated.length === 0"
             class="no-tx-alert"
           >
-            <q-alert color="info">
+            <q-banner class="info bg-primary">
               {{ $t('emptyTransactionHistory') }}
-            </q-alert>
+            </q-banner>
           </div>
         </q-timeline>
         <q-spinner-dots
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import SingleTransaction from '@/components/Wallet/SingleTransaction';
 import Tx from '@/store/wallet/entities/tx';
 
@@ -68,6 +70,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      delay: (state) => { return state.settings.delay; },
+    }),
     transactions() {
       const msTos = 1000;
       const txs = Tx.query()
@@ -149,19 +154,22 @@ export default {
         return false;
       }
 
-      return this.sleeper(500)().then(() => {
+      return this.sleeper(this.delay.normal)().then(() => {
         this.page = this.page + 1;
         done(false);
       });
     },
 
-    /**
-     * Stops q-pull-to-refresh from firing until TransactionsList reaches
-     * the top scroll position
-     * @param  {Object} event
-     */
-    prevent(event) {
-      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop > 0) {
+    touchStart(event) {
+      this.touchStartY = event.touches[0].clientY;
+    },
+
+    touchMove(event) {
+      if (event.touches[0].clientY <= this.touchStartY) {
+        event.stopPropagation();
+      }
+
+      if (this.$refs.scrollArea.$el.childNodes[0].scrollTop !== 0) {
         event.stopPropagation();
       }
     },
@@ -184,5 +192,9 @@ export default {
 
 .no-tx-alert .q-alert-content {
   font-size: 0.8rem;
+}
+
+.q-tab-panel {
+  padding: 0;
 }
 </style>

@@ -9,6 +9,12 @@ import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
+  name: 'Complete',
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     ...mapState({
       setup: (state) => { return state.setup; },
@@ -17,10 +23,17 @@ export default {
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
     },
+    accounts() {
+      return this.$store.getters['entities/account/query']().get();
+    },
   },
 
   mounted() {
-    this.complete();
+    const delay = 500;
+    this.$store.dispatch('settings/setLoading', true);
+    setTimeout(() => {
+      this.complete();
+    }, delay);
   },
 
   methods: {
@@ -31,17 +44,15 @@ export default {
       const accounts = this.$store.getters['entities/account/query']().get();
       const password = this.setup.pinArray.join('');
       const pinHash = this.$CWCrypto.bcryptHashString(password, this.setup.salt);
-
       const data = {
         uid: uid(),
         name: this.setup.accountName,
         salt: this.setup.salt,
         pinHash,
         default: accounts.length === 0,
-        locale: this.setup.accountLocale || this.$i18n.locale,
+        locale: this.setup.accountLocale || this.accounts[0].locale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
-        currency: 'GBP', // @TODO HARD CODED VALUE ????????
       };
 
       this.$store.dispatch('settings/setSelectedAccount', data.name);
@@ -106,10 +117,14 @@ export default {
         await Promise.all(promises);
         await Promise.all(erc20Promises);
 
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
         this.$store.dispatch('settings/setAuthenticatedAccount', id);
         this.$store.dispatch('settings/setLayout', 'light');
         this.$router.push({ path: '/wallet' });
         this.$store.dispatch('setup/clearSetupData');
+        this.$store.dispatch('settings/setLoading', false);
       } catch (err) {
         this.errorHandler(err);
       }

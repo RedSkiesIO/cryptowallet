@@ -266,11 +266,11 @@ export default {
   padding: 0;
 }
 
-.back-arrow-btn .q-btn-inner {
+.back-arrow-btn .q-btn__content {
   justify-content: flex-start;
 }
 
-.icon-btn-right .q-btn-inner {
+.icon-btn-right .q-btn__content {
   justify-content: flex-end;
 }
 

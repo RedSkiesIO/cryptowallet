@@ -7,15 +7,13 @@
     }"
     view="lHh Lpr lFf"
   >
-    <q-layout-header>
-      <Header />
-    </q-layout-header>
+    <Header />
 
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
-        :handler="refresher"
         :disable="!isPullEnabled || isPullTempDisabled"
         color="cyan"
+        @refresh="refresher"
       >
         <div class="background" />
         <div
@@ -58,9 +56,9 @@
       enter-active-class="animated slideInUp"
       leave-active-class="animated slideOutDown"
     >
-      <q-layout-footer v-show="isMainNavVisible">
+      <q-footer v-show="isMainNavVisible">
         <MainNav />
-      </q-layout-footer>
+      </q-footer>
     </transition>
   </q-layout>
 </template>
@@ -98,6 +96,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     wallets() {
@@ -245,14 +244,14 @@ export default {
             this.errorHandler(err);
             done();
           }
-        }, 1000);
+        }, this.delay.long);
         return false;
       }
 
       if (this.$route.name === 'walletSingle') {
         setTimeout(() => {
           this.$root.$emit('updateWalletSingle', done);
-        }, 1000);
+        }, this.delay.long);
       }
 
       return false;
@@ -317,8 +316,7 @@ export default {
             } else if (wallet.sdk === 'Ethereum') {
               newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
             } else if (wallet.sdk === 'ERC20') {
-              const activeWallet = this.activeWallets[this.authenticatedAccount][wallet.name];
-              newBalance = await coinSDK.getBalance(activeWallet);
+              newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
             }
 
             // update balance
@@ -417,16 +415,16 @@ export default {
 
 .no-balance .background,
 .short-top .background {
-  height: 21rem;
+  height: 17rem;
 }
 
 .single-wallet-top .background {
   height: 28.5rem;
 }
 
-.q-pull-to-refresh-wrapper {
+/*.q-pull-to-refresh-wrapper {
   padding-top: 2.5rem;
-}
+}*/
 
 .q-pull-to-refresh-wrapper .pull-to-refresh-message {
   position: relative;
