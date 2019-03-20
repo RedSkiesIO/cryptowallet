@@ -61,6 +61,8 @@
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@quasar/app": "^1.0.0-beta.12",
+    "@quasar/quasar-app-extension-testing": "^1.0.0-rc.1",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^1.0.0-beta.15",
     "@types/cross-spawn": "^6.0.0",
     "@types/jest": "^23.3.2",
     "@vue/cli-plugin-eslint": "^3.4.0",
