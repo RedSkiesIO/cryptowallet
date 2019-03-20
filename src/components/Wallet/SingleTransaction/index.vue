@@ -12,31 +12,39 @@
           <div class="single-transaction-content">
             <p>
               TX Hash:
-              <span class="tx-hash break">{{ data.hash }}</span>
+              <span class="tx-hash break">
+                {{ data.hash }}
+              </span>
             </p>
             <p>
               {{ $t('status') }}:
               <span
                 :class="{
+                  'status': true,
                   'unconfirmed-tx': data.confirmations < minConfirmations,
                   'confirmed-tx': data.confirmations >= minConfirmations,
                 }"
-                class="status"
               >
                 {{ status }}
               </span>
             </p>
             <p>
               {{ $t('confirmations') }}:
-              <span class="confirmations">{{ data.confirmations }}</span>
+              <span class="confirmations">
+                {{ data.confirmations }}
+              </span>
             </p>
             <p>
               TX {{ $t('fee') }}:
-              <span class="tx-fee">{{ feeFormated }}</span>
+              <span class="tx-fee">
+                {{ feeFormated }}
+              </span>
             </p>
             <p>
               {{ $t('blockHeight') }}:
-              <span class="tx-height">{{ data.blockHeight }}</span>
+              <span class="tx-height">
+                {{ data.blockHeight }}
+              </span>
             </p>
           </div>
         </q-card-section>
