@@ -37,7 +37,6 @@ export default {
   },
   computed: {
     ...mapState({
-      // id: (state) => { return parseInt(state.route.params.id, 10); },
       delay: (state) => { return state.settings.delay; },
     }),
   },
