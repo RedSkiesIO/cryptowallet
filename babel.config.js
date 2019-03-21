@@ -1,5 +1,5 @@
-const fs = require('fs-extra')
-;
+const fs = require('fs-extra');
+
 let extend;
 
 /**

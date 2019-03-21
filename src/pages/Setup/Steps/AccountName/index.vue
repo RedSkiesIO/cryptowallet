@@ -37,13 +37,16 @@ export default {
   },
   computed: {
     ...mapState({
-      id: (state) => { return parseInt(state.route.params.id, 10); },
+      // id: (state) => { return parseInt(state.route.params.id, 10); },
       delay: (state) => { return state.settings.delay; },
     }),
   },
   methods: {
     validate() {
-      if (this.accountName.length === 0) { return false; }
+      if (this.accountName.length === 0) {
+        this.$toast.create(10, this.$t('enterAccountName'), this.delay.normal);
+        return false;
+      }
       const accounts = this.$store.getters['entities/account/query']().get();
       const nameAlreadyInUse = accounts.find((account) => {
         return account.name === this.accountName;

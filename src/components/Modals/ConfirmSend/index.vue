@@ -319,7 +319,6 @@ export default {
         try {
           await this.broadcastTx();
         } catch (err) {
-          console.log('cought', err);
           this.errorHandler(err);
         }
       }, this.delay.short);

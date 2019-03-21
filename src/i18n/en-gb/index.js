@@ -199,6 +199,7 @@ export default {
   seedPhrase: 'Seed Phrase',
   confirm: 'Confirm',
   seedConfirmation: 'Have you stored your seed?',
+  enterAccountName: 'Please enter an account name',
   // other
   noConnection: 'No internet connction',
   volume24h: 'Volume 24h',
