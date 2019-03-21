@@ -88,13 +88,13 @@ export default new VueRouter({
         { name: 'coinPrices', path: '', component: () => { return import('pages/Wallet'); } },
       ],
     },
-    {
-      path: '/wallet/analytics',
-      component: () => { return import('layouts/Authed'); },
-      children: [
-        { path: '', component: () => { return import('pages/Analytics'); } },
-      ],
-    },
+    // {
+    //   path: '/wallet/analytics',
+    //   component: () => { return import('layouts/Authed'); },
+    //   children: [
+    //     { path: '', component: () => { return import('pages/Analytics'); } },
+    //   ],
+    // },
     {
       path: '/wallet/exchange',
       component: () => { return import('layouts/Authed'); },
@@ -102,13 +102,13 @@ export default new VueRouter({
         { name: 'exchange', path: '', component: () => { return import('pages/Exchange'); } },
       ],
     },
-    {
-      path: '/contact/:id',
-      component: () => { return import('layouts/Authed'); },
-      children: [
-        { path: '', component: () => { return import('pages/Contact'); } },
-      ],
-    },
+    // {
+    //   path: '/contact/:id',
+    //   component: () => { return import('layouts/Authed'); },
+    //   children: [
+    //     { path: '', component: () => { return import('pages/Contact'); } },
+    //   ],
+    // },
     {
       path: '*',
       component: () => { return import('layouts/UnAuthed'); },

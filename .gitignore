@@ -20,3 +20,4 @@ tests/unit/__coverage__/*
 *.sln
 *.log
 app-env
+test
