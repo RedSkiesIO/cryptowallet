@@ -136,8 +136,11 @@ import {
   minLength,
   maxLength,
 } from 'vuelidate/lib/validators';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 import { mapState } from 'vuex';
-import AmountFormatter from '@/helpers/AmountFormatter';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
@@ -416,6 +419,14 @@ export default {
       return true;
     },
 
+    availableBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).available;
+    },
+
+    unconfirmedBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+    },
+
     /**
      * Creates and sends a transaction
      */
@@ -425,12 +436,11 @@ export default {
         return false;
       }
 
-      if (this.wallet.confirmedBalance < this.inCoin) {
+      if (this.availableBalance() < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
 
-      // this.sendingModalOpened = true;
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
@@ -439,13 +449,19 @@ export default {
       if (this.feeSetting === 0) { fee = this.feeData.low; }
       if (this.feeSetting === 2) { fee = this.feeData.high; }
 
+      console.log('got here');
+
       try {
         const {
           transaction,
           hexTx,
         } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
 
-        this.$root.$emit('confirmSendModalOpened', true, {
+        console.log('transaction', transaction);
+
+        // @todo dont use app global
+        /* eslint-disable-next-line */
+        app.$root.$emit('confirmSendModalOpened', true, {
           hexTx,
           transaction,
         });

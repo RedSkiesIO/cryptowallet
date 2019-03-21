@@ -122,7 +122,7 @@ export default {
     },
 
     balanceInCoin() {
-      const balance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+      const balance = this.unconfirmedBalance();
 
       const balanceInCoin = new AmountFormatter({
         amount: balance,
@@ -145,8 +145,9 @@ export default {
       this.$router.push({ path: `/wallet/single/send/${this.wallet.id}` });
     },
     receive() {
-      this.$router.push({ path: `/wallet/receive/${this.wallet.id}` });
+      this.$router.push({ path: `/wallet/single/receive/${this.wallet.id}` });
     },
+    /*eslint-disable*/
     unconfirmedBalance() {
       const balance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
       return balance;

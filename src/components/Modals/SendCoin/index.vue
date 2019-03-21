@@ -161,6 +161,7 @@ export default {
   display: flex;
   padding-top: 1rem;
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .send-modal-heading {

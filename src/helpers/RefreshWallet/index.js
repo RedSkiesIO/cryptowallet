@@ -128,13 +128,156 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
   return true;
 }
 
+async function refreshEthereum(coinSDK, wallet, accountId) {
+  const addresses = Address.query()
+    .where('account_id', accountId)
+    .where('wallet_id', wallet.id)
+    .where('used', false)
+    .get();
+
+  let addressesRaw = addresses.map((item) => { return item.address; });
+  addressesRaw = addressesRaw.filter(onlyUnique);
+
+  const { network } = wallet;
+
+  const apiReturnLimit = 50;
+  const txHistory = await coinSDK.getTransactionHistory(
+    addressesRaw,
+    network,
+    0,
+    apiReturnLimit,
+  );
+
+  if (!txHistory) {
+    return false;
+  }
+
+
+  txHistory.txs.forEach((tx) => {
+    const result = Tx.query()
+      .where('hash', tx.hash)
+      .where('wallet_id', wallet.id)
+      .get();
+
+    if (result[0]) {
+      const foundTx = result[0];
+      if (foundTx.sent) {
+        // update the tx
+        Tx.$update({
+          where: (record) => {
+            return record.hash === tx.hash
+            && record.wallet_id === wallet.id;
+          },
+          data: tx,
+        });
+      } else {
+        // update found received
+        Tx.$update({
+          where: (record) => {
+            return (
+              record.hash === tx.hash
+            && record.wallet_id === wallet.id
+            );
+          },
+          data: tx,
+        });
+      }
+    } else {
+      // insert tx
+      Tx.$insert({
+        data: {
+          account_id: accountId,
+          wallet_id: wallet.id,
+          ...tx,
+        },
+      });
+    }
+  });
+
+
+  const newBalance = await coinSDK.getBalance(
+    addressesRaw,
+    wallet.network,
+  );
+
+  Wallet.$update({
+    where: (record) => { return record.id === wallet.id; },
+    data: { confirmedBalance: parseFloat(newBalance, 10) },
+  });
+
+  return true;
+}
+
+async function refreshERC20(coinSDK, wallet, accountId) {
+  const txHistory = await coinSDK.getTransactionHistory(
+    this.activeWallets[accountId][wallet.name],
+    0,
+  );
+
+  if (!txHistory) {
+    return false;
+  }
+
+  txHistory.forEach((tx) => {
+    const result = Tx.query()
+      .where('hash', tx.hash)
+      .where('wallet_id', wallet.id)
+      .get();
+
+    if (result[0]) {
+      const foundTx = result[0];
+      if (foundTx.sent) {
+        // update the tx
+        Tx.$update({
+          where: (record) => {
+            return record.hash === tx.hash
+            && record.wallet_id === wallet.id;
+          },
+          data: tx,
+        });
+      } else {
+        // update found received
+        Tx.$update({
+          where: (record) => {
+            return record.hash === tx.hash
+            && record.wallet_id === wallet.id;
+          },
+          data: tx,
+        });
+      }
+    } else {
+      // insert tx
+      Tx.$insert({
+        data: {
+          account_id: accountId,
+          wallet_id: wallet.id,
+          ...tx,
+        },
+      });
+    }
+  });
+
+  const newBalance = await coinSDK.getBalance(wallet);
+
+  Wallet.$update({
+    where: (record) => { return record.id === wallet.id; },
+    data: { confirmedBalance: parseFloat(newBalance, 10) },
+  });
+
+  return true;
+}
+
 async function refreshWallet(coinSDK, wallet, accountId) {
   if (wallet.sdk === 'Bitcoin') {
     await refreshBitcoin(coinSDK, wallet, accountId);
   }
 
   if (wallet.sdk === 'Ethereum') {
-    console.log('REFRESH ETH');
+    await refreshEthereum(coinSDK, wallet, accountId);
+  }
+
+  if (wallet.sdk === 'ERC20') {
+    await refreshERC20(coinSDK, wallet, accountId);
   }
 
   return false;

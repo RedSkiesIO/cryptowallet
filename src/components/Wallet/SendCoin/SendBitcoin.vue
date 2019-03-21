@@ -2,18 +2,50 @@
   <div>
     <div class="send-coin-box">
       <div class="send-modal-heading">
-        <h3>
+        <h4>
           {{ $t('availableBalance') }}
           <q-icon
             name="help_outline"
             size="1.1rem"
             class="help-icon"
+            @click="availableFundsDialogOpened = true"
           />
-        </h3>
+        </h4>
         <span class="h3-line" />
+
+        <q-dialog
+          v-model="availableFundsDialogOpened"
+        >
+          <q-card
+            style="width: 300px"
+            class="dialog"
+          >
+            <q-card-section>
+              <h2>
+                {{ $t('availableBalance') }}
+              </h2>
+              <p>
+                {{ $t('availableBalanceExplanation') }}
+              </p>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn
+                flat
+                :label="$t('ok')"
+                color="blueish"
+                v-close-dialog
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+
       </div>
 
-      <div class="available-amount">
+      <div
+        class="available-amount"
+        :class="{ 'full': unconfirmedBalance() === availableBalance() }"
+      >
         <Amount
           v-if="latestPrice"
           :amount="availableBalance()"
@@ -88,6 +120,7 @@
             color="primary"
             @focus="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
+            @input="validateInput('inCoin')"
           />
           <div class="side-content">
             {{ coinSymbol }}
@@ -97,6 +130,7 @@
           <q-input
             v-model="inCurrency"
             :disable="maxed"
+            :error="$v.inCurrency.$error"
             type="number"
             placeholder="0"
             class="sm-input"
@@ -105,6 +139,7 @@
             color="primary"
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
+            @input="validateInput('inCoin')"
           />
           <div class="side-content">
             {{ selectedCurrency.code }}
@@ -169,6 +204,7 @@ import {
   alphaNum,
   minLength,
   maxLength,
+  between,
 } from 'vuelidate/lib/validators';
 import {
   AmountFormatter,
@@ -181,6 +217,8 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 import Amount from '@/components/Wallet/Amount';
+
+/*eslint-disable*/
 
 const delay = 500;
 export default {
@@ -200,11 +238,12 @@ export default {
       inCurrencyFocus: false,
       feeSetting: 1,
       estimatedFee: 'N/A',
-      utxos: [],
+      maxValueCoin: Infinity,
       maxed: false,
       addressError: '',
       amountError: '',
       feeDialogOpened: false,
+      availableFundsDialogOpened: false,
     };
   },
   validations() {
@@ -217,9 +256,11 @@ export default {
       },
       inCoin: {
         required,
+        between: between(0, this.maxValueCoin),
       },
       inCurrency: {
         required,
+        between: between(0, this.maxValueCurrency),
       },
     };
   },
@@ -253,44 +294,57 @@ export default {
       }
       return prices.data.PRICE;
     },
+    utxos() {
+      return Utxo.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('wallet_id', this.wallet.id)
+        .where('pending', false)
+        .get();
+    }
   },
   watch: {
     inCoin(val) {
-      if (val === null || val === '') { return false; }
+      if (val === null || val === '') {
+        this.inCurrency = '';
+        this.validateInput('inCoin');
+        return false;
+      }
       if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
       this.updateFee(this.feeSetting, this);
+      this.validateInput('inCoin');
       return false;
     },
     inCurrency(val) {
-      if (val === null || val === '') { return false; }
+      if (val === null || val === '') {
+        this.inCoin = '';
+        return false;
+      }
       if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
       this.updateFee(this.feeSetting, this);
       return false;
     },
-    utxos: {
-      handler() {
-        this.updateFee(this.feeSetting, this);
-      },
-    },
   },
 
   async mounted() {
-    try {
-      await this.fetchUTXOs();
-    } catch (err) {
-      this.errorHandler(err);
-    }
+    await this.getMaxedTx();
   },
 
   methods: {
     updateInCoinFocus(val) {
-      this.inCoinFocus = val;
       if (!val) {
-        this.checkField('inCoin');
+        this.validateInput('inCoin');
       }
+      this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
+      if (!val) {
+        this.validateInput('inCoin');
+      }
       this.inCurrencyFocus = val;
+    },
+
+    validateInput(field) {
+      this.checkField(field);
     },
 
     async checkField(field) {
@@ -308,14 +362,22 @@ export default {
         }
         this.addressError = '';
       }
+
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
-        if (this.$v.inCoin.$error) {
-          this.amountError = this.$t('noAmount');
-          return false;
+        this.$v.inCurrency.$touch();
+
+        if (!this.$v.inCoin.between) {
+          this.amountError = this.$t('notEnoughFunds');
+        } else {
+          this.amountError = '';
         }
-        this.amountError = '';
+
+        if (!this.$v.inCoin.$model) {
+          this.amountError = this.$t('noAmount');
+        }
       }
+
       return true;
     },
 
@@ -354,17 +416,6 @@ export default {
     },
 
     /**
-     * Fetches UTXOs
-     */
-    async fetchUTXOs() {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const addressesRaw = this.getAddressesRaw();
-      const utxos = await coinSDK.getUTXOs(addressesRaw, this.wallet.network);
-      console.log('utxos', utxos);
-      this.utxos = utxos;
-    },
-
-    /**
      * Allows to display a custom fee label on Quasar component
      */
     customFeeLabel(feeSetting) {
@@ -385,32 +436,26 @@ export default {
      * Creates a raw transaction which will calculate and update the fee
      */
     updateFee: debounce((fee, that) => {
-      /*eslint-disable*/
-      return false;
-      const { filteredUtxos, pendingCount } = that.filterOutPending(that.utxos);
+      if (!that.$v.inCoin.$invalid) {
+        const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
+        const accounts = that.getAccounts();
 
-      const changeAddresses = that.generateChangeAddresses(
-        filteredUtxos,
-        pendingCount,
-      );
+        let { address } = that.getAddresses()[0];
+        if (that.address) { ({ address } = that); }
 
-      const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
-      const accounts = that.getAccounts();
+        const changeAddresses = that.generateChangeAddresses();
 
-      let { address } = that.getAddresses()[0];
-      if (that.address) { ({ address } = that); }
-      const halfBalance = 2;
-      let amount = that.wallet.confirmedBalance / halfBalance;
-      if (that.inCoin) { amount = that.inCoin; }
-      // TODO: change this to calculate fee using max boolean
-      that.createRawTx(
-        accounts,
-        changeAddresses,
-        filteredUtxos,
-        wallet,
-        address,
-        amount,
-      );
+        that.createRawTx(
+          accounts,
+          changeAddresses,
+          that.utxos,
+          wallet,
+          address,
+          that.inCoin,
+        );
+      } else {
+        that.estimatedFee = 'N/A';
+      }
     }, delay),
 
     /**
@@ -523,6 +568,26 @@ export default {
       return changeAddresses;
     },
 
+    async getFee() {
+      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+      const fees = response.data.data;
+      const kbToBytes = 1000;
+      Object.keys(fees).forEach((key) => {
+        fees[key] /= kbToBytes;
+      });
+
+      let fee = fees.medium;
+      if (this.feeSetting === 0) {
+        fee = fees.low;
+      }
+      if (this.feeSetting === 2) {
+        fee = fees.high;
+      }
+
+      fee = Math.round(fee);
+      return fee;;
+    },
+
     /**
      * Creates a raw transaction and updates the fee
      * @param  {Array<Object>} accounts
@@ -544,22 +609,7 @@ export default {
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
-      const fees = response.data.data;
-      const kbToBytes = 1000;
-      Object.keys(fees).forEach((key) => {
-        fees[key] /= kbToBytes;
-      });
-
-      let fee = fees.medium;
-      if (this.feeSetting === 0) {
-        fee = fees.low;
-      }
-      if (this.feeSetting === 2) {
-        fee = fees.high;
-      }
-
-      fee = Math.round(fee);
+      const fee = await this.getFee();
 
       if (this.maxed) {
         amount = 0;
@@ -628,6 +678,10 @@ export default {
       return getBalance(this.wallet, this.authenticatedAccount).available;
     },
 
+    unconfirmedBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+    },
+
     availableBalanceInCoin() {
       const balance = getBalance(this.wallet, this.authenticatedAccount).available;
 
@@ -651,9 +705,9 @@ export default {
         return false;
       }
 
-      const unconfirmedBalance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+      const availableBalance = this.availableBalance();
 
-      if (unconfirmedBalance < this.inCoin) {
+      if (availableBalance < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
@@ -668,24 +722,13 @@ export default {
         return false;
       }
 
-      const { filteredUtxos, pendingCount } = this.filterOutPending(this.utxos);
-
-      // there is enough funds, but UTXOs are pending
-      if (filteredUtxos.length === 0) {
-        this.$toast.create(10, this.$t('fundsPending'), this.delay.normal);
-        return false;
-      }
-
-      const changeAddresses = this.generateChangeAddresses(
-        filteredUtxos,
-        pendingCount,
-      );
+      const changeAddresses = this.generateChangeAddresses();
       const accounts = this.getAccounts();
 
       const { hexTx, transaction, utxo } = await this.createRawTx(
         accounts,
         changeAddresses,
-        filteredUtxos,
+        this.utxos,
         wallet,
         this.address,
         this.inCoin,
@@ -721,6 +764,7 @@ export default {
         this.maxed = false;
         this.inCoin = '';
         this.inCurrency = '';
+        this.estimatedFee = 'N/A';
         return false;
       }
 
@@ -729,13 +773,8 @@ export default {
       return false;
     },
 
-    async updateMax() {
-      const { filteredUtxos, pendingCount } = this.filterOutPending(this.utxos);
-
-      const changeAddresses = this.generateChangeAddresses(
-        filteredUtxos,
-        pendingCount,
-      );
+    async getMaxedTx() {
+      const changeAddresses = this.generateChangeAddresses();
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
       ];
@@ -744,16 +783,28 @@ export default {
       if (this.address) {
         ({ address } = this);
       }
-      const availableBalance = getBalance(this.wallet, this.authenticatedAccount).available;
 
-      const { transaction } = await this.createRawTx(
+      const fee = await this.getFee();
+
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const { transaction, utxo } = await coinSDK.createRawTx(
         accounts,
         changeAddresses,
-        filteredUtxos,
+        this.utxos,
         wallet,
         address,
-        availableBalance,
+        0,
+        fee,
+        true,
       );
+
+      this.maxValueCoin = transaction.value;
+      this.maxValueCurrency = this.amountToCurrency(transaction.value);
+      return transaction;
+    },
+
+    async updateMax() {
+      const transaction = await this.getMaxedTx();
 
       const formattedFee = new AmountFormatter({
         amount: transaction.fee,
@@ -812,6 +863,10 @@ export default {
   font-family: 'CooperHewitt-BoldItalic';
   font-size: 0.8rem;
   margin-bottom: 1.5rem;
-  color: #ff4b00;
+  color: #fd0000;
+}
+
+.available-amount.full {
+  color: green;
 }
 </style>

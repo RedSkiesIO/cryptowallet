@@ -68,6 +68,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/wallet/single/receive/:id',
+      component: () => { return import('layouts/Authed'); },
+      children: [
+        { name: 'receiveCoinSingle', path: '', component: () => { return import('pages/WalletSingle'); } },
+      ],
+    },
+    {
       path: '/wallet/receive/:id',
       component: () => { return import('layouts/Authed'); },
       children: [
