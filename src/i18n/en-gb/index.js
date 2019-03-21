@@ -129,6 +129,7 @@ export default {
   catalystNode: 'Catalyst Node',
   // Wallet
   balance: 'Balance',
+  availableBalance: 'Available Balance',
   yourAddress: 'Your Address',
   scanQR: 'Scan QR Code',
   recipient: 'Recipient',

@@ -2,6 +2,34 @@
   <div>
     <div class="send-coin-box">
       <div class="send-modal-heading">
+        <h3>
+          {{ $t('availableBalance') }}
+          <q-icon
+            name="help_outline"
+            size="1.1rem"
+            class="help-icon"
+          />
+        </h3>
+        <span class="h3-line" />
+      </div>
+
+      <div class="available-amount">
+        <Amount
+          v-if="latestPrice"
+          :amount="availableBalance()"
+          :rate="latestPrice"
+          :prepend-plus-or-minus="false"
+          :currency="selectedCurrency"
+          :to-currency="true"
+          :coin="wallet.name"
+          format="0,0[.]00"
+        />
+        <div class="in-coin">
+          {{ availableBalanceInCoin() }} {{ coinSymbol }}
+        </div>
+      </div>
+
+      <div class="send-modal-heading">
         <h3>{{ $t('recipient') }}</h3>
         <span class="h3-line" />
         <q-btn
@@ -142,19 +170,24 @@ import {
   minLength,
   maxLength,
 } from 'vuelidate/lib/validators';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 import { mapState } from 'vuex';
 import { debounce } from 'quasar';
-import AmountFormatter from '@/helpers/AmountFormatter';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
+import Amount from '@/components/Wallet/Amount';
 
 const delay = 500;
 export default {
   name: 'SendCoin',
   components: {
     FeeDialog,
+    Amount,
   },
   data() {
     return {
@@ -591,6 +624,24 @@ export default {
       return true;
     },
 
+    availableBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).available;
+    },
+
+    availableBalanceInCoin() {
+      const balance = getBalance(this.wallet, this.authenticatedAccount).available;
+
+      const balanceInCoin = new AmountFormatter({
+        amount: balance,
+        rate: this.latestPrice,
+        format: '0.00000000',
+        prependPlusOrMinus: false,
+        removeTrailingZeros: true,
+      });
+
+      return balanceInCoin.getFormatted();
+    },
+
     /**
      * Creates and sends a transaction
      */
@@ -600,9 +651,9 @@ export default {
         return false;
       }
 
-      console.log(this.wallet.confirmedBalance);
+      const unconfirmedBalance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
 
-      if (this.wallet.confirmedBalance < this.inCoin) {
+      if (unconfirmedBalance < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
@@ -690,8 +741,10 @@ export default {
       ];
       const accounts = this.getAccounts();
       let { address } = this.getAddresses()[0];
-      if (this.address) { ({ address } = this); }
-      const amount = this.wallet.confirmedBalance;
+      if (this.address) {
+        ({ address } = this);
+      }
+      const availableBalance = getBalance(this.wallet, this.authenticatedAccount).available;
 
       const { transaction } = await this.createRawTx(
         accounts,
@@ -699,7 +752,7 @@ export default {
         filteredUtxos,
         wallet,
         address,
-        amount,
+        availableBalance,
       );
 
       const formattedFee = new AmountFormatter({
@@ -755,4 +808,10 @@ export default {
 </script>
 
 <style>
+.available-amount {
+  font-family: 'CooperHewitt-BoldItalic';
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  color: #ff4b00;
+}
 </style>

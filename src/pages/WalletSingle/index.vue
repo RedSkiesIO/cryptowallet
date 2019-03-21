@@ -5,12 +5,18 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Transactions from '@/components/Wallet/Transactions';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import { mapState } from 'vuex';
+import { refreshWallet } from '@/helpers';
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
 
 export default {
   name: 'Balance',
@@ -78,42 +84,69 @@ export default {
     },
 
     /**
-     * Performs a wallet update
+     * Update balance
      */
-    async refresher(done) {
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-
-      const addresses = Address.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('wallet_id', this.wallet.id)
-        .where('used', false)
-        .get();
-      let addressesRaw = addresses.map((item) => { return item.address; });
-
-
-      addressesRaw = addressesRaw.filter(onlyUnique);
+    async updateBalance() {
       let newBalance;
 
       if (this.wallet.sdk === 'Bitcoin') {
-        const utxos = await this.getUtxos(addressesRaw);
-        const { balance } = utxos;
-        newBalance = balance;
+        const addresses = Address.query()
+          .where('account_id', this.authenticatedAccount)
+          .where('wallet_id', this.wallet.id)
+          .where('used', false)
+          .get();
+
+        let addressesRaw = addresses.map((item) => { return item.address; });
+        addressesRaw = addressesRaw.filter(onlyUnique);
+
+        await this.getUtxos(addressesRaw);
       } else if (this.wallet.sdk === 'Ethereum') {
         newBalance = await coinSDK.getBalance(
           addressesRaw,
           this.wallet.network,
         );
+
+        Wallet.$update({
+          where: (record) => { return record.id === this.wallet.id; },
+          data: { confirmedBalance: parseFloat(newBalance, 10) },
+        });
       } else if (this.wallet.sdk === 'ERC20') {
         const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
         newBalance = await coinSDK.getBalance(wallet);
+
+        Wallet.$update({
+          where: (record) => { return record.id === this.wallet.id; },
+          data: { confirmedBalance: parseFloat(newBalance, 10) },
+        });
       }
-      const satoshiMultiplier = 100000000000000;
+
+/*      const satoshiMultiplier = 100000000000000;
 
       newBalance = Math.floor(newBalance * satoshiMultiplier) / satoshiMultiplier;
+
+*/
+
+    },
+
+    /*eslint-disable*/
+
+    /**
+     * Performs a wallet update
+     */
+    async refresher(done) {
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+
+      await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount);
+
+
+/*      const addresses = Address.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('wallet_id', this.wallet.id)
+        .where('used', false)
+        .get();
+
+      let addressesRaw = addresses.map((item) => { return item.address; });
+      addressesRaw = addressesRaw.filter(onlyUnique);
 
       const { network } = this.wallet;
       let txHistory;
@@ -258,11 +291,8 @@ export default {
         });
       }
 
-      // update balance
-      Wallet.$update({
-        where: (record) => { return record.id === this.wallet.id; },
-        data: { confirmedBalance: parseFloat(newBalance, 10) },
-      });
+      await this.updateBalance();
+*/
 
       setTimeout(() => {
         done();

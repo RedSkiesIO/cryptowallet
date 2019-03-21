@@ -58,6 +58,7 @@ import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Prices from '@/store/prices';
 import Coin from '@/store/wallet/entities/coin';
+import { getBalance } from '@/helpers';
 
 export default {
   name: 'CloudListItem',
@@ -109,6 +110,10 @@ export default {
       return false;
     },
     cantSend() {
+      if (this.wallet.sdk === 'Bitcoin') {
+        return getBalance(this.wallet, this.authenticatedAccount).available === 0;
+      }
+
       return this.wallet.confirmedBalance === 0;
     },
   },

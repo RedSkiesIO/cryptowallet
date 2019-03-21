@@ -101,12 +101,15 @@
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Spinner from '@/components/Spinner';
-import { AmountFormatter } from '@/helpers';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 
 export default {
   name: 'ConfirmSend',
@@ -161,7 +164,8 @@ export default {
       }
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
-        return this.wallet.confirmedBalance - totalCost;
+        const unconfirmedBalance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+        return unconfirmedBalance - totalCost;
       }
       return false;
     },

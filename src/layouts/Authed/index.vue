@@ -66,12 +66,15 @@
 <script>
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
-import AmountFormatter from '@/helpers/AmountFormatter';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 
 export default {
   name: 'AuthedLayout',
@@ -121,11 +124,17 @@ export default {
 
     totalBalance() {
       let balance = 0;
+
       this.wallets.forEach((wallet) => {
+        let walletBalance = wallet.confirmedBalance;
+        if (wallet.sdk === 'Bitcoin') {
+          walletBalance = getBalance(wallet, this.authenticatedAccount).unconfirmed;
+        }
+
         const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
           const formattedAmount = new AmountFormatter({
-            amount: wallet.confirmedBalance,
+            amount: walletBalance,
             rate: price.data.PRICE,
             format: '0.00',
             coin: wallet.name,

@@ -56,12 +56,12 @@
 <script>
 import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
+import Coin from '@/store/wallet/entities/coin';
+import IconList from '@/assets/cc-icons/icons-list.json';
 import {
   AmountFormatter,
   getBalance,
 } from '@/helpers';
-import Coin from '@/store/wallet/entities/coin';
-import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
   name: 'CoinHeader',

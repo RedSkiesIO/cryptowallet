@@ -108,7 +108,7 @@ export default {
         internalAccountDiscovery,
         externalChainAddressIndex,
         internalChainAddressIndex,
-        balance,
+        // balance,
         utxos,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
@@ -119,7 +119,7 @@ export default {
         data: {
           externalChainAddressIndex,
           internalChainAddressIndex,
-          confirmedBalance: balance,
+          // confirmedBalance: balance,
           externalAddress: keyPair.address,
         },
       });
