@@ -89,24 +89,10 @@ export default new VueRouter({
       ],
     },
     {
-      path: '/wallet/analytics',
-      component: () => { return import('layouts/Authed'); },
-      children: [
-        { path: '', component: () => { return import('pages/Analytics'); } },
-      ],
-    },
-    {
       path: '/wallet/exchange',
       component: () => { return import('layouts/Authed'); },
       children: [
         { name: 'exchange', path: '', component: () => { return import('pages/Exchange'); } },
-      ],
-    },
-    {
-      path: '/contact/:id',
-      component: () => { return import('layouts/Authed'); },
-      children: [
-        { path: '', component: () => { return import('pages/Contact'); } },
       ],
     },
     {
