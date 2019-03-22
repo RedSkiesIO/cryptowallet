@@ -28,17 +28,19 @@
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"
-        label="Done"
+        :label="$t('done')"
         @click="done"
       />
 
       <q-btn
-        v-if="mode != 'pin-setup' &&
-          mode != 'new-pin' && mode != 'confirm-new-pin' && mode != 'delete'"
+        v-if="mode != 'pin-setup'
+          && mode != 'new-pin'
+          && mode != 'confirm-new-pin'
+          && mode != 'delete'"
         :disabled="canProceed"
         color="yellow"
         text-color="blueish"
-        label="Unlock"
+        :label="$t('unlock')"
         @click="confirmPin"
       />
 
@@ -47,7 +49,7 @@
         :disabled="canProceed"
         color="red"
         text-color="white"
-        label="Delete"
+        :label="$t('delete')"
         @click="confirmPin"
       />
     </div>
@@ -76,11 +78,7 @@ export default {
   computed: {
     ...mapState({
       minLength: (state) => { return state.settings.pin.minLength; },
-      pin: (state) => { return state.setup.pinArray; },
-      pinConfirm: (state) => { return state.setup.pinConfirmArray; },
-      salt: (state) => { return state.setup.salt; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
-      delay: (state) => { return state.settings.delay; },
     }),
     canProceed() {
       return this.input.length < this.minLength;
@@ -110,56 +108,35 @@ export default {
 
       this.input.push(Math.random());
 
-      setTimeout(() => {
-        if (this.mode === 'pin-setup') {
-          this.$store.dispatch('setup/setPin', { value: pin });
-        }
+      if (this.mode === 'pin-setup') {
+        this.$store.dispatch('setup/setPin', { value: pin });
+      }
 
-        if (this.mode === 'pin-confirm') {
-          this.$store.dispatch('setup/setPinConfirm', { value: pin });
-        }
-
-        // if (this.mode === 'auth') {
-        //   this.$root.$emit('inputPin', pin);
-        // }
-
-        if (
-          this.mode === 'access'
+      if (this.mode === 'pin-confirm') {
+        this.$store.dispatch('setup/setPinConfirm', { value: pin });
+      }
+      if (
+        this.mode === 'access'
           || this.mode === 'delete'
           || this.mode === 'auth'
           || this.mode === 'new-pin'
           || this.mode === 'confirm-new-pin'
-        ) {
-          this.$emit('inputPin', pin);
-        }
-
-        // if (this.mode === 'new-pin') {
-        //   this.$emit('inputPin', pin);
-        // }
-
-        // if (this.mode === 'confirm-new-pin') {
-        //   this.$emit('inputPin', pin);
-        // }
-      }, this.delay.vshort);
+      ) {
+        this.$emit('inputPin', pin);
+      }
     },
     confirmPin() {
-      setTimeout(() => {
-        if (this.mode === 'pin-confirm') {
-          this.$parent.validatePin();
-        }
-
-        if (this.mode === 'auth') {
-          this.$parent.attemptUnlock();
-        }
-
-        if (this.mode === 'access') {
-          this.$emit('attemptUnlock');
-        }
-
-        if (this.mode === 'delete') {
-          this.$parent.attemptUnlock();
-        }
-      }, this.delay.vshort);
+      // setTimeout(() => {
+      if (this.mode === 'pin-confirm') {
+        this.$parent.validatePin();
+      }
+      if (this.mode === 'auth' || this.mode === 'delete') {
+        this.$parent.attemptUnlock();
+      }
+      if (this.mode === 'access') {
+        this.$emit('attemptUnlock');
+      }
+      // }, this.delay.vshort);
     },
     clearPinArray() {
       this.input = [];

@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Pin Confirm renders and matches snapshot 1`] = `
+<div>
+  <h1
+    class="setup"
+  >
+    
+    Pin Confirmation
+  
+  </h1>
+   
+  <h4
+    class="setup"
+  >
+    
+    Confirm your pin
+  
+  </h4>
+   
+  <pinpad-stub
+    mode="pin-confirm"
+  />
+</div>
+`;
+
 exports[`Pin Setup renders and matches snapshot 1`] = `
 <div>
   <h1

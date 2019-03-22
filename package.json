@@ -14,7 +14,7 @@
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
     "test:unit:qa:codacy": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | codacy-coverage",
     "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
-    "test:unit:watch": "cross-env NODE_ENV=test jest --watchAll",
+    "test:unit:watch": "cross-env NODE_ENV=test jest --watch",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
     "test": "snyk test",

@@ -12,11 +12,29 @@
 
 <script>
 import PinPad from '@/components/Auth/PinPad';
+import { mapState } from 'vuex';
 
 export default {
   name: 'PinConfirm',
   components: {
     PinPad,
+  },
+  computed: {
+    ...mapState({
+      pin: (state) => { return state.setup.pinArray; },
+      pinConfirm: (state) => { return state.setup.pinConfirmArray; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
+    }),
+  },
+  methods: {
+    validatePin() {
+      if (this.pin.join('') === this.pinConfirm.join('')) {
+        this.$router.push({ path: `/setup/${this.id + 1}` });
+      } else {
+        this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
+      }
+    },
   },
 };
 
