@@ -119,21 +119,27 @@ export default {
           this.$store.dispatch('setup/setPinConfirm', { value: pin });
         }
 
-        if (this.mode === 'auth') {
-          this.$root.$emit('inputPin', pin);
-        }
+        // if (this.mode === 'auth') {
+        //   this.$root.$emit('inputPin', pin);
+        // }
 
-        if (this.mode === 'access' || this.mode === 'delete') {
+        if (
+          this.mode === 'access'
+          || this.mode === 'delete'
+          || this.mode === 'auth'
+          || this.mode === 'new-pin'
+          || this.mode === 'confirm-new-pin'
+        ) {
           this.$emit('inputPin', pin);
         }
 
-        if (this.mode === 'new-pin') {
-          this.$emit('inputPin', pin);
-        }
+        // if (this.mode === 'new-pin') {
+        //   this.$emit('inputPin', pin);
+        // }
 
-        if (this.mode === 'confirm-new-pin') {
-          this.$emit('inputPin', pin);
-        }
+        // if (this.mode === 'confirm-new-pin') {
+        //   this.$emit('inputPin', pin);
+        // }
       }, this.delay.vshort);
     },
     confirmPin() {
@@ -160,9 +166,16 @@ export default {
       if (this.mode === 'pin-setup') { this.$store.dispatch('setup/resetPin'); }
       if (this.mode === 'pin-confirm') { this.$store.dispatch('setup/resetPinConfirm'); }
       if (this.mode === 'auth') { this.$parent.resetPin(); }
-      if (this.mode === 'access' || this.mode === 'delete') { this.$emit('resetPin'); }
-      if (this.mode === 'new-pin') { this.$emit('resetPin'); }
-      if (this.mode === 'confirm-new-pin') { this.$emit('resetPin'); }
+      if (
+        this.mode === 'access'
+        || this.mode === 'delete'
+        || this.mode === 'new-pin'
+        || this.mode === 'confirm-new-pin'
+      ) {
+        this.$emit('resetPin');
+      }
+      // if (this.mode === 'new-pin') { this.$emit('resetPin'); }
+      // if (this.mode === 'confirm-new-pin') { this.$emit('resetPin'); }
     },
     done() {
       if (this.mode === 'pin-setup') { this.$router.push({ path: `/setup/${this.id + 1}` }); }
