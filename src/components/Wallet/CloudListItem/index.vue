@@ -110,11 +110,7 @@ export default {
       return false;
     },
     cantSend() {
-      if (this.wallet.sdk === 'Bitcoin') {
-        return getBalance(this.wallet, this.authenticatedAccount).available === 0;
-      }
-
-      return this.wallet.confirmedBalance === 0;
+      return getBalance(this.wallet, this.authenticatedAccount).available === 0;
     },
   },
   async mounted() {

@@ -143,8 +143,11 @@ import {
   minLength,
   maxLength,
 } from 'vuelidate/lib/validators';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 import { mapState } from 'vuex';
-import AmountFormatter from '@/helpers/AmountFormatter';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
@@ -421,6 +424,15 @@ export default {
       return true;
     },
 
+    availableBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).available;
+    },
+
+    unconfirmedBalance() {
+      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+    },
+
+
     /**
      * Creates and sends a transaction
      */
@@ -430,7 +442,7 @@ export default {
         return false;
       }
 
-      if (this.wallet.confirmedBalance < this.inCoin) {
+      if (this.availableBalance() < this.inCoin) {
         this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
         return false;
       }
@@ -493,7 +505,6 @@ export default {
     },
 
     updateMax() {
-      // @todo Konrad explain the code below
       const quintillion = 1000000000000000000;
       this.inCoin = ((this.wallet.confirmedBalance * quintillion) - this.rawFee) / quintillion;
     },

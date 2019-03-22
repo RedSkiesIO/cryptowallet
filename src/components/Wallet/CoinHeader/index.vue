@@ -136,7 +136,7 @@ export default {
     },
 
     cantSend() {
-      return this.wallet.confirmedBalance === 0;
+      return getBalance(this.wallet, this.authenticatedAccount).available === 0;
     },
   },
 
@@ -147,10 +147,8 @@ export default {
     receive() {
       this.$router.push({ path: `/wallet/single/receive/${this.wallet.id}` });
     },
-    /*eslint-disable*/
     unconfirmedBalance() {
-      const balance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
-      return balance;
+      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
     },
   },
 };

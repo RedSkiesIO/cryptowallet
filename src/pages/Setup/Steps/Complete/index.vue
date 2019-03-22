@@ -70,6 +70,11 @@ export default {
         const promises = [];
         const erc20Promises = [];
 
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
+
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
+
         this.supportedCoins.forEach((coin) => {
           const wallet = {
             account_id: id,
@@ -120,9 +125,6 @@ export default {
         await Promise.all(promises);
         await Promise.all(erc20Promises);
 
-        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
-        await this.backEndService.connect();
-        await this.backEndService.loadPriceFeed();
         this.$store.dispatch('settings/setAuthenticatedAccount', id);
         this.$store.dispatch('settings/setLayout', 'light');
         this.$router.push({ path: '/wallet' });

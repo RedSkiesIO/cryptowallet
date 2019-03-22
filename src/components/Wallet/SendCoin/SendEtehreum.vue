@@ -21,6 +21,7 @@
           dense
           color="primary"
           @blur="checkField('address')"
+          @input="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -56,7 +57,8 @@
             dense
             color="primary"
             @focus="updateInCoinFocus(true)"
-            @blur="updateInCoinFocus(false) && checkField('inCoin')"
+            @blur="updateInCoinFocus(false)"
+            @input="validateInput('inCoin')"
           />
           <div class="side-content">
             {{ coinSymbol }}
@@ -65,6 +67,7 @@
         <div class="amount-div-wrapper">
           <q-input
             v-model="inCurrency"
+            :error="$v.inCoin.$error"
             :disable="maxed"
             type="number"
             placeholder="0"
@@ -74,6 +77,7 @@
             color="primary"
             @focus="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
+            @input="validateInput('inCoin')"
           />
           <div class="side-content">
             {{ selectedCurrency.code }}
@@ -133,8 +137,7 @@
 import {
   required,
   alphaNum,
-  minLength,
-  maxLength,
+  between,
 } from 'vuelidate/lib/validators';
 import {
   AmountFormatter,
@@ -161,6 +164,8 @@ export default {
       feeData: null,
       estimatedFee: 'N/A',
       maxed: false,
+      maxValueCoin: Infinity,
+      maxValueCurrency: Infinity,
       addressError: '',
       amountError: '',
       feeDialogOpened: false,
@@ -174,14 +179,18 @@ export default {
       address: {
         required,
         alphaNum,
-        minLength: minLength(this.addressLength),
-        maxLength: maxLength(this.addressLength),
+        between: (value) => {
+          return value.length <= this.addressLength && value.length >= this.addressLength;
+        },
+        isValidAddress: (value) => { return this.validateAddress(value); },
       },
       inCoin: {
         required,
+        between: between(0, this.maxValueCoin),
       },
       inCurrency: {
         required,
+        between: between(0, this.maxValueCurrency),
       },
     };
   },
@@ -231,14 +240,16 @@ export default {
   },
 
   watch: {
-
     inCoin(val) {
       if (val === null || val === '') {
+        this.inCurrency = '';
+        this.validateInput('inCoin');
         return false;
       }
       if (!this.inCurrencyFocus) {
         this.inCurrency = this.amountToCurrency(val);
       }
+      this.validateInput('inCoin');
       return false;
     },
 
@@ -253,47 +264,63 @@ export default {
     },
   },
 
-  mounted() {
-    this.getFee();
+  async mounted() {
+    await this.getFee();
+    this.maxValueCoin = this.getMaxAmount();
+    this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
   },
 
   methods: {
-    updateInCoinFocus(val) {
-      this.inCoinFocus = val;
-      if (!val) {
-        this.checkField('inCoin');
-      }
+    validateAddress(address) {
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      return coinSDK.validateAddress(address, this.wallet.network);
     },
-
+    updateInCoinFocus(val) {
+      if (!val) {
+        this.validateInput('inCoin');
+      }
+      this.inCoinFocus = val;
+    },
     updateInCurrencyFocus(val) {
+      if (!val) {
+        this.validateInput('inCoin');
+      }
       this.inCurrencyFocus = val;
     },
 
+    validateInput(field) {
+      this.checkField(field);
+    },
     async checkField(field) {
       if (field === 'address') {
         this.$v.address.$touch();
 
-        if (this.$v.address.$error) {
+        if (!this.$v.address.between) {
           this.addressError = this.$t('ethereumAddressInvalidLength');
           return false;
         }
-        const coinSDK = this.coinSDKS[this.wallet.sdk];
-        const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
 
-        if (!isValid) {
+        if (!this.$v.address.isValidAddress) {
           this.addressError = this.$t('ethereumAddressInvalid');
           return false;
         }
+
         this.addressError = '';
       }
 
       if (field === 'inCoin') {
         this.$v.inCoin.$touch();
-        if (this.$v.inCoin.$error) {
-          this.amountError = this.$t('noAmount');
-          return false;
+        this.$v.inCurrency.$touch();
+
+        if (!this.$v.inCoin.between) {
+          this.amountError = this.$t('notEnoughFunds');
+        } else {
+          this.amountError = '';
         }
-        this.amountError = '';
+
+        if (!this.$v.inCoin.$model) {
+          this.amountError = this.$t('noAmount');
+        }
       }
       return true;
     },
@@ -361,6 +388,7 @@ export default {
       const gasLimit = 21000;
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
       const { data } = response.data;
+
       const gweiToWei = 10000;
 
       const fees = {
@@ -409,14 +437,14 @@ export default {
      * Validates input fields
      * @return {Boolean}
      */
-    isValid() {
-      if (!this.address) { return false; }
-      if (!this.inCoin) { return false; }
-      if (!this.inCurrency) { return false; }
-      if (this.addressError) { return false; }
-      if (this.amountError) { return false; }
+    isInvalid() {
+      if (!this.address) { return this.$t('fillAllInputs'); }
+      if (!this.inCoin) { return this.$t('fillAllInputs'); }
+      if (!this.inCurrency) { return this.$t('fillAllInputs'); }
+      if (this.addressError) { return this.addressError; }
+      if (this.amountError) { return this.amountError; }
 
-      return true;
+      return false;
     },
 
     availableBalance() {
@@ -431,13 +459,11 @@ export default {
      * Creates and sends a transaction
      */
     async send() {
-      if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
-        return false;
-      }
+      /*eslint-disable*/
+      console.log(this.isInvalid())
 
-      if (this.availableBalance() < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
+      if (this.isInvalid()) {
+        this.$toast.create(10, this.isInvalid(), this.delay.normal);
         return false;
       }
 
@@ -449,15 +475,11 @@ export default {
       if (this.feeSetting === 0) { fee = this.feeData.low; }
       if (this.feeSetting === 2) { fee = this.feeData.high; }
 
-      console.log('got here');
-
       try {
         const {
           transaction,
           hexTx,
         } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
-
-        console.log('transaction', transaction);
 
         // @todo dont use app global
         /* eslint-disable-next-line */
@@ -490,6 +512,7 @@ export default {
         this.maxed = false;
         this.inCoin = '';
         this.inCurrency = '';
+        this.estimatedFee = 'N/A';
         return false;
       }
 
@@ -498,9 +521,12 @@ export default {
       return false;
     },
 
+    getMaxAmount() {
+      return ((this.availableBalance() * this.weiMultiplier) - this.rawFee) / this.weiMultiplier;
+    },
+
     updateMax() {
-      this.inCoin = (
-        (this.wallet.confirmedBalance * this.weiMultiplier) - this.rawFee) / this.weiMultiplier;
+      this.inCoin = this.getMaxAmount();
     },
 
     /**

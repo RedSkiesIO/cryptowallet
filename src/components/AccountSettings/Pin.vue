@@ -44,7 +44,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Account from '@/store/wallet/entities/account';
+// import Account from '@/store/wallet/entities/account';
 import PinPad from '@/components/Auth/PinPad';
 import bcrypt from 'bcryptjs';
 
@@ -159,10 +159,15 @@ export default {
     updateAccount() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
         this.$toast.create(0, this.$t('pinChanged'), this.delay.short);
-        Account.$update({
+        /*eslint-disable*/
+        console.log(this.pin.join(''));
+        console.log(this.newPinHash);
+
+/*        Account.$update({
           where: (record) => { return record.id === this.authenticatedAccount; },
           data: { pinHash: this.newPinHash },
-        });
+          password: this.pin.join(''),
+        });*/
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.closeModal();

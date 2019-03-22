@@ -154,7 +154,7 @@ export default {
         }
 
         if (this.mode === 'delete') {
-          this.$parent.attemptUnlock();
+          this.$emit('attemptUnlock');
         }
       }, this.delay.vshort);
     },

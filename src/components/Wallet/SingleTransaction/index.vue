@@ -238,7 +238,7 @@ export default {
      * @return {String}
      */
     status() {
-      if (this.data.confirmations > this.minConfirmations) { return this.$t('confirmed'); }
+      if (this.data.confirmations >= this.minConfirmations) { return this.$t('confirmed'); }
       if (this.data.confirmations > 0) { return this.$t('unconfirmed'); }
       return this.$t('pending');
     },

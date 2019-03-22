@@ -126,15 +126,12 @@ export default {
       let balance = 0;
 
       this.wallets.forEach((wallet) => {
-        let walletBalance = wallet.confirmedBalance;
-        if (wallet.sdk === 'Bitcoin') {
-          walletBalance = getBalance(wallet, this.authenticatedAccount).unconfirmed;
-        }
+        const { unconfirmed } = getBalance(wallet, this.authenticatedAccount);
 
         const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
           const formattedAmount = new AmountFormatter({
-            amount: walletBalance,
+            amount: unconfirmed,
             rate: price.data.PRICE,
             format: '0.00',
             coin: wallet.name,

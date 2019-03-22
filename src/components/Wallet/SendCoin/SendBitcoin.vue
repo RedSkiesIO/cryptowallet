@@ -31,15 +31,14 @@
 
             <q-card-actions align="right">
               <q-btn
+                v-close-dialog
                 flat
                 :label="$t('ok')"
                 color="blueish"
-                v-close-dialog
               />
             </q-card-actions>
           </q-card>
         </q-dialog>
-
       </div>
 
       <div
@@ -82,6 +81,7 @@
           dense
           color="primary"
           @blur="checkField('address')"
+          @input="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -202,8 +202,6 @@
 import {
   required,
   alphaNum,
-  minLength,
-  maxLength,
   between,
 } from 'vuelidate/lib/validators';
 import {
@@ -217,8 +215,6 @@ import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
 import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 import Amount from '@/components/Wallet/Amount';
-
-/*eslint-disable*/
 
 const delay = 500;
 export default {
@@ -239,6 +235,7 @@ export default {
       feeSetting: 1,
       estimatedFee: 'N/A',
       maxValueCoin: Infinity,
+      maxValueCurrency: Infinity,
       maxed: false,
       addressError: '',
       amountError: '',
@@ -251,8 +248,10 @@ export default {
       address: {
         required,
         alphaNum,
-        minLength: minLength(this.addressLengthMin),
-        maxLength: maxLength(this.addressLengthMax),
+        between: (value) => {
+          return value.length <= this.addressLengthMax && value.length >= this.addressLengthMin;
+        },
+        isValidAddress: (value) => { return this.validateAddress(value); },
       },
       inCoin: {
         required,
@@ -300,7 +299,7 @@ export default {
         .where('wallet_id', this.wallet.id)
         .where('pending', false)
         .get();
-    }
+    },
   },
   watch: {
     inCoin(val) {
@@ -347,19 +346,25 @@ export default {
       this.checkField(field);
     },
 
+    validateAddress(address) {
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      return coinSDK.validateAddress(address, this.wallet.network);
+    },
+
     async checkField(field) {
       if (field === 'address') {
         this.$v.address.$touch();
-        if (this.$v.address.$error) {
+
+        if (!this.$v.address.between) {
           this.addressError = this.$t('bitcoinAddressInvalidLength');
           return false;
         }
-        const coinSDK = this.coinSDKS[this.wallet.sdk];
-        const isValid = coinSDK.validateAddress(this.address, this.wallet.network);
-        if (!isValid) {
+
+        if (!this.$v.address.isValidAddress) {
           this.addressError = this.$t('bitcoinAddressInvalid');
           return false;
         }
+
         this.addressError = '';
       }
 
@@ -440,8 +445,7 @@ export default {
         const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
         const accounts = that.getAccounts();
 
-        let { address } = that.getAddresses()[0];
-        if (that.address) { ({ address } = that); }
+        const { address } = that.getAddresses()[0];
 
         const changeAddresses = that.generateChangeAddresses();
 
@@ -585,7 +589,7 @@ export default {
       }
 
       fee = Math.round(fee);
-      return fee;;
+      return fee;
     },
 
     /**
@@ -655,23 +659,14 @@ export default {
      * Validates input fields
      * @return {Boolean}
      */
-    isValid() {
-      if (!this.address) {
-        return false;
-      }
-      if (!this.inCoin) {
-        return false;
-      }
-      if (!this.inCurrency) {
-        return false;
-      }
-      if (this.addressError) {
-        return false;
-      }
-      if (this.amountError) {
-        return false;
-      }
-      return true;
+    isInvalid() {
+      if (!this.address) { return this.$t('fillAllInputs'); }
+      if (!this.inCoin) { return this.$t('fillAllInputs'); }
+      if (!this.inCurrency) { return this.$t('fillAllInputs'); }
+      if (this.addressError) { return this.addressError; }
+      if (this.amountError) { return this.amountError; }
+
+      return false;
     },
 
     availableBalance() {
@@ -700,15 +695,8 @@ export default {
      * Creates and sends a transaction
      */
     async send() {
-      if (!this.isValid()) {
-        this.$toast.create(10, this.$t('fillAllInputs'), this.delay.normal);
-        return false;
-      }
-
-      const availableBalance = this.availableBalance();
-
-      if (availableBalance < this.inCoin) {
-        this.$toast.create(10, this.$t('notEnoughFunds'), this.delay.normal);
+      if (this.isInvalid()) {
+        this.$toast.create(10, this.isInvalid(), this.delay.normal);
         return false;
       }
 
@@ -779,15 +767,12 @@ export default {
         this.wallet.name
       ];
       const accounts = this.getAccounts();
-      let { address } = this.getAddresses()[0];
-      if (this.address) {
-        ({ address } = this);
-      }
+      const { address } = this.getAddresses()[0];
 
       const fee = await this.getFee();
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const { transaction, utxo } = await coinSDK.createRawTx(
+      const { transaction } = await coinSDK.createRawTx(
         accounts,
         changeAddresses,
         this.utxos,

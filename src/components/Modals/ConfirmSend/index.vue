@@ -80,7 +80,7 @@
         </div>
 
         <div class="small-text">
-          {{ newBalance }} {{ coinSymbol }}
+          {{ coinSymbol }}
           ({{ coinToCurrency(newBalance) }})
         </div>
 
@@ -151,21 +151,30 @@ export default {
     },
 
     newBalance() {
+      const { unconfirmed } = getBalance(this.wallet, this.authenticatedAccount);
+
       if (this.wallet.sdk === 'Ethereum') {
-        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+        let newBalance = (unconfirmed * this.weiMultiplier)
                            - ((this.txData.transaction.value * this.weiMultiplier)
                            + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
+
+        if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'ERC20') {
-        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+        let newBalance = (unconfirmed * this.weiMultiplier)
                            - (this.txData.transaction.value * this.weiMultiplier);
+
+        if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
-        const unconfirmedBalance = getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
-        return unconfirmedBalance - totalCost;
+        let newBalance = unconfirmed - totalCost;
+        // todo fix this, new balance can be a very small number, scientific notation
+        /*eslint-disable*/
+        if (newBalance < 0.00000000001) { newBalance = 0; }
+        return newBalance;
       }
       return false;
     },
@@ -205,7 +214,6 @@ export default {
         utxo,
         changeAddresses,
       } = this.txData;
-
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       if (this.wallet.sdk === 'Bitcoin') {

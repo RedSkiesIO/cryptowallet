@@ -50,7 +50,7 @@ class BackEndService {
    */
   connect(attempts = 0) {
     return new Promise(async (resolve) => {
-      const attemptLimit = 10;
+      const attemptLimit = 25;
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error('Failed to connect to the server'), false);
         return false;
@@ -63,21 +63,18 @@ class BackEndService {
             const code = await this.refreshAuth();
             const created = 201;
             if (code === created) {
-              resolve(true);
-              return false;
+              return resolve(true);
             }
           } catch (error) {
             // refresh token failed, re-authenticate
             await this.auth();
-            resolve(true);
-            return false;
+            return resolve(true);
           }
         } else {
           const code = await this.auth();
           const ok = 200;
           if (code === ok) {
-            resolve(true);
-            return false;
+            return resolve(true);
           }
         }
       } catch (err) {
@@ -85,8 +82,8 @@ class BackEndService {
       }
       const timeout = 2500;
       setTimeout(() => {
-        this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
-        this.connect(attempts += 1);
+        // this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
+        resolve(this.connect(attempts += 1));
       }, timeout);
 
       return false;
@@ -148,7 +145,6 @@ class BackEndService {
       this.vm.errorHandler(new Error('Failed to connect to the server'), false);
     }
 
-
     try {
       const config = await this.getAxiosConfig();
       const response = await axios.get(URL, config);
@@ -179,9 +175,7 @@ class BackEndService {
 
       return new Promise((resolve) => {
         setTimeout(async () => {
-          const result = await this.try(URL, attempts);
-          resolve(result);
-          return false;
+          resolve(this.try(URL, attempts));
         }, this.longDelay);
       });
     }
