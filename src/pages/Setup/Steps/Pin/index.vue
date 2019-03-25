@@ -11,22 +11,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 
 export default {
+  name: 'Pin',
   components: {
     PinPad,
-  },
-  computed: {
-    ...mapState({
-      pin: (state) => { return state.setup.pinArray; },
-      pinConfirm: (state) => { return state.setup.pinConfirmArray; },
-      salt: (state) => { return state.setup.salt; },
-      minLength: (state) => { return state.settings.pin.minLength; },
-      pinHash: (state) => { return state.setup.pinHash; },
-      pinHashConfirm: (state) => { return state.setup.pinHashConfirm; },
-    }),
   },
 };
 </script>
