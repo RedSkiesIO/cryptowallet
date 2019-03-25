@@ -34,4 +34,5 @@
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <preference name="Orientation" value="portrait" />
     <engine name="android" spec="^7.1.4" />
+    <engine name="ios" spec="^4.5.5" />
 </widget>
