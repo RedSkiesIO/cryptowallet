@@ -33,7 +33,7 @@
     "cordova": "^8.1.2",
     "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
-    "cryptowallet-js": "git+ssh://git@github.com/atlascity/cryptowallet-js.git#bug-fixes",
+    "cryptowallet-js": "git+ssh://git@github.com/atlascity/cryptowallet-js.git",
     "etherscan-api": "^10.0.0",
     "numeral": "^2.0.6",
     "qrcode": "^1.3.2",
