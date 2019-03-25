@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { mount } from '@vue/test-utils';
+import { mount, createWrapper } from '@vue/test-utils';
 import PinPad from '@/components/Auth/PinPad';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
 import { Quasar, QBtn } from 'quasar';
@@ -61,6 +61,7 @@ describe('PinPad component', () => {
     expect(wrapper.element).toMatchSnapshot();
     expect(mockSetupModule.actions.resetPin).toHaveBeenCalled();
   });
+
   it('disables button when less than 6 characters have been entered', () => {
     const wrapper = mount(PinPad, {
       i18n,
@@ -74,7 +75,8 @@ describe('PinPad component', () => {
     expect(wrapper.findAll('[disabled]').at(1)).toBeTruthy();
     expect(wrapper.vm.canProceed).toBe(true);
   });
-  it('displays a delete button in delete mode', () => {
+
+  it('displays a delete button when in delete mode', () => {
     const wrapper = mount(PinPad, {
       i18n,
       localVue,
@@ -86,6 +88,7 @@ describe('PinPad component', () => {
     });
     expect(wrapper.findAll('[disabled]').at(1).text()).toBe('Delete');
   });
+
   describe('inputPin()', () => {
     it('calls the setup/setPin action in pin setup mode', (done) => {
       const wrapper = mount(PinPad, {
@@ -105,6 +108,7 @@ describe('PinPad component', () => {
         done();
       });
     });
+
     it('calls the setup/setPinConfirm action in pin confirm mode', (done) => {
       const wrapper = mount(PinPad, {
         i18n,
@@ -122,22 +126,7 @@ describe('PinPad component', () => {
         done();
       });
     });
-    it('calls the setup/setPin action in pin setup mode', (done) => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'pin-setup',
-        },
-      });
-      wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
-      wrapper.vm.$nextTick(() => {
-        expect(mockSetupModule.actions.setPin).toHaveBeenCalled();
-        done();
-      });
-    });
+
     it('fires an inputPin event in access mode', () => {
       const wrapper = mount(PinPad, {
         i18n,
@@ -151,7 +140,36 @@ describe('PinPad component', () => {
       wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
       expect(wrapper.emitted('inputPin')).toEqual([['2']]);
     });
+
+    it('fires an inputPin event in auth mode', () => {
+      const Parent = {
+        data: () => {
+          return {
+            val: true,
+          };
+        },
+        methods: {
+          resetPin: jest.fn(),
+          attemptUnlock: jest.fn(),
+        },
+        template: '<div />',
+      };
+      const wrapper = mount(PinPad, {
+        i18n,
+        localVue,
+        Keyboard,
+        store,
+        propsData: {
+          mode: 'auth',
+        },
+        parentComponent: Parent,
+      });
+      wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
+      const rootWrapper = createWrapper(wrapper.vm.$root);
+      expect(rootWrapper.emitted('inputPin')).toEqual([['2']]);
+    });
   });
+
   describe('confirmPin()', () => {
     it('fires an attemptUnlock event in access mode', () => {
       const wrapper = mount(PinPad, {
@@ -171,6 +189,26 @@ describe('PinPad component', () => {
       wrapper.findAll('.q-btn').at(1).trigger('click');
       expect(wrapper.emitted('attemptUnlock')).toBeTruthy();
     });
+
+    it('fires an attemptUnlock event in delete mode', () => {
+      const wrapper = mount(PinPad, {
+        i18n,
+        localVue,
+        Keyboard,
+        store,
+        propsData: {
+          mode: 'delete',
+        },
+      });
+      const pinAray = [0, 0, 0, 0, 0, 0];
+      pinAray.forEach((pin) => {
+        if (pin === 0) { pin = 10; }
+        wrapper.findAll('.vue-keyboard-key').at(pin - 1).trigger('click');
+      });
+      wrapper.findAll('.q-btn').at(1).trigger('click');
+      expect(wrapper.emitted('attemptUnlock')).toBeTruthy();
+    });
+
     it('calls attemptUnlock in parent function in auth mode', () => {
       const Parent = {
         data: () => {
@@ -202,6 +240,7 @@ describe('PinPad component', () => {
       wrapper.findAll('.q-btn').at(1).trigger('click');
       expect(Parent.methods.attemptUnlock).toHaveBeenCalled();
     });
+
     it('calls validatePin in parent function in pin-confirm mode', () => {
       const Parent = {
         data: () => {
@@ -234,6 +273,7 @@ describe('PinPad component', () => {
       expect(Parent.methods.validatePin).toHaveBeenCalled();
     });
   });
+
   describe('done()', () => {
     it('routes to the pin confirm screen when the done button is clicked in pin-setup mode', () => {
       const $router = {

@@ -12,6 +12,8 @@
     "dependencies": {
         "cordova-android": "^7.1.4",
         "cordova-clipboard": "^1.2.1",
+        "cordova-ios": "^4.5.5",
+        "cordova-plugin-add-swift-support": "^1.7.2",
         "cordova-plugin-android-permissions": "^1.0.0",
         "cordova-plugin-contacts": "^3.0.1",
         "cordova-plugin-device": "^2.0.2",
@@ -41,7 +43,8 @@
             "cordova-plugin-vibration": {}
         },
         "platforms": [
-            "android"
+            "android",
+            "ios"
         ]
     },
     "devDependencies": {}

@@ -35,6 +35,7 @@
       <q-btn
         v-if="mode != 'pin-setup'
           && mode != 'new-pin'
+          && mode !== 'pin-confirm'
           && mode != 'confirm-new-pin'
           && mode != 'delete'"
         :disabled="canProceed"
@@ -115,44 +116,41 @@ export default {
       if (this.mode === 'pin-confirm') {
         this.$store.dispatch('setup/setPinConfirm', { value: pin });
       }
-      if (
-        this.mode === 'access'
+      if (this.mode === 'access'
           || this.mode === 'delete'
-          || this.mode === 'auth'
           || this.mode === 'new-pin'
-          || this.mode === 'confirm-new-pin'
-      ) {
+          || this.mode === 'confirm-new-pin') {
         this.$emit('inputPin', pin);
+      }
+      if (this.mode === 'auth') {
+        this.$root.$emit('inputPin', pin);
       }
     },
     confirmPin() {
-      // setTimeout(() => {
       if (this.mode === 'pin-confirm') {
         this.$parent.validatePin();
       }
-      if (this.mode === 'auth' || this.mode === 'delete') {
+      if (this.mode === 'auth') {
         this.$parent.attemptUnlock();
       }
       if (this.mode === 'access') {
         this.$emit('attemptUnlock');
       }
-      // }, this.delay.vshort);
+      if (this.mode === 'delete') {
+        this.$emit('attemptUnlock');
+      }
     },
     clearPinArray() {
       this.input = [];
       if (this.mode === 'pin-setup') { this.$store.dispatch('setup/resetPin'); }
       if (this.mode === 'pin-confirm') { this.$store.dispatch('setup/resetPinConfirm'); }
       if (this.mode === 'auth') { this.$parent.resetPin(); }
-      if (
-        this.mode === 'access'
+      if (this.mode === 'access'
         || this.mode === 'delete'
         || this.mode === 'new-pin'
-        || this.mode === 'confirm-new-pin'
-      ) {
+        || this.mode === 'confirm-new-pin') {
         this.$emit('resetPin');
       }
-      // if (this.mode === 'new-pin') { this.$emit('resetPin'); }
-      // if (this.mode === 'confirm-new-pin') { this.$emit('resetPin'); }
     },
     done() {
       if (this.mode === 'pin-setup') { this.$router.push({ path: `/setup/${this.id + 1}` }); }
