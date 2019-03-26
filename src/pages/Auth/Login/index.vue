@@ -165,8 +165,6 @@ export default {
             .where('enabled', true)
             .get();
 
-          console.log('init', wallets);
-
           if (wallets.length === 0) {
             resolve();
             return false;
@@ -176,7 +174,6 @@ export default {
             initializedWallets[wallet.name] = wallet.hdWallet;
           }
           async function generateErc20(wallet) {
-            console.log('gen erc20', wallet);
             initializedWallets[wallet.name] = wallet.erc20Wallet;
           }
 
