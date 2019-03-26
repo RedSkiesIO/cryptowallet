@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 
 describe('AccountName.vue', () => {
   let store;
+  let actions;
   let getters;
   let wrapper;
 
@@ -23,13 +24,16 @@ describe('AccountName.vue', () => {
     getters = {
       'entities/account/query': () => { return () => { return mockAccounts; }; },
     };
+    actions = {
+      'setup/setAccountName': jest.fn(),
+    };
     store = new Vuex.Store({
       state: {
         settings: {
           delay: 500,
         },
       },
-      dispatch: jest.fn(),
+      actions,
       getters,
     });
     wrapper = mount(AccountName, {
