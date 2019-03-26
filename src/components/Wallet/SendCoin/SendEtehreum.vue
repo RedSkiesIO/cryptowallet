@@ -393,7 +393,6 @@ export default {
       const gasLimit = 21000;
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
       const { data } = response.data;
-
       const gweiToWei = 10000;
 
       const fees = {

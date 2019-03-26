@@ -449,10 +449,9 @@ export default {
       if (!that.$v.inCoin.$invalid) {
         const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
         const accounts = that.getAccounts();
+        const changeAddresses = that.generateChangeAddresses();
 
         const { address } = that.getAddresses()[0];
-
-        const changeAddresses = that.generateChangeAddresses();
 
         that.createRawTx(
           accounts,
@@ -619,7 +618,6 @@ export default {
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const fee = await this.getFee();
-
       if (this.maxed) {
         amount = 0;
       }

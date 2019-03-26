@@ -2,20 +2,6 @@
   <div />
 </template>
 
-<!--
-0: "magnet"
-1: "squirrel"
-2: "below"
-3: "carry"
-4: "fancy"
-5: "soap"
-6: "design"
-7: "liar"
-8: "local"
-9: "wheel"
-10: "prize"
-11: "track"
- -->
 
 <script>
 import { uid } from 'quasar';
@@ -59,7 +45,6 @@ export default {
       const accounts = this.$store.getters['entities/account/query']().get();
       const password = this.setup.pinArray.join('');
       const pinHash = this.$CWCrypto.bcryptHashString(password, this.setup.salt);
-
       const data = {
         uid: uid(),
         name: this.setup.accountName,
@@ -140,6 +125,9 @@ export default {
         await Promise.all(promises);
         await Promise.all(erc20Promises);
 
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
         this.$store.dispatch('settings/setAuthenticatedAccount', id);
         this.$store.dispatch('settings/setLayout', 'light');
         this.$router.push({ path: '/wallet' });

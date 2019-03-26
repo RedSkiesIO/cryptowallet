@@ -82,7 +82,7 @@ class BackEndService {
       }
       const timeout = 2500;
       setTimeout(() => {
-        // this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
+        this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
         resolve(this.connect(attempts += 1));
       }, timeout);
 
@@ -144,6 +144,7 @@ class BackEndService {
     if (attempts >= attemptLimit) {
       this.vm.errorHandler(new Error('Failed to connect to the server'), false);
     }
+
 
     try {
       const config = await this.getAxiosConfig();

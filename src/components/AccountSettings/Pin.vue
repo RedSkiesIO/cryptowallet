@@ -212,7 +212,6 @@ export default {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
         await this.encryptPersistentData();
         this.$toast.create(0, this.$t('pinChanged'), this.delay.short);
-
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.closeModal();
