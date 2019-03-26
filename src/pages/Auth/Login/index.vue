@@ -165,6 +165,8 @@ export default {
             .where('enabled', true)
             .get();
 
+          console.log('init', wallets);
+
           if (wallets.length === 0) {
             resolve();
             return false;
@@ -174,6 +176,7 @@ export default {
             initializedWallets[wallet.name] = wallet.hdWallet;
           }
           async function generateErc20(wallet) {
+            console.log('gen erc20', wallet);
             initializedWallets[wallet.name] = wallet.erc20Wallet;
           }
 
@@ -192,10 +195,7 @@ export default {
           wallets.forEach((wallet) => {
             if (wallet.sdk === 'ERC20') {
               erc20Promises.push(new Promise(async (res) => {
-                const parentSDK = this.coinSDKS[wallet.parentSdk];
-                const parentWallet = initializedWallets[wallet.parentName];
-                const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
-                await generateErc20(keyPair, wallet);
+                await generateErc20(wallet);
                 res();
               }));
             }

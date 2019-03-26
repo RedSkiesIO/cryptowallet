@@ -20,9 +20,12 @@
       />
     </q-tabs>
 
-    <q-tab-panels v-model="tab" animated>
+    <q-tab-panels
+      v-model="tab"
+      animated
+    >
       <q-tab-panel name="all">
-         <TransactionsList :wallet="wallet" />
+        <TransactionsList :wallet="wallet" />
       </q-tab-panel>
 
       <q-tab-panel name="sent">

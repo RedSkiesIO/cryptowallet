@@ -46,6 +46,7 @@ export default {
      */
     async refresher(done) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
+
       await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount);
 
       setTimeout(() => {

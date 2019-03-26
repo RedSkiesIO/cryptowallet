@@ -194,7 +194,6 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
     }
   });
 
-
   const newBalance = await coinSDK.getBalance(
     addressesRaw,
     wallet.network,
@@ -209,10 +208,7 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
 }
 
 async function refreshERC20(coinSDK, wallet, accountId) {
-  const txHistory = await coinSDK.getTransactionHistory(
-    this.activeWallets[accountId][wallet.name],
-    0,
-  );
+  const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
 
   if (!txHistory) {
     return false;
@@ -257,7 +253,7 @@ async function refreshERC20(coinSDK, wallet, accountId) {
     }
   });
 
-  const newBalance = await coinSDK.getBalance(wallet);
+  const newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
 
   Wallet.$update({
     where: (record) => { return record.id === wallet.id; },

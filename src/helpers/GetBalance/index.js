@@ -135,12 +135,11 @@ function getBalance(wallet, accountId) {
     };
   }
 
-  // @todo finish with ERC20
   if (wallet.sdk === 'ERC20') {
     return {
-      confirmed: 0,
-      unconfirmed: 0,
-      available: 0,
+      confirmed: Ethereum.getConfirmed(wallet.id, accountId),
+      unconfirmed: Ethereum.getUnconfrimed(wallet.id, accountId),
+      available: Ethereum.getAvailable(wallet.id, accountId),
     };
   }
 

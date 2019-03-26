@@ -277,7 +277,7 @@ export default {
 
   methods: {
     validateAddress(address) {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const coinSDK = this.coinSDKS.Ethereum;
       return coinSDK.validateAddress(address, this.wallet.network);
     },
     updateInCoinFocus(val) {
@@ -391,7 +391,11 @@ export default {
      */
     async getFee() {
       const gasLimit = 21000;
-      const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+      /*eslint-disable*/
+      let coinSymbol = this.wallet.symbol;
+      if (this.wallet.sdk === 'ERC20') { coinSymbol = 'ETH' };
+
+      const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
       const gweiToWei = 10000;
 
@@ -459,15 +463,7 @@ export default {
       return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
     },
 
-    /**
-     * Creates and sends a transaction
-     */
-    async send() {
-      if (this.isInvalid()) {
-        this.$toast.create(10, this.isInvalid(), this.delay.normal);
-        return false;
-      }
-
+    async sendETH() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
@@ -493,6 +489,56 @@ export default {
       }
 
       return false;
+    },
+
+    async sendERC20() {
+      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
+      const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
+      const keypair = this.coinSDKS[this.wallet.parentSdk].generateKeyPair(parentWallet, 0);
+
+      let fee = this.feeData.medium;
+      if (this.feeSetting === 0) {
+        fee = this.feeData.low;
+      }
+
+      if (this.feeSetting === 2) {
+        fee = this.feeData.high;
+      }
+
+      try {
+        const {
+          transaction,
+          hexTx,
+        } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, fee);
+
+        // @todo dont use app global
+        /* eslint-disable-next-line */
+        app.$root.$emit('confirmSendModalOpened', true, {
+          hexTx,
+          transaction,
+        });
+      } catch (err) {
+        this.errorHandler(err);
+      }
+
+      return false;
+    },
+
+    /**
+     * Creates and sends a transaction
+     */
+    async send() {
+      if (this.isInvalid()) {
+        this.$toast.create(10, this.isInvalid(), this.delay.normal);
+        return false;
+      }
+
+      if (this.wallet.sdk === 'ERC20') {
+        await this.sendERC20();
+      } else {
+        await this.sendETH();
+      }
     },
 
     /**

@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Rollbar from 'vue-rollbar';
 
 /**
@@ -6,7 +7,7 @@ import Rollbar from 'vue-rollbar';
  */
 
 export default ({ Vue, store }) => {
-  Vue.use(Rollbar, {
+/*  Vue.use(Rollbar, {
     accessToken: '54bc0469e13f406b97ef0ccdb0e62e48',
     captureUncaught: true,
     captureUnhandledRejections: true,
@@ -20,7 +21,7 @@ export default ({ Vue, store }) => {
         },
       },
     },
-  });
+  });*/
 
   /**
    * Add an error handling callback that creates toast.
@@ -33,7 +34,7 @@ export default ({ Vue, store }) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
-    if (account) {
+    /*if (account) {
       Vue.rollbar.configure({
         payload: {
           account: {
@@ -44,7 +45,7 @@ export default ({ Vue, store }) => {
       });
     }
 
-    Vue.rollbar.error(err.message);
+    Vue.rollbar.error(err.message);*/
 
     if (showToast) {
       const delay = 500;

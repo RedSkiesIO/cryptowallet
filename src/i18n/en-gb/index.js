@@ -206,5 +206,5 @@ export default {
   // other
   noConnection: 'No internet connction',
   volume24h: 'Volume 24h',
-
+  failedToConnect: 'Failed to connect to the server',
 };

@@ -124,6 +124,7 @@ export default {
       txData: null,
       loading: false,
       weiMultiplier: 1000000000000000000,
+      tinyBalance: 0.00000000001,
     };
   },
 
@@ -171,8 +172,7 @@ export default {
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
         let newBalance = unconfirmed - totalCost;
-        const tinyBalance = 0.00000000001;
-        if (newBalance < tinyBalance) { newBalance = 0; }
+        if (newBalance < this.tinyBalance) { newBalance = 0; }
         return newBalance;
       }
       return false;
@@ -330,7 +330,6 @@ export default {
         try {
           await this.broadcastTx();
         } catch (err) {
-          console.log('cought', err);
           this.errorHandler(err);
         }
       }, this.delay.short);

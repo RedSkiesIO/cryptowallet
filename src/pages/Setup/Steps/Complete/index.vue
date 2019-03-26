@@ -51,7 +51,6 @@ export default {
         salt: this.setup.salt,
         pinHash,
         default: accounts.length === 0,
-        /* @todo dont use app global, move locale into vuex */
         /* eslint-disable-next-line */
         locale: app.$i18n.locale || this.accounts[0].locale,
         node: this.setup.accountIpNode,

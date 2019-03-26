@@ -95,7 +95,6 @@ export default {
      * @return {Any}
      */
     decrypt(data, password) {
-      console.log(data, password);
       const bytes = AES.decrypt(data, password);
       return JSON.parse(bytes.toString(encUTF8));
     },
