@@ -171,9 +171,8 @@ export default {
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
         let newBalance = unconfirmed - totalCost;
-        // todo fix this, new balance can be a very small number, scientific notation
-        /*eslint-disable*/
-        if (newBalance < 0.00000000001) { newBalance = 0; }
+        const tinyBalance = 0.00000000001;
+        if (newBalance < tinyBalance) { newBalance = 0; }
         return newBalance;
       }
       return false;

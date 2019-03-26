@@ -2,6 +2,21 @@
   <div />
 </template>
 
+<!--
+0: "magnet"
+1: "squirrel"
+2: "below"
+3: "carry"
+4: "fancy"
+5: "soap"
+6: "design"
+7: "liar"
+8: "local"
+9: "wheel"
+10: "prize"
+11: "track"
+ -->
+
 <script>
 import { uid } from 'quasar';
 import { mapState } from 'vuex';

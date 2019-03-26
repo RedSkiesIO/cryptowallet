@@ -268,6 +268,11 @@ export default {
     await this.getFee();
     this.maxValueCoin = this.getMaxAmount();
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
+
+    /* eslint-disable-next-line */
+    app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
+      this.address = text;
+    });
   },
 
   methods: {
@@ -459,9 +464,6 @@ export default {
      * Creates and sends a transaction
      */
     async send() {
-      /*eslint-disable*/
-      console.log(this.isInvalid())
-
       if (this.isInvalid()) {
         this.$toast.create(10, this.isInvalid(), this.delay.normal);
         return false;
@@ -547,16 +549,21 @@ export default {
             } else {
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
-              if (isValid) {
-                this.address = text;
-                this.addressError = '';
-              }
+
               // @todo, don't use app global
               /* eslint-disable-next-line */
               app.$root.$emit('cancelScanning');
               // @todo, don't use app global
               /* eslint-disable-next-line */
               app.$root.$emit('sendCoinModalOpened', true);
+
+              if (isValid) {
+                setTimeout(() => {
+                  // @todo, don't use app global
+                  /* eslint-disable-next-line */
+                  app.$root.$emit(`scanned_${this.wallet.name}`, text);
+                }, this.delay.normal);
+              }
             }
           });
         }, this.delay.normal);

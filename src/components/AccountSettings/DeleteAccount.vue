@@ -147,14 +147,20 @@ export default {
 
     deleteAccount() {
       const { id } = this.account;
-      this.$store.dispatch('settings/setLoading', true);
       const wasDefault = this.account.default;
+
+      this.$store.dispatch('settings/setLoading', true);
       this.$store.dispatch('settings/setSelectedAccount', null);
       this.$store.dispatch('settings/setAuthenticatedAccount', null);
 
-      if (wasDefault && this.accounts.length > 0) {
+      if (wasDefault && this.accounts.length > 1) {
         Account.$update({
           where: (record) => { return record.id === id; },
+          data: { default: true },
+        });
+
+        Account.$update({
+          where: (record) => { return record.id === this.accounts[0].id; },
           data: { default: true },
         });
       }

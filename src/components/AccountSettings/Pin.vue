@@ -44,9 +44,12 @@
 
 <script>
 import { mapState } from 'vuex';
-// import Account from '@/store/wallet/entities/account';
+import Account from '@/store/wallet/entities/account';
+import Wallet from '@/store/wallet/entities/wallet';
 import PinPad from '@/components/Auth/PinPad';
 import bcrypt from 'bcryptjs';
+import AES from 'crypto-js/aes';
+import encUTF8 from 'crypto-js/enc-utf8';
 
 export default {
   name: 'Pin',
@@ -66,6 +69,8 @@ export default {
   data() {
     return {
       pin: [],
+      oldPin: null,
+      newPin: null,
       authorized: false,
       newPinConfirmed: false,
       newPinHash: null,
@@ -83,6 +88,18 @@ export default {
     },
   },
   methods: {
+    /**
+     * Decrypts and returns a piece of data
+     * @param  {Uint8Array} data
+     * @param  {String} password
+     * @return {Any}
+     */
+    decrypt(data, password) {
+      console.log(data, password);
+      const bytes = AES.decrypt(data, password);
+      return JSON.parse(bytes.toString(encUTF8));
+    },
+
     resetPin() {
       this.pin = [];
     },
@@ -97,6 +114,7 @@ export default {
      */
     attemptUnlock() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
+        this.oldPin = this.pin;
         this.authorized = true;
         this.$refs.PinPad.resetState();
         this.resetPin();
@@ -127,24 +145,10 @@ export default {
     },
 
     /**
-     * Authorizes users current PIN
-     */
-    authorizeUser() {
-      if (this.$CWCrypto.bcryptCompareString(this.pin, this.pinHash) === true) {
-        this.authorized = true;
-        this.$refs.PinPad.resetState();
-        this.resetPin();
-        this.mode = 'new-pin';
-      } else {
-        this.$toast.create(10, this.$t('wrongPin'), this.delay);
-      }
-      return false;
-    },
-
-    /**
      * Generates new PIN hash
      */
     storeNewPin() {
+      this.newPin = this.pin;
       this.newPinHash = this.$CWCrypto.bcryptHashString(this.pin.join(''), this.getSalt());
       this.newPinConfirmed = true;
       this.$refs.PinPad.resetState();
@@ -154,20 +158,61 @@ export default {
     },
 
     /**
+     * Encrypts sensitive data with the new pin
+     */
+    async encryptPersistentData() {
+      const wallets = Wallet.query().where('account_id', this.authenticatedAccount).get();
+      wallets.forEach((wallet) => {
+        Wallet.AES.forEach((property) => {
+          const data = {};
+
+          if (wallet[property]) {
+            data[property] = wallet[property];
+          }
+
+          const accountId = this.authenticatedAccount;
+          function walletWhere(record) {
+            return record.id === wallet.id && record.account_id === accountId;
+          }
+
+          Wallet.$update({
+            data,
+            where: walletWhere,
+            password: this.newPin.join(''),
+          });
+
+          Wallet.update({
+            data,
+            where: walletWhere,
+          });
+        });
+      });
+
+      const account = Account.query().where('id', this.authenticatedAccount).get();
+      const data = {
+        pinHash: this.newPinHash,
+        refresh_token: this.decrypt(account[0].refresh_token, this.oldPin.join('')),
+        seed: account[0].seed,
+        salt: this.salt,
+      };
+
+      Account.$update({
+        data,
+        where: (record) => { return record.id === this.authenticatedAccount; },
+        password: this.newPin.join(''),
+      });
+
+      return true;
+    },
+
+    /**
      * If new PIN confirmed correctly updates the account
      */
-    updateAccount() {
+    async updateAccount() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
+        await this.encryptPersistentData();
         this.$toast.create(0, this.$t('pinChanged'), this.delay.short);
-        /*eslint-disable*/
-        console.log(this.pin.join(''));
-        console.log(this.newPinHash);
 
-/*        Account.$update({
-          where: (record) => { return record.id === this.authenticatedAccount; },
-          data: { pinHash: this.newPinHash },
-          password: this.pin.join(''),
-        });*/
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.closeModal();

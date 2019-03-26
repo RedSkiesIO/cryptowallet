@@ -326,6 +326,11 @@ export default {
 
   async mounted() {
     await this.getMaxedTx();
+    // @todo don't use global app
+    /* eslint-disable-next-line */
+    app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
+      this.address = text;
+    });
   },
 
   methods: {
@@ -824,16 +829,20 @@ export default {
             } else {
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
-              if (isValid) {
-                this.address = text;
-                this.addressError = '';
-              }
               // @todo, don't use app global
               /* eslint-disable-next-line */
               app.$root.$emit('cancelScanning');
               // @todo, don't use app global
               /* eslint-disable-next-line */
               app.$root.$emit('sendCoinModalOpened', true);
+
+              if (isValid) {
+                setTimeout(() => {
+                  // @todo, don't use app global
+                  /* eslint-disable-next-line */
+                  app.$root.$emit(`scanned_${this.wallet.name}`, text);
+                }, this.delay.normal);
+              }
             }
           });
         }, this.delay.normal);
