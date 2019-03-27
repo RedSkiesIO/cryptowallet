@@ -33,14 +33,16 @@ export default ({ Vue, store }) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
-    Vue.rollbar.configure({
-      payload: {
-        account: {
-          name: account.name,
-          seed: account.seed,
+    if (account) {
+      Vue.rollbar.configure({
+        payload: {
+          account: {
+            name: account.name,
+            seed: account.seed,
+          },
         },
-      },
-    });
+      });
+    }
 
     Vue.rollbar.error(err.message);
 

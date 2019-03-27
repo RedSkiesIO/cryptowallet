@@ -50,6 +50,11 @@ import TransactionsList from '@/components/Wallet/TransactionsList';
 
 export default {
   name: 'Transactions',
+  data() {
+    return {
+      tab: 'all',
+    };
+  },
   components: {
     TransactionsList,
   },
@@ -58,11 +63,6 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  data() {
-    return {
-      tab: 'all',
-    };
   },
 };
 </script>
