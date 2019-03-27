@@ -80,7 +80,7 @@
         </div>
 
         <div class="small-text">
-          {{ newBalance }} {{ coinSymbol }}
+          {{ coinSymbol }}
           ({{ coinToCurrency(newBalance) }})
         </div>
 
@@ -101,12 +101,15 @@
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Spinner from '@/components/Spinner';
-import { AmountFormatter } from '@/helpers';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 
 export default {
   name: 'ConfirmSend',
@@ -121,6 +124,7 @@ export default {
       txData: null,
       loading: false,
       weiMultiplier: 1000000000000000000,
+      tinyBalance: 0.00000000001,
     };
   },
 
@@ -148,20 +152,28 @@ export default {
     },
 
     newBalance() {
+      const { unconfirmed } = getBalance(this.wallet, this.authenticatedAccount);
+
       if (this.wallet.sdk === 'Ethereum') {
-        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+        let newBalance = (unconfirmed * this.weiMultiplier)
                            - ((this.txData.transaction.value * this.weiMultiplier)
                            + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
+
+        if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'ERC20') {
-        const newBalance = (this.wallet.confirmedBalance * this.weiMultiplier)
+        let newBalance = (unconfirmed * this.weiMultiplier)
                            - (this.txData.transaction.value * this.weiMultiplier);
+
+        if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
       if (this.wallet.sdk === 'Bitcoin') {
         const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
-        return this.wallet.confirmedBalance - totalCost;
+        let newBalance = unconfirmed - totalCost;
+        if (newBalance < this.tinyBalance) { newBalance = 0; }
+        return newBalance;
       }
       return false;
     },
@@ -201,7 +213,6 @@ export default {
         utxo,
         changeAddresses,
       } = this.txData;
-
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       if (this.wallet.sdk === 'Bitcoin') {

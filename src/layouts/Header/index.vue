@@ -155,6 +155,7 @@ export default {
     coinHeading() {
       if (this.$route.name === 'walletSingle'
           || this.$route.name === 'sendCoinSingle'
+          || this.$route.name === 'receiveCoinSingle'
           || this.$route.name === 'coinSinglePrices') {
         return true;
       }

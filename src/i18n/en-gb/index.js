@@ -131,13 +131,15 @@ export default {
   catalystNode: 'Catalyst Node',
   // Wallet
   balance: 'Balance',
+  availableBalance: 'Available Balance',
+  availableBalanceExplanation: 'Explain me here please',
   yourAddress: 'Your Address',
   scanQR: 'Scan QR Code',
   recipient: 'Recipient',
   amount: 'Amount',
   fee: 'Fee',
   estimatedTransaction: 'Estimated transaction cost:',
-  bitcoinAddressInvalidLength: 'The address must be 34 characters in length',
+  bitcoinAddressInvalidLength: 'The address must be 26-35 characters in length',
   bitcoinAddressInvalid: 'Invalid Bitcoin address',
   ethereumAddressInvalidLength: 'The address must be 42 characters in length',
   ethereumAddressInvalid: 'Invalid Ethereum address',
@@ -206,5 +208,5 @@ export default {
   // other
   noConnection: 'No internet connction',
   volume24h: 'Volume 24h',
-
+  failedToConnect: 'Failed to connect to the server',
 };
