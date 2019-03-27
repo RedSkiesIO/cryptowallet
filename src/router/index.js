@@ -43,21 +43,21 @@ export default new VueRouter({
       path: '/wallet/single/:id',
       component: () => { return import('layouts/Authed'); },
       children: [
-        { name: 'walletSingle', path: '', component: () => { return import('pages/Balance'); } },
+        { name: 'walletSingle', path: '', component: () => { return import('pages/WalletSingle'); } },
       ],
     },
     {
       path: '/wallet/single/prices/:id',
       component: () => { return import('layouts/Authed'); },
       children: [
-        { name: 'coinSinglePrices', path: '', component: () => { return import('pages/Balance'); } },
+        { name: 'coinSinglePrices', path: '', component: () => { return import('pages/WalletSingle'); } },
       ],
     },
     {
       path: '/wallet/single/send/:id',
       component: () => { return import('layouts/Authed'); },
       children: [
-        { name: 'sendCoinSingle', path: '', component: () => { return import('pages/Balance'); } },
+        { name: 'sendCoinSingle', path: '', component: () => { return import('pages/WalletSingle'); } },
       ],
     },
     {
@@ -65,6 +65,13 @@ export default new VueRouter({
       component: () => { return import('layouts/Authed'); },
       children: [
         { name: 'sendCoin', path: '', component: () => { return import('pages/Wallet'); } },
+      ],
+    },
+    {
+      path: '/wallet/single/receive/:id',
+      component: () => { return import('layouts/Authed'); },
+      children: [
+        { name: 'receiveCoinSingle', path: '', component: () => { return import('pages/WalletSingle'); } },
       ],
     },
     {

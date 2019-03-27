@@ -53,6 +53,15 @@
         :label="$t('delete')"
         @click="confirmPin"
       />
+
+      <q-btn
+        v-if="mode === 'delete'"
+        :disabled="canProceed"
+        color="red"
+        text-color="white"
+        label="Delete"
+        @click="confirmPin"
+      />
     </div>
   </div>
 </template>
@@ -97,11 +106,6 @@ export default {
       * @param {*} pin
      */
     inputPin(pin) {
-      /* const btn = document.querySelectorAll(`[data-text='${pin}']`)[0];
-      btn.className += ' active';
-      setTimeout(() => {
-        btn.classList.remove('active');
-      }, 200); */
       if (navigator && navigator.vibrate) {
         const onInputVibrate = 25;
         navigator.vibrate(onInputVibrate);
@@ -145,6 +149,7 @@ export default {
       if (this.mode === 'pin-setup') { this.$store.dispatch('setup/resetPin'); }
       if (this.mode === 'pin-confirm') { this.$store.dispatch('setup/resetPinConfirm'); }
       if (this.mode === 'auth') { this.$parent.resetPin(); }
+
       if (this.mode === 'access'
         || this.mode === 'delete'
         || this.mode === 'new-pin'

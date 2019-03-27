@@ -66,7 +66,7 @@ export default {
       this.dissmis = this.$q.notify({
         message: this.$t('noConnection'),
         timeout: 0,
-        type: 'negative',
+        color: 'negative',
         position: 'top',
         closeBtn: false,
         onDismiss() {

@@ -192,10 +192,7 @@ export default {
           wallets.forEach((wallet) => {
             if (wallet.sdk === 'ERC20') {
               erc20Promises.push(new Promise(async (res) => {
-                const parentSDK = this.coinSDKS[wallet.parentSdk];
-                const parentWallet = initializedWallets[wallet.parentName];
-                const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
-                await generateErc20(keyPair, wallet);
+                await generateErc20(wallet);
                 res();
               }));
             }
