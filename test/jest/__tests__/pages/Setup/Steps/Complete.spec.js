@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 import { shallowMount } from '@vue/test-utils';
 import Complete from '@/pages/Setup/Steps/Complete';
 import { localVue } from '@/helpers/SetupLocalVue';
@@ -14,6 +13,7 @@ describe('Complete.vue', () => {
   let backEndService;
   let $router;
   let errorHandler;
+  const delay = 501;
 
   beforeEach(() => {
     errorHandler = jest.fn();
@@ -85,7 +85,7 @@ describe('Complete.vue', () => {
         expect(accountInitializer.createAccount).toHaveBeenCalled();
         expect(actions['settings/setSelectedAccount']).toHaveBeenCalled();
         done();
-      }, 501);
+      }, delay);
     });
   });
 
@@ -95,7 +95,7 @@ describe('Complete.vue', () => {
         expect(accountInitializer.createWallets).toHaveBeenCalled();
         expect(accountInitializer.createERC20Wallets).toHaveBeenCalled();
         done();
-      }, 501);
+      }, delay);
     });
   });
 
@@ -105,7 +105,7 @@ describe('Complete.vue', () => {
         expect(backEndService.connect).toHaveBeenCalled();
         expect(backEndService.loadPriceFeed).toHaveBeenCalled();
         done();
-      }, 501);
+      }, delay);
     });
   });
 
@@ -115,7 +115,7 @@ describe('Complete.vue', () => {
         expect(actions['setup/clearSetupData']).toHaveBeenCalled();
         expect($router.push).toHaveBeenCalledWith({ path: '/wallet' });
         done();
-      }, 501);
+      }, delay);
     });
   });
 
@@ -125,7 +125,7 @@ describe('Complete.vue', () => {
       setTimeout(() => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalled();
         done();
-      }, 501);
+      }, delay);
     });
   });
 });
