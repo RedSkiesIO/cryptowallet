@@ -391,9 +391,8 @@ export default {
      */
     async getFee() {
       const gasLimit = 21000;
-      /*eslint-disable*/
       let coinSymbol = this.wallet.symbol;
-      if (this.wallet.sdk === 'ERC20') { coinSymbol = 'ETH' };
+      if (this.wallet.sdk === 'ERC20') { coinSymbol = 'ETH'; }
 
       const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
@@ -539,6 +538,8 @@ export default {
       } else {
         await this.sendETH();
       }
+
+      return true;
     },
 
     /**

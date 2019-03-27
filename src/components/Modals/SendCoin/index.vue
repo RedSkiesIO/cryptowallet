@@ -30,7 +30,6 @@
 
         <div v-if="wallet.sdk === 'Bitcoin'">
           <SendBitcoin />
-          }
         </div>
 
         <div v-if="wallet.sdk === 'Ethereum'">
