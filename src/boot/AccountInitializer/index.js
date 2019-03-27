@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { uid } from 'quasar';
 import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
@@ -22,7 +21,6 @@ const accountInitializer = {
       seed: Object.values(setup.seed),
     };
 
-    // this.$store.dispatch('settings/setSelectedAccount', data.name);
     const result = await Account.$insert({
       data,
       password,
@@ -60,7 +58,6 @@ const accountInitializer = {
     });
 
     await Promise.all(promises);
-    //   await Promise.all(erc20Promises);
   },
 
   async createERC20Wallets(setup, id, coins) {

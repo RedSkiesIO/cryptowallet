@@ -3,9 +3,6 @@ import { shallowMount } from '@vue/test-utils';
 import Complete from '@/pages/Setup/Steps/Complete';
 import { localVue } from '@/helpers/SetupLocalVue';
 import Vuex from 'vuex';
-// import { Quasar, uid } from 'quasar';
-// import Account from '@/store/wallet/entities/account';
-// import Wallet from '@/store/wallet/entities/wallet';
 import supportedCoins from '@/store/settings/state/supportedCoins.js';
 
 describe('Complete.vue', () => {
