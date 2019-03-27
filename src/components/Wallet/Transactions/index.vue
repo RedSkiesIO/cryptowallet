@@ -20,9 +20,12 @@
       />
     </q-tabs>
 
-    <q-tab-panels v-model="tab" animated>
+    <q-tab-panels
+      v-model="tab"
+      animated
+    >
       <q-tab-panel name="all">
-         <TransactionsList :wallet="wallet" />
+        <TransactionsList :wallet="wallet" />
       </q-tab-panel>
 
       <q-tab-panel name="sent">
@@ -47,11 +50,6 @@ import TransactionsList from '@/components/Wallet/TransactionsList';
 
 export default {
   name: 'Transactions',
-  data() {
-    return {
-      tab: 'all',
-    };
-  },
   components: {
     TransactionsList,
   },
@@ -60,6 +58,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      tab: 'all',
+    };
   },
 };
 </script>

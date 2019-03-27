@@ -127,21 +127,6 @@ export default {
     },
 
     /**
-     * Authorizes users current PIN
-     */
-    authorizeUser() {
-      if (this.$CWCrypto.bcryptCompareString(this.pin, this.pinHash) === true) {
-        this.authorized = true;
-        this.$refs.PinPad.resetState();
-        this.resetPin();
-        this.mode = 'new-pin';
-      } else {
-        this.$toast.create(10, this.$t('wrongPin'), this.delay);
-      }
-      return false;
-    },
-
-    /**
      * Generates new PIN hash
      */
     storeNewPin() {
