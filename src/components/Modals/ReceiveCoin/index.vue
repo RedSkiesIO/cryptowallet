@@ -58,7 +58,7 @@ export default {
   watch: {
     $route: {
       handler(to) {
-        if (to.name === 'receiveCoin') {
+        if (to.name === 'receiveCoin' || to.name === 'receiveCoinSingle') {
           this.receiveCoinModalOpened = true;
         } else {
           this.receiveCoinModalOpened = false;

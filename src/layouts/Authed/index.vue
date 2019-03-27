@@ -66,12 +66,15 @@
 <script>
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
-import AmountFormatter from '@/helpers/AmountFormatter';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
+import {
+  AmountFormatter,
+  getBalance,
+} from '@/helpers';
 
 export default {
   name: 'AuthedLayout',
@@ -121,11 +124,14 @@ export default {
 
     totalBalance() {
       let balance = 0;
+
       this.wallets.forEach((wallet) => {
+        const { unconfirmed } = getBalance(wallet, this.authenticatedAccount);
+
         const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
         if (price) {
           const formattedAmount = new AmountFormatter({
-            amount: wallet.confirmedBalance,
+            amount: unconfirmed,
             rate: price.data.PRICE,
             format: '0.00',
             coin: wallet.name,
@@ -163,6 +169,7 @@ export default {
              || this.$route.name === 'exchange'
              || this.$route.name === 'walletSingle'
              || this.$route.name === 'sendCoinSingle'
+             || this.$route.name === 'receiveCoinSingle'
              || this.$route.name === 'coinSinglePrices';
     },
     shortTop() {
@@ -172,11 +179,13 @@ export default {
     showCoinHeader() {
       return (this.$route.name === 'walletSingle' && this.wallet)
              || (this.$route.name === 'sendCoinSingle' && this.wallet)
+             || (this.$route.name === 'receiveCoinSingle' && this.wallet)
              || (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
     singleWalletTop() {
       return (this.$route.name === 'walletSingle' && this.wallet)
              || (this.$route.name === 'sendCoinSingle' && this.wallet)
+             || (this.$route.name === 'receiveCoinSingle' && this.wallet)
              || (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
   },
@@ -419,7 +428,7 @@ export default {
 }
 
 .single-wallet-top .background {
-  height: 28.5rem;
+  height: 24.5rem;
 }
 
 /*.q-pull-to-refresh-wrapper {

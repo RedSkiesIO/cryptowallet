@@ -2,6 +2,7 @@
   <div />
 </template>
 
+
 <script>
 import { uid } from 'quasar';
 import { mapState } from 'vuex';
@@ -50,7 +51,8 @@ export default {
         salt: this.setup.salt,
         pinHash,
         default: accounts.length === 0,
-        locale: this.setup.accountLocale || this.accounts[0].locale,
+        /* eslint-disable-next-line */
+        locale: app.$i18n.locale || this.accounts[0].locale,
         node: this.setup.accountIpNode,
         seed: Object.values(this.setup.seed),
       };
@@ -66,6 +68,11 @@ export default {
         const { id } = result.account[0];
         const promises = [];
         const erc20Promises = [];
+
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, id, this.setup.pinArray.join(''));
+
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
 
         this.supportedCoins.forEach((coin) => {
           const wallet = {

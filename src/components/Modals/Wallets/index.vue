@@ -61,7 +61,6 @@ import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
-import Latest from '@/store/latestPrice';
 import Prices from '@/store/prices';
 
 export default {
@@ -108,7 +107,6 @@ export default {
         internalAccountDiscovery,
         externalChainAddressIndex,
         internalChainAddressIndex,
-        balance,
         utxos,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
@@ -119,7 +117,6 @@ export default {
         data: {
           externalChainAddressIndex,
           internalChainAddressIndex,
-          confirmedBalance: balance,
           externalAddress: keyPair.address,
         },
       });
@@ -229,48 +226,6 @@ export default {
       });
     },
 
-    storePriceData(coin, latestPrice) {
-      return new Promise(async (resolve) => {
-        const checkPriceExists = (symbol, data) => {
-          const price = Latest.find([`${symbol}_${this.selectedCurrency.code}`]);
-          if (!price) {
-            Latest.$insert({
-              data: {
-                coin,
-                currency: this.selectedCurrency.code,
-                updated: +new Date(),
-                data,
-              },
-            });
-            return false;
-          }
-          return true;
-        };
-        const whereLatestPrice = (record, item) => {
-          return (
-            record.coin === item.coin
-           && record.currency === item.currency
-          );
-        };
-
-        if (checkPriceExists(coin, latestPrice)) {
-          Latest.$update({
-            where: (record) => {
-              return whereLatestPrice(record, {
-                coin,
-                currency: this.selectedCurrency.code,
-              });
-            },
-            data: {
-              updated: +new Date(),
-              data: latestPrice,
-            },
-          });
-        }
-        resolve();
-      });
-    },
-
     storeChartData(coin, period, latestPrice) {
       return new Promise(async (resolve) => {
         const checkPriceExists = (symbol, data) => {
@@ -327,16 +282,15 @@ export default {
       if (response) {
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
-      if (coinSDK.getPriceFeed) {
-        const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
-        const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
-        const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
 
-        if (dayData && weekData && monthData) {
-          this.storeChartData(wallet.symbol, 'day', dayData.data);
-          this.storeChartData(wallet.symbol, 'week', weekData.data);
-          this.storeChartData(wallet.symbol, 'month', monthData.data);
-        }
+      const dayData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'day');
+      const weekData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'week');
+      const monthData = await this.backEndService.getHistoricalData(wallet.symbol, this.selectedCurrency.code, 'month');
+
+      if (dayData && weekData && monthData) {
+        this.storeChartData(wallet.symbol, 'day', dayData.data);
+        this.storeChartData(wallet.symbol, 'week', weekData.data);
+        this.storeChartData(wallet.symbol, 'month', monthData.data);
       }
 
       const initializedWallet = wallet.hdWallet;

@@ -93,7 +93,17 @@ export default {
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
-      this.$store.dispatch('setup/setSeed', this.seedPhrase);
+      this.seedPhrase = this.seedPhrase.filter((word, index) => {
+        return this.seedPhrase.indexOf(word) === index;
+      });
+
+      const expectedSeedLength = 12;
+
+      if (this.seedPhrase.length === expectedSeedLength) {
+        this.$store.dispatch('setup/setSeed', this.seedPhrase);
+      } else {
+        this.generateSeed();
+      }
     },
 
     confirmed() {
