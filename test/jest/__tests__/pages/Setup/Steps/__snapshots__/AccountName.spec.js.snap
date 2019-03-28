@@ -45,7 +45,7 @@ exports[`AccountName.vue renders and matches snapshot 1`] = `
     class="btns-wrapper"
   >
     <button
-      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      class="q-btn inline relative-position q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
       tabindex="0"
       type="button"
     >
