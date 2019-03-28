@@ -1,64 +1,39 @@
-/* eslint-disable */
-import { mount, createWrapper } from '@vue/test-utils';
+import { shallowMount, createWrapper } from '@vue/test-utils';
 import SendFailure from '@/components/Modals/SendFailure';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
-import { Quasar, QDialog } from 'quasar';
 import Vuex from 'vuex';
 
 describe('SendFailure component', () => {
   let store;
-  let mockSetupModule;
-
-  localVue.use(Quasar, { components: { QDialog } });
+  let wrapper;
 
   beforeEach(() => {
-    mockSetupModule = {
-/*      namespaced: true,
-      state: {
-        pinArray: [0, 0, 0, 0, 0, 0],
-        pinConfirmArray: [0, 0, 0, 0, 0, 0],
-        salt: '$2a$10$KE86k38NXlqTBgOQUC9bE.',
-      },
-      actions: {
-        resetPin: jest.fn(),
-        resetPinConfirm: jest.fn(),
-        setPinConfirm: jest.fn(),
-        setPin: jest.fn(),
-      },*/
-    };
+    store = new Vuex.Store();
 
-    store = new Vuex.Store({
-      modules: {
-        setup: mockSetupModule,
-      },
-      state: {
-        /*route: {
-          params: {
-            id: 4,
-          },
-        },
-        settings: {
-          pin: {
-            minLength: 6,
-          },
-          delay: 500,
-        },*/
-      },
+    wrapper = shallowMount(SendFailure, {
+      i18n,
+      localVue,
+      store,
     });
   });
 
   it('renders and matches snapshot', () => {
-    const wrapper = mount(PinPad, {
-      i18n,
-      localVue,
-      Keyboard,
-      store,
-      propsData: {
-        mode: 'pin-setup',
-      },
-    });
     expect(wrapper.element).toMatchSnapshot();
   });
 
+  it('has sendFailureModalOpened data value set to false when mounted', () => {
+    expect(wrapper.vm.sendFailureModalOpened).toBe(false);
+  });
 
+  it('updates it\'s data value if \'sendFailureModalOpened\' is emitted', () => {
+    wrapper.vm.$root.$emit('sendFailureModalOpened', true);
+    expect(wrapper.vm.sendFailureModalOpened).toBe(true);
+
+    wrapper.vm.$root.$emit('sendFailureModalOpened', false);
+    expect(wrapper.vm.sendFailureModalOpened).toBe(false);
+  });
+
+  it('updates it\'s sendFailureModalOpened data value and navigates a single route back when dismiss() method is called', () => {
+    expect(wrapper.vm.sendFailureModalOpened).toBe(false);
+  });
 });

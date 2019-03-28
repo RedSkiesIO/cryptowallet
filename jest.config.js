@@ -9,7 +9,7 @@ module.exports = {
   bail: true,
   cache: false,
   verbose: true,
-  collectCoverage: true,
+  collectCoverage: false,
   coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.vue',
@@ -28,7 +28,7 @@ module.exports = {
   testMatch: [
     '<rootDir>/test/jest/__tests__/**/*.spec.js',
     '<rootDir>/test/jest/__tests__/**/*.test.js',
-    '<rootDir>/src/**/__tests__/*_jest.spec.js',
+    // '<rootDir>/src/**/__tests__/*_jest.spec.js',
   ],
   moduleFileExtensions: [
     'vue',
@@ -43,6 +43,7 @@ module.exports = {
     '^test-utils$': '<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.js',
     '^quasar$': '<rootDir>/node_modules/quasar/dist/quasar.common.js',
     '^~/(.*)$': '<rootDir>/$1',
+    '^@/cordovaMocks$': '<rootDir>/tests/CordovaMocks/index.js',
     '^@/(.*)$': '<rootDir>/src/$1',
     '.*css$': '<rootDir>/test/jest/utils/stub.css',
   },

@@ -7,6 +7,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
       content-class="dark-modal"
+      ref="dialog"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
@@ -15,7 +16,7 @@
             size="lg"
             class="icon-btn back-arrow-btn"
             flat
-            @click.prevent="dismiss"
+            @click="dismiss"
           />
         </div>
         <h1 class="header-h1">
@@ -51,19 +52,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
   name: 'SendFailure',
   data() {
     return {
       sendFailureModalOpened: false,
     };
-  },
-  computed: {
-    ...mapState({
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-    }),
   },
   mounted() {
     this.$root.$on('sendFailureModalOpened', (value) => {
@@ -80,7 +74,6 @@ export default {
 </script>
 
 <style scoped>
-
 .error-content-wrapper,
 .center-modal-content {
   display: flex;

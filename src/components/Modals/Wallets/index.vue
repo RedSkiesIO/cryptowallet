@@ -100,7 +100,10 @@ export default {
     openAddWalletModal() {
       this.$root.$emit('erc20ModalOpened', true);
     },
+    /*eslint-disable*/
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
+
+
       const {
         txHistory,
         externalAccountDiscovery,
@@ -109,6 +112,7 @@ export default {
         internalChainAddressIndex,
         utxos,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
+
 
       const keyPair = coinSDK.generateKeyPair(initializedWallet, externalChainAddressIndex);
 
