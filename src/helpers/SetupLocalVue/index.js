@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import Vuex from 'vuex';
 import { createLocalVue } from '@vue/test-utils';
 import VueRouter from 'vue-router';
@@ -12,12 +14,23 @@ import appInvitationPlugin from '@/boot/AppInvitation';
 import smsPlugin from '@/boot/Sms';
 import emailPlugin from '@/boot/Email';
 import contactsImportPlugin from '@/boot/ContactsImport';
+import vueSelectPlugin from '@/boot/VueSelect';
+import * as All from 'quasar'
+const { Quasar, date } = All
+
+const components = Object.keys(All).reduce((object, key) => {
+  const val = All[key]
+  if (val && val.component && val.component.name != null) {
+    object[key] = val
+  }
+  return object
+}, {});
 
 const localVue = createLocalVue();
-
+localVue.use(Quasar, { components })
 localVue.use(VueI18n);
 localVue.use(Vuex);
-// localVue.use(VueRouter);
+localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
@@ -26,6 +39,7 @@ appInvitationPlugin({ Vue: localVue });
 smsPlugin({ Vue: localVue });
 emailPlugin({ Vue: localVue });
 contactsImportPlugin({ Vue: localVue });
+vueSelectPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
@@ -36,12 +50,14 @@ const createRouter = (store = null) => {
   const router = new VueRouter({
     routes: [
       {
-        path: '/contact/:id',
+        path: '/',
       },
     ],
   });
 
-  if (store) { sync(store, router); }
+  if (store) {
+    sync(store, router);
+  }
   return router;
 };
 

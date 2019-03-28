@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Splash Setup renders and matches snapshot 1`] = `
+<div
+  class="container splash"
+>
+  <div
+    class="splash-logo"
+  >
+    <h1>
+      CryptoWallet
+    </h1>
+     
+    <p
+      class="splash-slogan"
+    >
+      
+      All your coins and tokens in one place. Secured.
+    
+    </p>
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <q-btn-stub
+      align="center"
+      class="splash-btn"
+      color="primary"
+      label="Get Started"
+      ripple="true"
+      textcolor="blueish"
+    />
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <q-btn-stub
+      align="center"
+      class="splash-btn"
+      color="blueish"
+      icon="get_app"
+      label="Import Account"
+      ripple="true"
+      textcolor="primary"
+    />
+  </div>
+   
+  <div
+    class="flags"
+  >
+    <div
+      class="row q-input bg-blueish"
+    >
+      <div
+        class="col-2 flag-icon"
+      >
+        <img
+          class="select-icon"
+          src="/assets/flags/en-gb.svg"
+        />
+      </div>
+       
+      <div
+        class="col-10 input-field"
+      >
+        <v-select-stub
+          autocomplete="off"
+          class="lang-select"
+          clearable="true"
+          closeonselect="true"
+          createoption="function(t){return\\"object\\"===(0,d.default)(this.mutableOptions[0])&&(t=(0,l.default)({},this.label,t)),this.$emit(\\"option:created\\",t),t}"
+          dir="auto"
+          filter="function(t,e){var n=this;return t.filter(function(t){var r=n.getOptionLabel(t);return\\"number\\"==typeof r&&(r=r.toString()),n.filterBy(t,r,e)})}"
+          filterby="function(t,e,n){return(e||\\"\\").toLowerCase().indexOf(n.toLowerCase())>-1}"
+          getoptionlabel="function(t){return this.index&&(t=this.findOptionByIndexValue(t)),\\"object\\"===(\\"undefined\\"==typeof t?\\"undefined\\":(0,d.default)(t))?t.hasOwnProperty(this.label)?t[this.label]:console.warn('[vue-select warn]: Label key \\"option.'+this.label+'\\" does not'+(\\" exist in options object \\"+(0,f.default)(t)+\\".\\\\n\\")+\\"http://sagalbot.github.io/vue-select/#ex-labels\\"):t}"
+          label="label"
+          maxheight="400px"
+          onchange="function(t){this.$emit(\\"change\\",t)}"
+          oninput="function(t){this.$emit(\\"input\\",t)}"
+          onsearch="function(t,e){}"
+          ontab="function(){this.selectOnTab&&this.typeAheadSelect()}"
+          options="[object Object],[object Object],[object Object]"
+          placeholder=""
+          transition="fade"
+          value="[object Object]"
+        />
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="loading-footer emphasised"
+  >
+    <img
+      class="logo-loading"
+      src="~/assets/logo-white-horizontal.png"
+    />
+  </div>
+</div>
+`;
