@@ -23,28 +23,49 @@ exports[`Splash Setup renders and matches snapshot 1`] = `
   <div
     class="btns-wrapper"
   >
-    <q-btn-stub
-      align="center"
-      class="splash-btn"
-      color="primary"
-      label="Get Started"
-      ripple="true"
-      textcolor="blueish"
-    />
+    <button
+      class="q-btn inline q-btn-item non-selectable splash-btn get-started-btn q-btn--standard q-btn--rectangle bg-primary text-blueish q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Get Started
+        </div>
+      </div>
+    </button>
   </div>
    
   <div
     class="btns-wrapper"
   >
-    <q-btn-stub
-      align="center"
-      class="splash-btn"
-      color="blueish"
-      icon="get_app"
-      label="Import Account"
-      ripple="true"
-      textcolor="primary"
-    />
+    <button
+      class="q-btn inline q-btn-item non-selectable splash-btn import-account-btn q-btn--standard q-btn--rectangle bg-blueish text-primary q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <i
+          aria-hidden="true"
+          class="material-icons q-icon on-left"
+        >
+          get_app
+        </i>
+        <div>
+          Import Account
+        </div>
+      </div>
+    </button>
   </div>
    
   <div
@@ -65,27 +86,66 @@ exports[`Splash Setup renders and matches snapshot 1`] = `
       <div
         class="col-10 input-field"
       >
-        <v-select-stub
-          autocomplete="off"
-          class="lang-select"
-          clearable="true"
-          closeonselect="true"
-          createoption="function(t){return\\"object\\"===(0,d.default)(this.mutableOptions[0])&&(t=(0,l.default)({},this.label,t)),this.$emit(\\"option:created\\",t),t}"
+        <div
+          class="dropdown v-select lang-select single unsearchable"
           dir="auto"
-          filter="function(t,e){var n=this;return t.filter(function(t){var r=n.getOptionLabel(t);return\\"number\\"==typeof r&&(r=r.toString()),n.filterBy(t,r,e)})}"
-          filterby="function(t,e,n){return(e||\\"\\").toLowerCase().indexOf(n.toLowerCase())>-1}"
-          getoptionlabel="function(t){return this.index&&(t=this.findOptionByIndexValue(t)),\\"object\\"===(\\"undefined\\"==typeof t?\\"undefined\\":(0,d.default)(t))?t.hasOwnProperty(this.label)?t[this.label]:console.warn('[vue-select warn]: Label key \\"option.'+this.label+'\\" does not'+(\\" exist in options object \\"+(0,f.default)(t)+\\".\\\\n\\")+\\"http://sagalbot.github.io/vue-select/#ex-labels\\"):t}"
-          label="label"
-          maxheight="400px"
-          onchange="function(t){this.$emit(\\"change\\",t)}"
-          oninput="function(t){this.$emit(\\"input\\",t)}"
-          onsearch="function(t,e){}"
-          ontab="function(){this.selectOnTab&&this.typeAheadSelect()}"
-          options="[object Object],[object Object],[object Object]"
-          placeholder=""
-          transition="fade"
-          value="[object Object]"
-        />
+        >
+          <div
+            class="dropdown-toggle"
+          >
+            <div
+              class="vs__selected-options"
+            >
+              <span
+                class="selected-tag"
+              >
+                
+            English
+           
+                <!---->
+              </span>
+               
+              <input
+                aria-label="Search for option"
+                autocomplete="off"
+                class="form-control"
+                readonly="readonly"
+                role="combobox"
+                type="search"
+              />
+            </div>
+             
+            <div
+              class="vs__actions"
+            >
+              <button
+                class="clear"
+                title="Clear selection"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+               
+              <i
+                class="open-indicator"
+                role="presentation"
+              />
+               
+              <div
+                class="spinner"
+                style="display: none;"
+              >
+                Loading...
+              </div>
+            </div>
+          </div>
+           
+          <!---->
+        </div>
       </div>
     </div>
   </div>

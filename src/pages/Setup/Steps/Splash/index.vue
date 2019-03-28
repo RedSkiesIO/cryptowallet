@@ -12,7 +12,7 @@
         :label="$t('getStarted')"
         color="primary"
         text-color="blueish"
-        class="splash-btn"
+        class="splash-btn get-started-btn"
         @click="getStarted"
       />
     </div>
@@ -21,9 +21,9 @@
         :label="$t('importAccount')"
         icon="get_app"
         color="blueish"
-        class="splash-btn"
+        class="splash-btn import-account-btn"
         text-color="primary"
-        @click="selection('restored')"
+        @click="importAccount()"
       />
     </div>
     <div class="flags">
@@ -120,25 +120,15 @@ export default {
       });
     },
   },
+  /*eslint-disable*/
 
   methods: {
-    selection(type) {
-      if (this.selectedLang) {
-        this.$i18n.locale = this.selectedLang.value;
-      } else {
-        this.$i18n.locale = this.languageArray[0].value;
-      }
-
-      if (type === 'new') {
-        const skipScreen = 2;
-        this.$store.dispatch('setup/setAccountType', 'new');
-        this.$router.push({ path: `/setup/${this.id + skipScreen}` });
-        return true;
-      }
-
+    importAccount() {
+      this.$i18n.locale = this.selectedLang.value;
       this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+/*
       this.$store.dispatch('setup/setAccountType', 'restored');
-      this.$router.push({ path: `/setup/${this.id + 1}` });
+      this.$router.push({ path: `/setup/${this.id + 1}` });*/
       return true;
     },
 
