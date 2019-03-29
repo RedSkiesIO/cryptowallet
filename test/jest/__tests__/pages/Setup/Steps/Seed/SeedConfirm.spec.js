@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { mount } from '@vue/test-utils';
 import SeedConfirm from '@/pages/Setup/Steps/Seed/Confirm';
-import { localVue, i18n } from '@/helpers/SetupLocalVue';
+import { localVue, createRouter, i18n } from '@/helpers/SetupLocalVue';
 import Vuex from 'vuex';
 import {
   Quasar,
@@ -16,18 +16,16 @@ describe(' SeedConfirm.vue', () => {
     real: 'real', debate: 'debate', another: 'another', phone: 'phone', response: 'response', toddler: 'toddler', fee: 'fee', offer: 'offer', bundle: 'bundle', crack: 'crack', monster: 'monster', earth: 'earth',
   };
   const shuffledSeed = ['debate', 'monster', 'another', 'crack', 'bundle', 'phone', 'response', 'offer', 'toddler', 'fee', 'real', 'earth'];
-  let Srouter;
 
   localVue.use(Quasar, {
     components: {
       QBtn,
     },
   });
+  const router = createRouter();
+  router.push({ path: '/' });
 
   beforeEach(() => {
-    Srouter = {
-      push: jest.fn(),
-    };
     getters = {
       'setup/getShuffledSeed': () => { return shuffledSeed; },
     };
@@ -49,9 +47,7 @@ describe(' SeedConfirm.vue', () => {
       i18n,
       localVue,
       store,
-      mocks: {
-        Srouter,
-      },
+      router,
     });
   });
 
@@ -85,7 +81,7 @@ describe(' SeedConfirm.vue', () => {
         button.trigger('click');
       });
       setTimeout(() => {
-        expect(Srouter.push).toHaveBeenCalled();
+        expect().toHaveBeenCalled();
         done();
       }, 501);
     });

@@ -17,7 +17,7 @@ const localVue = createLocalVue();
 
 localVue.use(VueI18n);
 localVue.use(Vuex);
-// localVue.use(VueRouter);
+localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
@@ -37,6 +37,9 @@ const createRouter = (store = null) => {
     routes: [
       {
         path: '/contact/:id',
+      },
+      {
+        path: '/setup/:id',
       },
     ],
   });
