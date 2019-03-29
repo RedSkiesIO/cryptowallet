@@ -40,6 +40,10 @@ const createRouter = (store = null) => {
       },
       {
         path: '/setup/:id',
+        component: () => { return import('layouts/UnAuthed'); },
+        children: [
+          { name: 'setup', path: '', component: () => { return import('pages/Setup'); } },
+        ],
       },
     ],
   });

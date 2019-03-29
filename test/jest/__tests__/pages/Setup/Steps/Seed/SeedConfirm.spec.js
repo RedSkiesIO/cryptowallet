@@ -74,6 +74,7 @@ describe(' SeedConfirm.vue', () => {
   });
 
   it('goes to the next setup step if seed is entered in correct order', (done) => {
+    wrapper.vm.$router.push = jest.fn();
     wrapper.vm.$nextTick(() => {
       const correctOrder = [10, 0, 2, 5, 6, 8, 9, 7, 4, 3, 1, 11];
       correctOrder.forEach((number) => {
