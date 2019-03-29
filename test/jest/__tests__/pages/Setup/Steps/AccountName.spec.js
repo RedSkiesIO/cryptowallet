@@ -1,4 +1,4 @@
-import { mount, createWrapper } from '@vue/test-utils';
+import { mount, shallowMount, createWrapper } from '@vue/test-utils';
 import AccountName from '@/pages/Setup/Steps/AccountName';
 import { Quasar, QBtn, QInput } from 'quasar';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
@@ -6,6 +6,7 @@ import Vuex from 'vuex';
 
 describe('AccountName.vue', () => {
   let store;
+  let actions;
   let getters;
   let wrapper;
 
@@ -23,13 +24,16 @@ describe('AccountName.vue', () => {
     getters = {
       'entities/account/query': () => { return () => { return mockAccounts; }; },
     };
+    actions = {
+      'setup/setAccountName': jest.fn(),
+    };
     store = new Vuex.Store({
       state: {
         settings: {
           delay: 500,
         },
       },
-      dispatch: jest.fn(),
+      actions,
       getters,
     });
     wrapper = mount(AccountName, {
@@ -38,7 +42,10 @@ describe('AccountName.vue', () => {
   });
 
   it('renders and matches snapshot', () => {
-    expect(wrapper.element).toMatchSnapshot();
+    const shallowWrapper = shallowMount(AccountName, {
+      i18n, localVue, store,
+    });
+    expect(shallowWrapper.element).toMatchSnapshot();
   });
 
   it('opens the terms modal if a valid account name is used', () => {
