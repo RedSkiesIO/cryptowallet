@@ -42,7 +42,7 @@
           <div class="done-tx-details-wrapper">
             <div class="tx-details-row">
               <div class="detail">
-                Tx hash
+                {{ $t('txHash') }}
               </div>
               <div class="break">
                 <span class="tx-hash-span">{{ txData.transaction.hash }}</span>

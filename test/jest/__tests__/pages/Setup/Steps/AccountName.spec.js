@@ -1,4 +1,4 @@
-import { mount, createWrapper } from '@vue/test-utils';
+import { mount, shallowMount, createWrapper } from '@vue/test-utils';
 import AccountName from '@/pages/Setup/Steps/AccountName';
 import { Quasar, QBtn, QInput } from 'quasar';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
@@ -42,7 +42,10 @@ describe('AccountName.vue', () => {
   });
 
   it('renders and matches snapshot', () => {
-    expect(wrapper.element).toMatchSnapshot();
+    const shallowWrapper = shallowMount(AccountName, {
+      i18n, localVue, store,
+    });
+    expect(shallowWrapper.element).toMatchSnapshot();
   });
 
   it('opens the terms modal if a valid account name is used', () => {

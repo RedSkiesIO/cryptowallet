@@ -16,6 +16,18 @@ class BackEndService {
 
   password = null;
 
+  delay = null;
+
+  longDelay = null;
+
+  maxConnectAttempts = null;
+
+  maxTryAttempts = null;
+
+  createdCode = null;
+
+  successCode = null;
+
   constructor(vm, authenticatedAccount, password) {
     this.vm = vm;
     this.accountId = authenticatedAccount;
@@ -24,6 +36,10 @@ class BackEndService {
     this.setRefreshToken(this.account.refresh_token);
     this.delay = 500;
     this.longDelay = 2500;
+    this.maxConnectAttempts = 25;
+    this.maxTryAttempts = 3;
+    this.createdCode = 201;
+    this.successCode = 200;
   }
 
   /**
@@ -50,9 +66,9 @@ class BackEndService {
    */
   connect(attempts = 0) {
     return new Promise(async (resolve) => {
-      const attemptLimit = 10;
+      const attemptLimit = this.maxConnectAttempts;
       if (attempts >= attemptLimit) {
-        this.vm.errorHandler(new Error('Failed to connect to the server'), false);
+        this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
         return false;
       }
 
@@ -61,33 +77,28 @@ class BackEndService {
           try {
             // access denied, refresh access token
             const code = await this.refreshAuth();
-            const created = 201;
-            if (code === created) {
-              resolve(true);
-              return false;
+            if (code === this.createdCode) {
+              return resolve(true);
             }
           } catch (error) {
             // refresh token failed, re-authenticate
             await this.auth();
-            resolve(true);
-            return false;
+            return resolve(true);
           }
         } else {
           const code = await this.auth();
-          const ok = 200;
-          if (code === ok) {
-            resolve(true);
-            return false;
+          if (code === this.successCode) {
+            return resolve(true);
           }
         }
       } catch (err) {
         this.vm.errorHandler(err);
       }
-      const timeout = 2500;
+
       setTimeout(() => {
-        this.vm.$toast.create(10, 'Failed to connect to the server', this.delay);
-        this.connect(attempts += 1);
-      }, timeout);
+        this.vm.$toast.create(10, this.vm.$t('failedToConnect'), this.delay);
+        resolve(this.connect(attempts += 1));
+      }, this.longDelay);
 
       return false;
     });
@@ -143,11 +154,10 @@ class BackEndService {
    * @return {Object}
    */
   async try(URL, attempts = 0) {
-    const attemptLimit = 3;
+    const attemptLimit = this.maxTryAttempts;
     if (attempts >= attemptLimit) {
-      this.vm.errorHandler(new Error('Failed to connect to the server'), false);
+      this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
     }
-
 
     try {
       const config = await this.getAxiosConfig();
@@ -179,9 +189,7 @@ class BackEndService {
 
       return new Promise((resolve) => {
         setTimeout(async () => {
-          const result = await this.try(URL, attempts);
-          resolve(result);
-          return false;
+          resolve(this.try(URL, attempts));
         }, this.longDelay);
       });
     }

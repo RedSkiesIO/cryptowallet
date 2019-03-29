@@ -35,6 +35,39 @@
         @attemptUnlock="attemptUnlock"
       />
     </div>
+
+    <q-dialog
+      v-model="confirmDeleteOpen"
+    >
+      <q-card
+        style="width: 300px"
+        class="dialog"
+      >
+        <q-card-section>
+          <h2>
+            {{ $t('confirm') }}
+          </h2>
+          <p>
+            {{ `${$t('confirmMessage')} ${account.name}${$t('questionMark')}` }}
+          </p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-dialog
+            flat
+            :label="$t('cancelConfirm')"
+            color="blueish"
+          />
+          <q-btn
+            flat
+            :label="$t('acceptConfirm')"
+            color="blueish"
+            @click="deleteAccount()"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-dialog>
 </template>
 
@@ -64,6 +97,7 @@ export default {
   },
   data() {
     return {
+      confirmDeleteOpen: false,
       pin: [],
     };
   },
@@ -97,18 +131,7 @@ export default {
         this.authorized = true;
         this.$refs.PinPad.resetState();
         this.resetPin();
-
-        this.$q.dialog({
-          title: this.$t('confirm'),
-          message: `${this.$t('confirmMessage')} ${this.account.name}${this.$t('questionMark')}`,
-          ok: this.$t('acceptConfirm'),
-          cancel: this.$t('cancelConfirm'),
-          color: 'blueish',
-        }).then(() => {
-          this.deleteAccount(this.account.id);
-        }).catch(() => {
-          this.closeModal();
-        });
+        this.confirmDeleteOpen = true;
       }
     },
 
@@ -122,15 +145,22 @@ export default {
       this.$emit('closePinModal');
     },
 
-    deleteAccount(id) {
-      this.$store.dispatch('settings/setLoading', true);
+    deleteAccount() {
+      const { id } = this.account;
       const wasDefault = this.account.default;
+
+      this.$store.dispatch('settings/setLoading', true);
       this.$store.dispatch('settings/setSelectedAccount', null);
       this.$store.dispatch('settings/setAuthenticatedAccount', null);
 
-      if (wasDefault && this.accounts.length > 0) {
+      if (wasDefault && this.accounts.length > 1) {
         Account.$update({
           where: (record) => { return record.id === id; },
+          data: { default: true },
+        });
+
+        Account.$update({
+          where: (record) => { return record.id === this.accounts[0].id; },
           data: { default: true },
         });
       }
