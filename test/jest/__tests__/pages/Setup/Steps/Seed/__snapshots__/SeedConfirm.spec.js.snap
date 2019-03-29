@@ -1,0 +1,260 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` SeedConfirm.vue renders and matches snapshot 1`] = `
+<div>
+  <h1
+    class="setup"
+  >
+    
+    Confirm Your Seed
+  
+  </h1>
+   
+  <p
+    class="setup"
+  >
+    
+    Press the buttons bellow in sequence to confirm you have stored your seed.
+  
+  </p>
+   
+  <div
+    class="randomSeedContainer"
+  >
+    <div
+      class="seed-input-preview-box"
+    />
+  </div>
+   
+  <div
+    class="randomSeedContainer"
+  >
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          debate
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          monster
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          another
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          crack
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          bundle
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          phone
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          response
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          offer
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          toddler
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          fee
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          real
+        </div>
+      </div>
+    </button>
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable seed-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      style="font-size: 10px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          earth
+        </div>
+      </div>
+    </button>
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <button
+      class="q-btn inline relative-position q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
+      disabled="disabled"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Reset
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;
