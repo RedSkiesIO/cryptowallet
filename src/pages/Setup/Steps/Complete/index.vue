@@ -48,7 +48,6 @@ export default {
         this.$store.dispatch('setup/clearSetupData');
         this.$store.dispatch('settings/setLoading', false);
       } catch (err) {
-        console.log(err);
         this.errorHandler(err);
       }
     },

@@ -122,33 +122,4 @@ describe(' Seed.vue', () => {
     confirmButton.trigger('click');
     expect(wrapper.vm.confirm).toEqual(true);
   });
-
-  it('loads next setup step when confirm popup is accepted', () => {
-    bip39.generateMnemonic.mockReturnValueOnce(mockSeed);
-    const $router = {
-      push: jest.fn(),
-    };
-    wrapper = mount(Seed, {
-      i18n,
-      localVue,
-      store,
-      mocks: {
-        bip39,
-        $router,
-      },
-    });
-    const confirmButton = wrapper.findAll('button').at(1);
-    confirmButton.trigger('click');
-    console.log(wrapper.html());
-
-    // wrapper.vm.$nextTick(() => {
-    //   setTimeout(() => {
-    //     const doneButton = wrapper.findAll('button').at(1);
-    //     // doneButton.trigger('click');
-    //     console.log(doneButton.html());
-    //     expect($router.push).toHaveBeenCalled();
-    //     done();
-    //   }, 200);
-    // });
-  });
 });
