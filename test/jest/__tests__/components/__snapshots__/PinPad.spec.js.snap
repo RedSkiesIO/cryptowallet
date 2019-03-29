@@ -2,107 +2,11 @@
 
 exports[`PinPad component renders and matches snapshot 1`] = `
 <div>
-  <aside
-    class="vue-keyboard empty valid"
-    data-layout="0"
-    data-value=""
-    role="application"
-  >
-    <div
-      class="vue-keyboard-row"
-      data-keys="3"
-      role="row"
-    >
-      <button
-        class="vue-keyboard-key char"
-        data-text="1"
-        role="button"
-      >
-        1
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="2"
-        role="button"
-      >
-        2
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="3"
-        role="button"
-      >
-        3
-      </button>
-    </div>
-    <div
-      class="vue-keyboard-row"
-      data-keys="3"
-      role="row"
-    >
-      <button
-        class="vue-keyboard-key char"
-        data-text="4"
-        role="button"
-      >
-        4
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="5"
-        role="button"
-      >
-        5
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="6"
-        role="button"
-      >
-        6
-      </button>
-    </div>
-    <div
-      class="vue-keyboard-row"
-      data-keys="3"
-      role="row"
-    >
-      <button
-        class="vue-keyboard-key char"
-        data-text="7"
-        role="button"
-      >
-        7
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="8"
-        role="button"
-      >
-        8
-      </button>
-      <button
-        class="vue-keyboard-key char"
-        data-text="9"
-        role="button"
-      >
-        9
-      </button>
-    </div>
-    <div
-      class="vue-keyboard-row"
-      data-keys="1"
-      role="row"
-    >
-      <button
-        class="vue-keyboard-key char"
-        data-text="0"
-        role="button"
-      >
-        0
-      </button>
-    </div>
-  </aside>
+  <keyboard-stub
+    layouts="123|456|789|0"
+    maxlength="0"
+    value=""
+  />
    
   <div
     class="dots-wrapper"
@@ -111,43 +15,22 @@ exports[`PinPad component renders and matches snapshot 1`] = `
   <div
     class="btns-wrapper"
   >
-    <button
-      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
-      disabled="disabled"
-      tabindex="0"
-      type="button"
-    >
-      <div
-        class="q-focus-helper"
-      />
-      <div
-        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
-      >
-        <div>
-          Clear
-        </div>
-      </div>
-    </button>
+    <q-btn-stub
+      align="center"
+      color="secondary"
+      disabled="true"
+      label="Clear"
+      ripple="true"
+    />
      
-    <button
-      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
-      disabled="disabled"
-      tabindex="0"
-      type="button"
-    >
-      <div
-        class="q-focus-helper"
-      />
-      <div
-        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
-      >
-        <div>
-          Done
-        </div>
-      </div>
-    </button>
-     
-    <!---->
+    <q-btn-stub
+      align="center"
+      color="yellow"
+      disabled="true"
+      label="Done"
+      ripple="true"
+      textcolor="blueish"
+    />
      
     <!---->
      

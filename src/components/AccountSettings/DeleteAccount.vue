@@ -82,12 +82,6 @@ import PinPad from '@/components/Auth/PinPad';
 
 export default {
   name: 'Pin',
-  data() {
-    return {
-      confirmDeleteOpen: false,
-      pin: [],
-    };
-  },
   components: {
     PinPad,
   },
@@ -100,6 +94,12 @@ export default {
       type: String,
       required: true,
     },
+  },
+  data() {
+    return {
+      confirmDeleteOpen: false,
+      pin: [],
+    };
   },
   computed: {
     ...mapState({
