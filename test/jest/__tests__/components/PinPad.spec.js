@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { mount, createWrapper } from '@vue/test-utils';
+import { mount, shallowMount, createWrapper } from '@vue/test-utils';
 import PinPad from '@/components/Auth/PinPad';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
 import { Quasar, QBtn } from 'quasar';
@@ -49,7 +49,7 @@ describe('PinPad component', () => {
   });
 
   it('renders and matches snapshot', () => {
-    const wrapper = mount(PinPad, {
+    const wrapper = shallowMount(PinPad, {
       i18n,
       localVue,
       Keyboard,
