@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` Seed.vue renders and matches snapshot 1`] = `
+<div>
+  <h1
+    class="setup"
+  >
+    
+    Seed Phrase
+  
+  </h1>
+   
+  <p
+    class="setup"
+  >
+    
+    Please write down or memorize this sequence of words. If you lose your wallet, it can be used to recover your funds.
+  
+  </p>
+   
+  <h4
+    class="setup seed-box"
+  />
+   
+  <div
+    class="btns-wrapper"
+  >
+    <q-btn-stub
+      align="center"
+      color="secondary"
+      label="Try Different Seed"
+      ripple="true"
+    />
+     
+    <q-btn-stub
+      align="center"
+      color="yellow"
+      label="Done"
+      ripple="true"
+      textcolor="blueish"
+    />
+  </div>
+   
+  <q-dialog-stub
+    persistent="true"
+    position="standard"
+    transitionhide="scale"
+    transitionshow="scale"
+  >
+    <q-card-stub
+      class="dialog"
+      style="width: 300px;"
+    >
+      <q-card-section-stub>
+        <h2>
+          Confirm
+        </h2>
+         
+        <p>
+          
+          Have you stored your seed?
+        
+        </p>
+      </q-card-section-stub>
+       
+      <q-card-actions-stub
+        align="right"
+      >
+        <q-btn-stub
+          align="center"
+          color="blueish"
+          flat="true"
+          label="no"
+          ripple="true"
+        />
+         
+        <q-btn-stub
+          align="center"
+          color="blueish"
+          flat="true"
+          label="yes"
+          ripple="true"
+        />
+      </q-card-actions-stub>
+    </q-card-stub>
+  </q-dialog-stub>
+</div>
+`;

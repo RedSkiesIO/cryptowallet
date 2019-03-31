@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` SeedConfirm.vue renders and matches snapshot 1`] = `
+<div>
+  <h1
+    class="setup"
+  >
+    
+    Confirm Your Seed
+  
+  </h1>
+   
+  <p
+    class="setup"
+  >
+    
+    Press the buttons bellow in sequence to confirm you have stored your seed.
+  
+  </p>
+   
+  <div
+    class="randomSeedContainer"
+  >
+    <div
+      class="seed-input-preview-box"
+    />
+  </div>
+   
+  <div
+    class="randomSeedContainer"
+  >
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="debate"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="monster"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="another"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="crack"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="bundle"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="phone"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="response"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="offer"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="toddler"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="fee"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="real"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+    <q-btn-stub
+      align="center"
+      class="seed-btn"
+      color="yellow"
+      label="earth"
+      ripple="true"
+      size="sm"
+      textcolor="blueish"
+    />
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <q-btn-stub
+      align="center"
+      color="secondary"
+      disabled="true"
+      label="Reset"
+      ripple="true"
+    />
+  </div>
+</div>
+`;

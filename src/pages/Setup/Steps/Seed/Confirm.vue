@@ -42,7 +42,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import { setTimeout } from 'timers';
 
 export default {
   data() {
@@ -52,15 +51,16 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      seed: (state) => {
+        return state.setup.seed;
+      },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
+      delay: (state) => { return state.settings.delay; },
+    }),
     shuffledSeed() {
       return this.$store.getters['setup/getShuffledSeed'];
     },
-    ...mapState({
-      seed: (state) => { return state.setup.seed; },
-      id: (state) => { return parseInt(state.route.params.id, 10); },
-      delay: (state) => { return state.settings.delay; },
-
-    }),
     resetDisabled() {
       return this.pipSeq.length === 0;
     },
