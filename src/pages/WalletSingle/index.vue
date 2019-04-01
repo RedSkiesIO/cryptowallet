@@ -34,7 +34,6 @@ export default {
         await this.backEndService.loadPriceFeed();
         await this.refresher(done);
       } catch (err) {
-        console.log(err);
         this.errorHandler(err);
         done();
       }
