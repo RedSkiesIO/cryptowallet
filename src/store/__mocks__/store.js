@@ -4,6 +4,7 @@ import wallet from '@/store/wallet';
 import contacts from '@/store/contacts/__mocks__/contacts.js';
 import search from '@/store/search/__mocks__/search.js';
 import settings from '@/store/settings/__mocks__/settings.js';
+import setup from '@/store/setup/__mocks__/setup.js';
 
 Vue.use(Vuex);
 
@@ -23,6 +24,7 @@ export function createMocks(custom = {
     search,
     settings,
     contacts,
+    setup,
   };
 
   let mockGettersCombined = {};
@@ -49,13 +51,12 @@ export function createMocks(custom = {
   mockMutationsCombined = Object.assign({}, mockMutationsCombined, custom.mutations);
   mockActionsCombined = Object.assign({}, mockActionsCombined, custom.actions);
   mockStateCombined = Object.assign({}, mockStateCombined, custom.state);
-
   return {
     getters: mockGettersCombined,
     mutations: mockMutationsCombined,
     actions: mockActionsCombined,
     state: mockStateCombined,
-    store: new Vuex.Store({ modules }),
+    store: new Vuex.Store({ getters: mockGettersCombined, modules }),
   };
 }
 

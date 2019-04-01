@@ -1,73 +1,48 @@
 /* eslint-disable no-magic-numbers */
-import { mount, shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import SeedConfirm from '@/pages/Setup/Steps/Seed/Confirm';
-import { localVue, i18n } from '@/helpers/SetupLocalVue';
-import Vuex from 'vuex';
-import {
-  Quasar,
-  QBtn,
-} from 'quasar';
+import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
+import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
-describe(' SeedConfirm.vue', () => {
-  const mockSeed = {
-    real: 'real', debate: 'debate', another: 'another', phone: 'phone', response: 'response', toddler: 'toddler', fee: 'fee', offer: 'offer', bundle: 'bundle', crack: 'crack', monster: 'monster', earth: 'earth',
-  };
+
+describe('SeedConfirm.vue', () => {
   const shuffledSeed = ['debate', 'monster', 'another', 'crack', 'bundle', 'phone', 'response', 'offer', 'toddler', 'fee', 'real', 'earth'];
+  const getters = {
+    'setup/getShuffledSeed': () => { return shuffledSeed; },
+  };
   const delay = 501;
-  let store;
-  let getters;
+
   let wrapper;
-  let $router;
+  let router;
+  let store;
+  let storeMocks;
 
-  localVue.use(Quasar, {
-    components: {
-      QBtn,
-    },
-  });
+  const defaultProps = {};
 
-  beforeEach(() => {
-    $router = {
-      push: jest.fn(),
-    };
-    getters = {
-      'setup/getShuffledSeed': () => { return shuffledSeed; },
-    };
-    store = new Vuex.Store({
-      getters,
-      state: {
-        route: {
-          params: {
-            id: 2,
-          },
-        },
-        settings: {
-          delay: {
-            normal: 500,
-          },
-        },
-        setup: {
-          seed: mockSeed,
-        },
-      },
-    });
-    wrapper = mount(SeedConfirm, {
+  function wrapperInit(options) {
+    return mount(SeedConfirm, options);
+  }
+
+  function storeInit(custom, propsData, parentComponent = null) {
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: '/setup/3' });
+    wrapper = wrapperInit({
       i18n,
+      router,
       localVue,
-      store,
-      mocks: {
-        $router,
-      }
-      ,
+      propsData,
+      parentComponent,
+      store: storeMocks.store,
     });
-  });
+    store = wrapper.vm.$store;
+  }
+
+  beforeEach(() => { storeInit({ getters }, defaultProps); });
+
 
   it('renders and matches snapshot', () => {
-    const shallowWrapper = shallowMount(SeedConfirm, {
-      i18n,
-      localVue,
-      store,
-    });
-    expect(shallowWrapper.element).toMatchSnapshot();
+    expect(wrapper.element).toMatchSnapshot();
   });
 
   it('displays the seed words shuffled', () => {
@@ -96,7 +71,7 @@ describe(' SeedConfirm.vue', () => {
         button.trigger('click');
       });
       setTimeout(() => {
-        expect($router.push).toHaveBeenCalledWith({ path: '/setup/3' });
+        expect(store.state.route.path).toBe('/setup/4');
         done();
       }, delay);
     });
