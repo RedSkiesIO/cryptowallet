@@ -1,6 +1,7 @@
 const actions = {
   setAccountLocale: jest.fn(),
   setAccountType: jest.fn(),
+  setAccountName: jest.fn(),
   resetPin: jest.fn(),
   resetPinConfirm: jest.fn(),
   setPinConfirm: jest.fn(),
