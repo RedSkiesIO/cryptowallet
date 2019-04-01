@@ -17,52 +17,26 @@ exports[`AccountName.vue renders and matches snapshot 1`] = `
   <div
     class="account-name-input-wrapper"
   >
-    <div
-      class="q-field row no-wrap items-start q-input q-field--outlined q-field--dark"
+    <q-input-stub
+      color="primary"
+      dark="true"
       float-label="Account Name"
-    >
-      <div
-        class="q-field__inner relative-position col self-stretch column justify-center"
-      >
-        <div
-          class="q-field__control relative-position row no-wrap text-primary"
-          tabindex="-1"
-        >
-          <div
-            class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
-          >
-            <input
-              class="q-field__native"
-              float-label="Account Name"
-              tabindex="0"
-              type="text"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+      outlined="true"
+      type="text"
+      value=""
+    />
   </div>
    
   <div
     class="btns-wrapper"
   >
-    <button
-      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
-      tabindex="0"
-      type="button"
-    >
-      <div
-        class="q-focus-helper"
-        tabindex="-1"
-      />
-      <div
-        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
-      >
-        <div>
-          Next
-        </div>
-      </div>
-    </button>
+    <q-btn-stub
+      align="center"
+      color="yellow"
+      label="Next"
+      ripple="true"
+      textcolor="blueish"
+    />
   </div>
 </div>
 `;

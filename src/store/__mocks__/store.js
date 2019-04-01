@@ -51,13 +51,12 @@ export function createMocks(custom = {
   mockMutationsCombined = Object.assign({}, mockMutationsCombined, custom.mutations);
   mockActionsCombined = Object.assign({}, mockActionsCombined, custom.actions);
   mockStateCombined = Object.assign({}, mockStateCombined, custom.state);
-
   return {
     getters: mockGettersCombined,
     mutations: mockMutationsCombined,
     actions: mockActionsCombined,
     state: mockStateCombined,
-    store: new Vuex.Store({ modules }),
+    store: new Vuex.Store({ getters: mockGettersCombined, modules }),
   };
 }
 

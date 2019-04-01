@@ -13,9 +13,10 @@ module.exports = {
   coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.vue',
-    // '<rootDir>/src/**/*.js',
-    // '<rootDir>/src/**/*.ts',
-    // '<rootDir>/src/**/*.jsx',
+    '<rootDir>/src/**/*.js',
+    '<rootDir>/src/**/*.ts',
+    '<rootDir>/src/**/*.jsx',
+    '!**/src-cordova/**',
   ],
   coverageThreshold: {
     global: {

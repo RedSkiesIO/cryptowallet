@@ -10,7 +10,7 @@ import { mapState } from 'vuex';
 import { refreshWallet } from '@/helpers';
 
 export default {
-  name: 'Balance',
+  name: 'WalletSingle',
 
   components: {
     Transactions,
@@ -34,6 +34,7 @@ export default {
         await this.backEndService.loadPriceFeed();
         await this.refresher(done);
       } catch (err) {
+        console.log(err);
         this.errorHandler(err);
         done();
       }
@@ -46,9 +47,7 @@ export default {
      */
     async refresher(done) {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
-
       await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount);
-
       setTimeout(() => {
         done();
       }, this.delay.normal);

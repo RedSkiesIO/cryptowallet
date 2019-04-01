@@ -53,15 +53,6 @@
         :label="$t('delete')"
         @click="confirmPin"
       />
-
-      <q-btn
-        v-if="mode === 'delete'"
-        :disabled="canProceed"
-        color="red"
-        text-color="white"
-        label="Delete"
-        @click="confirmPin"
-      />
     </div>
   </div>
 </template>

@@ -152,8 +152,6 @@ exports[`PinPad component renders and matches snapshot 1`] = `
     <!---->
      
     <!---->
-     
-    <!---->
   </div>
 </div>
 `;
