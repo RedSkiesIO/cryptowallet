@@ -1,49 +1,59 @@
 import { mount, shallowMount, createWrapper } from '@vue/test-utils';
 import AccountName from '@/pages/Setup/Steps/AccountName';
-import { Quasar, QBtn, QInput } from 'quasar';
-import { localVue, i18n } from '@/helpers/SetupLocalVue';
-import Vuex from 'vuex';
+import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
+import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
 describe('AccountName.vue', () => {
-  let store;
-  let actions;
-  let getters;
+  let router;
   let wrapper;
+  let storeMocks;
 
-  localVue.use(Quasar, { components: { QBtn, QInput } });
+  const mockGet = [
+    {
+      name: 'Stephen',
+    },
+  ];
+  const mockAccounts = {
+    get: () => { return mockGet; },
+  };
 
-  beforeEach(() => {
-    const mockGet = [
-      {
-        name: 'Stephen',
-      },
-    ];
-    const mockAccounts = {
-      get: () => { return mockGet; },
-    };
-    getters = {
+  const customStore = {
+    getters: {
       'entities/account/query': () => { return () => { return mockAccounts; }; },
-    };
-    actions = {
-      'setup/setAccountName': jest.fn(),
-    };
-    store = new Vuex.Store({
-      state: {
-        settings: {
-          delay: 500,
-        },
-      },
-      actions,
-      getters,
+    },
+    mutations: {},
+    actions: {},
+    state: {},
+  };
+
+  const propsData = {};
+
+  function wrapperInit(options) {
+    return mount(AccountName, options);
+  }
+
+  function storeInit(custom) {
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: '/setup/0' });
+    wrapper = wrapperInit({
+      i18n,
+      router,
+      localVue,
+      propsData,
+      store: storeMocks.store,
     });
-    wrapper = mount(AccountName, {
-      i18n, localVue, store,
-    });
-  });
+  }
+
+  beforeEach(() => { storeInit(customStore); });
 
   it('renders and matches snapshot', () => {
     const shallowWrapper = shallowMount(AccountName, {
-      i18n, localVue, store,
+      i18n,
+      router,
+      localVue,
+      propsData,
+      store: storeMocks.store,
     });
     expect(shallowWrapper.element).toMatchSnapshot();
   });

@@ -1,25 +1,26 @@
 import { shallowMount } from '@vue/test-utils';
 import Complete from '@/pages/Setup/Steps/Complete';
-import { localVue } from '@/helpers/SetupLocalVue';
-import Vuex from 'vuex';
-import supportedCoins from '@/store/settings/state/supportedCoins.js';
+import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
+import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
 describe('Complete.vue', () => {
   let store;
-  let actions;
   let wrapper;
   let accountInitializer;
   let BackEndService;
   let backEndService;
-  let $router;
   let errorHandler;
+  let storeMocks;
+  let router;
   const delay = 501;
+  const propsData = {};
 
-  beforeEach(() => {
+  function wrapperInit(options) {
+    return shallowMount(Complete, options);
+  }
+
+  function storeInit(custom) {
     errorHandler = jest.fn();
-    $router = {
-      push: jest.fn(() => { '/wallet'; }),
-    };
     backEndService = {
       connect: jest.fn(),
       loadPriceFeed: jest.fn(),
@@ -35,55 +36,40 @@ describe('Complete.vue', () => {
       createWallets: jest.fn(),
       createERC20Wallets: jest.fn(),
     };
-    actions = {
-      'settings/setLoading': jest.fn(),
-      'settings/setSelectedAccount': jest.fn(),
-      'settings/setAuthenticatedAccount': jest.fn(),
-      'settings/setLayout': jest.fn(),
-      'setup/clearSetupData': jest.fn(),
-    };
-    store = new Vuex.Store({
-      state: {
-        settings: {
-          supportedCoins,
-          delay: 500,
-        },
-        setup: {
-          accountName: 'Stephen',
-          pinArray: [0, 0, 0, 0, 0, 0],
-          pinConfirmArray: [0, 0, 0, 0, 0, 0],
-          salt: '$2a$10$KE86k38NXlqTBgOQUC9bE.',
-          node: null,
-        },
-      },
-      actions,
-    });
-    wrapper = shallowMount(Complete, {
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: '/setup/7' });
+    wrapper = wrapperInit({
+      i18n,
+      router,
       localVue,
-      store,
+      propsData,
+      store: storeMocks.store,
       mocks: {
         accountInitializer,
         BackEndService,
         backEndService,
-        $router,
         errorHandler,
       },
     });
-  });
+    store = wrapper.vm.$store;
+  }
+
+  beforeEach(() => { storeInit(); });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
   it('displays a loading modal', () => {
-    expect(actions['settings/setLoading']).toHaveBeenCalled();
+    expect(storeMocks.actions.setLoading).toHaveBeenCalled();
   });
 
   it('creates an account and adds it to the database', (done) => {
     wrapper.vm.$nextTick(() => {
       setTimeout(() => {
         expect(accountInitializer.createAccount).toHaveBeenCalled();
-        expect(actions['settings/setSelectedAccount']).toHaveBeenCalled();
+        expect(storeMocks.actions.setAuthenticatedAccount).toHaveBeenCalled();
         done();
       }, delay);
     });
@@ -112,8 +98,8 @@ describe('Complete.vue', () => {
   it('clears the setup data and loads the wallet screen', (done) => {
     wrapper.vm.$nextTick(() => {
       setTimeout(() => {
-        expect(actions['setup/clearSetupData']).toHaveBeenCalled();
-        expect($router.push).toHaveBeenCalledWith({ path: '/wallet' });
+        expect(storeMocks.actions.clearSetupData).toHaveBeenCalled();
+        expect(store.state.route.path).toBe('/wallet');
         done();
       }, delay);
     });
