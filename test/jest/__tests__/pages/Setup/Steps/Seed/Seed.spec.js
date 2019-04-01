@@ -3,15 +3,6 @@ import Seed from '@/pages/Setup/Steps/Seed';
 import { localVue, i18n } from '@/helpers/SetupLocalVue';
 import Vuex from 'vuex';
 import bip39 from 'bip39';
-import {
-  Quasar,
-  QBtn,
-  QCard,
-  QCardSection,
-  QCardActions,
-  QDialog,
-  ClosePopup,
-} from 'quasar';
 
 jest.mock('bip39');
 
@@ -21,18 +12,6 @@ describe(' Seed.vue', () => {
   let wrapper;
   const mockSeed = 'real debate another phone response toddler fee offer bundle crack monster earth';
 
-  localVue.use(Quasar, {
-    components: {
-      QBtn,
-      QCard,
-      QCardSection,
-      QCardActions,
-      QDialog,
-    },
-    directives: {
-      ClosePopup,
-    },
-  });
   localVue.use(bip39);
 
   beforeEach(() => {

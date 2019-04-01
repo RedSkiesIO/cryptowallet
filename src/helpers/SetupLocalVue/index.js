@@ -15,7 +15,7 @@ import contactsImportPlugin from '@/boot/ContactsImport';
 import vueSelectPlugin from '@/boot/VueSelect';
 import * as All from 'quasar';
 
-const { Quasar } = All;
+const { Quasar, ClosePopup } = All;
 
 const components = Object.keys(All).reduce((object, key) => {
   const val = All[key];
@@ -26,7 +26,7 @@ const components = Object.keys(All).reduce((object, key) => {
 }, {});
 
 const localVue = createLocalVue();
-localVue.use(Quasar, { components });
+localVue.use(Quasar, { components, directives: { ClosePopup } });
 localVue.use(VueI18n);
 localVue.use(Vuex);
 localVue.use(VueRouter);
