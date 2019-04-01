@@ -4,6 +4,7 @@ import wallet from '@/store/wallet';
 import contacts from '@/store/contacts/__mocks__/contacts.js';
 import search from '@/store/search/__mocks__/search.js';
 import settings from '@/store/settings/__mocks__/settings.js';
+import setup from '@/store/setup/__mocks__/setup.js';
 
 Vue.use(Vuex);
 
@@ -23,6 +24,7 @@ export function createMocks(custom = {
     search,
     settings,
     contacts,
+    setup,
   };
 
   let mockGettersCombined = {};
