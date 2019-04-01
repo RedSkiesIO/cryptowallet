@@ -8,7 +8,7 @@
       transition-hide="slide-down"
       content-class="dark-modal"
     >
-      <GetStartedModalContent/>
+      <GetStartedModalContent />
     </q-dialog>
   </div>
 </template>
