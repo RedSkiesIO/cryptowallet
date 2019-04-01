@@ -1,5 +1,3 @@
-/*eslint-disable*/
-
 import { mount } from '@vue/test-utils';
 import Splash from '@/pages/Setup/Steps/Splash';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
@@ -13,22 +11,32 @@ describe('Splash Setup', () => {
 
   const propsData = {};
 
-  function wrapperInit (options) {
+  function wrapperInit(options) {
     return mount(Splash, options);
   }
 
-  function storeInit (custom) {
+  function storeInit(custom) {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
-    router.push({ path: `/setup/0` });
-    wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store, propsData });
+    router.push({ path: '/setup/0' });
+    wrapper = wrapperInit({
+      i18n,
+      router,
+      localVue,
+      propsData,
+      store: storeMocks.store,
+    });
     store = wrapper.vm.$store;
   }
 
-  beforeEach(() => storeInit());
+  beforeEach(() => { storeInit(); });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
+  });
+
+  it('has en-gb selected by default', () => {
+    expect(wrapper.vm.selectedLang.value).toBe('en-gb');
   });
 
   describe('Get Started button', () => {
@@ -64,12 +72,14 @@ describe('Splash Setup', () => {
       expect(storeMocks.actions.setAccountLocale.mock.calls[1][1]).toBe('en-gb');
     });
 
-    it ('setup/setAccountType action with \'restored\' as payload', () => {
-      expect(true).toBe(true);
+    it('setup/setAccountType action with \'restored\' as payload', () => {
+      wrapper.find('.import-account-btn').trigger('click');
+      expect(storeMocks.actions.setAccountType.mock.calls[1][1]).toBe('restored');
     });
 
-    it ('navigates to /setup/1 path', () => {
-      expect(true).toBe(true);
+    it('navigates to /setup/1 path', () => {
+      wrapper.find('.import-account-btn').trigger('click');
+      expect(store.state.route.path).toBe('/setup/1');
     });
   });
 });

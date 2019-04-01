@@ -52,6 +52,9 @@ const createRouter = (store = null) => {
       {
         path: '/',
       },
+      {
+        path: '/setup/:id',
+      },
     ],
   });
 

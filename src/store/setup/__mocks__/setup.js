@@ -1,9 +1,10 @@
 const actions = {
   setAccountLocale: jest.fn(),
+  setAccountType: jest.fn(),
 };
+
 const getters = {};
 const mutations = {};
-
 const state = {};
 
 const account = {
