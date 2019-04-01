@@ -1,66 +1,82 @@
 import WalletSingle from '@/pages/WalletSingle';
 import { shallowMount } from '@vue/test-utils';
-import { localVue } from '@/helpers/SetupLocalVue';
-// import RefreshWallet from '@/helpers';
-import Vuex from 'vuex';
+import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
+import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
+import RefreshWallet from '@/helpers/RefreshWallet';
 
-jest.mock('@helpers/RefreshWallet', () => {
-  return {
-    refreshWallet: jest.fn(),
-  };
-});
+jest.mock('@/helpers/RefreshWallet');
 
 describe('WalletSingle.vue', () => {
-  let store;
-  let getters;
   let wrapper;
-  let backEndService;
-  let errorHandler;
-  let coinSDKS;
+  let storeMocks;
+  let router;
+  const delay = 501;
+  const coinSDKS = {
+    Bitcoin: jest.fn(),
+  };
+  const backEndService = {
+    connect: jest.fn(),
+    loadPriceFeed: jest.fn(),
+  };
 
-  beforeEach(() => {
-    coinSDKS = {
-      Bitcoin: jest.fn(),
-    };
-    errorHandler = jest.fn();
-    backEndService = {
-      connect: jest.fn(),
-      loadPriceFeed: jest.fn(),
-    };
-    // refreshWallet = jest.fn();
-    getters = {
+  const errorHandler = jest.fn();
+
+  const customStore = {
+    getters: {
       'entities/wallet/find': () => { return () => { return { sdk: 'Bitcoin' }; }; },
-    };
-    store = new Vuex.Store({
-      state: {
-        route: { params: { id: 1 } },
-        settings: {
-          authenticatedAccount: 1,
-          delay: {
-            normal: 500,
-          },
-        },
-      },
-      getters,
-    });
-    wrapper = shallowMount(WalletSingle, {
+    },
+  };
+
+  const propsData = {};
+
+  function wrapperInit(options) {
+    return shallowMount(WalletSingle, options);
+  }
+
+  function storeInit(custom) {
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: '/wallet/1' });
+    wrapper = wrapperInit({
+      i18n,
+      router,
       localVue,
-      store,
+      propsData,
+      store: storeMocks.store,
       mocks: {
         backEndService,
-        errorHandler,
         coinSDKS,
+        errorHandler,
       },
     });
-  });
+  }
+
+  beforeEach(() => { storeInit(customStore); });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('calls the refreshWallet plugin on a updateWalletSingle event', (done) => {
+  it('calls the refreshWallet plugin on a updateWalletSingle event', async (done) => {
+    const doneMock = jest.fn();
     wrapper.vm.$nextTick(() => {
-      wrapper.vm.$root.$emit('updateWalletSingle');
+      wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
+      setTimeout(() => {
+        expect(backEndService.loadPriceFeed).toHaveBeenCalled();
+        expect(RefreshWallet).toHaveBeenCalled();
+        done();
+      }, delay);
+    });
+  });
+
+  it('calls the errorHandler', async (done) => {
+    const doneMock = jest.fn();
+    backEndService.loadPriceFeed.mockImplementationOnce(() => { throw new Error(); });
+    storeInit(customStore);
+    wrapper.vm.$nextTick(() => {
+      wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
+      expect(backEndService.loadPriceFeed).toHaveBeenCalled();
+      expect(wrapper.vm.errorHandler).toHaveBeenCalled();
       done();
     });
   });
