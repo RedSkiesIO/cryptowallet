@@ -7,20 +7,13 @@ const getters = {};
 const mutations = {};
 
 const state = {
-  payments: {
-    salt: null,
-    minLength: 6,
-    pinHash: null,
-    pinLength: null,
-  },
   pin: {
     minLength: 6,
   },
-  acNode: {},
+  delay: 500,
   coins,
   currencies,
   supportedCoins,
-  selectedCurrency: currencies.GBP,
 };
 
 const account = {

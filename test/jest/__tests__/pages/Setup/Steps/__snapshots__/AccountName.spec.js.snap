@@ -26,6 +26,7 @@ exports[`AccountName.vue renders and matches snapshot 1`] = `
       >
         <div
           class="q-field__control relative-position row no-wrap text-primary"
+          tabindex="-1"
         >
           <div
             class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
@@ -33,6 +34,7 @@ exports[`AccountName.vue renders and matches snapshot 1`] = `
             <input
               class="q-field__native"
               float-label="Account Name"
+              tabindex="0"
               type="text"
             />
           </div>
@@ -51,6 +53,7 @@ exports[`AccountName.vue renders and matches snapshot 1`] = `
     >
       <div
         class="q-focus-helper"
+        tabindex="-1"
       />
       <div
         class="q-btn__content text-center col items-center q-anchor--skip justify-center row"

@@ -1,142 +1,80 @@
 /* eslint-disable no-magic-numbers */
 import { mount, createWrapper } from '@vue/test-utils';
 import PinPad from '@/components/Auth/PinPad';
-import { localVue, i18n } from '@/helpers/SetupLocalVue';
-import { Quasar, QBtn } from 'quasar';
-import Vuex from 'vuex';
 import Keyboard from 'vue-keyboard';
+import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
+import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
 describe('PinPad component', () => {
+  let wrapper;
+  let router;
   let store;
-  let mockSetupModule;
+  let storeMocks;
 
-  localVue.use(Quasar, { components: { QBtn } });
+  const defaultProps = {
+    mode: 'pin-setup',
+  };
 
-  beforeEach(() => {
-    mockSetupModule = {
-      namespaced: true,
-      state: {
-        pinArray: [0, 0, 0, 0, 0, 0],
-        pinConfirmArray: [0, 0, 0, 0, 0, 0],
-        salt: '$2a$10$KE86k38NXlqTBgOQUC9bE.',
-      },
-      actions: {
-        resetPin: jest.fn(),
-        resetPinConfirm: jest.fn(),
-        setPinConfirm: jest.fn(),
-        setPin: jest.fn(),
-      },
-    };
+  function wrapperInit(options) {
+    return mount(PinPad, options);
+  }
 
-    store = new Vuex.Store({
-      modules: {
-        setup: mockSetupModule,
-      },
-      state: {
-        route: {
-          params: {
-            id: 4,
-          },
-        },
-        settings: {
-          pin: {
-            minLength: 6,
-          },
-          delay: 500,
-        },
-      },
-    });
-  });
-
-  it('renders and matches snapshot', () => {
-    const wrapper = mount(PinPad, {
+  function storeInit(custom, propsData, parentComponent = null) {
+    storeMocks = createStoreMocks(custom);
+    router = createRouter(storeMocks.store);
+    router.push({ path: '/setup/0' });
+    wrapper = wrapperInit({
       i18n,
+      router,
       localVue,
       Keyboard,
-      store,
-      propsData: {
-        mode: 'pin-setup',
-      },
+      propsData,
+      parentComponent,
+      store: storeMocks.store,
     });
+    store = wrapper.vm.$store;
+  }
+
+  beforeEach(() => { storeInit({}, defaultProps); });
+
+  it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
-    expect(mockSetupModule.actions.resetPin).toHaveBeenCalled();
   });
 
   it('disables button when less than 6 characters have been entered', () => {
-    const wrapper = mount(PinPad, {
-      i18n,
-      localVue,
-      Keyboard,
-      store,
-      propsData: {
-        mode: 'pin-setup',
-      },
-    });
     expect(wrapper.findAll('[disabled]').at(1)).toBeTruthy();
     expect(wrapper.vm.canProceed).toBe(true);
   });
 
   it('displays a delete button when in delete mode', () => {
-    const wrapper = mount(PinPad, {
-      i18n,
-      localVue,
-      Keyboard,
-      store,
-      propsData: {
-        mode: 'delete',
-      },
-    });
+    storeInit({}, { mode: 'delete' });
     expect(wrapper.findAll('[disabled]').at(1).text()).toBe('Delete');
   });
 
   describe('inputPin()', () => {
     it('calls the setup/setPin action in pin setup mode', (done) => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'pin-setup',
-        },
-      });
       const mockVibrate = jest.fn();
       global.navigator.vibrate = mockVibrate;
+
       wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
       wrapper.vm.$nextTick(() => {
-        expect(mockSetupModule.actions.setPin).toHaveBeenCalled();
+        expect(storeMocks.actions.setPin).toHaveBeenCalled();
         done();
       });
     });
 
     it('calls the setup/setPinConfirm action in pin confirm mode', (done) => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'pin-confirm',
-        },
-      });
+      storeInit({}, { mode: 'pin-confirm' });
       global.navigator.vibrate = null;
       wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
       wrapper.vm.$nextTick(() => {
-        expect(mockSetupModule.actions.setPinConfirm).toHaveBeenCalled();
+        expect(storeMocks.actions.setPinConfirm).toHaveBeenCalled();
         done();
       });
     });
 
     it('fires an inputPin event in access mode', () => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'access',
-        },
-      });
+      storeInit({}, { mode: 'access' });
       wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
       expect(wrapper.emitted('inputPin')).toEqual([['2']]);
     });
@@ -154,16 +92,8 @@ describe('PinPad component', () => {
         },
         template: '<div />',
       };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'auth',
-        },
-        parentComponent: Parent,
-      });
+
+      storeInit({}, { mode: 'auth' }, Parent);
       wrapper.findAll('.vue-keyboard-key').at(1).trigger('click');
       const rootWrapper = createWrapper(wrapper.vm.$root);
       expect(rootWrapper.emitted('inputPin')).toEqual([['2']]);
@@ -172,15 +102,7 @@ describe('PinPad component', () => {
 
   describe('confirmPin()', () => {
     it('fires an attemptUnlock event in access mode', () => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'access',
-        },
-      });
+      storeInit({}, { mode: 'access' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -191,15 +113,7 @@ describe('PinPad component', () => {
     });
 
     it('fires an attemptUnlock event in delete mode', () => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'delete',
-        },
-      });
+      storeInit({}, { mode: 'delete' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -222,16 +136,8 @@ describe('PinPad component', () => {
         },
         template: '<div />',
       };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'auth',
-        },
-        parentComponent: Parent,
-      });
+
+      storeInit({}, { mode: 'auth' }, Parent);
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -254,16 +160,8 @@ describe('PinPad component', () => {
         },
         template: '<div />',
       };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'pin-confirm',
-        },
-        parentComponent: Parent,
-      });
+
+      storeInit({}, { mode: 'pin-confirm' }, Parent);
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -274,47 +172,22 @@ describe('PinPad component', () => {
     });
   });
 
+
   describe('done()', () => {
     it('routes to the pin confirm screen when the done button is clicked in pin-setup mode', () => {
-      const $router = {
-        push: jest.fn(),
-      };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'pin-setup',
-        },
-        mocks: {
-          $router,
-        },
-      });
+      const page = parseInt(store.state.route.params.id, 10);
+      storeInit({}, { mode: 'pin-setup' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
         wrapper.findAll('.vue-keyboard-key').at(pin - 1).trigger('click');
       });
       wrapper.findAll('.q-btn').at(1).trigger('click');
-      expect($router.push).toHaveBeenCalled();
+      expect(parseInt(store.state.route.params.id, 10)).toBe(page + 1);
     });
+
     it('fires a newPinSet event in new-pin mode', () => {
-      const $router = {
-        push: jest.fn(),
-      };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'new-pin',
-        },
-        mocks: {
-          $router,
-        },
-      });
+      storeInit({}, { mode: 'new-pin' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -323,22 +196,9 @@ describe('PinPad component', () => {
       wrapper.findAll('.q-btn').at(1).trigger('click');
       expect(wrapper.emitted('newPinSet')).toBeTruthy();
     });
+
     it('fires a attempConfirm event in confirm-new-pin mode', () => {
-      const $router = {
-        push: jest.fn(),
-      };
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'confirm-new-pin',
-        },
-        mocks: {
-          $router,
-        },
-      });
+      storeInit({}, { mode: 'confirm-new-pin' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
@@ -351,15 +211,7 @@ describe('PinPad component', () => {
 
   describe('resetState()', () => {
     it('clears the internal input state when called', () => {
-      const wrapper = mount(PinPad, {
-        i18n,
-        localVue,
-        Keyboard,
-        store,
-        propsData: {
-          mode: 'confirm-new-pin',
-        },
-      });
+      storeInit({}, { mode: 'confirm-new-pin' });
       const pinAray = [0, 0, 0, 0, 0, 0];
       pinAray.forEach((pin) => {
         if (pin === 0) { pin = 10; }
