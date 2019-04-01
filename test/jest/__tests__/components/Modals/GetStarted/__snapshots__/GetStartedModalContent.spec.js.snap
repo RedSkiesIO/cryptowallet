@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetStartedModalContent component renders and matches snapshot 1`] = `
+<div
+  class="modal-layout-wrapper full no-padding"
+>
+  <div
+    class="q-carousel q-panel-parent q-carousel-full q-carousel--navigation"
+  >
+    <div
+      class="q-carousel__slides-container"
+    >
+      <div
+        class="q-panel scroll"
+        role="tabpanel"
+      >
+        <div
+          class="q-carousel__slide full-slide"
+        >
+          <div
+            class="slide-header"
+          >
+            <h1
+              class="setup"
+            >
+              
+          Coins & Tokens
+        
+            </h1>
+          </div>
+           
+          <div
+            class="slide-wrapper"
+          >
+            <div
+              class="slide-illustration"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons q-icon text-white temp-ill"
+                style="font-size: 10rem;"
+              >
+                monetization_on
+              </i>
+            </div>
+             
+            <p>
+              
+          Digital currencies that are secured using cryptography and stored on a distributed ledger, blockchain or DAG. It's digital money. Used by millions world-wide.
+        
+            </p>
+          </div>
+           
+          <div
+            class="absolute-bottom"
+          >
+            <div
+              class="next-button-wrapper"
+            >
+              <button
+                class="q-btn inline q-btn-item non-selectable splash-btn q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+                tabindex="0"
+                type="button"
+              >
+                <div
+                  class="q-focus-helper"
+                  tabindex="-1"
+                />
+                <div
+                  class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+                >
+                  <div>
+                    Next
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="q-carousel__control q-carousel__navigation no-wrap absolute flex scroll-x q-carousel__navigation--buttons text-white"
+    >
+      <div
+        class="q-carousel__navigation-inner flex no-wrap justify-center"
+      >
+        <button
+          class="q-btn inline q-btn-item non-selectable q-carousel__navigation-icon q-btn--flat q-btn--round q-focusable q-hoverable q-carousel__navigation-icon--active"
+          style="font-size: 10px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              lens
+            </i>
+          </div>
+        </button>
+        <button
+          class="q-btn inline q-btn-item non-selectable q-carousel__navigation-icon q-btn--flat q-btn--round q-focusable q-hoverable"
+          style="font-size: 10px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              lens
+            </i>
+          </div>
+        </button>
+        <button
+          class="q-btn inline q-btn-item non-selectable q-carousel__navigation-icon q-btn--flat q-btn--round q-focusable q-hoverable"
+          style="font-size: 10px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              lens
+            </i>
+          </div>
+        </button>
+        <button
+          class="q-btn inline q-btn-item non-selectable q-carousel__navigation-icon q-btn--flat q-btn--round q-focusable q-hoverable"
+          style="font-size: 10px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              lens
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
