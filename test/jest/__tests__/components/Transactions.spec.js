@@ -8,14 +8,14 @@ describe('Transactions.vue', () => {
   let wrapper;
   // let store;
   let router;
-  //   const propsData = {
-  //     wallet: {
-  //       account_id: 1,
-  //       displayName: 'Bitcoin',
-  //       sdk: 'Bitcoin',
+  const propsData = {
+    wallet: {
+      account_id: 1,
+      displayName: 'Bitcoin',
+      sdk: 'Bitcoin',
 
-  //     },
-  //   };
+    },
+  };
 
   function wrapperInit(options) {
     return shallowMount(Transactions, options);
@@ -26,7 +26,7 @@ describe('Transactions.vue', () => {
     router = createRouter(storeMocks.store);
     router.push({ path: '/' });
     wrapper = wrapperInit({
-      i18n, router, localVue, store: storeMocks.store,
+      i18n, router, localVue, store: storeMocks.store, propsData,
     });
     // store = wrapper.vm.$store;
   }
@@ -42,13 +42,13 @@ describe('Transactions.vue', () => {
   });
 
   it('renders tabs: All, Sent, Received correctly', () => {
-    expect(wrapper.findAll('qtab-stub').length).toBe();
-    expect(wrapper.contains('qtab-stub[default="true"][name="tab-1"]')).toBe(true);
-    expect(wrapper.contains('qtab-stub[label="Sent"][name="tab-2"]')).toBe(true);
-    expect(wrapper.contains('qtab-stub[label="Received"][name="tab-3"]')).toBe(true);
+    expect(wrapper.findAll('q-tab-stub').length).toBe();
+    expect(wrapper.contains('q-tab-stub[default="true"][name="tab-1"]')).toBe(true);
+    expect(wrapper.contains('q-tab-stub[label="Sent"][name="tab-2"]')).toBe(true);
+    expect(wrapper.contains('q-tab-stub[label="Received"][name="tab-3"]')).toBe(true);
 
-    expect(wrapper.contains('qtabpane-stub[name="tab-1"] transactionslist-stub')).toBe(true);
-    expect(wrapper.contains('qtabpane-stub[name="tab-2"] transactionslist-stub[filter="sent"]')).toBe(true);
-    expect(wrapper.contains('qtabpane-stub[name="tab-3"] transactionslist-stub[filter="received"]')).toBe(true);
+    expect(wrapper.contains('q-tabpane-stub[name="tab-1"] transactionslist-stub')).toBe(true);
+    expect(wrapper.contains('q-tabpane-stub[name="tab-2"] transactionslist-stub[filter="sent"]')).toBe(true);
+    expect(wrapper.contains('q-tabpane-stub[name="tab-3"] transactionslist-stub[filter="received"]')).toBe(true);
   });
 });

@@ -42,6 +42,7 @@ exports[`Transactions.vue renders and matches snapshot 1`] = `
     >
       <transactionslist-stub
         filter=""
+        wallet="[object Object]"
       />
     </q-tab-panel-stub>
      
@@ -50,6 +51,7 @@ exports[`Transactions.vue renders and matches snapshot 1`] = `
     >
       <transactionslist-stub
         filter="sent"
+        wallet="[object Object]"
       />
     </q-tab-panel-stub>
      
@@ -58,6 +60,7 @@ exports[`Transactions.vue renders and matches snapshot 1`] = `
     >
       <transactionslist-stub
         filter="received"
+        wallet="[object Object]"
       />
     </q-tab-panel-stub>
   </q-tab-panels-stub>
