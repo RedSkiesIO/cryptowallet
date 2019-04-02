@@ -7,6 +7,7 @@ const actions = {
   setPinConfirm: jest.fn(),
   setPin: jest.fn(),
   clearSetupData: jest.fn(),
+  setGetStartedModalOpened: jest.fn(),
 };
 const getters = {};
 const mutations = {};

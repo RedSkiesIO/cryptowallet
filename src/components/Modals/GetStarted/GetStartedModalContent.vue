@@ -210,7 +210,7 @@ export default {
       this.slide = this.slides[this.slides.indexOf(this.slide) + 1];
     },
     done() {
-      this.$root.$emit('getStartedModalOpened', false);
+      this.$store.dispatch('setup/setGetStartedModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'new');
       this.$router.push({ path: '/setup/2' });
     },
