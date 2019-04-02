@@ -25,64 +25,43 @@ exports[` Seed.vue renders and matches snapshot 1`] = `
   <div
     class="btns-wrapper"
   >
-    <q-btn-stub
-      align="center"
-      color="secondary"
-      label="Try Different Seed"
-      ripple="true"
-    />
+    <button
+      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Try Different Seed
+        </div>
+      </div>
+    </button>
      
-    <q-btn-stub
-      align="center"
-      color="yellow"
-      label="Done"
-      ripple="true"
-      textcolor="blueish"
-    />
+    <button
+      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Done
+        </div>
+      </div>
+    </button>
   </div>
    
-  <q-dialog-stub
-    persistent="true"
-    position="standard"
-    transitionhide="scale"
-    transitionshow="scale"
-  >
-    <q-card-stub
-      class="dialog"
-      style="width: 300px;"
-    >
-      <q-card-section-stub>
-        <h2>
-          Confirm
-        </h2>
-         
-        <p>
-          
-          Have you stored your seed?
-        
-        </p>
-      </q-card-section-stub>
-       
-      <q-card-actions-stub
-        align="right"
-      >
-        <q-btn-stub
-          align="center"
-          color="blueish"
-          flat="true"
-          label="no"
-          ripple="true"
-        />
-         
-        <q-btn-stub
-          align="center"
-          color="blueish"
-          flat="true"
-          label="yes"
-          ripple="true"
-        />
-      </q-card-actions-stub>
-    </q-card-stub>
-  </q-dialog-stub>
+  <!---->
 </div>
 `;
