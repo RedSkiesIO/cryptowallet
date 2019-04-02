@@ -9,8 +9,8 @@
       class="scroll-area static"
     >
       <q-infinite-scroll
-        :handler="loadMore"
         :offset="50"
+        @load="loadMore"
       >
         <q-timeline
           responsive
@@ -79,6 +79,16 @@ export default {
         .where('wallet_id', this.wallet.id)
         .where('isChange', false)
         .get();
+
+      if (this.wallet.sdk === 'Ethereum') {
+        txs.filter((tx) => {
+          console.log(tx);
+          if (tx.value > 0) { return true; }
+          return false;
+        });
+      }
+
+      console.log(txs);
 
       txs.sort((a, b) => {
         if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {

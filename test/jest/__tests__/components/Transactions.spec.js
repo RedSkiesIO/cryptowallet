@@ -6,7 +6,6 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 describe('Transactions.vue', () => {
   let storeMocks;
   let wrapper;
-  // let store;
   let router;
   const propsData = {
     wallet: {
@@ -28,7 +27,6 @@ describe('Transactions.vue', () => {
     wrapper = wrapperInit({
       i18n, router, localVue, store: storeMocks.store, propsData,
     });
-    // store = wrapper.vm.$store;
   }
 
   beforeEach(() => { return storeInit(); });
@@ -42,13 +40,14 @@ describe('Transactions.vue', () => {
   });
 
   it('renders tabs: All, Sent, Received correctly', () => {
-    expect(wrapper.findAll('q-tab-stub').length).toBe();
-    expect(wrapper.contains('q-tab-stub[default="true"][name="tab-1"]')).toBe(true);
-    expect(wrapper.contains('q-tab-stub[label="Sent"][name="tab-2"]')).toBe(true);
-    expect(wrapper.contains('q-tab-stub[label="Received"][name="tab-3"]')).toBe(true);
+    const numOfTabs = 3;
+    expect(wrapper.findAll('q-tab-stub').length).toBe(numOfTabs);
+    expect(wrapper.contains('q-tab-stub[default=""][name="all"]')).toBe(true);
+    expect(wrapper.contains('q-tab-stub[label="Sent"][name="sent"]')).toBe(true);
+    expect(wrapper.contains('q-tab-stub[label="Received"][name="received"]')).toBe(true);
 
-    expect(wrapper.contains('q-tabpane-stub[name="tab-1"] transactionslist-stub')).toBe(true);
-    expect(wrapper.contains('q-tabpane-stub[name="tab-2"] transactionslist-stub[filter="sent"]')).toBe(true);
-    expect(wrapper.contains('q-tabpane-stub[name="tab-3"] transactionslist-stub[filter="received"]')).toBe(true);
+    expect(wrapper.contains('q-tab-panel-stub[name="all"] transactionslist-stub')).toBe(true);
+    expect(wrapper.contains('q-tab-panel-stub[name="sent"] transactionslist-stub[filter="sent"]')).toBe(true);
+    expect(wrapper.contains('q-tab-panel-stub[name="received"] transactionslist-stub[filter="received"]')).toBe(true);
   });
 });
