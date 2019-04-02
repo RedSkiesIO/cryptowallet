@@ -110,3 +110,10 @@ export function resetPinConfirm(context) {
 export function clearSetupData(context) {
   context.commit('CLEAR_SETUP_DATA');
 }
+
+/**
+ * Action setGetStartedModalOpened
+ */
+export function setGetStartedModalOpened(context, payload) {
+  context.commit('SET_GETSTARTED_MODAL_OPENED', payload);
+}
