@@ -72,10 +72,6 @@ describe(' Seed.vue', () => {
   });
 
   it('loads next setup step on done() method', () => {
-    bip39.generateMnemonic.mockReturnValueOnce(mockSeed);
-    const confirmButton = wrapper.findAll('button').at(1);
-    confirmButton.trigger('click');
-    expect(wrapper.vm.confirm).toEqual(true);
     wrapper.vm.done();
     expect(wrapper.vm.confirm).toBe(false);
     expect(store.state.route.path).toBe('/setup/7');
