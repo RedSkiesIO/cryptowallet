@@ -6,6 +6,7 @@ const actions = {
   resetPinConfirm: jest.fn(),
   setPinConfirm: jest.fn(),
   setPin: jest.fn(),
+  setSeed: jest.fn(),
   clearSetupData: jest.fn(),
 };
 const getters = {};
