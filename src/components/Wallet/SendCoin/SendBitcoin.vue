@@ -328,9 +328,9 @@ export default {
     await this.getMaxedTx();
     // @todo don't use global app
     /* eslint-disable-next-line */
-    app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
+    /*app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
       this.address = text;
-    });
+    });*/
   },
 
   methods: {
@@ -511,49 +511,6 @@ export default {
     },
 
     /**
-     * Filters out recently used, pending UTXOs
-     * @param  {Array<Object>} utxos
-     * @return {Object}
-     */
-    filterOutPending(utxos) {
-      utxos.forEach((utxo) => {
-        const found = Utxo.query()
-          .where('txid', utxo.txid)
-          .where('vout', utxo.vout)
-          .where('wallet_id', this.wallet.id)
-          .get();
-
-        if (found) { return false; }
-        utxo.account_id = this.authenticatedAccount;
-        utxo.wallet_id = this.wallet.id;
-        Utxo.$insert({ data: utxo });
-        return false;
-      });
-
-      const pendingUtxos = Utxo.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('wallet_id', this.wallet.id)
-        .where('pending', true)
-        .get();
-
-      // filter out the pending UTXOs
-      const filteredUtxos = utxos.filter((utxo) => {
-        const found = pendingUtxos.find((pendingUtxo) => {
-          if (utxo.txid === pendingUtxo.txid && utxo.vout === pendingUtxo.vout) { return true; }
-          return false;
-        });
-
-        if (!found) { return true; }
-        return false;
-      });
-
-      return {
-        filteredUtxos,
-        pendingCount: pendingUtxos.length,
-      };
-    },
-
-    /**
      * Generates change addresses
      * @param  {Array<Object>} filteredUtxos
      * @param  {Number} pendingCount
@@ -578,6 +535,7 @@ export default {
 
     async getFee() {
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+
       const fees = response.data.data;
       const kbToBytes = 1000;
       Object.keys(fees).forEach((key) => {
@@ -769,6 +727,7 @@ export default {
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
       ];
+
       const accounts = this.getAccounts();
       const { address } = this.getAddresses()[0];
 
@@ -813,9 +772,10 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
+      this.$store.dispatch('settings/scanQRCode');
       // @todo, don't use app global
       /* eslint-disable-next-line */
-      app.$root.$emit('scanQRCode');
+      // app.$root.$emit('scanQRCode');
       // @todo, don't use app global
       /* eslint-disable-next-line */
       app.$root.$emit('sendCoinModalOpened', false);

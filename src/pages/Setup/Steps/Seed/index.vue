@@ -95,6 +95,7 @@ export default {
       });
       const expectedSeedLength = 12;
       if (this.seedPhrase.length === expectedSeedLength) {
+        console.log(this.seedPhrase);
         this.$store.dispatch('setup/setSeed', this.seedPhrase);
       } else {
         this.anotherSeed();

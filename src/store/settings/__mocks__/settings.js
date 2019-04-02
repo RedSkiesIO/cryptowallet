@@ -22,6 +22,8 @@ const state = {
   coins,
   currencies,
   supportedCoins,
+  authenticatedAccount: 1,
+  selectedCurrency: 'GBP',
 };
 
 const account = {

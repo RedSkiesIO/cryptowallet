@@ -32,6 +32,7 @@ export default {
      */
     async complete() {
       try {
+        console.log('got here', this.setup);
         const account = await this.accountInitializer.createAccount(this.setup);
         this.$store.dispatch('settings/setSelectedAccount', this.setup.accountName);
         await this.accountInitializer.createWallets(this.setup, account.id, this.supportedCoins);

@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendBitcoin component renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="send-coin-box"
+  >
+    <div
+      class="send-modal-heading"
+    >
+      <h4>
+        
+        Available Balance
+        
+        <i
+          aria-hidden="true"
+          class="material-icons q-icon help-icon"
+          style="font-size: 1.1rem;"
+        >
+          help_outline
+        </i>
+      </h4>
+       
+      <span
+        class="h3-line"
+      />
+       
+      <!---->
+    </div>
+     
+    <div
+      class="available-amount full"
+    >
+      <!---->
+       
+      <div
+        class="in-coin"
+      >
+        
+        0 BTC
+      
+      </div>
+    </div>
+     
+    <div
+      class="send-modal-heading"
+    >
+      <h3>
+        Recipient
+      </h3>
+       
+      <span
+        class="h3-line"
+      />
+       
+      <button
+        class="q-btn inline q-btn-item non-selectable send-heading-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 10px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <div>
+            Paste
+          </div>
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="to"
+    >
+      <div
+        class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+        placeholder="address"
+      >
+        <div
+          class="q-field__inner relative-position col self-stretch column justify-center"
+        >
+          <div
+            class="q-field__control relative-position row no-wrap text-primary"
+            tabindex="-1"
+          >
+            <div
+              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+            >
+              <input
+                class="q-field__native"
+                placeholder="address"
+                tabindex="0"
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="side-content qr-code-wrapper"
+      >
+        <div
+          class="hor-line"
+        />
+         
+        <div
+          class="ver-line"
+        />
+         
+        <img
+          src="~assets/QR.svg"
+        />
+      </div>
+    </div>
+     
+    <span
+      class="error-label"
+    >
+      
+    </span>
+     
+    <div
+      class="send-modal-heading"
+    >
+      <h3>
+        Amount
+      </h3>
+       
+      <span
+        class="h3-line"
+      />
+       
+      <button
+        class="q-btn inline q-btn-item non-selectable send-heading-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 10px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <div>
+            Max
+          </div>
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="amount"
+    >
+      <div
+        class="amount-div-wrapper"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+          placeholder="0"
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap text-primary"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  placeholder="0"
+                  tabindex="0"
+                  type="number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+         
+        <div
+          class="side-content"
+        >
+          
+          BTC
+        
+        </div>
+      </div>
+       
+      <div
+        class="amount-div-wrapper"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+          placeholder="0"
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap text-primary"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  placeholder="0"
+                  tabindex="0"
+                  type="number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+         
+        <div
+          class="side-content"
+        >
+          
+          
+        
+        </div>
+      </div>
+    </div>
+     
+    <span
+      class="error-label"
+    >
+      
+    </span>
+     
+    <div
+      class="send-modal-heading"
+    >
+      <h3>
+        
+        Fee
+        
+        <i
+          aria-hidden="true"
+          class="material-icons q-icon help-icon"
+          style="font-size: 1.1rem;"
+        >
+          help_outline
+        </i>
+      </h3>
+       
+      <!---->
+       
+      <span
+        class="h3-line"
+      />
+    </div>
+     
+    <div>
+      <div
+        class="fee"
+      >
+        <div
+          aria-valuemax="2"
+          aria-valuemin="0"
+          aria-valuenow="1"
+          class="q-slider text-blueish q-slider--inactive q-slider--editable q-slider--label q-slider--label-always"
+          data-step="1"
+          role="slider"
+          tabindex="0"
+        >
+          <div
+            class="q-slider__track-container absolute overflow-hidden"
+          >
+            <div
+              class="q-slider__track absolute-full"
+              style="width: 50%;"
+            />
+            <div
+              class="q-slider__track-markers absolute-full fit"
+              style="background-size: 50% 2px;"
+            />
+          </div>
+          <div
+            class="q-slider__thumb-container absolute non-selectable"
+            style="left: 50%;"
+          >
+            <svg
+              class="q-slider__thumb absolute"
+              height="21"
+              width="21"
+            >
+              <circle
+                cx="10.5"
+                cy="10.5"
+                r="7.875"
+              />
+            </svg>
+            <div
+              class="q-slider__pin absolute flex flex-center"
+            >
+              <div
+                class="q-slider__pin-value-marker"
+              >
+                <div
+                  class="q-slider__pin-value-marker-bg"
+                />
+                <div
+                  class="q-slider__pin-value-marker-text"
+                >
+                  fast
+                </div>
+              </div>
+            </div>
+            <div
+              class="q-slider__focus-ring"
+            />
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="estimated-fee"
+      >
+        
+        Estimated transaction cost: N/A
+      
+      </div>
+    </div>
+     
+    <div
+      class="send"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+        style="font-size: 14px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <div>
+            Send
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
