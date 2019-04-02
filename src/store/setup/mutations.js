@@ -125,3 +125,10 @@ export function CLEAR_SETUP_DATA(state) {
   state.seed = null;
   state.spvMode = null;
 }
+
+/**
+ * Set GetStarted modal opened
+ */
+export function SET_GETSTARTED_MODAL_OPENED(state, payload) {
+  state.getStartedModalOpened = payload;
+}

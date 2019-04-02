@@ -21,15 +21,15 @@ export default {
   components: {
     GetStartedModalContent,
   },
-  data() {
-    return {
-      getStartedModalOpened: false,
-    };
-  },
-  mounted() {
-    this.$root.$on('getStartedModalOpened', (value) => {
-      this.getStartedModalOpened = value;
-    });
+  computed: {
+    getStartedModalOpened: {
+      get() {
+        return this.$store.state.setup.getStartedModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('setup/setGetStartedModalOpened', value);
+      },
+    },
   },
 };
 </script>

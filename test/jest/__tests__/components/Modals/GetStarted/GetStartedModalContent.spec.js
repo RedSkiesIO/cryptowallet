@@ -72,11 +72,9 @@ describe('GetStartedModalContent component', () => {
   });
 
   describe('done() method', () => {
-    it('emits getStartedModalOpened with value false', () => {
-      const callback = jest.fn();
-      wrapper.vm.$root.$on('getStartedModalOpened', callback);
+    it('dispatches setGetStartedModalOpened with false as payload', () => {
       wrapper.vm.done();
-      expect(callback).toHaveBeenCalledWith(false);
+      expect(storeMocks.actions.setGetStartedModalOpened.mock.calls[0][1]).toBe(false);
     });
 
     it('dispatches setAccountType with \'new\' as payload', () => {
