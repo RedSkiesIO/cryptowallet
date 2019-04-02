@@ -45,7 +45,6 @@ export default {
   },
   computed: {
     ...mapState({
-      spvModeState: (state) => { return state.setup.spvMode; },
       id: (state) => { return parseInt(state.route.params.id, 10); },
       delay: (state) => { return state.settings.delay; },
     }),
@@ -56,12 +55,6 @@ export default {
         return true;
       }
       return false;
-    },
-
-    openInNewTab() {
-      this.$store.dispatch('setup/setSPVmode', 'false');
-      const win = window.open('https://atlascity.io/run-a-node/', '_blank');
-      win.focus();
     },
 
     done() {
