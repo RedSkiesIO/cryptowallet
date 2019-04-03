@@ -8,6 +8,8 @@ import contacts from '@/store/contacts/__mocks__/contacts.js';
 import search from '@/store/search/__mocks__/search.js';
 import settings from '@/store/settings/__mocks__/settings.js';
 import setup from '@/store/setup/__mocks__/setup.js';
+import qrcode from '@/store/qrcode/__mocks__/qrcode.js';
+import modals from '@/store/modals/__mocks__/modals.js';
 
 // entities
 import Account from '@/store/wallet/entities/account';
@@ -63,6 +65,8 @@ export function createMocks(custom = {
     settings,
     contacts,
     setup,
+    qrcode,
+    modals,
   };
 
   let mockGettersCombined = {};

@@ -66,7 +66,7 @@
         <q-btn
           :label="$t('paste')"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn paste-btn"
           @click="paste"
         />
       </div>
@@ -76,7 +76,7 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input"
+          class="sm-input address-input"
           outlined
           dense
           color="primary"
@@ -92,7 +92,7 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label">{{ addressError }}</span>
+      <span class="error-label error-label-address">{{ addressError }}</span>
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -114,12 +114,14 @@
             :error="$v.inCoin.$error"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-coin"
             outlined
             dense
             color="primary"
             @focus="updateInCoinFocus(true)"
+            @focus.native="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
+            @blur.native="updateInCoinFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -133,12 +135,14 @@
             :error="$v.inCurrency.$error"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-currency"
             outlined
             dense
             color="primary"
             @focus="updateInCurrencyFocus(true)"
+            @focus.native="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
+            @blur.native="updateInCurrencyFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -199,6 +203,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import {
   required,
   alphaNum,
@@ -248,10 +253,12 @@ export default {
       address: {
         required,
         alphaNum,
-        between: (value) => {
+        between: function (value) {
           return value.length <= this.addressLengthMax && value.length >= this.addressLengthMin;
         },
-        isValidAddress: (value) => { return this.validateAddress(value); },
+        isValidAddress: function (value) {
+          return this.validateAddress(value);
+        },
       },
       inCoin: {
         required,
@@ -268,6 +275,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      scannedAddress: (state) => { return state.qrcode.scannedAddress; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -308,7 +316,10 @@ export default {
         this.validateInput('inCoin');
         return false;
       }
-      if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
+
+      if (!this.inCurrencyFocus) {
+        this.inCurrency = this.amountToCurrency(val);;
+      }
       this.updateFee(this.feeSetting, this);
       this.validateInput('inCoin');
       return false;
@@ -326,11 +337,11 @@ export default {
 
   async mounted() {
     await this.getMaxedTx();
-    // @todo don't use global app
-    /* eslint-disable-next-line */
-    /*app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
-      this.address = text;
-    });*/
+
+    if (this.scannedAddress) {
+      this.address = this.scannedAddress;
+      this.$store.dispatch('qrcode/setScannedAddress', null);
+    }
   },
 
   methods: {
@@ -341,6 +352,7 @@ export default {
       this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
+      console.log('in focus', val);
       if (!val) {
         this.validateInput('inCoin');
       }
@@ -476,21 +488,6 @@ export default {
         .where('wallet_id', this.wallet.id)
         .where('used', false)
         .get();
-    },
-
-    /**
-     * Returns raw addresses
-     * @return {Array<String>}
-     */
-    getAddressesRaw() {
-      const addresses = this.getAddresses();
-      const addressesRaw = addresses.map((item) => { return item.address; });
-
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
-      return addressesRaw.filter(onlyUnique);
     },
 
     /**
@@ -700,9 +697,11 @@ export default {
      */
     paste() {
       try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.address = text;
-        });
+        if (cordova) {
+          cordova.plugins.clipboard.paste((text) => {
+            this.address = text;
+          });
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -772,13 +771,9 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      this.$store.dispatch('settings/scanQRCode');
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      // app.$root.$emit('scanQRCode');
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('sendCoinModalOpened', false);
+      this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setSendCoinModalOpened', false);
+
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -787,19 +782,11 @@ export default {
             } else {
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('cancelScanning');
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('sendCoinModalOpened', true);
 
               if (isValid) {
-                setTimeout(() => {
-                  // @todo, don't use app global
-                  /* eslint-disable-next-line */
-                  app.$root.$emit(`scanned_${this.wallet.name}`, text);
-                }, this.delay.normal);
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$store.dispatch('modals/setSendCoinModalOpened', true);
               }
             }
           });

@@ -31,13 +31,19 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
     <div
       class="available-amount full"
     >
-      <!---->
+      <div
+        class="amount-box"
+      >
+        
+  £10.38
+
+      </div>
        
       <div
         class="in-coin"
       >
         
-        0 BTC
+        0.0027175 BTC
       
       </div>
     </div>
@@ -54,7 +60,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
       />
        
       <button
-        class="q-btn inline q-btn-item non-selectable send-heading-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
+        class="q-btn inline q-btn-item non-selectable send-heading-btn paste-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
         style="font-size: 10px;"
         tabindex="0"
         type="button"
@@ -77,7 +83,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
       class="to"
     >
       <div
-        class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+        class="q-field row no-wrap items-start sm-input address-input q-input q-field--outlined q-field--dense"
         placeholder="address"
       >
         <div
@@ -119,7 +125,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
     </div>
      
     <span
-      class="error-label"
+      class="error-label error-label-address"
     >
       
     </span>
@@ -162,7 +168,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
         class="amount-div-wrapper"
       >
         <div
-          class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+          class="q-field row no-wrap items-start sm-input amount-in-coin q-input q-field--outlined q-field--dense"
           placeholder="0"
         >
           <div
@@ -199,7 +205,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
         class="amount-div-wrapper"
       >
         <div
-          class="q-field row no-wrap items-start sm-input q-input q-field--outlined q-field--dense"
+          class="q-field row no-wrap items-start sm-input amount-in-currency q-input q-field--outlined q-field--dense"
           placeholder="0"
         >
           <div
@@ -227,7 +233,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
           class="side-content"
         >
           
-          
+          GBP
         
         </div>
       </div>

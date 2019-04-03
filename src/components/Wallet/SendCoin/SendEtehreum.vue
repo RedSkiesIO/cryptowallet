@@ -197,13 +197,10 @@ export default {
 
   computed: {
     ...mapState({
-      id: (state) => {
-        return state.route.params.id;
-      },
-      authenticatedAccount: (state) => {
-        return state.settings.authenticatedAccount;
-      },
+      id: (state) => { return state.route.params.id; },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      scannedAddress: (state) => { return state.qrcode.scannedAddress; },
     }),
 
     wallet() {
@@ -269,10 +266,10 @@ export default {
     this.maxValueCoin = this.getMaxAmount();
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
 
-    /* eslint-disable-next-line */
-    app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
-      this.address = text;
-    });
+    if (this.scannedAddress) {
+      this.address = this.scannedAddress;
+      this.$store.dispatch('qrcode/setScannedAddress', null);
+    }
   },
 
   methods: {
@@ -581,34 +578,23 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('scanQRCode');
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('sendCoinModalOpened', false);
+      this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setSendCoinModalOpened', false);
+
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
             if (err) {
               this.errorHandler(err);
             } else {
+              /*eslint-disable*/
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
 
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('cancelScanning');
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('sendCoinModalOpened', true);
-
               if (isValid) {
-                setTimeout(() => {
-                  // @todo, don't use app global
-                  /* eslint-disable-next-line */
-                  app.$root.$emit(`scanned_${this.wallet.name}`, text);
-                }, this.delay.normal);
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$store.dispatch('modals/setSendCoinModalOpened', true);
               }
             }
           });

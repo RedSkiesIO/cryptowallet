@@ -20,6 +20,7 @@ import settings from './settings';
 import setup from './setup';
 import contacts from './contacts';
 import qrcode from './qrcode';
+import modals from './modals';
 
 Vue.use(Vuex);
 
@@ -75,6 +76,7 @@ const store = new Vuex.Store({
     setup,
     contacts,
     qrcode,
+    modals,
   },
   plugins: [VuexORM.install(database)],
 });

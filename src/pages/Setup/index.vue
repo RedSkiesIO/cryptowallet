@@ -41,8 +41,6 @@ export default {
         SeedConfirm,
         Pin,
         PinConfirm,
-        /* Network, */
-        // Node,
         AccountName,
         Complete,
       ],
