@@ -3,7 +3,9 @@ import { shallowMount } from '@vue/test-utils';
 import TransactionsList from '@/components/Wallet/TransactionsList';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import { mockBitcoinTxs, mockBitcoinTxsSorted } from '@/store/wallet/__mocks__/tx.js';
+import {
+  mockBitcoinTxs, mockBitcoinTxsSorted, mockEthereumTxs, mockEthereumTxsSorted,
+} from '@/store/wallet/__mocks__/tx.js';
 import Tx from '@/store/wallet/entities/tx';
 
 describe('TransactionsList.vue', () => {
@@ -19,7 +21,6 @@ describe('TransactionsList.vue', () => {
       account_id: 1,
       displayName: 'Bitcoin',
       sdk: 'Bitcoin',
-
     },
   };
 
@@ -50,27 +51,22 @@ describe('TransactionsList.vue', () => {
     expect(wrapper.contains('section.scroll-area')).toBe(true);
   });
 
-  //   it('calls the prevent() method on touchmove event', () => {
-  //     const preventMock = jest.fn();
-  //     wrapper.setMethods({ prevent: preventMock });
-  //     wrapper.find('section.scroll-area').trigger('touchmove');
-  //     expect(preventMock).toHaveBeenCalled();
-  //   });
-
-  //   it('renders the tree of elements correctly', () => {
-  //     expect(wrapper.contains(`section.scroll-area
-  //                                qscrollarea-stub.scroll-area
-  //                                qinfinitescroll-stub
-  //                                qtimeline-stub
-  //                                singletransaction-stub`)).toBe(true);
-  //   });
-
   it('computes Bitcoin transactions correctly', () => {
     expect(wrapper.vm.transactions).toEqual(mockBitcoinTxsSorted.data);
   });
 
   it('computes Ethereum transactions correctly', () => {
-    expect(wrapper.vm.transactions).toEqual(mockBitcoinTxsSorted.data);
+    Tx.insert({ data: mockEthereumTxs.data });
+    wrapper.setProps({
+      filter: 'all',
+      wallet: {
+        id: 5,
+        account_id: 1,
+        displayName: 'Ethereum',
+        sdk: 'Ethereum',
+      },
+    });
+    expect(wrapper.vm.transactions).toEqual(mockEthereumTxsSorted.data);
   });
 
   it('displays a q-banner if there are no transactions', () => {
@@ -126,6 +122,23 @@ describe('TransactionsList.vue', () => {
     });
     await wrapper.vm.loadMore(null, doneMock);
     expect(doneMock).toHaveBeenLastCalledWith(false);
+  });
+
+  it('calls the touchStart() method on touchstart event', () => {
+    wrapper.find('section.scroll-area').trigger('touchstart', { touches: [{ clientY: 399 }] });
+    expect(wrapper.vm.touchStartY).toBe(399);
+  });
+
+  it('calls the touchMove() method on touchMove event', () => {
+    const mockStopPropagation = jest.fn();
+    wrapper.vm.$refs.scrollArea.$el.childNodes[0].scrollTop = 0;
+    wrapper.find('section.scroll-area').trigger('touchstart', { touches: [{ clientY: 399 }] });
+    wrapper.find('section.scroll-area').trigger('touchmove', { touches: [{ clientY: 400 }] });
+    expect(wrapper.vm.touchStartY).toBe(399);
+    wrapper.vm.$refs.scrollArea.$el.childNodes[0].scrollTop = 10;
+    wrapper.find('section.scroll-area').trigger('touchstart', { touches: [{ clientY: 399 }] });
+    wrapper.find('section.scroll-area').trigger('touchmove', { stopPropagation: mockStopPropagation, touches: [{ clientY: 399 }] });
+    expect(mockStopPropagation).toHaveBeenCalledTimes(2);
   });
 
   //   it('calls event.stopPropagation() correctly within prevent() method', () => {

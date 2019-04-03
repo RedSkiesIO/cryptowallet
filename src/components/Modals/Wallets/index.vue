@@ -206,7 +206,6 @@ export default {
 
       const unconfirmedTx = [];
       const confirmedTx = [];
-      console.log('history ', txHistory);
       txHistory.txs.forEach((tx) => {
         tx.account_id = this.authenticatedAccount;
         tx.wallet_id = wallet.id;

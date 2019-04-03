@@ -12,7 +12,6 @@ exports[`TransactionsList.vue renders and matches snapshot 1`] = `
     thumbstyle="[object Object]"
   >
     <q-infinite-scroll-stub
-      handler="function () { [native code] }"
       offset="50"
     >
       <q-timeline-stub

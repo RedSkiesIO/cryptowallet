@@ -75,20 +75,17 @@ export default {
     }),
     transactions() {
       const msTos = 1000;
-      const txs = Tx.query()
+      let txs = Tx.query()
         .where('wallet_id', this.wallet.id)
         .where('isChange', false)
         .get();
 
       if (this.wallet.sdk === 'Ethereum') {
-        txs.filter((tx) => {
-          console.log(tx);
+        txs = txs.filter((tx) => {
           if (tx.value > 0) { return true; }
           return false;
         });
       }
-
-      console.log(txs);
 
       txs.sort((a, b) => {
         if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
@@ -101,13 +98,8 @@ export default {
           return b1 - a1;
         }
 
-        if (this.wallet.sdk === 'Bitcoin') {
-          return new Date(b.receivedTime * msTos) - new Date(a.receivedTime * msTos);
-        }
-
-        return 0;
+        return new Date(b.receivedTime * msTos) - new Date(a.receivedTime * msTos);
       });
-
       return txs;
     },
 

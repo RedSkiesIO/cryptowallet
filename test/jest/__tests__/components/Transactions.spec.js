@@ -12,7 +12,6 @@ describe('Transactions.vue', () => {
       account_id: 1,
       displayName: 'Bitcoin',
       sdk: 'Bitcoin',
-
     },
   };
 
@@ -42,6 +41,7 @@ describe('Transactions.vue', () => {
   it('renders tabs: All, Sent, Received correctly', () => {
     const numOfTabs = 3;
     expect(wrapper.findAll('q-tab-stub').length).toBe(numOfTabs);
+    expect(wrapper.vm.tab).toBe('all');
     expect(wrapper.contains('q-tab-stub[default=""][name="all"]')).toBe(true);
     expect(wrapper.contains('q-tab-stub[label="Sent"][name="sent"]')).toBe(true);
     expect(wrapper.contains('q-tab-stub[label="Received"][name="received"]')).toBe(true);
