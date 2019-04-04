@@ -54,6 +54,13 @@ describe('SingleTransaction.vue', () => {
         displayName: 'Catalyst',
         parentName: 'Ethereum',
         sdk: 'ERC20',
+      },
+      {
+        id: 7,
+        account_id: 1,
+        name: 'Litecoin',
+        displayName: 'Litecoin',
+        sdk: 'Bitcoin',
       }],
     });
 
@@ -201,5 +208,13 @@ describe('SingleTransaction.vue', () => {
     expect(wrapper.contains('.unconfirmed-tx')).toBe(true);
     expect(wrapper.find('.unconfirmed-tx').text()).toEqual(wrapper.vm.$t('pending'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 ETH (£13.04)');
+  });
+  it('displays a Litecoin transaction', () => {
+    router.push({ path: '/wallet/single/7' });
+    expect(wrapper.vm.paymentDirection).toEqual('To: 1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
+    expect(wrapper.contains('.negative-amount')).toBe(true);
+    expect(wrapper.contains('.confirmed-tx')).toBe(true);
+    expect(wrapper.find('.confirmed-tx').text()).toEqual(wrapper.vm.$t('confirmed'));
+    expect(wrapper.find('.tx-fee').text()).toEqual('0.1 LTC');
   });
 });
