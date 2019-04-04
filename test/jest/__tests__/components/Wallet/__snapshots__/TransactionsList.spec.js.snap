@@ -2,22 +2,23 @@
 
 exports[`TransactionsList.vue renders and matches snapshot 1`] = `
 <section
-  class="scroll-area"
+  class="scroll-area static"
 >
-  <qscrollarea-stub
-    class="scroll-area"
+  <q-scroll-area-stub
+    class="scroll-area static"
     contentactivestyle="[object Object]"
     contentstyle="[object Object]"
     delay="1000"
     thumbstyle="[object Object]"
   >
-    <qinfinitescroll-stub
-      handler="function () { [native code] }"
+    <q-infinite-scroll-stub
       offset="50"
     >
-      <qtimeline-stub
-        color="secondary"
-        responsive="true"
+      <q-timeline-stub
+        color="blueish"
+        layout="dense"
+        responsive=""
+        side="right"
       >
         <singletransaction-stub
           data="[object Object]"
@@ -49,12 +50,14 @@ exports[`TransactionsList.vue renders and matches snapshot 1`] = `
         <singletransaction-stub
           data="[object Object]"
         />
-      </qtimeline-stub>
+         
+        <!---->
+      </q-timeline-stub>
        
-      <qspinnerdots-stub
+      <q-spinner-dots-stub
         size="40"
       />
-    </qinfinitescroll-stub>
-  </qscrollarea-stub>
+    </q-infinite-scroll-stub>
+  </q-scroll-area-stub>
 </section>
 `;

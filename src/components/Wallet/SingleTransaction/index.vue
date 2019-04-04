@@ -11,6 +11,11 @@
         <q-card-section>
           <div class="single-transaction-content">
             <p>
+              <span class="tx-hash break">
+                {{ paymentDirection }}
+              </span>
+            </p>
+            <p>
               {{ $t('txHash') }}:
               <span class="tx-hash break">
                 {{ data.hash }}
@@ -118,12 +123,6 @@ export default {
       return `${this.$t('from')}: ${sender}`;
     },
 
-    to() {
-      let { receiver } = this.data;
-      if (Array.isArray(receiver)) { [receiver] = receiver; }
-      return receiver;
-    },
-
     /**
      * Returns formatted date of the transaction
      * @return {String}
@@ -131,7 +130,7 @@ export default {
     date() {
       const msToS = 1000;
       if (this.data.receivedTime) {
-        return dateTranslater(new Date(this.data.receivedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);
+        return dateTranslater(new Date(this.data.receivedTime * msToS).valueOf(), 'DD MMMM YYYY HH:mm', this);
       }
       return dateTranslater(new Date(this.data.confirmedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);
     },
@@ -152,7 +151,6 @@ export default {
         prependPlusOrMinus: true,
         removeTrailingZeros: true,
       });
-
       if (this.latestPrice) {
         const amountInCurrency = new AmountFormatter({
           amount: inCoin,
@@ -178,8 +176,35 @@ export default {
     feeFormated() {
       const { fee } = this.data;
       const inCoin = fee;
+      if (this.wallet.sdk === 'ERC20') {
+        const parent = this.supportedCoins.find((coin) => {
+          return coin.name === this.wallet.parentName;
+        });
+        const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
+
+        const feeInCoin = new AmountFormatter({
+          amount: inCoin,
+          rate: price,
+          format: parent.denomination,
+          prependPlusOrMinus: false,
+          removeTrailingZeros: true,
+        });
+
+        const amountInCurrency = new AmountFormatter({
+          amount: feeInCoin.getFormatted(),
+          rate: price,
+          format: '0,0[.]00',
+          coin: this.wallet.parentName,
+          prependPlusOrMinus: false,
+          currency: this.selectedCurrency,
+          toCurrency: true,
+          toCoin: false,
+          withCurrencySymbol: true,
+        });
+        return `${fee} ${parent.symbol} (${amountInCurrency.getFormatted()})`;
+      }
       if (this.latestPrice) {
-        let feeInCoin = new AmountFormatter({
+        const feeInCoin = new AmountFormatter({
           amount: inCoin,
           rate: this.latestPrice,
           format: this.coinDenomination,
@@ -187,7 +212,7 @@ export default {
           removeTrailingZeros: true,
         });
 
-        let amountInCurrency = new AmountFormatter({
+        const amountInCurrency = new AmountFormatter({
           amount: feeInCoin.getFormatted(),
           rate: this.latestPrice,
           format: '0,0[.]00',
@@ -198,35 +223,6 @@ export default {
           toCoin: false,
           withCurrencySymbol: true,
         });
-
-        if (this.wallet.sdk === 'ERC20') {
-          const parent = this.supportedCoins.find((coin) => {
-            return coin.name === this.wallet.parentName;
-          });
-          const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
-
-          feeInCoin = new AmountFormatter({
-            amount: inCoin,
-            rate: price,
-            format: parent.denomination,
-            prependPlusOrMinus: false,
-            removeTrailingZeros: true,
-          });
-
-          amountInCurrency = new AmountFormatter({
-            amount: feeInCoin.getFormatted(),
-            rate: price,
-            format: '0,0[.]00',
-            coin: this.wallet.parentName,
-            prependPlusOrMinus: false,
-            currency: this.selectedCurrency,
-            toCurrency: true,
-            toCoin: false,
-            withCurrencySymbol: true,
-          });
-          return `${fee} ${parent.symbol} (${amountInCurrency.getFormatted()})`;
-        }
-
         return `${fee} ${this.coinSymbol} (${amountInCurrency.getFormatted()})`;
       }
 

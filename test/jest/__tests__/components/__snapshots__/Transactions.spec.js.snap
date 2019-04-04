@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transactions.vue renders and matches snapshot 1`] = `
+<section
+  class="recent-transactions"
+>
+  <q-tabs-stub
+    align="center"
+    breakpoint="600"
+    color="blueish"
+    inverted=""
+    value="all"
+  >
+    <q-tab-stub
+      default=""
+      label="All"
+      name="all"
+      ripple="true"
+    />
+     
+    <q-tab-stub
+      label="Sent"
+      name="sent"
+      ripple="true"
+    />
+     
+    <q-tab-stub
+      label="Received"
+      name="received"
+      ripple="true"
+    />
+  </q-tabs-stub>
+   
+  <q-tab-panels-stub
+    animated="true"
+    transitionnext="slide-left"
+    transitionprev="slide-right"
+    value="all"
+  >
+    <q-tab-panel-stub
+      name="all"
+    >
+      <transactionslist-stub
+        filter=""
+        wallet="[object Object]"
+      />
+    </q-tab-panel-stub>
+     
+    <q-tab-panel-stub
+      name="sent"
+    >
+      <transactionslist-stub
+        filter="sent"
+        wallet="[object Object]"
+      />
+    </q-tab-panel-stub>
+     
+    <q-tab-panel-stub
+      name="received"
+    >
+      <transactionslist-stub
+        filter="received"
+        wallet="[object Object]"
+      />
+    </q-tab-panel-stub>
+  </q-tab-panels-stub>
+</section>
+`;

@@ -22,6 +22,15 @@ const state = {
   coins,
   currencies,
   supportedCoins,
+  selectedCurrency: {
+    code: 'GBP',
+    exponent: 2,
+    name: 'British Pound Sterling',
+    name_plural: 'British pounds sterling',
+    rounding: 0,
+    symbol: '£',
+    symbol_native: '£',
+  },
 };
 
 const account = {
