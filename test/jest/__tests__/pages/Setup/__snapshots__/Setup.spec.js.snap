@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Setup.vue renders and matches snapshot 1`] = `
+<div
+  class="setup-wrapper"
+>
+  <anonymous-stub />
+</div>
+`;

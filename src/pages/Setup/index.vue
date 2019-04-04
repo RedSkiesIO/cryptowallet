@@ -10,7 +10,6 @@ import Splash from '@/pages/Setup/Steps/Splash/index.vue';
 import AccountName from '@/pages/Setup/Steps/AccountName/index.vue';
 import Pin from '@/pages/Setup/Steps/Pin';
 import PinConfirm from '@/pages/Setup/Steps/Pin/Confirm';
-import Network from '@/pages/Setup/Steps/Network';
 import Restore from '@/pages/Setup/Steps/Restore';
 import Seed from '@/pages/Setup/Steps/Seed';
 import SeedConfirm from '@/pages/Setup/Steps/Seed/Confirm';
@@ -24,7 +23,6 @@ export default {
     AccountName,
     Pin,
     PinConfirm,
-    Network,
     Restore,
     Seed,
     SeedConfirm,
@@ -41,7 +39,6 @@ export default {
         SeedConfirm,
         Pin,
         PinConfirm,
-        /* Network, */
         // Node,
         AccountName,
         Complete,
@@ -54,6 +51,7 @@ export default {
     }),
   },
   created() {
+    console.log(this.$store.state.setup.salt);
     if (this.$store.state.setup.salt) { return false; }
     this.$store.dispatch('setup/setSalt', bcrypt.genSaltSync(10));
     return true;
