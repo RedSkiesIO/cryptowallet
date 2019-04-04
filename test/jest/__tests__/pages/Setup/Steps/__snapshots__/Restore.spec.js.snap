@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` Seed.vue renders and matches snapshot 1`] = `
+exports[` Restore.vue renders and matches snapshot 1`] = `
 <div>
   <div
     class="container"
