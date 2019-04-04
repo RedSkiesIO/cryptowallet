@@ -4,6 +4,165 @@ exports[`Setup.vue renders and matches snapshot 1`] = `
 <div
   class="setup-wrapper"
 >
-  <anonymous-stub />
+  <div
+    class="container splash"
+  >
+    <div
+      class="splash-logo"
+    >
+      <h1>
+        CryptoWallet
+      </h1>
+       
+      <p
+        class="splash-slogan"
+      >
+        
+      All your coins and tokens in one place. Secured.
+    
+      </p>
+    </div>
+     
+    <div
+      class="btns-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable splash-btn get-started-btn q-btn--standard q-btn--rectangle bg-primary text-blueish q-focusable q-hoverable"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <div>
+            Get Started
+          </div>
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="btns-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable splash-btn import-account-btn q-btn--standard q-btn--rectangle bg-blueish text-primary q-focusable q-hoverable"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon on-left"
+          >
+            get_app
+          </i>
+          <div>
+            Import Account
+          </div>
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="flags"
+    >
+      <div
+        class="row q-input bg-blueish"
+      >
+        <div
+          class="col-2 flag-icon"
+        >
+          <img
+            class="select-icon"
+            src="/assets/flags/en-gb.svg"
+          />
+        </div>
+         
+        <div
+          class="col-10 input-field"
+        >
+          <div
+            class="dropdown v-select lang-select single unsearchable"
+            dir="auto"
+          >
+            <div
+              class="dropdown-toggle"
+            >
+              <div
+                class="vs__selected-options"
+              >
+                <span
+                  class="selected-tag"
+                >
+                  
+            English
+           
+                  <!---->
+                </span>
+                 
+                <input
+                  aria-label="Search for option"
+                  autocomplete="off"
+                  class="form-control"
+                  readonly="readonly"
+                  role="combobox"
+                  type="search"
+                />
+              </div>
+               
+              <div
+                class="vs__actions"
+              >
+                <button
+                  class="clear"
+                  title="Clear selection"
+                  type="button"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    ×
+                  </span>
+                </button>
+                 
+                <i
+                  class="open-indicator"
+                  role="presentation"
+                />
+                 
+                <div
+                  class="spinner"
+                  style="display: none;"
+                >
+                  Loading...
+                </div>
+              </div>
+            </div>
+             
+            <!---->
+          </div>
+        </div>
+      </div>
+    </div>
+     
+    <div
+      class="loading-footer emphasised"
+    >
+      <img
+        class="logo-loading"
+        src="~/assets/logo-white-horizontal.png"
+      />
+    </div>
+  </div>
 </div>
 `;

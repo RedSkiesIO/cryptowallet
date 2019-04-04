@@ -3,6 +3,7 @@ import Complete from '@/pages/Setup/Steps/Complete';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
+
 describe('Complete.vue', () => {
   let store;
   let wrapper;
