@@ -54,6 +54,9 @@ const createRouter = (store = null) => {
       {
         path: '/setup/:id',
       },
+      {
+        path: '/wallet/single/:id',
+      },
     ],
   });
 

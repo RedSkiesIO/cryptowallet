@@ -50,8 +50,6 @@ export default {
       setTimeout(() => {
         done();
       }, this.delay.normal);
-
-      return false;
     },
   },
 };
