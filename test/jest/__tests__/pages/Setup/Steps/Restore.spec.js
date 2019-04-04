@@ -4,7 +4,7 @@ import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import bip39 from 'bip39';
 
-describe(' Seed.vue', () => {
+describe(' Restore.vue', () => {
   let wrapper;
   let store;
   let storeMocks;
