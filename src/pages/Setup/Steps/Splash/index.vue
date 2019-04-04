@@ -120,7 +120,6 @@ export default {
       });
     },
   },
-  /*eslint-disable*/
 
   methods: {
     importAccount() {

@@ -2,7 +2,7 @@
 
 exports[`SingleTransaction.vue renders and matches snapshot 1`] = `
 <q-timeline-entry-stub
-  side="right"
+  side="left"
   tag="h3"
   title="17 January 2019 17:27"
 >

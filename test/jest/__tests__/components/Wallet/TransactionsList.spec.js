@@ -11,7 +11,6 @@ import Tx from '@/store/wallet/entities/tx';
 describe('TransactionsList.vue', () => {
   let storeMocks;
   let wrapper;
-  // let store;
   let router;
 
   const propsData = {
@@ -38,7 +37,6 @@ describe('TransactionsList.vue', () => {
     wrapper = wrapperInit({
       i18n, router, localVue, store: storeMocks.store, propsData,
     }, empty);
-    // store = wrapper.vm.$store;
   }
 
   beforeEach(() => { return storeInit(); });
@@ -140,15 +138,4 @@ describe('TransactionsList.vue', () => {
     wrapper.find('section.scroll-area').trigger('touchmove', { stopPropagation: mockStopPropagation, touches: [{ clientY: 399 }] });
     expect(mockStopPropagation).toHaveBeenCalledTimes(2);
   });
-
-  //   it('calls event.stopPropagation() correctly within prevent() method', () => {
-  //     const event = { stopPropagation: jest.fn() };
-  //     wrapper.vm.$refs.scrollArea.$el.childNodes[0].scrollTop = 0;
-  //     wrapper.vm.prevent(event);
-  //     expect(event.stopPropagation).toHaveBeenCalledTimes(0);
-
-//     wrapper.vm.$refs.scrollArea.$el.childNodes[0].scrollTop = 10;
-//     wrapper.vm.prevent(event);
-//     expect(event.stopPropagation).toHaveBeenCalledTimes(1);
-//   });
 });

@@ -1,7 +1,7 @@
 <template>
   <q-timeline-entry
     :title="date"
-    side="right"
+    side="left"
   >
     <q-expansion-item
       :label="amount"
@@ -122,12 +122,6 @@ export default {
       if (Array.isArray(sender)) { [sender] = sender; }
       return `${this.$t('from')}: ${sender}`;
     },
-
-    // to() {
-    //   let { receiver } = this.data;
-    //   if (Array.isArray(receiver)) { [receiver] = receiver; }
-    //   return receiver;
-    // },
 
     /**
      * Returns formatted date of the transaction
