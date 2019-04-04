@@ -7,6 +7,7 @@ const actions = {
   setPinConfirm: jest.fn(),
   setPin: jest.fn(),
   setSeed: jest.fn(),
+  setSalt: jest.fn(),
   clearSetupData: jest.fn(),
   setGetStartedModalOpened: jest.fn(),
 };
