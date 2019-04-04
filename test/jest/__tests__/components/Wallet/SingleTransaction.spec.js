@@ -69,18 +69,14 @@ describe('SingleTransaction.vue', () => {
         coin: 'BTC',
         currency: 'GBP',
         data: {
-          CHANGEPCT24HOUR: 4.208515135911541,
           PRICE: 3845.19,
-          VOLUME24HOURTO: 10458846.999825574,
         },
       },
       {
         coin: 'ETH',
         currency: 'GBP',
         data: {
-          CHANGEPCT24HOUR: 5.947834565694315,
           PRICE: 130.39,
-          VOLUME24HOURTO: 1897390.3205589484,
         },
       }],
     });
