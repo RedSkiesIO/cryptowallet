@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` Seed.vue renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="restore-header"
+    >
+      <h1
+        class="setup"
+      >
+        
+        Enter Backup Phrase
+      
+      </h1>
+       
+      <p
+        class="setup"
+      >
+        
+        Type in your 12-word Backup Phrase in the correct order to restore your CryptoWallet
+      
+      </p>
+    </div>
+     
+    <div
+      class="restore-input-wrapper"
+    >
+      <div
+        class="q-field row no-wrap items-start q-textarea q-field--outlined q-field--dark"
+        float-label="Backup Phrase"
+      >
+        <div
+          class="q-field__inner relative-position col self-stretch column justify-center"
+        >
+          <div
+            class="q-field__control relative-position row no-wrap text-primary"
+            tabindex="-1"
+          >
+            <div
+              class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+            >
+              <textarea
+                class="q-field__native"
+                float-label="Backup Phrase"
+                rows="6"
+                tabindex="0"
+                type="textarea"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <button
+      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-yellow text-blueish q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Next
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;
