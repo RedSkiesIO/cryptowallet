@@ -40,15 +40,9 @@ describe('Splash Setup', () => {
   });
 
   describe('Get Started button', () => {
-    it('emits getStartedModalOpened event when clicked', async (done) => {
-      const callback = jest.fn();
-      wrapper.vm.$root.$on('getStartedModalOpened', callback);
+    it('dispatches setGetStartedModalOpened with false as payload', () => {
       wrapper.find('.get-started-btn').trigger('click');
-
-      wrapper.vm.$nextTick(() => {
-        expect(callback).toHaveBeenCalled();
-        done();
-      });
+      expect(storeMocks.actions.setGetStartedModalOpened.mock.calls[0][1]).toBe(true);
     });
   });
 

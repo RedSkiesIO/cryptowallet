@@ -11,4 +11,5 @@ export default {
   accountLocale: null,
   accountIpNode: null,
   accountCurrency: null,
+  getStartedModalOpened: false,
 };

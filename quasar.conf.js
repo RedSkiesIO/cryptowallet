@@ -97,7 +97,7 @@ module.exports = (ctx) => {
         'QCardSection',
         'QCardActions',
       ],
-      directives: ['Ripple', 'CloseDialog'],
+      directives: ['Ripple', 'CloseDialog', 'ClosePopup'],
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'BottomSheet'],
       // iconSet: 'material-icons'

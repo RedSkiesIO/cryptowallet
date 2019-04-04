@@ -132,7 +132,7 @@ export default {
     },
 
     getStarted() {
-      this.$root.$emit('getStartedModalOpened', true);
+      this.$store.dispatch('setup/setGetStartedModalOpened', true);
     },
   },
 };

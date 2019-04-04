@@ -12,12 +12,6 @@ const getters = {};
 const mutations = {};
 
 const state = {
-  payments: {
-    salt: null,
-    minLength: 6,
-    pinHash: null,
-    pinLength: null,
-  },
   pin: {
     minLength: 6,
   },
@@ -28,7 +22,15 @@ const state = {
   coins,
   currencies,
   supportedCoins,
-  selectedCurrency: currencies.GBP,
+  selectedCurrency: {
+    code: 'GBP',
+    exponent: 2,
+    name: 'British Pound Sterling',
+    name_plural: 'British pounds sterling',
+    rounding: 0,
+    symbol: '£',
+    symbol_native: '£',
+  },
 };
 
 const account = {
