@@ -17,7 +17,6 @@ import LatestPrice from './latestPrice';
 // import modules.
 import settings from './settings';
 import setup from './setup';
-import contacts from './contacts';
 import qrcode from './qrcode';
 import modals from './modals';
 
@@ -72,7 +71,6 @@ const store = new Vuex.Store({
   modules: {
     settings,
     setup,
-    contacts,
     qrcode,
     modals,
   },
