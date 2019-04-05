@@ -13,6 +13,7 @@ import smsPlugin from '@/boot/Sms';
 import emailPlugin from '@/boot/Email';
 import contactsImportPlugin from '@/boot/ContactsImport';
 import vueSelectPlugin from '@/boot/VueSelect';
+import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
 import * as All from 'quasar';
 
 const { Quasar, ClosePopup } = All;
@@ -39,6 +40,7 @@ smsPlugin({ Vue: localVue });
 emailPlugin({ Vue: localVue });
 contactsImportPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
+walletDiscoveryPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
