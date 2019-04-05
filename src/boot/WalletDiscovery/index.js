@@ -74,8 +74,11 @@ async function discoverBitcoin(wallet, coinSDK, network) {
 async function discoverEthereum(wallet, coinSDK, network) {
   const accounts = await coinSDK.accountDiscovery(wallet);
   const txHistory = await coinSDK.getTransactionHistory([accounts[0].address], network, 0);
-  const balance = await coinSDK.getBalance([accounts[0].address], network);
+  let balance = await coinSDK.getBalance([accounts[0].address], network);
 
+  if (!balance) {
+    balance = 0;
+  }
   return {
     accounts,
     txHistory,

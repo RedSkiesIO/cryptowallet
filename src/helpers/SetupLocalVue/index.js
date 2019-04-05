@@ -8,6 +8,7 @@ import { sync } from 'vuex-router-sync';
 import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
 import vueSelectPlugin from '@/boot/VueSelect';
+import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
 import * as All from 'quasar';
 
 const { Quasar, ClosePopup } = All;
@@ -29,6 +30,7 @@ localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
+walletDiscoveryPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
