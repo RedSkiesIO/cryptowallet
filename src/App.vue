@@ -142,8 +142,6 @@ export default {
     window.store = this.$store;
     window.app = this;
 
-    console.log(process.env);
-
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },
 

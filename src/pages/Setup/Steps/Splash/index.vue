@@ -94,10 +94,6 @@ export default {
     };
   },
 
-  mounted() {
-    this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
-  },
-
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
@@ -123,6 +119,10 @@ export default {
         };
       });
     },
+  },
+
+  mounted() {
+    this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
   },
 
   methods: {
