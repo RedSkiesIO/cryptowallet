@@ -1,5 +1,7 @@
 const actions = {
   setSendCoinModalOpened: jest.fn(),
+  setConfirmSendModalOpened: jest.fn(),
+  setConfirmTransactionData: jest.fn(),
 };
 
 const getters = {};

@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog
-      v-model="confirmSendModalOpened"
+      v-model="sendConfirmModalOpened"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -134,9 +134,9 @@ export default {
       txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
 
-    confirmSendModalOpened: {
+    sendConfirmModalOpened: {
       get() {
-        return this.$store.state.modals.confirmSendModalOpened;
+        return this.$store.state.modals.sendConfirmModalOpened;
       },
       set(value) {
         this.$store.dispatch('modals/setConfirmSendModalOpened', value);
@@ -323,7 +323,7 @@ export default {
       return formattedAmount.getFormatted();
     },
     goBack() {
-      this.confirmSendModalOpened = false;
+      this.sendConfirmModalOpened = false;
     },
     confirm() {
       this.loading = true;
@@ -342,7 +342,7 @@ export default {
 
       setTimeout(() => {
         this.loading = false;
-        this.confirmSendModalOpened = false;
+        this.sendConfirmModalOpened = false;
       }, this.delay.short);
     },
   },

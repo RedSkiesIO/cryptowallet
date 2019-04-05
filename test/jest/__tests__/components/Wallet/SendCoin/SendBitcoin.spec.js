@@ -1,4 +1,6 @@
-import { mount, createWrapper } from '@vue/test-utils';
+/* eslint-disable no-magic-numbers */
+
+import { mount } from '@vue/test-utils';
 import SendBitcoin from '@/components/Wallet/SendCoin/SendBitcoin.vue';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
@@ -16,18 +18,25 @@ const utxoData = JSON.parse('{"$id":1,"id":1,"account_id":1,"wallet_id":3,"pendi
 const latestPriceData = JSON.parse('{"$id":"BTC_GBP","coin":"BTC","currency":"GBP","updated":1554305869988,"data":{"VOLUME24HOURTO":10147125.523436274,"PRICE":3818.12,"CHANGEPCT24HOUR":4.734003741558176}}');
 
 const coinSDKSMock = {
-  'Bitcoin': {
+  Bitcoin: {
     validateAddress: jest.fn().mockReturnValue(false),
     generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
     async createRawTx() {
-      return { transaction: { value: 10, fee: 0.00002292 } };
+      return {
+        transaction: {
+          value: 10,
+          fee: 0.00002292,
+        },
+        hexTx: '01000000000101b40e427611c0eead720b813d4dd2884c24ceccc49821663ea2b9f550490909ff01000000171600149fcebc74505da311ed8b28e36036945e2fc38282ffffffff02a6fe01000000000017a9148540dfedbf1bda7c1a8e29b28f7b914bd8e128cc87eacd7c000000000017a9146fdbb9c720eb4482235279dab579a80e71080fd1870247304402202c8d14b4745bde39cac8fd5cadbe49a637f9d63ba1e7a69cb9e06a69933b93bc022021dfee161715504f9fa1087da66bf13ef6ceed8c7e465fa5f457a21215634f58012103a5f8746a824a6a197bfe6fdc47e3de574abf0ebe0debddf0795945fde2c3a20800000000',
+        utxo: JSON.parse('[{"$id":2,"id":2,"account_id":1,"wallet_id":3,"pending":false,"address":"2MxAM3p3QzeSFGksoUw3tEDWXbwwxj31vae","amount":0.08312604,"scriptPubKey":"a91435ec7174f5fdacf4d4947055b7cf14bf2743f48587","txid":"ff09094950f5b9a23e662198c4ccce244c88d24d3d810b72adeec01176420eb4","value":8312604,"vout":1}]'),
+      };
     },
   },
 };
 
 const activeWalletsMock = {
   1: {
-    'Bitcoin': JSON.parse('{"bip":49,"ext":{"xpriv":"xprv9zZZrtcYB6bg2sxhoVYYKAM8duZHP1MwV1SYNVLStU6qpY6NCKfuTCeeHe1MsBeYDt7XipqZYtshoGC9ghNZ6EVwugKxUPM7m2tFmExu2mt","xpub":"xpub6DYvGQ9S1U9yFN3AuX5YgJHsBwPmnU5nrEN9Ask4SodphLRWjrz9zzy88v6HFPGJuDoMg7hhEG2yFFhU7Djqx3AoE57hEL748iFp26JLXtC"},"int":{"xpriv":"xprv9zZZrtcYB6bg6LXLr8kweVuqCWUTc5dnFDJ526bEyz5pLHdfHRx2D1UPLE8bZy6hK8f1YpXQHeGF2FWEds5S1MSbTH2boaQRNUoz6vy4MRq","xpub":"xpub6DYvGQ9S1U9yJpboxAHx1drZkYJx1YMdcSDfpUzrYKcoD5xopyGGkonsBXbmCnHteYYMcjgWRU7EyByaGf8Mav4y5BTkYmC2TD2JVPmkJxs"},"type":1,"network":{"name":"BITCOIN_TESTNET","type":"testnet","bip":1,"segwit":true,"discovery":"http://92.207.178.198:3001/api","broadcastUrl":"https://chain.so/api/v2/send_tx/BTCTEST","feeApi":"https://api.blockcypher.com/v1/btc/main","connect":{"messagePrefix":"Bitcoin Signed Message:","bech32":"tb","bip32":{"public":70617039,"private":70615956},"pubKeyHash":111,"scriptHash":196,"wif":239}}}'),
+    Bitcoin: JSON.parse('{"bip":49,"ext":{"xpriv":"xprv9zZZrtcYB6bg2sxhoVYYKAM8duZHP1MwV1SYNVLStU6qpY6NCKfuTCeeHe1MsBeYDt7XipqZYtshoGC9ghNZ6EVwugKxUPM7m2tFmExu2mt","xpub":"xpub6DYvGQ9S1U9yFN3AuX5YgJHsBwPmnU5nrEN9Ask4SodphLRWjrz9zzy88v6HFPGJuDoMg7hhEG2yFFhU7Djqx3AoE57hEL748iFp26JLXtC"},"int":{"xpriv":"xprv9zZZrtcYB6bg6LXLr8kweVuqCWUTc5dnFDJ526bEyz5pLHdfHRx2D1UPLE8bZy6hK8f1YpXQHeGF2FWEds5S1MSbTH2boaQRNUoz6vy4MRq","xpub":"xpub6DYvGQ9S1U9yJpboxAHx1drZkYJx1YMdcSDfpUzrYKcoD5xopyGGkonsBXbmCnHteYYMcjgWRU7EyByaGf8Mav4y5BTkYmC2TD2JVPmkJxs"},"type":1,"network":{"name":"BITCOIN_TESTNET","type":"testnet","bip":1,"segwit":true,"discovery":"http://92.207.178.198:3001/api","broadcastUrl":"https://chain.so/api/v2/send_tx/BTCTEST","feeApi":"https://api.blockcypher.com/v1/btc/main","connect":{"messagePrefix":"Bitcoin Signed Message:","bech32":"tb","bip32":{"public":70617039,"private":70615956},"pubKeyHash":111,"scriptHash":196,"wif":239}}}'),
   },
 };
 
@@ -41,7 +50,6 @@ const backEndServiceMock = {
 describe('SendBitcoin component', () => {
   let wrapper;
   let router;
-  let store;
   let storeMocks;
 
   const defaultProps = {};
@@ -74,7 +82,6 @@ describe('SendBitcoin component', () => {
       },
       sync: false,
     });
-    store = wrapper.vm.$store;
   }
 
   beforeEach(() => {
@@ -82,7 +89,7 @@ describe('SendBitcoin component', () => {
     storeInit({}, defaultProps);
   });
 
-  afterEach(() => cordovaMocks.destroyMocks());
+  afterEach(() => { cordovaMocks.destroyMocks(); });
 
   it('renders and matches snapshot', async (done) => {
     setTimeout(() => {
@@ -90,7 +97,7 @@ describe('SendBitcoin component', () => {
       done();
     }, 25);
   });
-  
+
   describe('Recipient section', () => {
     describe('paste', () => {
       it('pastes the address if paste button is clicked', () => {
@@ -105,7 +112,6 @@ describe('SendBitcoin component', () => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalledTimes(1);
       });
     });
-
 
     describe('QRScanner', () => {
       it('opens the QR code scanner when code icon is clicked', async (done) => {
@@ -216,7 +222,6 @@ describe('SendBitcoin component', () => {
       });
 
       it('validates the amount in coin input on blur events', async (done) => {
-        const inputInCurrency = wrapper.find('.amount-in-coin');
         wrapper.find('.amount-in-coin').trigger('blur');
         setTimeout(() => {
           expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
@@ -226,7 +231,6 @@ describe('SendBitcoin component', () => {
       });
 
       it('validates the amount in currency input on blur events', async (done) => {
-        const inputInCurrency = wrapper.find('.amount-in-currency');
         wrapper.find('.amount-in-currency').trigger('blur');
         setTimeout(() => {
           expect(wrapper.contains('.amount-in-currency.q-field--error')).toBe(true);
@@ -245,7 +249,6 @@ describe('SendBitcoin component', () => {
           expect(wrapper.vm.inCurrency).toBeTruthy();
           inputInCoin.element.value = '';
           inputInCoin.trigger('input');
-          
           setTimeout(() => {
             expect(wrapper.vm.inCurrency).toBe('');
             done();
@@ -263,7 +266,7 @@ describe('SendBitcoin component', () => {
           expect(wrapper.vm.inCoin).toBeTruthy();
           inputInCurrency.element.value = '';
           inputInCurrency.trigger('input');
-          
+
           setTimeout(() => {
             expect(wrapper.vm.inCoin).toBe('');
             done();
@@ -313,12 +316,12 @@ describe('SendBitcoin component', () => {
       wrapper.vm.feeChange(0);
       setTimeout(() => {
         expect(wrapper.find('.q-slider__pin-value-marker-text').text()).toBe(wrapper.vm.$t('lowFeeLabel'));
-  
+
         wrapper.vm.feeSetting = 2;
         wrapper.vm.feeChange(2);
         setTimeout(() => {
           expect(wrapper.find('.q-slider__pin-value-marker-text').text()).toBe(wrapper.vm.$t('highFeeLabel'));
-          done()
+          done();
         }, 25);
       }, 25);
     });
@@ -332,7 +335,7 @@ describe('SendBitcoin component', () => {
       wrapper.find('.amount-in-coin').trigger('focus');
       inputInCoin.element.value = 0.001;
       inputInCoin.trigger('input');
-      
+
       setTimeout(() => {
         expect(wrapper.vm.estimatedFee).toBe('£0.09');
         done();
@@ -344,7 +347,7 @@ describe('SendBitcoin component', () => {
       setTimeout(() => {
         wrapper.vm.feeSetting = 2;
         wrapper.vm.feeChange(2);
-        
+
         setTimeout(() => {
           expect(wrapper.vm.estimatedFee).toBe('£0.09');
           done();
@@ -363,7 +366,7 @@ describe('SendBitcoin component', () => {
         expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
         wrapper.vm.feeSetting = 2;
         wrapper.vm.feeChange(2);
-        
+
         setTimeout(() => {
           expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
           done();
@@ -422,11 +425,34 @@ describe('SendBitcoin component', () => {
         }, 25);
       }, 25);
     });
+
+    it('it dispatches correct actions with correct payloads if passed all the checks', async (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      wrapper.vm.address = '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE';
+
+      const inputInCoin = wrapper.find('.amount-in-coin input');
+      wrapper.find('.amount-in-coin').trigger('focus');
+      inputInCoin.element.value = 0.001;
+      inputInCoin.trigger('input');
+
+      setTimeout(() => {
+        wrapper.find('.send-btn').trigger('click');
+        setTimeout(() => {
+          expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[0][1]).toBe(true);
+          const txData = storeMocks.actions.setConfirmTransactionData.mock.calls[0][1];
+          expect(txData.hexTx).toBeTruthy();
+          expect(txData.utxo).toBeTruthy();
+          expect(txData.changeAddresses).toBeTruthy();
+          expect(txData.transaction).toBeTruthy();
+          done();
+        }, 25);
+      }, 25);
+    });
   });
 
   describe('Other', () => {
     it('passes the error to the errorHandler if async method coinSDK.createRawTX fails', async (done) => {
-      coinSDKSMock.Bitcoin.createRawTx = async function createRawTx () {
+      coinSDKSMock.Bitcoin.createRawTx = async function createRawTx() {
         throw new Error('test error');
       };
 
@@ -442,7 +468,7 @@ describe('SendBitcoin component', () => {
       setTimeout(() => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalledTimes(1);
 
-        coinSDKSMock.Bitcoin.createRawTx = async function createRawTx () {
+        coinSDKSMock.Bitcoin.createRawTx = async function createRawTx() {
           return { transaction: { value: 10, fee: 0.00002292 } };
         };
 
@@ -469,7 +495,7 @@ describe('SendBitcoin component', () => {
         getters: {},
         actions: {},
       };
-      
+
       storeInit(custom, defaultProps);
       setTimeout(() => {
         expect(wrapper.vm.address).toBe(custom.state.qrcode.scannedAddress);
@@ -477,5 +503,4 @@ describe('SendBitcoin component', () => {
       }, 25);
     });
   });
-
 });

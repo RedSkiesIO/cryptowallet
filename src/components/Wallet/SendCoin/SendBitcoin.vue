@@ -568,7 +568,6 @@ export default {
       address,
       amount,
     ) {
-      console.log('here');
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
@@ -578,7 +577,6 @@ export default {
       }
 
       try {
-        console.log('got here');
         const { hexTx, transaction, utxo } = await coinSDK.createRawTx(
           accounts,
           changeAddresses,
@@ -674,13 +672,14 @@ export default {
         this.inCoin,
       );
 
-      this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       this.$store.dispatch('modals/setConfirmTransactionData', {
         hexTx,
         transaction,
         changeAddresses,
         utxo,
       });
+
+      this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       return false;
     },
 
