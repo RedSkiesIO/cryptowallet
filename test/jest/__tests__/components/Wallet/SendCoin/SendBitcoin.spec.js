@@ -20,7 +20,7 @@ const coinSDKSMock = {
     validateAddress: jest.fn().mockReturnValue(false),
     generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
     async createRawTx() {
-      return { transaction: { value: 10 } };
+      return { transaction: { value: 10, fee: 0.00002292 } };
     },
   },
 };
@@ -35,6 +35,7 @@ const backEndServiceMock = {
   async getTransactionFee() {
     return JSON.parse('{"data":{"code":"BTC","timestamp":1554218701,"data":{"high":101343,"medium":12000,"low":3000}},"status":200,"statusText":"OK","headers":{"new_refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZEhhc2giOiIwLjkwNzI4MTQzMzQ1Nzk0MzMiLCJpYXQiOjE1NTQyMTg4NDMsImV4cCI6MTU1Njg5NzI0M30.S1NMyIjT0N8_rVm8xhd5Tb2YuLiU74gRDgqN6Rwg7cY","content-type":"application/json; charset=utf-8"},"config":{"transformRequest":{},"transformResponse":{},"timeout":0,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZEhhc2giOiIwLjkwNzI4MTQzMzQ1Nzk0MzMiLCJpYXQiOjE1NTQyMTc1OTMsImV4cCI6MTU1NDIyMTE5M30.CSun95n5-AIxS4r_FnIWz0Y7mumes4tN9bEW7o-OLqs"},"method":"get","url":"http://92.207.178.198:6001/fee-estimate/BTC"},"request":{"__rollbar_xhr":{"method":"GET","url":"http://92.207.178.198:6001/fee-estimate/BTC","status_code":200,"start_time_ms":1554218843339,"end_time_ms":1554218843367,"subtype":"xhr"},"__rollbar_event":{"level":"info","type":"network","timestamp_ms":1554218843366,"body":{"method":"GET","url":"http://92.207.178.198:6001/fee-estimate/BTC","status_code":200,"start_time_ms":1554218843339,"end_time_ms":1554218843367,"subtype":"xhr"},"source":"client"}}}');
   },
+  loadPriceFeed: jest.fn(),
 };
 
 describe('SendBitcoin component', () => {
@@ -89,7 +90,7 @@ describe('SendBitcoin component', () => {
       done();
     }, 25);
   });
-
+  
   describe('Recipient section', () => {
     describe('paste', () => {
       it('pastes the address if paste button is clicked', () => {
@@ -187,31 +188,293 @@ describe('SendBitcoin component', () => {
   });
 
   describe('Amount section', () => {
-    it('also populates the amount in fiat currenct when only amount in coin is entered', async (done) => {
+    describe('amount inputs', () => {
+      it('also populates the amount in FIAT currency when only amount in coin is entered', async (done) => {
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = 0.001;
+        inputInCoin.trigger('input');
+
+        setTimeout(() => {
+          const inputInCurrency = wrapper.find('.amount-in-currency input');
+          expect(inputInCurrency.element.value).toBe('3.82');
+          done();
+        }, 50);
+      });
+
+      it('also populates the amount in coin when only amount in FIAT currency is entered', async (done) => {
+        const inputInCurrency = wrapper.find('.amount-in-currency input');
+        wrapper.find('.amount-in-currency').trigger('focus');
+        inputInCurrency.element.value = 10;
+        inputInCurrency.trigger('input');
+
+        setTimeout(() => {
+          const inputInCoin = wrapper.find('.amount-in-coin input');
+          expect(inputInCoin.element.value).toBe('0.00261909');
+          done();
+        }, 50);
+      });
+
+      it('validates the amount in coin input on blur events', async (done) => {
+        const inputInCurrency = wrapper.find('.amount-in-coin');
+        wrapper.find('.amount-in-coin').trigger('blur');
+        setTimeout(() => {
+          expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
+          expect(wrapper.find('.error-label-amount').text()).toBe(wrapper.vm.$t('noAmount'));
+          done();
+        }, 25);
+      });
+
+      it('validates the amount in currency input on blur events', async (done) => {
+        const inputInCurrency = wrapper.find('.amount-in-currency');
+        wrapper.find('.amount-in-currency').trigger('blur');
+        setTimeout(() => {
+          expect(wrapper.contains('.amount-in-currency.q-field--error')).toBe(true);
+          expect(wrapper.find('.error-label-amount').text()).toBe(wrapper.vm.$t('noAmount'));
+          done();
+        }, 25);
+      });
+
+      it('resets the state of in coin input when in currency input is emptied', async (done) => {
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = 0.001;
+        inputInCoin.trigger('input');
+
+        setTimeout(() => {
+          expect(wrapper.vm.inCurrency).toBeTruthy();
+          inputInCoin.element.value = '';
+          inputInCoin.trigger('input');
+          
+          setTimeout(() => {
+            expect(wrapper.vm.inCurrency).toBe('');
+            done();
+          }, 25);
+        }, 25);
+      });
+
+      it('resets the state of in currency input when in coin input is emptied', async (done) => {
+        const inputInCurrency = wrapper.find('.amount-in-currency input');
+        wrapper.find('.amount-in-currency').trigger('focus');
+        inputInCurrency.element.value = 10;
+        inputInCurrency.trigger('input');
+
+        setTimeout(() => {
+          expect(wrapper.vm.inCoin).toBeTruthy();
+          inputInCurrency.element.value = '';
+          inputInCurrency.trigger('input');
+          
+          setTimeout(() => {
+            expect(wrapper.vm.inCoin).toBe('');
+            done();
+          }, 25);
+        }, 25);
+      });
+
+      it('invalidates amount if user tries to input more than available funds', async (done) => {
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = 99999;
+        inputInCoin.trigger('input');
+        setTimeout(() => {
+          expect(wrapper.find('.error-label-amount').text()).toBe(wrapper.vm.$t('notEnoughFunds'));
+          done();
+        }, 25);
+      });
+    });
+
+    describe('Max button', () => {
+      it('calculates the max amount when clicked and resets the inputs if clicked a second time', async (done) => {
+        wrapper.find('.max-button').trigger('click');
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        const inputInCurrency = wrapper.find('.amount-in-currency input');
+
+        setTimeout(() => {
+          expect(inputInCoin.element.value).toBe('10');
+          expect(inputInCurrency.element.value).toBe('38181.20');
+          expect(wrapper.vm.estimatedFee).toBe('£0.09');
+          wrapper.find('.max-button').trigger('click');
+
+          setTimeout(() => {
+            expect(inputInCoin.element.value).toBe('');
+            expect(inputInCurrency.element.value).toBe('');
+            expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
+            done();
+          }, 25);
+        }, 25);
+      });
+    });
+  });
+
+  describe('Fee section', () => {
+    it('updates fee label when setting changes', async (done) => {
+      expect(wrapper.find('.q-slider__pin-value-marker-text').text()).toBe(wrapper.vm.$t('mediumFeeLabel'));
+      wrapper.vm.feeSetting = 0;
+      wrapper.vm.feeChange(0);
+      setTimeout(() => {
+        expect(wrapper.find('.q-slider__pin-value-marker-text').text()).toBe(wrapper.vm.$t('lowFeeLabel'));
+  
+        wrapper.vm.feeSetting = 2;
+        wrapper.vm.feeChange(2);
+        setTimeout(() => {
+          expect(wrapper.find('.q-slider__pin-value-marker-text').text()).toBe(wrapper.vm.$t('highFeeLabel'));
+          done()
+        }, 25);
+      }, 25);
+    });
+
+    it('updates the estimatedFee on if amount and address is provided', async (done) => {
+      const input = wrapper.find('.address-input input');
+      input.element.value = '123';
+      input.trigger('input');
+
+      const inputInCoin = wrapper.find('.amount-in-coin input');
+      wrapper.find('.amount-in-coin').trigger('focus');
+      inputInCoin.element.value = 0.001;
+      inputInCoin.trigger('input');
+      
+      setTimeout(() => {
+        expect(wrapper.vm.estimatedFee).toBe('£0.09');
+        done();
+      }, 750);
+    });
+
+    it('updates the estimatedFee if the amount is maxed', async (done) => {
+      wrapper.find('.max-button').trigger('click');
+      setTimeout(() => {
+        wrapper.vm.feeSetting = 2;
+        wrapper.vm.feeChange(2);
+        
+        setTimeout(() => {
+          expect(wrapper.vm.estimatedFee).toBe('£0.09');
+          done();
+        }, 750);
+      }, 25);
+    });
+
+    it('does not update the fee if amount inputs are invalid', async (done) => {
+      const inputInCoin = wrapper.find('.amount-in-coin input');
+      wrapper.find('.amount-in-coin').trigger('focus');
+      inputInCoin.element.value = 9999;
+      inputInCoin.trigger('input');
+
+
+      setTimeout(() => {
+        expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
+        wrapper.vm.feeSetting = 2;
+        wrapper.vm.feeChange(2);
+        
+        setTimeout(() => {
+          expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
+          done();
+        }, 750);
+      }, 25);
+    });
+  });
+
+  describe('Send button', () => {
+    it('validates required inputs when clicked', async (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      wrapper.find('.send-btn').trigger('click');
+      setTimeout(() => {
+        expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('fillAllInputs'), 500);
+
+        wrapper.vm.address = '123';
+        wrapper.vm.$toast.create = jest.fn();
+        wrapper.find('.send-btn').trigger('click');
+        setTimeout(() => {
+          expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('fillAllInputs'), 500);
+          done();
+        }, 25);
+      }, 25);
+    });
+
+    it('checks if provided address is valid', async (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      const input = wrapper.find('.address-input input');
+      input.trigger('focus');
+      input.element.value = '123';
+      input.trigger('input');
+
+      wrapper.vm.inCoin = 0.01;
+
+      wrapper.find('.send-btn').trigger('click');
+      setTimeout(() => {
+        expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('bitcoinAddressInvalidLength'), 500);
+        done();
+      }, 25);
+    });
+
+    it('check if provided amount is valid', async (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      wrapper.vm.address = '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE';
+
+      const inputInCoin = wrapper.find('.amount-in-coin input');
+      wrapper.find('.amount-in-coin').trigger('focus');
+      inputInCoin.element.value = 9999;
+      inputInCoin.trigger('input');
+
+      setTimeout(() => {
+        wrapper.find('.send-btn').trigger('click');
+        setTimeout(() => {
+          expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('notEnoughFunds'), 500);
+          done();
+        }, 25);
+      }, 25);
+    });
+  });
+
+  describe('Other', () => {
+    it('passes the error to the errorHandler if async method coinSDK.createRawTX fails', async (done) => {
+      coinSDKSMock.Bitcoin.createRawTx = async function createRawTx () {
+        throw new Error('test error');
+      };
+
+      const input = wrapper.find('.address-input input');
+      input.element.value = '123';
+      input.trigger('input');
+
       const inputInCoin = wrapper.find('.amount-in-coin input');
       wrapper.find('.amount-in-coin').trigger('focus');
       inputInCoin.element.value = 0.001;
       inputInCoin.trigger('input');
 
       setTimeout(() => {
-        const inputInCurrency = wrapper.find('.amount-in-currency input');
-        expect(inputInCurrency.element.value).toBe('3.82');
+        expect(wrapper.vm.errorHandler).toHaveBeenCalledTimes(1);
+
+        coinSDKSMock.Bitcoin.createRawTx = async function createRawTx () {
+          return { transaction: { value: 10, fee: 0.00002292 } };
+        };
+
+        done();
+      }, 750);
+    });
+
+    it('calls backEndService if price data is missing', async (done) => {
+      LatestPrice.delete('BTC_GBP');
+      setTimeout(() => {
+        expect(backEndServiceMock.loadPriceFeed).toHaveBeenCalled();
         done();
       }, 50);
     });
 
-    it('also populates the amount in coin when only amount in fiat currency is entered', async (done) => {
-      const inputInCurrency = wrapper.find('.amount-in-currency input');
-      wrapper.find('.amount-in-currency').trigger('focus');
-      inputInCurrency.element.value = 10;
-      inputInCurrency.trigger('input');
-
+    it('uses scanned QRCode address if available', async (done) => {
+      const custom = {
+        state: {
+          qrcode: {
+            scannedAddress: 'scannedString',
+          },
+        },
+        mutations: {},
+        getters: {},
+        actions: {},
+      };
+      
+      storeInit(custom, defaultProps);
       setTimeout(() => {
-        const inputInCoin = wrapper.find('.amount-in-coin input');
-        console.log(inputInCoin.element.value);
-        expect(inputInCoin.element.value).toBe('0.00261909');
+        expect(wrapper.vm.address).toBe(custom.state.qrcode.scannedAddress);
         done();
-      }, 50);
+      }, 25);
     });
   });
 

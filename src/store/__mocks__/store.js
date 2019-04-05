@@ -80,6 +80,10 @@ export function createMocks(custom = {
     mockActionsCombined = Object.assign({}, mockActionsCombined, module.actions);
     mockStateCombined = Object.assign({}, mockStateCombined, module.state);
 
+    if (custom.state && custom.state[name]) {
+      module.state = Object.assign(module.state, custom.state[name]);
+    }
+
     modules[name] = {
       namespaced: true,
       getters: Object.assign({}, getters, module.getters),

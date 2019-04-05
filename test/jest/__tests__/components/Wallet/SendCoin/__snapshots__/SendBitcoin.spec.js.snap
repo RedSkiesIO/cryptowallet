@@ -142,7 +142,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
       />
        
       <button
-        class="q-btn inline q-btn-item non-selectable send-heading-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
+        class="q-btn inline q-btn-item non-selectable send-heading-btn max-button q-btn--standard q-btn--rectangle q-focusable q-hoverable"
         style="font-size: 10px;"
         tabindex="0"
         type="button"
@@ -240,7 +240,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
     </div>
      
     <span
-      class="error-label"
+      class="error-label error-label-amount"
     >
       
     </span>
@@ -344,7 +344,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
       class="send"
     >
       <button
-        class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+        class="q-btn inline q-btn-item non-selectable send-btn q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
         style="font-size: 14px;"
         tabindex="0"
         type="button"

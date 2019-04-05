@@ -100,7 +100,7 @@
           :label="$t('max')"
           :class="{ active: maxed }"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn max-button"
           @click="max"
         />
       </div>
@@ -150,7 +150,7 @@
           </div>
         </div>
       </div>
-      <span class="error-label">{{ amountError }}</span>
+      <span class="error-label error-label-amount">{{ amountError }}</span>
 
       <div class="send-modal-heading">
         <h3>
@@ -194,6 +194,7 @@
         <q-btn
           :label="$t('send')"
           color="blueish"
+          class="send-btn"
           size="md"
           @click="send"
         />
@@ -203,7 +204,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import {
   required,
   alphaNum,
@@ -238,7 +238,7 @@ export default {
       inCoinFocus: false,
       inCurrencyFocus: false,
       feeSetting: 1,
-      estimatedFee: 'N/A',
+      estimatedFee: this.$t('N/A'),
       maxValueCoin: Infinity,
       maxValueCurrency: Infinity,
       maxed: false,
@@ -253,10 +253,10 @@ export default {
       address: {
         required,
         alphaNum,
-        between: function (value) {
+        between(value) {
           return value.length <= this.addressLengthMax && value.length >= this.addressLengthMin;
         },
-        isValidAddress: function (value) {
+        isValidAddress(value) {
           return this.validateAddress(value);
         },
       },
@@ -297,6 +297,7 @@ export default {
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (!prices) {
+        this.backEndService.loadPriceFeed();
         return null;
       }
       return prices.data.PRICE;
@@ -318,7 +319,7 @@ export default {
       }
 
       if (!this.inCurrencyFocus) {
-        this.inCurrency = this.amountToCurrency(val);;
+        this.inCurrency = this.amountToCurrency(val);
       }
       this.updateFee(this.feeSetting, this);
       this.validateInput('inCoin');
@@ -337,7 +338,6 @@ export default {
 
   async mounted() {
     await this.getMaxedTx();
-
     if (this.scannedAddress) {
       this.address = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
@@ -352,7 +352,6 @@ export default {
       this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
-      console.log('in focus', val);
       if (!val) {
         this.validateInput('inCoin');
       }
@@ -474,7 +473,7 @@ export default {
           that.inCoin,
         );
       } else {
-        that.estimatedFee = 'N/A';
+        that.estimatedFee = that.$t('N/A');
       }
     }, delay),
 
@@ -569,6 +568,7 @@ export default {
       address,
       amount,
     ) {
+      console.log('here');
       if (!address || !amount) { return false; }
 
       const coinSDK = this.coinSDKS[this.wallet.sdk];
@@ -578,6 +578,7 @@ export default {
       }
 
       try {
+        console.log('got here');
         const { hexTx, transaction, utxo } = await coinSDK.createRawTx(
           accounts,
           changeAddresses,
@@ -620,7 +621,6 @@ export default {
     isInvalid() {
       if (!this.address) { return this.$t('fillAllInputs'); }
       if (!this.inCoin) { return this.$t('fillAllInputs'); }
-      if (!this.inCurrency) { return this.$t('fillAllInputs'); }
       if (this.addressError) { return this.addressError; }
       if (this.amountError) { return this.amountError; }
 
@@ -662,12 +662,6 @@ export default {
         this.wallet.name
       ];
 
-      // there are no UTXOs available, wallet is empty
-      if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t('noFunds'), this.delay.normal);
-        return false;
-      }
-
       const changeAddresses = this.generateChangeAddresses();
       const accounts = this.getAccounts();
 
@@ -680,15 +674,13 @@ export default {
         this.inCoin,
       );
 
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('confirmSendModalOpened', true, {
+      this.$store.dispatch('modals/setConfirmSendModalOpened', true);
+      this.$store.dispatch('modals/setConfirmTransactionData', {
         hexTx,
         transaction,
         changeAddresses,
         utxo,
       });
-
       return false;
     },
 
@@ -712,7 +704,7 @@ export default {
         this.maxed = false;
         this.inCoin = '';
         this.inCurrency = '';
-        this.estimatedFee = 'N/A';
+        this.estimatedFee = this.$t('N/A');
         return false;
       }
 
