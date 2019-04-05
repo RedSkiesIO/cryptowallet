@@ -9,6 +9,7 @@ import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
 import vueSelectPlugin from '@/boot/VueSelect';
 import vuelidatePlugin from '@/boot/Vuelidate';
+import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
 import * as All from 'quasar';
 
 const { Quasar, ClosePopup } = All;
@@ -31,6 +32,7 @@ errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
 vuelidatePlugin({ Vue: localVue });
+walletDiscoveryPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
