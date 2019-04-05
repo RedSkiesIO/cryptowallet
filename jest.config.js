@@ -9,7 +9,7 @@ module.exports = {
   bail: true,
   cache: false,
   verbose: true,
-  collectCoverage: false,
+  collectCoverage: true,
   coverageDirectory: '<rootDir>/test/jest/coverage',
   collectCoverageFrom: [
     '<rootDir>/src/**/*.vue',
@@ -17,6 +17,7 @@ module.exports = {
     '<rootDir>/src/**/*.ts',
     '<rootDir>/src/**/*.jsx',
     '!**/src-cordova/**',
+    '!<rootDir>/src/**/*.spec.js',
   ],
   coverageThreshold: {
     global: {

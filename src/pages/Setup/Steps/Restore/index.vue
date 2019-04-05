@@ -45,7 +45,6 @@ export default {
   },
   computed: {
     ...mapState({
-      id: (state) => { return parseInt(state.route.params.id, 10); },
       delay: (state) => { return state.settings.delay; },
 
     }),
@@ -61,17 +60,10 @@ export default {
       }
 
       if (!bip39.validateMnemonic(seedPhrase.join(' '))) {
-        this.$toast.create(10, 'Invalid seed phrase', this.delay.normal);
+        this.$toast.create(10, this.$t('invalidSeedPhrase'), this.delay.normal);
         return false;
       }
 
-      const accounts = this.$store.getters['entities/account/query']().get();
-      const seedAlreadyInUse = accounts.find((account) => { return account.seed === seedPhrase; });
-
-      if (seedAlreadyInUse) {
-        this.$toast.create(10, this.$t('accountAlreadyImported'), this.delay.normal);
-        return false;
-      }
       this.$store.dispatch('setup/setSeed', seedPhrase);
       this.$router.push({ path: '/setup/4' });
       return true;

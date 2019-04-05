@@ -81,7 +81,6 @@
 import { mapState } from 'vuex';
 
 export default {
-
   data() {
     return {
       locale: this.$i18n.locale,

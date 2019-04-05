@@ -7,11 +7,6 @@ import axios from 'axios';
 import { sync } from 'vuex-router-sync';
 import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
-import permissionsPlugin from '@/boot/Permissions';
-import appInvitationPlugin from '@/boot/AppInvitation';
-import smsPlugin from '@/boot/Sms';
-import emailPlugin from '@/boot/Email';
-import contactsImportPlugin from '@/boot/ContactsImport';
 import vueSelectPlugin from '@/boot/VueSelect';
 import vuelidatePlugin from '@/boot/Vuelidate';
 import * as All from 'quasar';
@@ -34,11 +29,6 @@ localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
-permissionsPlugin({ Vue: localVue });
-appInvitationPlugin({ Vue: localVue });
-smsPlugin({ Vue: localVue });
-emailPlugin({ Vue: localVue });
-contactsImportPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
 vuelidatePlugin({ Vue: localVue });
 
@@ -58,6 +48,9 @@ const createRouter = (store = null) => {
       },
       {
         path: '/wallet/single/send/:id',
+      },
+      {
+        path: '/wallet/single/:id',
       },
     ],
   });

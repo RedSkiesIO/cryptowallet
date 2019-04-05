@@ -6,3 +6,4 @@
 /src/**/*.e2e.js
 /src/assets
 jest.config.js
+/unusedComponents

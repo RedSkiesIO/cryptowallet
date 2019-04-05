@@ -4,8 +4,6 @@ import VuexORM from '@vuex-orm/core';
 import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
 
 import wallet from '@/store/wallet';
-import contacts from '@/store/contacts/__mocks__/contacts.js';
-import search from '@/store/search/__mocks__/search.js';
 import settings from '@/store/settings/__mocks__/settings.js';
 import setup from '@/store/setup/__mocks__/setup.js';
 import qrcode from '@/store/qrcode/__mocks__/qrcode.js';
@@ -61,9 +59,7 @@ export function createMocks(custom = {
    */
   const modules = {
     wallet,
-    search,
     settings,
-    contacts,
     setup,
     qrcode,
     modals,
