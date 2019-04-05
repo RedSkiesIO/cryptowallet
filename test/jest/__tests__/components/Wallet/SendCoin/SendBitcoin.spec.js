@@ -361,7 +361,6 @@ describe('SendBitcoin component', () => {
       inputInCoin.element.value = 9999;
       inputInCoin.trigger('input');
 
-
       setTimeout(() => {
         expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
         wrapper.vm.feeSetting = 2;
