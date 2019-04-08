@@ -81,8 +81,10 @@ class BackEndService {
             }
           } catch (error) {
             // refresh token failed, re-authenticate
-            await this.auth();
-            return resolve(true);
+            const code = await this.auth();
+            if (code === this.successCode) {
+              return resolve(true);
+            }
           }
         } else {
           const code = await this.auth();

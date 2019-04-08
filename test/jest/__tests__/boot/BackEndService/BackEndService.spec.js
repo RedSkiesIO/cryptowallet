@@ -9,6 +9,7 @@ const accountData = JSON.parse('{"$id":1,"id":1,"uid":"b2d1d4a8-59ed-f8a1-6476-3
 const pin = [0, 0, 0, 0, 0, 0];
 
 describe('boot/BackEndService', () => {
+  let errorHandler;
   let wrapperMock;
   let router;
   let store;
@@ -22,6 +23,7 @@ describe('boot/BackEndService', () => {
   }
 
   function storeInit(custom, propsData, parentComponent = null) {
+    errorHandler = jest.fn();
     storeMocks = createStoreMocks(custom);
     Account.insert({ data: accountData });
     BackEndService({ Vue: localVue });
@@ -34,6 +36,9 @@ describe('boot/BackEndService', () => {
       localVue,
       propsData,
       store: storeMocks.store,
+      mocks: {
+        errorHandler,
+      },
     });
     store = wrapperMock.vm.$store;
 
@@ -46,7 +51,130 @@ describe('boot/BackEndService', () => {
     expect(typeof BackEndService).toBe('function');
   });
 
-  it('tests', () => {
-    //console.log(backEndService);
+  it('sets refresh token correctly when initialised ', () => {
+    expect(backEndService.refreshToken).toBe(accountData.refresh_token);
   });
+
+  describe('connect() method', () => {
+    it('uses a refresh token if available', async (done) => {
+      backEndService.refreshAuth = jest.fn().mockReturnValue(201);
+      const result = await backEndService.connect();
+      expect(result).toBe(true);
+      done();
+    });
+
+    it('tries to re-authenticate if refresh token invalid', async (done) => {
+      backEndService.refreshAuth = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+      backEndService.auth = jest.fn().mockReturnValue(200);
+      const result = await backEndService.connect();
+      expect(backEndService.refreshAuth).toHaveBeenCalled();
+      expect(backEndService.auth).toHaveBeenCalled();
+      expect(result).toBe(true);
+      done();
+    });
+
+    it('tries to re-authenticate if no refreshToken available', async (done) => {
+      backEndService.auth = jest.fn().mockReturnValue(200);
+      backEndService.refreshToken = null;
+      const result = await backEndService.connect();
+      expect(backEndService.auth).toHaveBeenCalled();
+      expect(result).toBe(true);
+      done();
+    });
+
+    it('tries to establish connection x number of times based on the config', async (done) => {
+      backEndService.auth = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+
+      backEndService.refreshAuth = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+
+      const createMock = jest.fn();
+      wrapperMock.vm.$toast.create = createMock;
+
+      backEndService.refreshToken = null;
+      backEndService.maxConnectAttempts = 3;
+      backEndService.longDelay = 50;
+      backEndService.connect();
+
+      setTimeout(() => {
+        expect(createMock).toHaveBeenCalledWith(10, wrapperMock.vm.$t('failedToConnect'), 500);
+        expect(createMock).toHaveBeenCalledTimes(3);
+        done();
+      }, 500);
+    });
+  });
+
+  describe('auth() method', () => {
+    it('calls the auth endpoint and returns the status code', () => {
+
+    });
+
+    it('stores access and refresh tokens if aplicable', () => {
+
+    });
+  });
+
+  describe('refreshAuth() method', () => {
+    it('calls the refresh token endpoint with correct data and returns the status code', () => {
+
+    });
+
+    it('stores access and refresh tokens if aplicable', () => {
+
+    });
+  });
+
+  describe('try() method', () => {
+    it('makes a call to the URL and returns the response', () => {
+
+    });
+
+    it('makes multiple attempts if the request fails', () => {
+
+    });
+
+    it('updates the refresh token on the successful response', () => {
+
+    });
+  });
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
