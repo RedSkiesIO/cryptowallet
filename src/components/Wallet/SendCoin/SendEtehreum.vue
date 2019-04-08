@@ -587,7 +587,6 @@ export default {
             if (err) {
               this.errorHandler(err);
             } else {
-              /*eslint-disable*/
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
 
