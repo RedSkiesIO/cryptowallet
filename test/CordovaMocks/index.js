@@ -17,7 +17,7 @@ export default {
     };
 
     global.cordova = cordova;
-    global.ContactFindOptions = function () {};
+    global.ContactFindOptions = function ContactFindOptions() {};
     global.navigator = navigator;
     global.sms = new Sms();
     global.QRScanner = QRScanner;

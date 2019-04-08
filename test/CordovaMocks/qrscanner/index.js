@@ -1,6 +1,7 @@
 const QRScanner = {
   mockBehaviour: null,
-  scan: function (callback) {
+  delay: 25,
+  scan(callback) {
     setTimeout(() => {
       if (this.mockBehaviour === null) {
         throw new Error('please specify the QRScanner mock behaviour');
@@ -15,9 +16,9 @@ const QRScanner = {
       }
 
       if (this.mockBehaviour === 2) {
-        callback(null, '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE')
+        callback(null, '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE');
       }
-    }, 25);
+    }, this.delay);
   },
 };
 

@@ -1,7 +1,7 @@
 const clipboard = {
   mockBehaviour: null,
   text: 'pasted text',
-  paste: function (callback) {
+  paste(callback) {
     if (this.mockBehaviour === null) {
       throw new Error('please specify the clipboard mock behaviour');
     }
