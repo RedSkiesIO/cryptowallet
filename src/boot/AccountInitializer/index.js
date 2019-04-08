@@ -34,7 +34,6 @@ const accountInitializer = {
     const SDK = new CryptoWalletSDK();
     const promises = [];
     coins.forEach((coin) => {
-      const coinSDK = SDK.SDKFactory.createSDK(coin.sdk);
       const wallet = {
         account_id: id,
         name: coin.name,
@@ -45,6 +44,7 @@ const accountInitializer = {
       };
       if (coin.sdk !== 'ERC20') {
         promises.push(new Promise(async (resolve) => {
+          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk);
           wallet.hdWallet = await coinSDK.generateHDWallet(
             Object.values(setup.seed).join(' ').trim(),
             coin.network,
@@ -55,7 +55,6 @@ const accountInitializer = {
       }
     });
     await Promise.all(promises);
-    return true;
   },
 
   async createERC20Wallets(setup, id, coins) {
