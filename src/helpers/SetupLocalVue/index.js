@@ -9,6 +9,9 @@ import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
 import vueSelectPlugin from '@/boot/VueSelect';
 import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
+import accountInitializerPlugin from '@/boot/AccountInitializer/';
+import cryptoWalletSDKPlugin from '@/boot/CryptoWalletSDK';
+
 import * as All from 'quasar';
 
 const { Quasar, ClosePopup } = All;
@@ -31,6 +34,8 @@ errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
 walletDiscoveryPlugin({ Vue: localVue });
+accountInitializerPlugin({ Vue: localVue });
+cryptoWalletSDKPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
