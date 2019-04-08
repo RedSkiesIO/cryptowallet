@@ -8,6 +8,7 @@ import { sync } from 'vuex-router-sync';
 import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
 import vueSelectPlugin from '@/boot/VueSelect';
+import vuelidatePlugin from '@/boot/Vuelidate';
 import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
 import accountInitializerPlugin from '@/boot/AccountInitializer/';
 import cryptoWalletSDKPlugin from '@/boot/CryptoWalletSDK';
@@ -33,6 +34,7 @@ localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
+vuelidatePlugin({ Vue: localVue });
 walletDiscoveryPlugin({ Vue: localVue });
 accountInitializerPlugin({ Vue: localVue });
 cryptoWalletSDKPlugin({ Vue: localVue });
@@ -50,6 +52,9 @@ const createRouter = (store = null) => {
       },
       {
         path: '/setup/:id',
+      },
+      {
+        path: '/wallet/single/send/:id',
       },
       {
         path: '/wallet/single/:id',

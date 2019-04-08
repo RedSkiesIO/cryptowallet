@@ -208,4 +208,5 @@ export default {
   noConnection: 'No internet connction',
   volume24h: 'Volume 24h',
   failedToConnect: 'Failed to connect to the server',
+  'N/A': 'N/A',
 };

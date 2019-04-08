@@ -17,7 +17,6 @@
       >
         <div class="background" />
         <div
-          :class="{ 'no-footer': !isMainNavVisible }"
           class="layout-wrapper"
           @touchmove="prevent"
         >
@@ -56,7 +55,7 @@
       enter-active-class="animated slideInUp"
       leave-active-class="animated slideOutDown"
     >
-      <q-footer v-show="isMainNavVisible">
+      <q-footer>
         <MainNav />
       </q-footer>
     </transition>
@@ -86,7 +85,6 @@ export default {
 
   data() {
     return {
-      isMainNavVisible: false,
       isPullEnabled: true,
       isPullTempDisabled: false,
       transitionName: 'slide-left',
@@ -97,7 +95,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      isSearchingContacts: (state) => { return state.search.isSearchingContacts; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
@@ -196,22 +193,15 @@ export default {
      */
     '$route.path': {
       handler() {
-        this.updateMainNavVisibility();
         this.updateisPullEnabled();
       },
     },
-
-    /**
-     * Watch the isSearchingContacts to keep the MainNav visibility updated
-     */
-    isSearchingContacts() { this.updateMainNavVisibility(); },
   },
 
   /**
    * Make sure that the MainNav visibility is set correctly on initial render
    */
   beforeMount() {
-    this.updateMainNavVisibility();
     this.updateisPullEnabled();
   },
 
@@ -224,19 +214,6 @@ export default {
   methods: {
     prevent() {
       return false;
-    },
-
-    /**
-     * Decide if the MainNav component should be visible
-     * Update MainNav component visibility
-     * @TODO James review future
-     */
-    updateMainNavVisibility() {
-      if (this.$route.path === '/wallet/payments' && this.isSearchingContacts) {
-        this.isMainNavVisible = false;
-      } else {
-        this.isMainNavVisible = true;
-      }
     },
 
     updateisPullEnabled() {

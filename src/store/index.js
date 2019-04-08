@@ -17,6 +17,8 @@ import LatestPrice from './latestPrice';
 // import modules.
 import settings from './settings';
 import setup from './setup';
+import qrcode from './qrcode';
+import modals from './modals';
 
 Vue.use(Vuex);
 
@@ -69,6 +71,8 @@ const store = new Vuex.Store({
   modules: {
     settings,
     setup,
+    qrcode,
+    modals,
   },
   plugins: [VuexORM.install(database)],
 });
