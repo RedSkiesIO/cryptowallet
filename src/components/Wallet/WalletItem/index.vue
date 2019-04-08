@@ -44,11 +44,6 @@ export default {
       required: true,
     },
 
-    currency: {
-      type: Object,
-      required: false,
-    },
-
     clickItemAction: {
       type: String,
       required: true,
@@ -136,7 +131,6 @@ export default {
             .where('account_id', this.authenticatedAccount)
             .where('name', this.wallet.parentName)
             .get();
-
           await Wallet.$update({
             where: (record) => { return record.id === wallets[0].id; },
             data: { imported: false, enabled: true },
@@ -148,7 +142,7 @@ export default {
           .where('name', this.wallet.name)
           .get();
 
-        if (wallets) {
+        if (wallets.length > 0) {
           await Wallet.$update({
             where: (record) => { return record.id === wallets[0].id; },
             data: { imported: false, enabled: true },
@@ -202,6 +196,7 @@ export default {
           }
         }
       } catch (err) {
+        console.log(err);
         this.errorHandler(err);
       }
     },
@@ -236,7 +231,6 @@ export default {
         transactions.forEach((tx) => {
           Tx.$delete(tx.id);
         });
-
         const utxos = Utxo.query().where('wallet_id', walletId).get();
         utxos.forEach((tx) => {
           Utxo.$delete(tx.id);

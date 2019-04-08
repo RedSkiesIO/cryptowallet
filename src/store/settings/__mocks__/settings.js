@@ -12,6 +12,7 @@ const getters = {};
 const mutations = {};
 
 const state = {
+  authenticatedAccount: 1,
   pin: {
     minLength: 6,
   },
