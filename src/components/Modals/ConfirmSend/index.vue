@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog
-      v-model="confirmSendModalOpened"
+      v-model="sendConfirmModalOpened"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -120,8 +120,6 @@ export default {
 
   data() {
     return {
-      confirmSendModalOpened: false,
-      txData: null,
       loading: false,
       weiMultiplier: 1000000000000000000,
       tinyBalance: 0.00000000001,
@@ -133,7 +131,17 @@ export default {
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
+
+    sendConfirmModalOpened: {
+      get() {
+        return this.$store.state.modals.sendConfirmModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setConfirmSendModalOpened', value);
+      },
+    },
 
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -196,13 +204,6 @@ export default {
       }
       return false;
     },
-  },
-
-  mounted() {
-    this.$root.$on('confirmSendModalOpened', (value, txData) => {
-      this.confirmSendModalOpened = value;
-      this.txData = txData;
-    });
   },
 
   methods: {
@@ -322,7 +323,7 @@ export default {
       return formattedAmount.getFormatted();
     },
     goBack() {
-      this.confirmSendModalOpened = false;
+      this.sendConfirmModalOpened = false;
     },
     confirm() {
       this.loading = true;
@@ -341,7 +342,7 @@ export default {
 
       setTimeout(() => {
         this.loading = false;
-        this.confirmSendModalOpened = false;
+        this.sendConfirmModalOpened = false;
       }, this.delay.short);
     },
   },
