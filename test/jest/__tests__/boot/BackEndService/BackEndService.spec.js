@@ -223,13 +223,13 @@ describe('boot/BackEndService', () => {
     });
 
     it('performs authentication if access denied', async (done) => {
-      mockAxios.get = jest.fn().mockImplementation(() => {
-        const errorMock = new Error();
-        errorMock.response = {
-          status: 401,
-        };
+      const errorMock = new Error();
+      errorMock.response = {
+        status: 401,
+      };
 
-        return throw errorMock;
+      mockAxios.get = jest.fn().mockImplementation(() => {
+        throw errorMock;
       });
 
       backEndService.connect = jest.fn().mockImplementation(() => {
