@@ -224,11 +224,11 @@ describe('boot/BackEndService', () => {
 
     it('performs authentication if access denied', async (done) => {
       mockAxios.get = jest.fn().mockImplementation(() => {
-        const errorMock = {
-          response: {
-            status: 401,
-          },
+        const errorMock = new Error();
+        errorMock.response = {
+          status: 401,
         };
+
         throw errorMock;
       });
 
