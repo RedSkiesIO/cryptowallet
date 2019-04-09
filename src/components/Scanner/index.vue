@@ -17,7 +17,8 @@ export default {
   name: 'Scanner',
   methods: {
     cancel() {
-      this.$root.$emit('cancelScanning');
+      this.$store.dispatch('qrcode/cancelScanning');
+      this.$store.dispatch('modals/setSendCoinModalOpened', true);
     },
   },
 };

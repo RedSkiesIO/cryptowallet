@@ -120,6 +120,10 @@ export default {
     },
   },
 
+  mounted() {
+    this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+  },
+
   methods: {
     importAccount() {
       this.$i18n.locale = this.selectedLang.value;
