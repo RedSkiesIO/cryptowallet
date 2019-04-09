@@ -62,9 +62,6 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
 
-    account() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
-    },
     isEnabled: {
 
       get() {
@@ -95,7 +92,7 @@ export default {
     clickHandler(id) {
       switch (this.clickItemAction) {
         case 'selectWallet':
-          this.$router.push({ path: `/wallet/balance/${id}` });
+          this.$router.push({ path: `/wallet/single/${id}` });
           break;
         case 'addWallet':
           break;
@@ -196,7 +193,6 @@ export default {
           }
         }
       } catch (err) {
-        console.log(err);
         this.errorHandler(err);
       }
     },

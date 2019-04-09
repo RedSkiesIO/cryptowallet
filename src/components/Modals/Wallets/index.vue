@@ -153,7 +153,6 @@ export default {
 
       const allTx = [...unconfirmedTx, ...confirmedTx];
       allTx.sort((a, b) => { return createDate(b.receivedTime) - createDate(a.receivedTime); });
-
       allTx.forEach(async (tx) => {
         await Tx.$insert({ data: tx });
       });
@@ -272,13 +271,12 @@ export default {
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
-
       const response = await this.backEndService.getPriceFeed(
         [wallet.symbol],
         [this.selectedCurrency.code],
       );
-      const prices = response.data[0];
       if (response) {
+        const prices = response.data[0];
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
 
@@ -299,7 +297,6 @@ export default {
       }
 
       this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
-
       try {
         if (wallet.sdk === 'Bitcoin') {
           await this.enableBitcoin(coinSDK, initializedWallet, wallet);
@@ -308,6 +305,7 @@ export default {
           await this.enableEthereum(coinSDK, initializedWallet, wallet);
         }
       } catch (err) {
+        console.log(err);
         this.errorHandler(err);
       }
 
@@ -397,7 +395,7 @@ export default {
     addWallet() {
       this.addWalletModalOpened = true;
     },
-    close() {
+    async close() {
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('enabled', true)
@@ -406,37 +404,31 @@ export default {
 
       if (wallets.length > 0) {
         this.loading = true;
-
         const promises = [];
         const erc20Promises = [];
 
-        setTimeout(async () => {
-          wallets.forEach((wallet) => {
-            if (wallet.sdk === 'ERC20') {
-              erc20Promises.push(new Promise(async (resolve) => {
-                await this.enableErc20Wallet(wallet);
-                resolve();
-              }));
-            } else {
-              promises.push(new Promise(async (resolve) => {
-                await this.enableWallet(wallet);
-                resolve();
-              }));
-            }
-          });
-
-          try {
-            await Promise.all(promises);
-            await Promise.all(erc20Promises);
-            this.loading = false;
-
-            setTimeout(() => {
-              this.addWalletModalOpened = false;
-            }, this.delay.short);
-          } catch (err) {
-            this.errorHandler(err);
+        wallets.forEach((wallet) => {
+          if (wallet.sdk === 'ERC20') {
+            erc20Promises.push(new Promise(async (resolve) => {
+              await this.enableErc20Wallet(wallet);
+              resolve();
+            }));
+          } else {
+            promises.push(new Promise(async (resolve) => {
+              await this.enableWallet(wallet);
+              resolve();
+            }));
           }
-        }, this.delay.normal);
+        });
+
+        try {
+          await Promise.all(promises);
+          await Promise.all(erc20Promises);
+          this.loading = false;
+          this.addWalletModalOpened = false;
+        } catch (err) {
+          this.errorHandler(err);
+        }
       } else {
         this.addWalletModalOpened = false;
       }

@@ -14,6 +14,7 @@ describe('WalletItem.vue', () => {
   let storeMocks;
   let wrapper;
   let router;
+  let store;
 
   const coinSDKS = {
     Ethereum: {
@@ -28,6 +29,7 @@ describe('WalletItem.vue', () => {
       Ethereum: {},
     },
   };
+  const errorHandler = jest.fn();
 
   const propsData = {
     wallet: {
@@ -82,15 +84,16 @@ describe('WalletItem.vue', () => {
   function storeInit(custom) {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
-    router.push({ path: '/wallet/single/4' });
+    router.push({ path: '/' });
     wrapper = wrapperInit({
       i18n,
       router,
       localVue,
       store: storeMocks.store,
       propsData,
-      mocks: { coinSDKS, activeWallets },
+      mocks: { coinSDKS, activeWallets, errorHandler },
     });
+    store = wrapper.vm.$store;
   }
 
   beforeEach(() => { return storeInit(); });
@@ -106,7 +109,6 @@ describe('WalletItem.vue', () => {
     setTimeout(() => {
       const wallets = Wallet.all();
       expect(wallets[0].enabled).toBe(true);
-      expect(wallets[1].enabled).toBe(true);
       done();
     }, 0);
   });
@@ -123,7 +125,21 @@ describe('WalletItem.vue', () => {
     }, 0);
   });
 
+  it('it handles any errors when a wallet is enabled', async (done) => {
+    async function check() {
+      throw new Error('Test');
+    }
+    Wallet.$update = check();
+    const toggle = wrapper.find('input');
+    toggle.trigger('click');
+    setTimeout(() => {
+      expect(errorHandler).toHaveBeenCalled();
+      done();
+    }, 0);
+  });
+
   it('creates a new wallet if a new ERC20 token is added', (done) => {
+    Wallet.$update = Wallet.update;
     propsData.wallet = {
       id: 3,
       name: '0xProtocol',
@@ -209,5 +225,29 @@ describe('WalletItem.vue', () => {
       expect(Address.all()).toEqual([]);
       done();
     }, 0);
+  });
+
+  it('navigates to correct route when clicked on', () => {
+    wrapper.find('.selectWallet').trigger('click');
+    expect(store.state.route.path).toBe('/');
+
+    wrapper.setProps({ clickItemAction: '' });
+    wrapper.find('.selectWallet').trigger('click');
+    expect(store.state.route.path).toBe('/');
+
+    wrapper.setProps({
+      wallet: {
+        id: 1,
+        name: 'Catalyst',
+        displayName: 'Catalyst',
+        parentName: 'Ethereum',
+        symbol: 'CAT',
+        network: 'ETHEREUM_ROPSTEN',
+        sdk: 'ERC20',
+      },
+      clickItemAction: 'selectWallet',
+    });
+    wrapper.find('.selectWallet').trigger('click');
+    expect(store.state.route.path).toBe('/wallet/single/1');
   });
 });
