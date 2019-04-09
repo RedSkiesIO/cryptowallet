@@ -229,7 +229,7 @@ describe('boot/BackEndService', () => {
           status: 401,
         };
 
-        throw errorMock;
+        return throw errorMock;
       });
 
       backEndService.connect = jest.fn().mockImplementation(() => {
