@@ -1,8 +1,5 @@
 const DotEnv = require('dotenv');
-
 const parsedEnv = DotEnv.config().parsed;
-
-console.log('1', parsedEnv);
 
 function toExport() {
   const keys = Object.keys(parsedEnv);
@@ -11,8 +8,6 @@ function toExport() {
       parsedEnv[key] = JSON.stringify(parsedEnv[key]);
     }
   });
-
-  console.log('2', parsedEnv);
 
   return parsedEnv;
 }

@@ -25,3 +25,10 @@ export function setConfirmTransactionData(context, payload) {
 export function setSendFailureModalOpened(context, payload) {
   context.commit('SET_SENDFAILURE_MODAL_OPENED', payload);
 }
+
+/**
+ * Action setSendSuccessModalOpened
+ */
+export function setSendSuccessModalOpened(context, payload) {
+  context.commit('SET_SENDSUCCESS_MODAL_OPENED', payload);
+}

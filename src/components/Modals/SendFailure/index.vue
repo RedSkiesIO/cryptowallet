@@ -54,30 +54,19 @@
 <script>
 export default {
   name: 'SendFailure',
-  data() {
-    return {
-      sendFailureModalOpened: false,
-    };
-  },
   computed: {
     sendFailureModalOpened: {
       get() {
-        return this.$store.state.modals.sendConfirmModalOpened;
+        return this.$store.state.modals.sendFailureModalOpened;
       },
       set(value) {
         this.$store.dispatch('modals/setSendFailureModalOpened', value);
       },
     },
   },
-  mounted() {
-    /*this.$root.$on('sendFailureModalOpened', (value) => {
-      this.sendFailureModalOpened = value;
-    });*/
-  },
   methods: {
     dismiss() {
       this.sendFailureModalOpened = false;
-      this.$router.go(-1);
     },
   },
 };

@@ -3,4 +3,5 @@ export default {
   sendConfirmModalOpened: false,
   sendConfirmTxData: null,
   sendFailureModalOpened: false,
+  sendSuccessModalOpened: false,
 };

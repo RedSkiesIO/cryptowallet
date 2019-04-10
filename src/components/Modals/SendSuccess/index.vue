@@ -96,18 +96,21 @@ import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'SendSuccess',
-  data() {
-    return {
-      sendSuccessModalOpened: false,
-      txData: null,
-    };
-  },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
+    sendSuccessModalOpened: {
+      get() {
+        return this.$store.state.modals.sendSuccessModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setSendSuccessModalOpened', value);
+      },
+    },
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -134,12 +137,6 @@ export default {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       return prices.data.PRICE;
     },
-  },
-  mounted() {
-    this.$root.$on('sendSuccessModalOpened', (value, txData) => {
-      this.sendSuccessModalOpened = value;
-      this.txData = txData;
-    });
   },
   methods: {
     complete() {
