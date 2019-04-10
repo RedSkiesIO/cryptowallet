@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletItem.vue renders and matches snapshot 1`] = `
+<div
+  class="account-item"
+>
+  <div
+    class="wallet selectWallet"
+  >
+    <div
+      class="details"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          src="./statics/cc-icons/color/generic.svg"
+        />
+      </div>
+       
+      <div
+        class="name"
+      >
+        
+        Catalyst
+      
+      </div>
+    </div>
+     
+    <div>
+      <div>
+        <div
+          class="q-toggle cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+        >
+          <div
+            class="q-toggle__inner relative-position"
+          >
+            <input
+              class="q-toggle__native absolute q-ma-none q-pa-none invisible"
+              type="toggle"
+            />
+            <div
+              class="q-toggle__track"
+            />
+            <div
+              class="q-toggle__thumb-container absolute"
+            >
+              <div
+                class="q-toggle__thumb row flex-center"
+              />
+            </div>
+          </div>
+          <div
+            class="q-toggle__label q-anchor--skip"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

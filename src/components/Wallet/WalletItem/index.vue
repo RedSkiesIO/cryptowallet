@@ -44,11 +44,6 @@ export default {
       required: true,
     },
 
-    currency: {
-      type: Object,
-      required: false,
-    },
-
     clickItemAction: {
       type: String,
       required: true,
@@ -67,9 +62,6 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
 
-    account() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
-    },
     isEnabled: {
 
       get() {
@@ -100,7 +92,7 @@ export default {
     clickHandler(id) {
       switch (this.clickItemAction) {
         case 'selectWallet':
-          this.$router.push({ path: `/wallet/balance/${id}` });
+          this.$router.push({ path: `/wallet/single/${id}` });
           break;
         case 'addWallet':
           break;
@@ -136,7 +128,6 @@ export default {
             .where('account_id', this.authenticatedAccount)
             .where('name', this.wallet.parentName)
             .get();
-
           await Wallet.$update({
             where: (record) => { return record.id === wallets[0].id; },
             data: { imported: false, enabled: true },
@@ -148,7 +139,7 @@ export default {
           .where('name', this.wallet.name)
           .get();
 
-        if (wallets) {
+        if (wallets.length > 0) {
           await Wallet.$update({
             where: (record) => { return record.id === wallets[0].id; },
             data: { imported: false, enabled: true },
@@ -236,7 +227,6 @@ export default {
         transactions.forEach((tx) => {
           Tx.$delete(tx.id);
         });
-
         const utxos = Utxo.query().where('wallet_id', walletId).get();
         utxos.forEach((tx) => {
           Utxo.$delete(tx.id);

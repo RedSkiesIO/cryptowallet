@@ -18,6 +18,7 @@ module.exports = {
     '<rootDir>/src/**/*.jsx',
     '!**/src-cordova/**',
     '!<rootDir>/src/**/*.spec.js',
+    '!<rootDir>/src/i18n/**/*.js',
   ],
   coverageThreshold: {
     global: {
