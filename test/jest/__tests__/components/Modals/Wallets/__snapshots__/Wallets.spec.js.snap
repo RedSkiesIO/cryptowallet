@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
+<div
+  clickitemaction="addWallet"
+>
+  <q-dialog-stub
+    contentclass="dark-modal"
+    maximized="true"
+    persistent="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+  >
+    <div
+      class="header-section"
+    >
+      <div
+        class="header-back-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn back-arrow-btn"
+          flat="true"
+          icon="arrow_back"
+          ripple="true"
+          size="lg"
+        />
+      </div>
+       
+      <h1
+        class="header-h1"
+      >
+        
+        Wallets
+      
+      </h1>
+    </div>
+     
+    <div
+      class="modal-layout-wrapper no-padding"
+    >
+      <walletslist-stub
+        clickitemaction="addWallet"
+        wallets=""
+      />
+    </div>
+  </q-dialog-stub>
+   
+  <!---->
+</div>
+`;

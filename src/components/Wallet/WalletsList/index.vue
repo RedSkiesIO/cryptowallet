@@ -1,16 +1,5 @@
 <template>
   <section class="scroll-area">
-    <div v-if="wallets.length === 0">
-      <q-btn
-        icon="add_circle_outline"
-        label="add"
-        color="primary"
-        size="xl"
-        class="large-cloud-btn"
-        @click.prevent="openWalletsModal"
-      />
-    </div>
-
     <q-scroll-area
       v-if="wallets.length > 0"
       class="scroll-area"
@@ -19,7 +8,6 @@
         v-for="wallet in wallets"
         :key="wallet.displayName"
         :wallet="wallet"
-        :currency="currency"
         :click-item-action="clickItemAction"
       />
     </q-scroll-area>
@@ -36,16 +24,6 @@ export default {
     WalletItem,
   },
   props: {
-    // wallets: {
-    //   type: Array,
-    //   required: true,
-    // },
-
-    currency: {
-      type: Object,
-      required: false,
-    },
-
     clickItemAction: {
       type: String,
       required: true,
@@ -54,11 +32,6 @@ export default {
   computed: {
     wallets() {
       return Coin.all();
-    },
-  },
-  methods: {
-    openWalletsModal() {
-      this.$root.$emit('walletsModalOpened', true);
     },
   },
 };
