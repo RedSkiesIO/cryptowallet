@@ -1,14 +1,9 @@
-/* eslint-disable no-magic-numbers */
 import CWCrypto from '@/boot/CWCrypto/';
 import { shallowMount } from '@vue/test-utils';
-import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
-import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
+import { localVue } from '@/helpers/SetupLocalVue';
 
 describe('boot/CWCrypto', () => {
-  let errorHandler;
   let wrapperMock;
-  let router;
-  let storeMocks;
 
   const defaultProps = {};
 
@@ -17,21 +12,9 @@ describe('boot/CWCrypto', () => {
   }
 
   function storeInit(custom, propsData) {
-    errorHandler = jest.fn();
-    storeMocks = createStoreMocks(custom);
-    CWCrypto({ Vue: localVue });
-
-    router = createRouter(storeMocks.store);
-    router.push({ path: '/' });
     wrapperMock = wrapperInit({
-      i18n,
-      router,
       localVue,
       propsData,
-      store: storeMocks.store,
-      mocks: {
-        errorHandler,
-      },
     });
   }
 
