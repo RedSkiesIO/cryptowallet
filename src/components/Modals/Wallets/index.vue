@@ -21,18 +21,6 @@
         <h1 class="header-h1">
           {{ $t('wallets') }}
         </h1>
-        <div
-          class="header-settings-button-wrapper"
-        >
-          <!-- <q-btn
-            icon="add"
-            color="secondary"
-            size="lg"
-            class="icon-btn icon-btn-right"
-            flat
-            @click.prevent="openAddWalletModal"
-          /> -->
-        </div>
       </div>
 
       <div class="modal-layout-wrapper no-padding">
@@ -79,16 +67,12 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-      delay: (state) => { return state.settings.delay; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
       return Coin.all();
-    },
-    account() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
   },
   mounted() {
@@ -97,9 +81,6 @@ export default {
     });
   },
   methods: {
-    openAddWalletModal() {
-      this.$root.$emit('erc20ModalOpened', true);
-    },
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
       const {
         txHistory,
@@ -162,7 +143,6 @@ export default {
         address.wallet_id = wallet.id;
         address.chain = 'external';
         address.hash = address.address;
-        address.index = address.index;
         await Address.$insert({ data: address });
       });
 
@@ -171,7 +151,6 @@ export default {
         address.wallet_id = wallet.id;
         address.chain = 'internal';
         address.hash = address.address;
-        address.index = address.index;
         await Address.$insert({ data: address });
       });
     },
@@ -182,7 +161,6 @@ export default {
         accounts,
         balance,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
-
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
         data: {
@@ -202,7 +180,6 @@ export default {
       };
 
       await Address.$insert({ data: newAddress });
-
       const unconfirmedTx = [];
       const confirmedTx = [];
       txHistory.txs.forEach((tx) => {
@@ -271,6 +248,7 @@ export default {
 
     async enableWallet(wallet) {
       const coinSDK = this.coinSDKS[wallet.sdk];
+
       const response = await this.backEndService.getPriceFeed(
         [wallet.symbol],
         [this.selectedCurrency.code],
@@ -305,7 +283,6 @@ export default {
           await this.enableEthereum(coinSDK, initializedWallet, wallet);
         }
       } catch (err) {
-        console.log(err);
         this.errorHandler(err);
       }
 
@@ -322,8 +299,8 @@ export default {
         [wallet.symbol],
         [this.selectedCurrency.code],
       );
-      const prices = response.data[0];
       if (response) {
+        const prices = response.data[0];
         this.backEndService.storePriceData(wallet.symbol, prices[this.selectedCurrency.code]);
       }
       if (!wallet.erc20Wallet) {
@@ -362,7 +339,6 @@ export default {
         address: wallet.erc20Wallet.address,
         index: 0,
       };
-
       await Address.$insert({ data: newAddress });
 
       const unconfirmedTx = [];
@@ -391,10 +367,6 @@ export default {
         data: { imported: true, enabled: true },
       });
     },
-
-    addWallet() {
-      this.addWalletModalOpened = true;
-    },
     async close() {
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
@@ -406,29 +378,37 @@ export default {
         this.loading = true;
         const promises = [];
         const erc20Promises = [];
-
         wallets.forEach((wallet) => {
-          if (wallet.sdk === 'ERC20') {
-            erc20Promises.push(new Promise(async (resolve) => {
-              await this.enableErc20Wallet(wallet);
-              resolve();
-            }));
+          if (wallet.sdk !== 'ERC20') {
+            promises.push(() => {
+              return new Promise(async (resolve) => {
+                try {
+                  await this.enableWallet(wallet);
+                } catch (err) {
+                  this.errorHandler(err);
+                }
+                resolve();
+              });
+            });
           } else {
-            promises.push(new Promise(async (resolve) => {
-              await this.enableWallet(wallet);
-              resolve();
-            }));
+            erc20Promises.push(() => {
+              return new Promise(async (resolve) => {
+                try {
+                  await this.enableErc20Wallet(wallet);
+                } catch (err) {
+                  this.errorHandler(err);
+                }
+                resolve();
+              });
+            });
           }
         });
 
-        try {
-          await Promise.all(promises);
-          await Promise.all(erc20Promises);
-          this.loading = false;
-          this.addWalletModalOpened = false;
-        } catch (err) {
-          this.errorHandler(err);
-        }
+
+        await Promise.all(promises.map((promise) => { return promise(); }));
+        await Promise.all(erc20Promises.map((erc20) => { return erc20(); }));
+        this.loading = false;
+        this.addWalletModalOpened = false;
       } else {
         this.addWalletModalOpened = false;
       }
