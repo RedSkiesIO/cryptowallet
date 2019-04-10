@@ -465,7 +465,7 @@ describe('SendBitcoin component', () => {
       inputInCoin.trigger('input');
 
       setTimeout(() => {
-        expect(wrapper.vm.errorHandler).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.errorHandler).toHaveBeenCalled();
 
         coinSDKSMock.Bitcoin.createRawTx = async function createRawTx() {
           return { transaction: { value: 10, fee: 0.00002292 } };
