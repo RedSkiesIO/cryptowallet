@@ -5,6 +5,7 @@ import VueI18n from 'vue-i18n';
 import messages from '@/i18n/';
 import axios from 'axios';
 import { sync } from 'vuex-router-sync';
+import CWCrypto from '@/boot/CWCrypto';
 import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
 import vueSelectPlugin from '@/boot/VueSelect';
@@ -12,6 +13,7 @@ import vuelidatePlugin from '@/boot/Vuelidate';
 import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
 import accountInitializerPlugin from '@/boot/AccountInitializer/';
 import cryptoWalletSDKPlugin from '@/boot/CryptoWalletSDK';
+
 
 import * as All from 'quasar';
 
@@ -31,6 +33,7 @@ localVue.use(VueI18n);
 localVue.use(Vuex);
 localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
+CWCrypto({ Vue: localVue });
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
 vueSelectPlugin({ Vue: localVue });
