@@ -330,15 +330,18 @@ export default {
       setTimeout(async () => {
         try {
           await this.broadcastTx();
-        } catch (err) {
-          this.errorHandler(err);
+        } catch (error) {
+          this.$store.dispatch('modals/setSendFailureModalOpened', true);
+
+          setTimeout(() => {
+            this.loading = false;
+            this.sendConfirmModalOpened = false;
+          }, this.delay.short);
         }
       }, this.delay.short);
     },
     completeTransaction() {
-      // @todo, don't use app global, should work
-      /* eslint-disable-next-line */
-      app.$root.$emit('sendSuccessModalOpened', true, this.txData);
+      this.$store.dispatch('modals/setSendSuccessModalOpened', true);
 
       setTimeout(() => {
         this.loading = false;
