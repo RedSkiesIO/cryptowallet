@@ -1,13 +1,13 @@
 <template>
   <div>
     <q-dialog
+      ref="dialog"
       v-model="sendFailureModalOpened"
       persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
       content-class="dark-modal"
-      ref="dialog"
     >
       <div class="header-section">
         <div class="header-back-button-wrapper">
