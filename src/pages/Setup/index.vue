@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import bcrypt from 'bcryptjs';
 import Splash from '@/pages/Setup/Steps/Splash/index.vue';
 import AccountName from '@/pages/Setup/Steps/AccountName/index.vue';
 import Pin from '@/pages/Setup/Steps/Pin';
@@ -51,7 +50,7 @@ export default {
   },
   created() {
     if (this.$store.state.setup.salt) { return false; }
-    this.$store.dispatch('setup/setSalt', bcrypt.genSaltSync(10));
+    this.$store.dispatch('setup/setSalt', this.$CWCrypto.getSalt());
     return true;
   },
 };

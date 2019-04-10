@@ -23,6 +23,14 @@ const CWCrypto = {
   bcryptCompareString(string, hashedString) {
     return bcrypt.compareSync(string, hashedString);
   },
+
+  /**
+   * Returns the salt
+   * @return {String}
+   */
+  getSalt() {
+    return bcrypt.genSaltSync(10);
+  },
 };
 
 /**

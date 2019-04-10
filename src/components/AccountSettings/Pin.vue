@@ -47,7 +47,6 @@ import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 import PinPad from '@/components/Auth/PinPad';
-import bcrypt from 'bcryptjs';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 
@@ -139,7 +138,7 @@ export default {
      */
     getSalt() {
       if (this.salt) { return this.salt; }
-      this.salt = bcrypt.genSaltSync(10);
+      this.salt = this.$CWCrypto.getSalt();
       return this.salt;
     },
 
