@@ -66,7 +66,7 @@
         <q-btn
           :label="$t('paste')"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn paste-btn"
           @click="paste"
         />
       </div>
@@ -76,7 +76,7 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input"
+          class="sm-input address-input"
           outlined
           dense
           color="primary"
@@ -92,7 +92,9 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label">{{ addressError }}</span>
+      <span class="error-label error-label-address">
+        {{ addressError }}
+      </span>
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -100,7 +102,7 @@
           :label="$t('max')"
           :class="{ active: maxed }"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn max-button"
           @click="max"
         />
       </div>
@@ -114,12 +116,14 @@
             :error="$v.inCoin.$error"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-coin"
             outlined
             dense
             color="primary"
             @focus="updateInCoinFocus(true)"
+            @focus.native="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
+            @blur.native="updateInCoinFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -133,12 +137,14 @@
             :error="$v.inCurrency.$error"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-currency"
             outlined
             dense
             color="primary"
             @focus="updateInCurrencyFocus(true)"
+            @focus.native="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
+            @blur.native="updateInCurrencyFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -146,8 +152,9 @@
           </div>
         </div>
       </div>
-      <span class="error-label">{{ amountError }}</span>
-
+      <span class="error-label error-label-amount">
+        {{ amountError }}
+      </span>
       <div class="send-modal-heading">
         <h3>
           {{ $t('fee') }}
@@ -190,6 +197,7 @@
         <q-btn
           :label="$t('send')"
           color="blueish"
+          class="send-btn"
           size="md"
           @click="send"
         />
@@ -233,7 +241,7 @@ export default {
       inCoinFocus: false,
       inCurrencyFocus: false,
       feeSetting: 1,
-      estimatedFee: 'N/A',
+      estimatedFee: this.$t('N/A'),
       maxValueCoin: Infinity,
       maxValueCurrency: Infinity,
       maxed: false,
@@ -248,10 +256,12 @@ export default {
       address: {
         required,
         alphaNum,
-        between: (value) => {
+        between(value) {
           return value.length <= this.addressLengthMax && value.length >= this.addressLengthMin;
         },
-        isValidAddress: (value) => { return this.validateAddress(value); },
+        isValidAddress(value) {
+          return this.validateAddress(value);
+        },
       },
       inCoin: {
         required,
@@ -268,6 +278,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      scannedAddress: (state) => { return state.qrcode.scannedAddress; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -289,6 +300,7 @@ export default {
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (!prices) {
+        this.backEndService.loadPriceFeed();
         return null;
       }
       return prices.data.PRICE;
@@ -308,7 +320,10 @@ export default {
         this.validateInput('inCoin');
         return false;
       }
-      if (!this.inCurrencyFocus) { this.inCurrency = this.amountToCurrency(val); }
+
+      if (!this.inCurrencyFocus) {
+        this.inCurrency = this.amountToCurrency(val);
+      }
       this.updateFee(this.feeSetting, this);
       this.validateInput('inCoin');
       return false;
@@ -325,12 +340,16 @@ export default {
   },
 
   async mounted() {
-    await this.getMaxedTx();
-    // @todo don't use global app
-    /* eslint-disable-next-line */
-    app.$root.$on(`scanned_${this.wallet.name}`, (text) => {
-      this.address = text;
-    });
+    try {
+      await this.getMaxedTx();
+    } catch (err) {
+      this.errorHandler(err);
+    }
+
+    if (this.scannedAddress) {
+      this.address = this.scannedAddress;
+      this.$store.dispatch('qrcode/setScannedAddress', null);
+    }
   },
 
   methods: {
@@ -462,7 +481,7 @@ export default {
           that.inCoin,
         );
       } else {
-        that.estimatedFee = 'N/A';
+        that.estimatedFee = that.$t('N/A');
       }
     }, delay),
 
@@ -476,21 +495,6 @@ export default {
         .where('wallet_id', this.wallet.id)
         .where('used', false)
         .get();
-    },
-
-    /**
-     * Returns raw addresses
-     * @return {Array<String>}
-     */
-    getAddressesRaw() {
-      const addresses = this.getAddresses();
-      const addressesRaw = addresses.map((item) => { return item.address; });
-
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
-      return addressesRaw.filter(onlyUnique);
     },
 
     /**
@@ -508,49 +512,6 @@ export default {
       }
 
       return addresses.map(mapToAccounts);
-    },
-
-    /**
-     * Filters out recently used, pending UTXOs
-     * @param  {Array<Object>} utxos
-     * @return {Object}
-     */
-    filterOutPending(utxos) {
-      utxos.forEach((utxo) => {
-        const found = Utxo.query()
-          .where('txid', utxo.txid)
-          .where('vout', utxo.vout)
-          .where('wallet_id', this.wallet.id)
-          .get();
-
-        if (found) { return false; }
-        utxo.account_id = this.authenticatedAccount;
-        utxo.wallet_id = this.wallet.id;
-        Utxo.$insert({ data: utxo });
-        return false;
-      });
-
-      const pendingUtxos = Utxo.query()
-        .where('account_id', this.authenticatedAccount)
-        .where('wallet_id', this.wallet.id)
-        .where('pending', true)
-        .get();
-
-      // filter out the pending UTXOs
-      const filteredUtxos = utxos.filter((utxo) => {
-        const found = pendingUtxos.find((pendingUtxo) => {
-          if (utxo.txid === pendingUtxo.txid && utxo.vout === pendingUtxo.vout) { return true; }
-          return false;
-        });
-
-        if (!found) { return true; }
-        return false;
-      });
-
-      return {
-        filteredUtxos,
-        pendingCount: pendingUtxos.length,
-      };
     },
 
     /**
@@ -578,6 +539,7 @@ export default {
 
     async getFee() {
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
+
       const fees = response.data.data;
       const kbToBytes = 1000;
       Object.keys(fees).forEach((key) => {
@@ -665,7 +627,6 @@ export default {
     isInvalid() {
       if (!this.address) { return this.$t('fillAllInputs'); }
       if (!this.inCoin) { return this.$t('fillAllInputs'); }
-      if (!this.inCurrency) { return this.$t('fillAllInputs'); }
       if (this.addressError) { return this.addressError; }
       if (this.amountError) { return this.amountError; }
 
@@ -707,12 +668,6 @@ export default {
         this.wallet.name
       ];
 
-      // there are no UTXOs available, wallet is empty
-      if (this.utxos.length === 0) {
-        this.$toast.create(10, this.$t('noFunds'), this.delay.normal);
-        return false;
-      }
-
       const changeAddresses = this.generateChangeAddresses();
       const accounts = this.getAccounts();
 
@@ -725,15 +680,14 @@ export default {
         this.inCoin,
       );
 
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('confirmSendModalOpened', true, {
+      this.$store.dispatch('modals/setConfirmTransactionData', {
         hexTx,
         transaction,
         changeAddresses,
         utxo,
       });
 
+      this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       return false;
     },
 
@@ -742,9 +696,11 @@ export default {
      */
     paste() {
       try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.address = text;
-        });
+        if (cordova) {
+          cordova.plugins.clipboard.paste((text) => {
+            this.address = text;
+          });
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -755,7 +711,7 @@ export default {
         this.maxed = false;
         this.inCoin = '';
         this.inCurrency = '';
-        this.estimatedFee = 'N/A';
+        this.estimatedFee = this.$t('N/A');
         return false;
       }
 
@@ -769,6 +725,7 @@ export default {
       const wallet = this.activeWallets[this.authenticatedAccount][
         this.wallet.name
       ];
+
       const accounts = this.getAccounts();
       const { address } = this.getAddresses()[0];
 
@@ -813,12 +770,9 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('scanQRCode');
-      // @todo, don't use app global
-      /* eslint-disable-next-line */
-      app.$root.$emit('sendCoinModalOpened', false);
+      this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setSendCoinModalOpened', false);
+
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
           QRScanner.scan((err, text) => {
@@ -827,19 +781,11 @@ export default {
             } else {
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('cancelScanning');
-              // @todo, don't use app global
-              /* eslint-disable-next-line */
-              app.$root.$emit('sendCoinModalOpened', true);
 
               if (isValid) {
-                setTimeout(() => {
-                  // @todo, don't use app global
-                  /* eslint-disable-next-line */
-                  app.$root.$emit(`scanned_${this.wallet.name}`, text);
-                }, this.delay.normal);
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$store.dispatch('modals/setSendCoinModalOpened', true);
               }
             }
           });

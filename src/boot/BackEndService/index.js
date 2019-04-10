@@ -2,7 +2,6 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import LatestPrice from '@/store/latestPrice';
 
-
 class BackEndService {
   vm = null;
 
@@ -82,8 +81,10 @@ class BackEndService {
             }
           } catch (error) {
             // refresh token failed, re-authenticate
-            await this.auth();
-            return resolve(true);
+            const code = await this.auth();
+            if (code === this.successCode) {
+              return resolve(true);
+            }
           }
         } else {
           const code = await this.auth();
@@ -153,46 +154,34 @@ class BackEndService {
    * @param  {Number} attempts
    * @return {Object}
    */
-  async try(URL, attempts = 0) {
-    const attemptLimit = this.maxTryAttempts;
-    if (attempts >= attemptLimit) {
-      this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
-    }
+  try(URL, attempts = 0) {
+    return new Promise(async (resolve) => {
+      const attemptLimit = this.maxTryAttempts;
+      if (attempts >= attemptLimit) {
+        this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
+        return false;
+      }
 
-    try {
-      const config = await this.getAxiosConfig();
-      const response = await axios.get(URL, config);
-      this.setRefreshToken(response.headers.new_refresh_token);
-      return response;
-    } catch (err) {
-      attempts += 1;
-
-      if (err.response) {
-        const unauthorized = 401;
-        if (err.response.status === unauthorized) {
-          if (this.refreshToken) {
-            try {
-              // access denied, refresh access token
-              await this.refreshAuth();
-            } catch (error) {
-              // refresh token failed, re-authenticate
-              await this.auth();
-            }
-          } else {
-            // no refresh token, authenticate
-            await this.auth();
+      try {
+        const config = await this.getAxiosConfig();
+        const response = await axios.get(URL, config);
+        this.setRefreshToken(response.headers.new_refresh_token);
+        return resolve(response);
+      } catch (err) {
+        if (err.response && err.response.status) {
+          const unauthorized = 401;
+          if (err.response.status === unauthorized) {
+            await this.connect();
           }
         }
       }
 
-      this.vm.errorHandler(err);
+      setTimeout(() => {
+        resolve(this.try(URL, attempts += 1));
+      }, this.longDelay);
 
-      return new Promise((resolve) => {
-        setTimeout(async () => {
-          resolve(this.try(URL, attempts));
-        }, this.longDelay);
-      });
-    }
+      return false;
+    });
   }
 
   /**
@@ -216,6 +205,7 @@ class BackEndService {
   async getHistoricalData(coin, currency, period) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`);
     const msToS = 1000;
+
     result.data.data = result.data.data.map((x) => {
       return { t: x.time * msToS, y: x.close };
     });
@@ -259,6 +249,7 @@ class BackEndService {
           }
           return true;
         };
+
         const whereLatestPrice = (record, item) => {
           return (
             record.coin === item.coin
@@ -280,6 +271,7 @@ class BackEndService {
             },
           });
         }
+
         resolve();
       } catch (e) {
         reject(e);
@@ -308,16 +300,17 @@ class BackEndService {
 
     try {
       const prices = await this.getPriceFeed(coins);
+
       const promises = [];
       prices.data.forEach((data) => {
-        promises.push(new Promise(async (res) => {
-          return res(await this.storePriceData(data.code, data[selectedCurrency.code]));
+        promises.push(new Promise((res) => {
+          return res(this.storePriceData(data.code, data[selectedCurrency.code]));
         }));
       });
 
       await Promise.all(promises);
-    } catch (e) {
-      this.vm.$toast.create(10, e.message, this.delay);
+    } catch (error) {
+      this.vm.$toast.create(10, error.message, this.delay);
     }
   }
 }

@@ -6,6 +6,8 @@ import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
 import wallet from '@/store/wallet';
 import settings from '@/store/settings/__mocks__/settings.js';
 import setup from '@/store/setup/__mocks__/setup.js';
+import qrcode from '@/store/qrcode/__mocks__/qrcode.js';
+import modals from '@/store/modals/__mocks__/modals.js';
 
 // entities
 import Account from '@/store/wallet/entities/account';
@@ -59,6 +61,8 @@ export function createMocks(custom = {
     wallet,
     settings,
     setup,
+    qrcode,
+    modals,
   };
 
   let mockGettersCombined = {};

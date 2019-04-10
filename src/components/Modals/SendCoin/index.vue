@@ -57,11 +57,6 @@ export default {
     SendEtehreum,
     CoinHeader,
   },
-  data() {
-    return {
-      sendCoinModalOpened: false,
-    };
-  },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
@@ -70,14 +65,22 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    sendCoinModalOpened: {
+      get() {
+        return this.$store.state.modals.sendCoinModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setSendCoinModalOpened', value);
+      },
+    },
   },
   watch: {
     $route: {
       handler(to) {
         if (to.name === 'sendCoin' || to.name === 'sendCoinSingle') {
-          this.sendCoinModalOpened = true;
+          this.$store.dispatch('modals/setSendCoinModalOpened', true);
         } else {
-          this.sendCoinModalOpened = false;
+          this.$store.dispatch('modals/setSendCoinModalOpened', false);
         }
       },
     },
@@ -88,11 +91,6 @@ export default {
         }
       },
     },
-  },
-  mounted() {
-    this.$root.$on('sendCoinModalOpened', (value) => {
-      this.sendCoinModalOpened = value;
-    });
   },
   methods: {
     goBack() {
