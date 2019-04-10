@@ -1,63 +1,73 @@
+/* eslint-disable */
 module.exports = {
-  globals: {
-    __DEV__: true,
+  'globals': {
+    '__DEV__': true
   },
-  setupFilesAfterEnv: [
-    '<rootDir>/test/jest/jest.setup.js',
+  'collectCoverage': false,
+  'collectCoverageFrom': [
+    '<rootDir>/src/App.vue',
+    '<rootDir>/src/components/**/*.vue',
+    '<rootDir>/src/layouts/**/*.vue',
+    '<rootDir>/src/pages/**/*.vue',
+    '<rootDir>/src/plugins/**/*.js',
+    '<rootDir>/src/router/**/*.js',
+    '<rootDir>/src/store/**/*.js'
   ],
-  noStackTrace: true,
-  bail: true,
-  cache: false,
-  verbose: true,
-  collectCoverage: true,
-  coverageDirectory: '<rootDir>/test/jest/coverage',
-  collectCoverageFrom: [
-    '<rootDir>/src/**/*.vue',
-    '<rootDir>/src/**/*.js',
-    '<rootDir>/src/**/*.ts',
-    '<rootDir>/src/**/*.jsx',
-    '!**/src-cordova/**',
-    '!<rootDir>/src/**/*.spec.js',
-  ],
-  coverageThreshold: {
-    global: {
-    //  branches: 50,
-    //  functions: 50,
-    //  lines: 50,
-    //  statements: 50
+  'coverageDirectory': '<rootDir>/tests/unit/__coverage__',
+  'coverageThreshold': {
+    'global': {
+      'branches': 50,
+      'functions': 50,
+      'lines': 50,
+      'statements': 50
+    },
+    './src/components/': {
+      'branches': 50,
+      'statements': 50
+    },
+    './src/store/': {
+      'branches': 100,
+      'statements': 100,
+    },
+    './src/pages/': {
+      'branches': 50,
+      'statements': 50
+    },
+    './src/router/': {
+      'branches': 50,
+      'statements': 50
     },
   },
-  testMatch: [
-    '<rootDir>/test/jest/__tests__/**/*.spec.js',
-    '<rootDir>/test/jest/__tests__/**/*.test.js',
-    // '<rootDir>/src/**/__tests__/*_jest.spec.js',
+  'testMatch': [
+    '**/tests/unit/src/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)',
   ],
-  moduleFileExtensions: [
-    'vue',
+  'testPathIgnorePatterns': [
+    '<rootDir>/tests/unit/__helpers__',
+    '<rootDir>/tests/unit/__coverage__',
+    '<rootDir>/tests/unit/__snapshots__',
+  ],
+  'moduleFileExtensions': [
     'js',
-    'jsx',
     'json',
-    // 'ts',
-    // 'tsx',
+    'vue'
   ],
-  moduleNameMapper: {
+  'moduleNameMapper': {
     '^vue$': '<rootDir>/node_modules/vue/dist/vue.common.js',
-    '^test-utils$': '<rootDir>/node_modules/@vue/test-utils/dist/vue-test-utils.js',
-    '^quasar$': '<rootDir>/node_modules/quasar/dist/quasar.common.js',
+    '^quasar$': '<rootDir>/node_modules/quasar-framework/dist/umd/quasar.mat.umd.min.js',
     '^~/(.*)$': '<rootDir>/$1',
-    '^@/cordovaMocks$': '<rootDir>/tests/CordovaMocks/index.js',
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '.*css$': '<rootDir>/test/jest/utils/stub.css',
+    '^@/(.*)$': '<rootDir>/src/$1'
   },
-  transform: {
-    '.*\\.vue$': 'vue-jest',
-    '.*\\.js$': 'babel-jest',
-    '.+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$': 'jest-transform-stub',
-    // use these if NPM is being flaky
-    // '.*\\.vue$': '<rootDir>/node_modules/@quasar/quasar-app-extension-testing-unit-jest/node_modules/vue-jest',
-    // '.*\\.js$': '<rootDir>/node_modules/@quasar/quasar-app-extension-testing-unit-jest/node_modules/babel-jest'
-  },
-  snapshotSerializers: [
-    '<rootDir>/node_modules/jest-serializer-vue',
+  'transformIgnorePatterns': [
+    'node_modules/core-js',
+    'node_modules/babel-runtime',
+    'node_modules/lodash',
+    'node_modules/vue'
   ],
+  'transform': {
+    '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
+    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest',
+  },
+  'snapshotSerializers': [
+    '<rootDir>/node_modules/jest-serializer-vue'
+  ]
 };
