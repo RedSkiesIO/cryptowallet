@@ -168,7 +168,7 @@ class BackEndService {
         this.setRefreshToken(response.headers.new_refresh_token);
         return resolve(response);
       } catch (err) {
-        if (err.response) {
+        if (err.response && err.response.status) {
           const unauthorized = 401;
           if (err.response.status === unauthorized) {
             await this.connect();

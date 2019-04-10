@@ -72,7 +72,50 @@ describe('boot/BackEndService', () => {
       done();
     });
 
-    it('tries to re-authenticate if refresh token invalid', async (done) => {
+    it('makes another attempt if refreshAuth() returns an unexpected code', async (done) => {
+      const createMock = jest.fn();
+      wrapperMock.vm.$toast.create = createMock;
+      backEndService.maxConnectAttempts = 3;
+      backEndService.longDelay = 50;
+      backEndService.refreshAuth = jest.fn().mockReturnValueOnce(999);
+      backEndService.connect();
+
+      setTimeout(() => {
+        expect(createMock).toHaveBeenCalled();
+        done();
+      }, 500);
+    });
+
+    it('makes another attempt if auth() returns an unexpected code', async (done) => {
+      let createMock = jest.fn();
+      wrapperMock.vm.$toast.create = createMock;
+      backEndService.refreshToken = null;
+      backEndService.maxConnectAttempts = 3;
+      backEndService.longDelay = 50;
+      backEndService.auth = jest.fn().mockReturnValueOnce(999);
+      backEndService.connect();
+
+      setTimeout(() => {
+        expect(createMock).toHaveBeenCalled();
+
+        backEndService.refreshAuth = jest.fn().mockImplementation(() => {
+          throw new Error();
+        });
+
+        backEndService.refreshToken = 'token';
+        backEndService.auth = jest.fn().mockReturnValueOnce(999);
+        createMock = jest.fn();
+        wrapperMock.vm.$toast.create = createMock;
+        backEndService.connect();
+
+        setTimeout(() => {
+          expect(createMock).toHaveBeenCalled();
+          done();
+        }, 500);
+      }, 500);
+    });
+
+    it('tries to re-authenticate if refresh token is invalid', async (done) => {
       backEndService.refreshAuth = jest.fn().mockImplementation(() => {
         throw new Error();
       });
@@ -142,6 +185,29 @@ describe('boot/BackEndService', () => {
         done();
       }, 50);
     });
+
+    it('does not store any data if it does not have any data to store', async (done) => {
+      const mockResponse = {
+        status: 200,
+      };
+      mockAxios.get.mockResolvedValueOnce(mockResponse);
+      process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
+
+      const accessTokenBefore = backEndService.accessToken;
+      const refreshTokenBefore = backEndService.refreshToken;
+
+      await backEndService.auth();
+
+      setTimeout(() => {
+        const calledWithURL = mockAxios.get.mock.calls[0][0];
+        const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/token/`);
+        expect(re.test(calledWithURL)).toBe(true);
+
+        expect(backEndService.accessToken).toBe(accessTokenBefore);
+        expect(backEndService.refreshToken).toBe(refreshTokenBefore);
+        done();
+      }, 50);
+    });
   });
 
   describe('refreshAuth() method', () => {
@@ -170,6 +236,29 @@ describe('boot/BackEndService', () => {
 
         expect(backEndService.accessToken).toBe(mockResponse.data.accessToken);
         expect(backEndService.refreshToken).toBe(mockResponse.data.refreshToken);
+        done();
+      }, 50);
+    });
+
+    it('does not store any data if it does not have any data to store', async (done) => {
+      const mockResponse = {
+        status: 200,
+      };
+      mockAxios.post.mockResolvedValueOnce(mockResponse);
+      process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
+
+      const accessTokenBefore = backEndService.accessToken;
+      const refreshTokenBefore = backEndService.refreshToken;
+
+      await backEndService.refreshAuth();
+
+      setTimeout(() => {
+        const calledWithURL = mockAxios.post.mock.calls[0][0];
+        const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/refresh`);
+        expect(re.test(calledWithURL)).toBe(true);
+
+        expect(backEndService.accessToken).toBe(accessTokenBefore);
+        expect(backEndService.refreshToken).toBe(refreshTokenBefore);
         done();
       }, 50);
     });
@@ -218,7 +307,21 @@ describe('boot/BackEndService', () => {
 
       setTimeout(() => {
         expect(mockAxios.get).toHaveBeenCalledTimes(3);
-        done();
+
+        const errorMock = new Error();
+        errorMock.response = {
+          status: 500,
+        };
+
+        mockAxios.get = jest.fn().mockImplementation(() => {
+          throw errorMock;
+        });
+
+        backEndService.try(exampleURL);
+        setTimeout(() => {
+          expect(mockAxios.get).toHaveBeenCalledTimes(3);
+          done();
+        }, 500);
       }, 500);
     });
 
@@ -365,15 +468,15 @@ describe('boot/BackEndService', () => {
       expect(LatestPrice.all()[0].data).toBe(mockPriceData);
 
       const dataTimestamp = LatestPrice.all()[0].updated;
-
       const mockPriceDataUpdated = ['such', 'data', 'very', 'updated'];
-      await backEndService.storePriceData(coin, mockPriceDataUpdated);
 
-      expect(LatestPrice.all().length).toBe(1);
-      expect(LatestPrice.all()[0].data).toBe(mockPriceDataUpdated);
-      expect(LatestPrice.all()[0].updated > dataTimestamp).toBe(true);
-
-      done();
+      setTimeout(async () => {
+        await backEndService.storePriceData(coin, mockPriceDataUpdated);
+        expect(LatestPrice.all().length).toBe(1);
+        expect(LatestPrice.all()[0].data).toBe(mockPriceDataUpdated);
+        expect(LatestPrice.all()[0].updated > dataTimestamp).toBe(true);
+        done();
+      }, 25);
     });
   });
 
