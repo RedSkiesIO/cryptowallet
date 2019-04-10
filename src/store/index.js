@@ -15,10 +15,10 @@ import Prices from './prices';
 import LatestPrice from './latestPrice';
 
 // import modules.
-import search from './search';
 import settings from './settings';
 import setup from './setup';
-import contacts from './contacts';
+import qrcode from './qrcode';
+import modals from './modals';
 
 Vue.use(Vuex);
 
@@ -69,10 +69,10 @@ VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
  */
 const store = new Vuex.Store({
   modules: {
-    search,
     settings,
     setup,
-    contacts,
+    qrcode,
+    modals,
   },
   plugins: [VuexORM.install(database)],
 });

@@ -210,7 +210,6 @@ export default {
 
       const unconfirmedTx = [];
       const confirmedTx = [];
-
       txHistory.txs.forEach((tx) => {
         tx.account_id = this.authenticatedAccount;
         tx.wallet_id = wallet.id;
@@ -423,15 +422,17 @@ export default {
                 resolve();
               }));
             } else {
-              promises.push(new Promise(async (resolve) => {
+              promises.push(() => {
+                new Promise(async (resolve) => {
                 await this.enableWallet(wallet);
                 resolve();
-              }));
+               })
+              });
             }
           });
 
           try {
-            await Promise.all(promises);
+            await Promise.all(promises.map((promise) => { promise(); }));
             await Promise.all(erc20Promises);
             this.loading = false;
 

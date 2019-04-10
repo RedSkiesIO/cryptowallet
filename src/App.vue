@@ -16,7 +16,7 @@
 
     <div
       id="q-app"
-      :class="{ hidden: hidden }"
+      :class="{ hidden: scanning }"
     >
       <div v-if="!settings.loading">
         <router-view />
@@ -34,12 +34,11 @@
           <ReceiveCoinModal />
           <ConfirmSendModal />
           <SendSuccessModal />
-          <SendFailureModal />
           <AddErc20Modal />
         </div>
       </div>
     </div>
-    <Scanner v-if="hidden" />
+    <Scanner v-if="scanning" />
   </div>
 </template>
 
@@ -58,7 +57,6 @@ import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
-import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 
@@ -77,7 +75,6 @@ export default {
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
-    SendFailureModal,
     AddErc20Modal,
     OfflineNotice,
   },
@@ -93,6 +90,7 @@ export default {
     ...mapState({
       settings: (state) => { return state.settings; },
       delay: (state) => { return state.settings.delay; },
+      scanning: (state) => { return state.qrcode.scanning; },
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -119,14 +117,22 @@ export default {
         return true;
       },
     },
-    /**
-     * Prevent from navigating back to the login screen
-     * if laready logged in
-     */
-    $route: {
-      handler(to) {
-        if (to.path === '/' && this.settings.authenticatedAccount) {
-          this.$router.push({ path: '/wallet' });
+    scanning: {
+      handler(newValue, oldValue) {
+        if (oldValue === false && newValue === true) {
+          this.$q.scanning = true;
+          if (typeof QRScanner !== 'undefined') {
+            QRScanner.show(() => {});
+          }
+        }
+
+        if (oldValue === true && newValue === false) {
+          this.$root.$emit('sendCoinModalOpened', true);
+          this.$q.scanning = false;
+          if (typeof QRScanner !== 'undefined') {
+            QRScanner.hide(() => {});
+            QRScanner.destroy(() => {});
+          }
         }
       },
     },
@@ -137,38 +143,6 @@ export default {
     window.app = this;
 
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
-
-    this.$root.$on('scanQRCode', (origin) => {
-      this.qrOrigin = origin;
-      this.$q.scanning = true;
-      this.hidden = true;
-      if (typeof QRScanner !== 'undefined') { QRScanner.show(() => {}); }
-    });
-
-    this.$root.$on('cancelScanning', () => {
-      if (typeof QRScanner !== 'undefined') {
-        QRScanner.hide(() => {});
-        QRScanner.destroy(() => {});
-      }
-
-      if (this.qrOrigin === 'addErc20') {
-        setTimeout(() => {
-          this.$q.scanning = false;
-          this.$root.$emit('walletsModalOpened', true);
-          this.$root.$emit('erc20ModalOpened', true);
-        }, this.delay.short);
-      } else {
-        setTimeout(() => {
-          this.$q.scanning = false;
-          this.$root.$emit('sendCoinModalOpened', true);
-        }, this.delay.short);
-      }
-
-      setTimeout(() => {
-        this.$q.scanning = false;
-        this.hidden = false;
-      }, this.delay.long);
-    });
   },
 
   methods: {

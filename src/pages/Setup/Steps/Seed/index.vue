@@ -21,7 +21,7 @@
       <q-btn
         color="secondary"
         label="Try Different Seed"
-        @click="generateSeed"
+        @click="anotherSeed"
       />
 
       <q-btn
@@ -49,7 +49,7 @@
 
         <q-card-actions align="right">
           <q-btn
-            v-close-dialog
+            v-close-popup
             flat
             :label="$t('cancelConfirm')"
             color="blueish"
@@ -79,43 +79,35 @@ export default {
       confirm: false,
     };
   },
-
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
   },
-
   mounted() {
     this.generateSeed();
   },
-
   methods: {
     generateSeed() {
       this.seedPhrase = bip39.generateMnemonic().split(' ');
       this.seedPhrase = this.seedPhrase.filter((word, index) => {
         return this.seedPhrase.indexOf(word) === index;
       });
-
       const expectedSeedLength = 12;
-
       if (this.seedPhrase.length === expectedSeedLength) {
         console.log(this.seedPhrase);
         this.$store.dispatch('setup/setSeed', this.seedPhrase);
       } else {
-        this.generateSeed();
+        this.anotherSeed();
       }
     },
-
     confirmed() {
       this.confirm = true;
     },
-
     done() {
       this.confirm = false;
       this.$router.push({ path: `/setup/${this.id + 1}` });
     },
-
     anotherSeed() {
       this.generateSeed();
     },
@@ -129,12 +121,10 @@ export default {
   line-height: 2;
   font-size: 1.2rem;
 }
-
 .word-span {
   margin: 0 .5em;
   display: inline-block;
 }
-
 .word-index {
   opacity: 0.3;
   white-space: nowrap;

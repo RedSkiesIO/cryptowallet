@@ -205,8 +205,10 @@ export default {
   confirm: 'Confirm',
   seedConfirmation: 'Have you stored your seed?',
   enterAccountName: 'Please enter an account name',
+  invalidSeedPhrase: 'Invalid seed phrase',
   // other
   noConnection: 'No internet connction',
   volume24h: 'Volume 24h',
   failedToConnect: 'Failed to connect to the server',
+  'N/A': 'N/A',
 };

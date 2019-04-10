@@ -7,38 +7,37 @@ import axios from 'axios';
 import { sync } from 'vuex-router-sync';
 import errorHandlerPlugin from '@/boot/ErrorHandler';
 import toasterPlugin from '@/boot/Toaster';
-import permissionsPlugin from '@/boot/Permissions';
-import appInvitationPlugin from '@/boot/AppInvitation';
-import smsPlugin from '@/boot/Sms';
-import emailPlugin from '@/boot/Email';
-import contactsImportPlugin from '@/boot/ContactsImport';
-import * as All from 'quasar'
+import vueSelectPlugin from '@/boot/VueSelect';
+import vuelidatePlugin from '@/boot/Vuelidate';
+import walletDiscoveryPlugin from '@/boot/WalletDiscovery';
+import accountInitializerPlugin from '@/boot/AccountInitializer/';
+import cryptoWalletSDKPlugin from '@/boot/CryptoWalletSDK';
 
-const { Quasar, date } = All;
+import * as All from 'quasar';
+
+const { Quasar, ClosePopup } = All;
 
 const components = Object.keys(All).reduce((object, key) => {
-  const val = All[key]
+  const val = All[key];
   if (val && val.component && val.component.name != null) {
-    object[key] = val
+    object[key] = val;
   }
-  return object
-}, {})
-
+  return object;
+}, {});
 
 const localVue = createLocalVue();
-
-localVue.use(Quasar, { components });
+localVue.use(Quasar, { components, directives: { ClosePopup } });
 localVue.use(VueI18n);
 localVue.use(Vuex);
-// localVue.use(VueRouter);
+localVue.use(VueRouter);
 localVue.prototype.$axios = axios;
 errorHandlerPlugin({ Vue: localVue });
 toasterPlugin({ Vue: localVue });
-permissionsPlugin({ Vue: localVue });
-appInvitationPlugin({ Vue: localVue });
-smsPlugin({ Vue: localVue });
-emailPlugin({ Vue: localVue });
-contactsImportPlugin({ Vue: localVue });
+vueSelectPlugin({ Vue: localVue });
+vuelidatePlugin({ Vue: localVue });
+walletDiscoveryPlugin({ Vue: localVue });
+accountInitializerPlugin({ Vue: localVue });
+cryptoWalletSDKPlugin({ Vue: localVue });
 
 /**
  * creates a new router and syncs it with the store using vuex-router-sync
@@ -49,12 +48,23 @@ const createRouter = (store = null) => {
   const router = new VueRouter({
     routes: [
       {
-        path: '/contact/:id',
+        path: '/',
+      },
+      {
+        path: '/setup/:id',
+      },
+      {
+        path: '/wallet/single/send/:id',
+      },
+      {
+        path: '/wallet/single/:id',
       },
     ],
   });
 
-  if (store) { sync(store, router); }
+  if (store) {
+    sync(store, router);
+  }
   return router;
 };
 

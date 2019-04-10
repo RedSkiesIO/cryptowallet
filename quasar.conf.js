@@ -11,11 +11,6 @@ module.exports = (ctx) => {
       'VuexRouterSync',
       'Toaster',
       'ErrorHandler',
-      'Permissions',
-      'AppInvitation',
-      'Sms',
-      'Email',
-      'ContactsImport',
       'CryptoWalletSDK',
       'WalletDiscovery',
       'CoinFormatter',
@@ -23,6 +18,7 @@ module.exports = (ctx) => {
       'VueSelect',
       'Vuelidate',
       'BackEndService',
+      'AccountInitializer'
     ],
     css: ['app.styl'],
     extras: [
@@ -96,7 +92,7 @@ module.exports = (ctx) => {
         'QCardSection',
         'QCardActions',
       ],
-      directives: ['Ripple', 'CloseDialog'],
+      directives: ['Ripple', 'CloseDialog', 'ClosePopup'],
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'BottomSheet'],
       // iconSet: 'material-icons'

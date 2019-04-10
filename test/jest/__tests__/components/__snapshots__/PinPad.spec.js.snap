@@ -119,6 +119,7 @@ exports[`PinPad component renders and matches snapshot 1`] = `
     >
       <div
         class="q-focus-helper"
+        tabindex="-1"
       />
       <div
         class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
@@ -137,6 +138,7 @@ exports[`PinPad component renders and matches snapshot 1`] = `
     >
       <div
         class="q-focus-helper"
+        tabindex="-1"
       />
       <div
         class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
@@ -146,8 +148,6 @@ exports[`PinPad component renders and matches snapshot 1`] = `
         </div>
       </div>
     </button>
-     
-    <!---->
      
     <!---->
      

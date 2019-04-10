@@ -1,10 +1,5 @@
 <template>
   <div class="container splash">
-    <!-- <div class="done-msg-wrapper">
-      <h1>THE REVOLUTION <span class="hollow-text">WILL NOT BE CENTRALISED</span></h1>
-    </div>
-     -->
-
     <div class="splash-logo">
       <h1>{{ $t('cryptoWallet') }}</h1>
       <p class="splash-slogan">
@@ -17,7 +12,7 @@
         :label="$t('getStarted')"
         color="primary"
         text-color="blueish"
-        class="splash-btn"
+        class="splash-btn get-started-btn"
         @click="getStarted"
       />
     </div>
@@ -26,84 +21,47 @@
         :label="$t('importAccount')"
         icon="get_app"
         color="blueish"
-        class="splash-btn"
+        class="splash-btn import-account-btn"
         text-color="primary"
-        @click="selection('restored')"
+        @click="importAccount()"
       />
     </div>
     <div class="flags">
-      <!-- <div class="row">
-        <q-btn
-          color="secondary"
-          label="New Account"
-          @click="selection('new')"
-        />
-      </div>
-    </div>
-    <div class="flags">
-      <q-btn
-        color="secondary"
-        label="Import Account"
-        @click="selection('restored')"
-      />
-    </div> -->
-      <div class="flags">
-        <!-- <q-select
-          v-model="selectedLang"
-          :options="languageArray"
-          :display-text="languageArray[0].label"
-          float-label="Select your language"
-          dark
-        /> -->
-        <div class="row q-input bg-blueish">
-          <div class="col-2 flag-icon">
-            <img
-              :src="selectedLang.icon"
-              class="select-icon"
-            >
-          </div>
-          <div class="col-10 input-field">
-            <v-select
-              v-model="selectedLang"
-              :options="languageArray"
-              :searchable="false"
-              :clear-search-on-select="false"
-              :filterable="false"
-              class="lang-select"
-              label="label"
-            >
-              <template
-                slot="option"
-                slot-scope="option"
-              >
-                <div class="row">
-                  <div class="col-2">
-                    <img
-                      :src="option.icon"
-                      class="input-icon"
-                    >
-                  </div>
-                  <div class="label col-10">
-                    {{ option.label }}
-                  </div>
-                </div>
-              </template>
-            </v-select>
-          </div>
+      <div class="row q-input bg-blueish">
+        <div class="col-2 flag-icon">
+          <img
+            :src="selectedLang.icon"
+            class="select-icon"
+          >
         </div>
-
-        <!-- <div
-        v-for="(message, i) in $i18n.messages"
-        :key="`message${i}`"
-        class="flag-wrapper"
-      >
-        <img
-          :src="`/assets/flags/${i}.png`"
-          class="flag_icon"
-          data-lang="`message${i}`"
-          @click="selectLang(`${i}`)"
-        >
-      </div> -->
+        <div class="col-10 input-field">
+          <v-select
+            v-model="selectedLang"
+            :options="languageArray"
+            :searchable="false"
+            :clear-search-on-select="false"
+            :filterable="false"
+            class="lang-select"
+            label="label"
+          >
+            <template
+              slot="option"
+              slot-scope="option"
+            >
+              <div class="row">
+                <div class="col-2">
+                  <img
+                    :src="option.icon"
+                    class="input-icon"
+                  >
+                </div>
+                <div class="label col-10">
+                  {{ option.label }}
+                </div>
+              </div>
+            </template>
+          </v-select>
+        </div>
       </div>
     </div>
 
@@ -111,7 +69,6 @@
       :class="{ emphasised: emphasised }"
       class="loading-footer"
     >
-      <!-- <div class="developed-by">Designed and Developed by</div> -->
       <img
         class="logo-loading"
         src="~/assets/logo-white-horizontal.png"
@@ -124,7 +81,6 @@
 import { mapState } from 'vuex';
 
 export default {
-
   data() {
     return {
       locale: this.$i18n.locale,
@@ -138,14 +94,9 @@ export default {
   },
 
   computed: {
-
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
-
-    languages() {
-      return Object.keys(this.$i18n.messages);
-    },
 
     emphasised() {
       if (this.$route.path === '/setup/0') {
@@ -154,47 +105,28 @@ export default {
       return false;
     },
 
+    supportedLanguages() {
+      return Object.keys(this.$i18n.messages).map((key) => { return key; });
+    },
+
     languageArray() {
-      return [
-        {
-          label: 'English',
-          value: 'en-gb',
-          icon: '/assets/flags/en-gb.svg',
-        },
-        {
-          label: 'French',
-          value: 'fr-fr',
-          icon: '/assets/flags/fr-fr.svg',
-        },
-        {
-          label: 'Spanish',
-          value: 'es-es',
-          icon: '/assets/flags/es-es.svg',
-        },
-        {
-          label: 'Greek',
-          value: 'el-gr',
-          icon: '/assets/flags/el-gr.svg',
-        },
-      ];
+      return this.supportedLanguages.map((lang) => {
+        return {
+          label: this.$t(lang),
+          value: lang,
+          icon: `/assets/flags/${lang}.svg`,
+        };
+      });
     },
   },
 
+  mounted() {
+    this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+  },
+
   methods: {
-    selection(type) {
-      if (this.selectedLang) {
-        this.$i18n.locale = this.selectedLang.value;
-      } else {
-        this.$i18n.locale = this.languageArray[0].value;
-      }
-
-      if (type === 'new') {
-        const skipScreen = 2;
-        this.$store.dispatch('setup/setAccountType', 'new');
-        this.$router.push({ path: `/setup/${this.id + skipScreen}` });
-        return true;
-      }
-
+    importAccount() {
+      this.$i18n.locale = this.selectedLang.value;
       this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: `/setup/${this.id + 1}` });
@@ -202,7 +134,7 @@ export default {
     },
 
     getStarted() {
-      this.$root.$emit('getStartedModalOpened', true);
+      this.$store.dispatch('setup/setGetStartedModalOpened', true);
     },
   },
 };
@@ -233,8 +165,6 @@ export default {
   justify-content: space-around;
   max-width: 80%;
   margin: 1em auto 2em auto;
-  opacity: 0;
-  height: 0;
 }
 
 .flag-wrapper {
