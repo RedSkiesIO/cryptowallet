@@ -340,7 +340,12 @@ export default {
   },
 
   async mounted() {
-    await this.getMaxedTx();
+    try {
+      await this.getMaxedTx();
+    } catch (err) {
+      this.errorHandler(err);
+    }
+
     if (this.scannedAddress) {
       this.address = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
