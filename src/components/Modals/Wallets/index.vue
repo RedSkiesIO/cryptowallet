@@ -100,10 +100,7 @@ export default {
     openAddWalletModal() {
       this.$root.$emit('erc20ModalOpened', true);
     },
-    /*eslint-disable*/
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
-
-
       const {
         txHistory,
         externalAccountDiscovery,
@@ -112,7 +109,6 @@ export default {
         internalChainAddressIndex,
         utxos,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
-
 
       const keyPair = coinSDK.generateKeyPair(initializedWallet, externalChainAddressIndex);
 
@@ -422,17 +418,15 @@ export default {
                 resolve();
               }));
             } else {
-              promises.push(() => {
-                new Promise(async (resolve) => {
+              promises.push(new Promise(async (resolve) => {
                 await this.enableWallet(wallet);
                 resolve();
-               })
-              });
+              }));
             }
           });
 
           try {
-            await Promise.all(promises.map((promise) => { promise(); }));
+            await Promise.all(promises);
             await Promise.all(erc20Promises);
             this.loading = false;
 
