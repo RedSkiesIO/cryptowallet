@@ -1,5 +1,5 @@
 <template>
-  <div v-if="latestPrice">
+  <div>
     <div class="send-coin-box">
       <div class="send-modal-heading">
         <h3>{{ $t('recipient') }}</h3>
@@ -7,7 +7,7 @@
         <q-btn
           :label="$t('paste')"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn paste-btn"
           @click="paste"
         />
       </div>
@@ -16,7 +16,7 @@
           v-model="address"
           :error="$v.address.$error"
           placeholder="address"
-          class="sm-input"
+          class="sm-input address-input"
           outlined
           dense
           color="primary"
@@ -32,7 +32,7 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label">{{ addressError }}</span>
+      <span class="error-label-address">{{ addressError }}</span>
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -40,7 +40,7 @@
           :label="$t('max')"
           :class="{ active: maxed }"
           size="sm"
-          class="send-heading-btn"
+          class="send-heading-btn max-button"
           @click="max"
         />
       </div>
@@ -52,12 +52,14 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-coin"
             outlined
             dense
             color="primary"
             @focus="updateInCoinFocus(true)"
+            @focus.native="updateInCoinFocus(true)"
             @blur="updateInCoinFocus(false)"
+            @blur.native="updateInCoinFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -71,12 +73,14 @@
             :disable="maxed"
             type="number"
             placeholder="0"
-            class="sm-input"
+            class="sm-input amount-in-currency"
             outlined
             dense
             color="primary"
             @focus="updateInCurrencyFocus(true)"
+            @focus.native="updateInCurrencyFocus(true)"
             @blur="updateInCurrencyFocus(false)"
+            @blur.native="updateInCurrencyFocus(false)"
             @input="validateInput('inCoin')"
           />
           <div class="side-content">
@@ -84,7 +88,7 @@
           </div>
         </div>
       </div>
-      <span class="error-label">{{ amountError }}</span>
+      <span class="error-label-amount">{{ amountError }}</span>
       <div class="send-modal-heading">
         <h3>
           Fee
@@ -125,6 +129,7 @@
         <q-btn
           :label="$t('send')"
           color="blueish"
+          class="send-btn"
           size="md"
           @click="send"
         />
@@ -157,9 +162,11 @@ export default {
       address: '',
       inCoin: '',
       inCurrency: '',
+      inCoinFocus: false,
       inCurrencyFocus: false,
       sendingModalOpened: false,
       feeSetting: 1,
+      fee: 0,
       rawFee: 0,
       feeData: null,
       estimatedFee: 'N/A',
@@ -204,6 +211,7 @@ export default {
     }),
 
     wallet() {
+      console.log(this.$store.getters['entities/wallet/find'](this.id).name);
       return this.$store.getters['entities/wallet/find'](this.id);
     },
 
@@ -252,6 +260,7 @@ export default {
 
     inCurrency(val) {
       if (val === null || val === '') {
+        this.inCoin = '';
         return false;
       }
       if (!this.inCoinFocus && !this.maxed) {
@@ -299,15 +308,11 @@ export default {
 
         if (!this.$v.address.between) {
           this.addressError = this.$t('ethereumAddressInvalidLength');
-          return false;
-        }
-
-        if (!this.$v.address.isValidAddress) {
+        } else if (!this.$v.address.isValidAddress) {
           this.addressError = this.$t('ethereumAddressInvalid');
-          return false;
+        } else {
+          this.addressError = '';
         }
-
-        this.addressError = '';
       }
 
       if (field === 'inCoin') {
@@ -324,7 +329,6 @@ export default {
           this.amountError = this.$t('noAmount');
         }
       }
-      return true;
     },
 
     /**
@@ -431,7 +435,7 @@ export default {
         toCurrency: true,
         withCurrencySymbol: true,
       });
-
+      this.fee = rawFee;
       this.rawFee = rawFee * gasLimit;
       this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
@@ -444,7 +448,6 @@ export default {
     isInvalid() {
       if (!this.address) { return this.$t('fillAllInputs'); }
       if (!this.inCoin) { return this.$t('fillAllInputs'); }
-      if (!this.inCurrency) { return this.$t('fillAllInputs'); }
       if (this.addressError) { return this.addressError; }
       if (this.amountError) { return this.amountError; }
 
@@ -455,36 +458,26 @@ export default {
       return getBalance(this.wallet, this.authenticatedAccount).available;
     },
 
-    unconfirmedBalance() {
-      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
-    },
-
     async sendETH() {
       const coinSDK = this.coinSDKS[this.wallet.sdk];
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
 
-      let fee = this.feeData.medium;
-      if (this.feeSetting === 0) { fee = this.feeData.low; }
-      if (this.feeSetting === 2) { fee = this.feeData.high; }
-
       try {
         const {
           transaction,
           hexTx,
-        } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, fee);
+        } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, this.fee);
 
-        // @todo dont use app global
-        /* eslint-disable-next-line */
-        app.$root.$emit('confirmSendModalOpened', true, {
+        this.$store.dispatch('modals/setConfirmTransactionData', {
           hexTx,
           transaction,
         });
+
+        this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       } catch (err) {
         this.errorHandler(err);
       }
-
-      return false;
     },
 
     async sendERC20() {
@@ -493,32 +486,21 @@ export default {
       const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
       const keypair = this.coinSDKS[this.wallet.parentSdk].generateKeyPair(parentWallet, 0);
 
-      let fee = this.feeData.medium;
-      if (this.feeSetting === 0) {
-        fee = this.feeData.low;
-      }
-
-      if (this.feeSetting === 2) {
-        fee = this.feeData.high;
-      }
-
       try {
         const {
           transaction,
           hexTx,
-        } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, fee);
+        } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, this.fee);
 
-        // @todo dont use app global
-        /* eslint-disable-next-line */
-        app.$root.$emit('confirmSendModalOpened', true, {
+        this.$store.dispatch('modals/setConfirmTransactionData', {
           hexTx,
           transaction,
         });
+
+        this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       } catch (err) {
         this.errorHandler(err);
       }
-
-      return false;
     },
 
     /**
@@ -527,16 +509,11 @@ export default {
     async send() {
       if (this.isInvalid()) {
         this.$toast.create(10, this.isInvalid(), this.delay.normal);
-        return false;
-      }
-
-      if (this.wallet.sdk === 'ERC20') {
+      } else if (this.wallet.sdk === 'ERC20') {
         await this.sendERC20();
       } else {
         await this.sendETH();
       }
-
-      return true;
     },
 
     /**
@@ -558,12 +535,10 @@ export default {
         this.inCoin = '';
         this.inCurrency = '';
         this.estimatedFee = 'N/A';
-        return false;
+      } else {
+        this.maxed = true;
+        this.updateMax();
       }
-
-      this.maxed = true;
-      this.updateMax();
-      return false;
     },
 
     getMaxAmount() {
@@ -589,7 +564,6 @@ export default {
             } else {
               const coinSDK = this.coinSDKS[this.wallet.sdk];
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
-
               if (isValid) {
                 this.$store.dispatch('qrcode/setScannedAddress', text);
                 this.$store.dispatch('qrcode/cancelScanning');

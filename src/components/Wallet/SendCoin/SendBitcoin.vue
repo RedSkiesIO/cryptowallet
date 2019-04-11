@@ -333,7 +333,10 @@ export default {
         this.inCoin = '';
         return false;
       }
-      if (!this.inCoinFocus && !this.maxed) { this.inCoin = this.currencyToCoin(val); }
+      if (!this.inCoinFocus && !this.maxed) {
+        this.inCoin = this.currencyToCoin(val);
+        console.log('inCoin ', this.inCoin);
+      }
       this.updateFee(this.feeSetting, this);
       return false;
     },
