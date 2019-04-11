@@ -34,6 +34,7 @@
           <ReceiveCoinModal />
           <ConfirmSendModal />
           <SendSuccessModal />
+          <SendFailureModal />
           <AddErc20Modal />
         </div>
       </div>
@@ -57,6 +58,7 @@ import SendCoinModal from '@/components/Modals/SendCoin';
 import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import SendSuccessModal from '@/components/Modals/SendSuccess';
+import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 
@@ -75,6 +77,7 @@ export default {
     ReceiveCoinModal,
     ConfirmSendModal,
     SendSuccessModal,
+    SendFailureModal,
     AddErc20Modal,
     OfflineNotice,
   },

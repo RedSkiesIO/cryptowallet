@@ -335,7 +335,6 @@ export default {
       }
       if (!this.inCoinFocus && !this.maxed) {
         this.inCoin = this.currencyToCoin(val);
-        console.log('inCoin ', this.inCoin);
       }
       this.updateFee(this.feeSetting, this);
       return false;
@@ -358,12 +357,14 @@ export default {
   methods: {
     updateInCoinFocus(val) {
       if (!val) {
+        this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
         this.validateInput('inCoin');
       }
       this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
       if (!val) {
+        this.inCurrency = this.formatAmount(this.inCurrency, '0.00');
         this.validateInput('inCoin');
       }
       this.inCurrencyFocus = val;
@@ -411,6 +412,15 @@ export default {
       }
 
       return true;
+    },
+
+    formatAmount(amount, format) {
+      const formattedAmount = new AmountFormatter({
+        amount,
+        format,
+      });
+
+      return formattedAmount.getFormatted();
     },
 
     /**

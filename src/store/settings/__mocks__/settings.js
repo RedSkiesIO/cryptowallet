@@ -12,6 +12,7 @@ const getters = {};
 const mutations = {};
 
 const state = {
+  authenticatedAccount: 1,
   pin: {
     minLength: 6,
   },
@@ -22,7 +23,6 @@ const state = {
   coins,
   currencies,
   supportedCoins,
-  authenticatedAccount: 1,
   selectedCurrency: {
     code: 'GBP',
     exponent: 2,

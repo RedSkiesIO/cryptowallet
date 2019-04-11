@@ -66,7 +66,10 @@
             {{ coinSymbol }}
           </div>
         </div>
-        <div class="amount-div-wrapper">
+        <div
+          v-if="latestPrice"
+          class="amount-div-wrapper"
+        >
           <q-input
             v-model="inCurrency"
             :error="$v.inCoin.$error"
@@ -211,7 +214,6 @@ export default {
     }),
 
     wallet() {
-      console.log(this.$store.getters['entities/wallet/find'](this.id).name);
       return this.$store.getters['entities/wallet/find'](this.id);
     },
 
@@ -230,9 +232,16 @@ export default {
     },
 
     coinDenomination() {
-      return this.supportedCoins.find((coin) => {
+      if (this.wallet.sdk === 'ERC20') {
+        const num = 0;
+        const denomination = num.toFixed(this.wallet.decimals);
+        return denomination;
+      }
+      const { denomination } = this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
-      }).denomination;
+      });
+
+      return denomination;
     },
 
     latestPrice() {
@@ -241,6 +250,15 @@ export default {
         return null;
       }
       return prices.data.PRICE;
+    },
+
+    decimals() {
+      if (this.wallet.sdk === 'ERC20') {
+        const { decimals } = this.wallet;
+        return decimals;
+      }
+      const decimals = 18;
+      return decimals;
     },
   },
 
@@ -254,6 +272,7 @@ export default {
       if (!this.inCurrencyFocus) {
         this.inCurrency = this.amountToCurrency(val);
       }
+
       this.validateInput('inCoin');
       return false;
     },
@@ -286,14 +305,25 @@ export default {
       const coinSDK = this.coinSDKS.Ethereum;
       return coinSDK.validateAddress(address, this.wallet.network);
     },
+
+    countDecimals(value) {
+      if (Math.floor(value) === value) { return 0; }
+      return value.toString().split('.')[1].length || 0;
+    },
     updateInCoinFocus(val) {
       if (!val) {
+        if (this.inCoin > 0 && this.countDecimals(this.inCoin) > this.decimals) {
+          this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
+        }
         this.validateInput('inCoin');
       }
       this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
       if (!val) {
+        if (this.inCurrency > 0) {
+          this.inCurrency = this.formatAmount(this.inCurrency, '0.00');
+        }
         this.validateInput('inCoin');
       }
       this.inCurrencyFocus = val;
@@ -330,6 +360,16 @@ export default {
         }
       }
     },
+
+    formatAmount(amount, format) {
+      const formattedAmount = new AmountFormatter({
+        amount,
+        format,
+      });
+
+      return formattedAmount.getFormatted();
+    },
+
 
     /**
      * Converts coins to currency as user types
