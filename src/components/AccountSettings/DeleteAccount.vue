@@ -54,7 +54,7 @@
 
         <q-card-actions align="right">
           <q-btn
-            v-close-dialog
+            v-close-popup
             flat
             :label="$t('cancelConfirm')"
             color="blueish"
@@ -145,6 +145,10 @@ export default {
     },
 
     deleteAccount() {
+      /*eslint-disable*/
+      return false;
+
+
       const { id } = this.account;
       const wasDefault = this.account.default;
 
