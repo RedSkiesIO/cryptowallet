@@ -10,6 +10,7 @@ export default {
   computed: {
     ...mapState({
       setup: (state) => { return state.setup; },
+      delay: (state) => { return state.settings.delay; },
     }),
 
     supportedCoins() {
@@ -18,11 +19,12 @@ export default {
   },
 
   mounted() {
-    const delay = 500;
     this.$store.dispatch('settings/setLoading', true);
     setTimeout(() => {
-      this.complete();
-    }, delay);
+      if (this.setup.accountName) {
+        this.complete();
+      }
+    }, this.delay.normal);
   },
 
   methods: {
@@ -39,14 +41,21 @@ export default {
           account.id,
           this.supportedCoins,
         );
-        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, account.id, this.setup.pinArray.join(''));
-        await this.backEndService.connect();
-        await this.backEndService.loadPriceFeed();
+
+        if (!this.backEndService) {
+          Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, account.id, this.setup.pinArray.join(''));
+          await this.backEndService.connect();
+          await this.backEndService.loadPriceFeed();
+        }
+
+        this.$store.dispatch('setup/clearSetupData');
         this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
         this.$store.dispatch('settings/setLayout', 'light');
         this.$router.push({ path: '/wallet' });
-        this.$store.dispatch('setup/clearSetupData');
-        this.$store.dispatch('settings/setLoading', false);
+
+        setTimeout(() => {
+          this.$store.dispatch('settings/setLoading', false);
+        }, this.delay.normal);
       } catch (err) {
         this.errorHandler(err);
       }

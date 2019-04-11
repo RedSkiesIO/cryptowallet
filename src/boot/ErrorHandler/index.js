@@ -38,7 +38,6 @@ export default ({ Vue, store }) => {
         payload: {
           account: {
             name: account.name,
-            seed: account.seed,
           },
         },
       });

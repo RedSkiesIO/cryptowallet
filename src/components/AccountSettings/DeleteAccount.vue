@@ -128,7 +128,6 @@ export default {
      */
     attemptUnlock() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
-        this.authorized = true;
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.confirmDeleteOpen = true;
@@ -166,12 +165,7 @@ export default {
       }
 
       this.closeModal();
-
-      if (this.accounts.length === 0) {
-        this.$router.push({ path: '/setup/0' });
-      } else {
-        this.$router.push({ path: '/' });
-      }
+      this.$router.push({ path: '/' });
 
       this.$store.dispatch('settings/setLayout', 'dark');
       setTimeout(() => {
