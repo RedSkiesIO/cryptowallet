@@ -79,6 +79,7 @@ export default {
   computed: {
     ...mapState({
       minLength: (state) => { return state.settings.pin.minLength; },
+      id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
     canProceed() {
       return this.input.length < this.minLength;
@@ -88,7 +89,6 @@ export default {
     },
   },
   mounted() {
-    console.log('?????', this.$store);
     this.clearPinArray();
   },
   methods: {

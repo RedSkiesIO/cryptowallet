@@ -40,6 +40,7 @@
       v-model="confirmDeleteOpen"
     >
       <q-card
+        v-if="account"
         style="width: 300px"
         class="dialog"
       >
@@ -145,10 +146,6 @@ export default {
     },
 
     deleteAccount() {
-      /*eslint-disable*/
-      return false;
-
-
       const { id } = this.account;
       const wasDefault = this.account.default;
 
@@ -156,24 +153,19 @@ export default {
       this.$store.dispatch('settings/setSelectedAccount', null);
       this.$store.dispatch('settings/setAuthenticatedAccount', null);
 
-      if (wasDefault && this.accounts.length > 1) {
-        Account.$update({
-          where: (record) => { return record.id === id; },
-          data: { default: true },
-        });
-
-        Account.$update({
-          where: (record) => { return record.id === this.accounts[0].id; },
-          data: { default: true },
-        });
-      }
-
       this.closeModal();
       this.$router.push({ path: '/' });
 
       this.$store.dispatch('settings/setLayout', 'dark');
       setTimeout(() => {
         Account.$delete(id);
+
+        if (wasDefault && this.accounts.length > 0) {
+          Account.$update({
+            where: (record) => { return record.id === this.accounts[0].id; },
+            data: { default: true },
+          });
+        }
 
         const wallets = Wallet.query().where('account_id', id).get();
         wallets.forEach((wallet) => {
@@ -195,9 +187,8 @@ export default {
           Address.$delete(address.id);
         });
 
-
         this.$store.dispatch('settings/setLoading', false);
-      }, this.delay.long);
+      }, this.delay.normal);
 
       return false;
     },

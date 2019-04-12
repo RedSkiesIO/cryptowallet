@@ -42,11 +42,9 @@ export default {
           this.supportedCoins,
         );
 
-        if (!this.backEndService) {
-          Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, account.id, this.setup.pinArray.join(''));
-          await this.backEndService.connect();
-          await this.backEndService.loadPriceFeed();
-        }
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, account.id, this.setup.pinArray.join(''));
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
 
         this.$store.dispatch('setup/clearSetupData');
         this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
