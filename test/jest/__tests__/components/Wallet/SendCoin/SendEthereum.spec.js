@@ -390,15 +390,14 @@ describe('SendEthereum component', () => {
         low: 11281690855,
         medium: 11281690855,
         high: 11281690855,
-        txLow: 0.00011281690855,
-        txMedium: 0.00011281690855,
-        txHigh: 0.00011281690855,
       };
       wrapper.vm.feeSetting = 0;
       wrapper.vm.feeChange(0);
 
       setTimeout(() => {
-        expect(wrapper.vm.feeData).toEqual(fees);
+        expect(wrapper.vm.feeData.low).toEqual(fees.low);
+        expect(wrapper.vm.feeData.medium).toEqual(fees.medium);
+        expect(wrapper.vm.feeData.high).toEqual(fees.high);
         done();
       }, 25);
     });
