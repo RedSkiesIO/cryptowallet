@@ -357,14 +357,18 @@ export default {
   methods: {
     updateInCoinFocus(val) {
       if (!val) {
-        this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
+        if (this.inCoin > 0) {
+          this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
+        }
         this.validateInput('inCoin');
       }
       this.inCoinFocus = val;
     },
     updateInCurrencyFocus(val) {
       if (!val) {
-        this.inCurrency = this.formatAmount(this.inCurrency, '0.00');
+        if (this.inCurrency > 0) {
+          this.inCurrency = this.formatAmount(this.inCurrency, '0.00');
+        }
         this.validateInput('inCoin');
       }
       this.inCurrencyFocus = val;

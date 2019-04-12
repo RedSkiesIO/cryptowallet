@@ -32,7 +32,7 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label-address">{{ addressError }}</span>
+      <span class="error-label error-label-address">{{ addressError }}</span>
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <span class="error-label-amount">{{ amountError }}</span>
+      <span class="error-label error-label-amount">{{ amountError }}</span>
       <div class="send-modal-heading">
         <h3>
           Fee
@@ -240,7 +240,6 @@ export default {
       const { denomination } = this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
       });
-
       return denomination;
     },
 
@@ -257,7 +256,7 @@ export default {
         const { decimals } = this.wallet;
         return decimals;
       }
-      const decimals = 18;
+      const decimals = 17;
       return decimals;
     },
   },
@@ -269,6 +268,7 @@ export default {
         this.validateInput('inCoin');
         return false;
       }
+
       if (!this.inCurrencyFocus) {
         this.inCurrency = this.amountToCurrency(val);
       }
@@ -307,9 +307,12 @@ export default {
     },
 
     countDecimals(value) {
-      if (Math.floor(value) === value) { return 0; }
-      return value.toString().split('.')[1].length || 0;
+      if (value.toString().split('.')[1]) {
+        return value.toString().split('.')[1].length;
+      }
+      return 0;
     },
+
     updateInCoinFocus(val) {
       if (!val) {
         if (this.inCoin > 0 && this.countDecimals(this.inCoin) > this.decimals) {
@@ -582,6 +585,9 @@ export default {
     },
 
     getMaxAmount() {
+      if (this.wallet.sdk === 'ERC20') {
+        return this.availableBalance();
+      }
       return ((this.availableBalance() * this.weiMultiplier) - this.rawFee) / this.weiMultiplier;
     },
 

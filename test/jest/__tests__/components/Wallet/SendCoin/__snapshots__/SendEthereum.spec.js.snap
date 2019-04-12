@@ -82,7 +82,7 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
     </div>
      
     <span
-      class="error-label-address"
+      class="error-label error-label-address"
     >
       
     </span>
@@ -197,7 +197,7 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
     </div>
      
     <span
-      class="error-label-amount"
+      class="error-label error-label-amount"
     >
       
     </span>
