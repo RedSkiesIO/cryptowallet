@@ -23,7 +23,6 @@ const state = {
   coins,
   currencies,
   supportedCoins,
-  authenticatedAccount: 1,
   selectedCurrency: {
     code: 'GBP',
     exponent: 2,
