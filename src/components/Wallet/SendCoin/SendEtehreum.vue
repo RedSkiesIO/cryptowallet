@@ -32,7 +32,9 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label error-label-address">{{ addressError }}</span>
+      <span class="error-label error-label-address">
+        {{ addressError }}
+      </span>
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -91,7 +93,9 @@
           </div>
         </div>
       </div>
-      <span class="error-label error-label-amount">{{ amountError }}</span>
+      <span class="error-label error-label-amount">
+        {{ amountError }}
+      </span>
       <div class="send-modal-heading">
         <h3>
           Fee

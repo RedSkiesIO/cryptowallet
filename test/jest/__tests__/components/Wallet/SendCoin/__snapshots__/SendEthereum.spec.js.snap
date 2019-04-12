@@ -85,6 +85,8 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
       class="error-label error-label-address"
     >
       
+      
+    
     </span>
      
     <div
@@ -200,6 +202,8 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
       class="error-label error-label-amount"
     >
       
+      
+    
     </span>
      
     <div
@@ -292,7 +296,7 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
         class="estimated-fee"
       >
         
-        Estimated transaction cost: £NaN
+        Estimated transaction cost: £0.43
       
       </div>
     </div>
