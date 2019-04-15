@@ -21,6 +21,18 @@
         <h1 class="header-h1">
           {{ $t('wallets') }}
         </h1>
+        <div
+          class="header-settings-button-wrapper"
+        >
+          <q-btn
+            icon="add"
+            color="secondary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click.prevent="openAddWalletModal"
+          />
+        </div>
       </div>
 
       <div class="modal-layout-wrapper no-padding">
@@ -81,6 +93,9 @@ export default {
     });
   },
   methods: {
+    openAddWalletModal() {
+      this.$root.$emit('erc20ModalOpened', true);
+    },
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
       const {
         txHistory,

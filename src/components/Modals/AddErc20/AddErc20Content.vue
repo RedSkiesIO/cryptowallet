@@ -1,28 +1,20 @@
 <template>
   <div>
-    <q-dialog
-      v-model="addErc20ModalOpened"
-      persistent
-      :maximized="true"
-      transition-show="slide-up"
-      transition-hide="slide-down"
-      content-class="light-modal"
-    >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click.prevent="goBack"
-          />
-        </div>
-        <h1 class="header-h1">
-          {{ $t('addToken') }}
-        </h1>
+    <div class="header-section">
+      <div class="header-back-button-wrapper">
+        <q-btn
+          icon="arrow_back"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="goBack"
+        />
       </div>
-      <!-- <q-tabs
+      <h1 class="header-h1">
+        {{ $t('addToken') }}
+      </h1>
+    </div>
+    <!-- <q-tabs
         swipeable
         color="secondary"
         inverted
@@ -55,118 +47,118 @@
             />
           </q-search>
         </q-tab-pane> -->
-      <!-- <q-tab-pane name="custom"> -->
-      <div
-        class="modal-layout-wrapper"
-      >
-        <div class="send-coin-box">
-          <div class="send-modal-heading">
-            <h4>{{ $t('contractAddress') }}</h4>
-            <span class="h3-line" />
-            <q-btn
-              :label="$t('paste')"
-              size="sm"
-              class="send-heading-btn paste-btn"
-              @click="paste"
-            />
-          </div>
+    <!-- <q-tab-pane name="custom"> -->
+    <div
+      class="modal-layout-wrapper"
+    >
+      <div class="send-coin-box">
+        <div class="send-modal-heading">
+          <h4>{{ $t('contractAddress') }}</h4>
+          <span class="h3-line" />
+          <q-btn
+            :label="$t('paste')"
+            size="sm"
+            class="send-heading-btn paste-btn"
+            @click="paste"
+          />
+        </div>
 
-          <div class="to">
-            <q-input
-              v-model="form.tokenContract"
-              :error="$v.form.tokenContract.$error"
-              placeholder="token contract address"
-              class="sm-input contract-input"
-              outlined
-              dense
-              autofocus
-              @blur="checkField('contract')"
-              @input="checkField('contract')"
-            />
-            <!-- <div
-              class="side-content qr-code-wrapper"
-              @click="scan"
-            >
-              <div class="hor-line" />
-              <div class="ver-line" />
-              <img src="~assets/QR.svg">
-            </div> -->
-          </div>
-          <span class="error-label">{{ contractError }}</span>
-          <div class="send-modal-heading">
-            <h4>{{ $t('name') }}</h4>
-            <span class="h3-line" />
-          </div>
-          <div class="to">
-            <q-input
-              v-model="form.tokenName"
-              :error="$v.form.tokenName.$error"
-              :disable="disableInputs"
-              :loading="loadingInputs"
-              placeholder="name"
-              class="sm-input"
-              outlined
-              dense
-              @blur="checkField('name')"
-              @input="checkField('name')"
-            />
-          </div>
-          <span class="error-label">{{ nameError }}</span>
+        <div class="to">
+          <q-input
+            v-model="form.tokenContract"
+            :error="$v.form.tokenContract.$error"
+            placeholder="token contract address"
+            class="sm-input contract-input"
+            outlined
+            dense
+            autofocus
+            @blur="checkField('contract')"
+            @input="checkField('contract')"
+          />
+          <!-- <div
+            class="side-content qr-code-wrapper"
+            @click="scan"
+          >
+            <div class="hor-line" />
+            <div class="ver-line" />
+            <img src="~assets/QR.svg">
+          </div> -->
+        </div>
+        <span class="error-label error-label-contract">{{ contractError }}</span>
+        <div class="send-modal-heading">
+          <h4>{{ $t('tokenName') }}</h4>
+          <span class="h3-line" />
+        </div>
+        <div class="to">
+          <q-input
+            v-model="form.tokenName"
+            :error="$v.form.tokenName.$error"
+            :disable="disableInputs"
+            :loading="loadingInputs"
+            placeholder="name"
+            class="sm-input name-input"
+            outlined
+            dense
+            @blur="checkField('name')"
+            @input="checkField('name')"
+          />
+        </div>
+        <span class="error-label error-label-name">{{ nameError }}</span>
 
-          <div class="send-modal-heading">
-            <h4>{{ $t('tokenSymbol') }}</h4>
-            <span class="h3-line" />
-          </div>
-          <div class="to">
-            <q-input
-              v-model="form.tokenSymbol"
-              :error="$v.form.tokenSymbol.$error"
-              :disable="disableInputs"
-              :loading="loadingInputs"
-              placeholder="symbol"
-              class="sm-input"
-              outlined
-              dense
-              upper-case
-              @blur="checkField('symbol')"
-              @input="checkField('symbol')"
-            />
-          </div>
-          <span class="error-label">{{ symbolError }}</span>
-          <div class="send-modal-heading">
-            <h4>{{ $t('tokenDecimal') }}</h4>
-            <span class="h3-line" />
-          </div>
-          <div class="to">
-            <q-input
-              v-model="form.tokenDecimals"
-              :error="$v.form.tokenDecimals.$error"
-              :disable="disableInputs"
-              :loading="loadingInputs"
-              placeholder="decimals"
-              class="sm-input"
-              type="number"
-              outlined
-              dense
-              @blur="checkField('decimals')"
-              @input="checkField('decimals')"
-            />
-          </div>
-          <span class="error-label">{{ decimalsError }}</span>
-          <div class="send">
-            <q-btn
-              :disable="disableButton"
-              label="add"
-              color="blueish"
-              size="md"
-              @click="validate"
-            />
-          </div>
+        <div class="send-modal-heading">
+          <h4>{{ $t('tokenSymbol') }}</h4>
+          <span class="h3-line" />
+        </div>
+        <div class="to">
+          <q-input
+            v-model="form.tokenSymbol"
+            :error="$v.form.tokenSymbol.$error"
+            :disable="disableInputs"
+            :loading="loadingInputs"
+            placeholder="symbol"
+            class="sm-input symbol-input"
+            outlined
+            dense
+            upper-case
+            @blur="checkField('symbol')"
+            @input="checkField('symbol')"
+          />
+        </div>
+        <span class="error-label error-label-symbol">{{ symbolError }}</span>
+        <div class="send-modal-heading">
+          <h4>{{ $t('tokenDecimal') }}</h4>
+          <span class="h3-line" />
+        </div>
+        <div class="to">
+          <q-input
+            v-model="form.tokenDecimals"
+            :error="$v.form.tokenDecimals.$error"
+            :disable="disableInputs"
+            :loading="loadingInputs"
+            placeholder="decimals"
+            class="sm-input decimals-input"
+            type="number"
+            outlined
+            dense
+            @blur="checkField('decimals')"
+            @input="checkField('decimals')"
+          />
+        </div>
+        <span class="error-label error-label-decimals">{{ decimalsError }}</span>
+        <div class="send">
+          <q-btn
+            :disable="disableButton"
+            label="add"
+            color="blueish"
+            size="md"
+            class="add-button"
+            @click="validate"
+          />
         </div>
       </div>
-      <!-- </q-tab-pane>
+    </div>
+    <!-- </q-tab-pane>
       </q-tabs> -->
-    </q-dialog>
   </div>
 </template>
 
@@ -222,6 +214,7 @@ export default {
             return value.length <= this.form.tokenContractLength && value.length >= this.form.tokenContractLength;
           },
           isValidAddress: (value) => { return this.validateAddress(value); },
+          // isValidContract: (value) => { return this.validateContract(value); },
         },
         tokenName: {
           required,
@@ -377,26 +370,27 @@ export default {
     async validate() {
       this.$v.form.$touch();
       if (this.$v.form.$error) {
-        if (this.$v.form.tokenContract.$error) {
-          this.contractError = this.$t('invalidContractLength');
-        }
-        if (this.$v.form.tokenName.$error) {
-          this.nameError = this.$t('invalidTokenName');
-        }
-        if (this.$v.form.tokenSymbol.$error) {
-          this.symbolError = this.$t('invalidTokenSymbol');
-        }
-        if (this.$v.form.tokenDecimals.$error) {
-          this.decimalsError = this.$t('invalidTokenDecimals');
-        }
+        // if (this.$v.form.tokenContract.$error) {
+        //   this.contractError = this.$t('invalidContractLength');
+        // }
+        // if (this.$v.form.tokenName.$error) {
+        //   this.nameError = this.$t('invalidTokenName');
+        // }
+        // if (this.$v.form.tokenSymbol.$error) {
+        //   this.symbolError = this.$t('invalidTokenSymbol');
+        // }
+        // if (this.$v.form.tokenDecimals.$error) {
+        //   this.decimalsError = this.$t('invalidTokenDecimals');
+        // }
         return false;
       }
-      const coinSDK = this.coinSDKS.Ethereum;
-      const valid = await coinSDK.validateAddress(this.form.tokenContract.toLowerCase(), 'ETHEREUM_ROPSTEN');
+      // const coinSDK = this.coinSDKS.Ethereum;
+      // eslint-disable-next-line max-len
+      // const valid = await coinSDK.validateAddress(this.form.tokenContract.toLowerCase(), 'ETHEREUM_ROPSTEN');
 
-      if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) {
-        return false;
-      }
+      // if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) {
+      //   return false;
+      // }
       await this.enableWallet();
       this.goBack();
       return true;
@@ -461,7 +455,8 @@ export default {
           },
         });
       } else {
-        this.$q.notify(this.$t('tokenAlreadyEnabled'));
+        this.$toast.create(10, this.$t('tokenAlreadyEnabled'), this.delay.normal);
+        this.clearFields();
       }
     },
 
@@ -481,25 +476,25 @@ export default {
     /**
      * Initiates the QR code scanner
      */
-    scan() {
-      this.$root.$emit('scanQRCode', 'addErc20');
-      this.addErc20ModalOpened = false;
-      this.$root.$emit('walletsModalOpened', false);
-      if (typeof QRScanner !== 'undefined') {
-        setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              // an error occurred, or the scan was canceled (error code `6`)
-            } else {
-              this.form.tokenContract = text;
-              this.$root.$emit('cancelScanning');
-              this.$root.$emit('walletsModalOpened', true);
-              this.addErc20ModalOpened = true;
-            }
-          });
-        }, this.delay.normal);
-      }
-    },
+    // scan() {
+    //   this.$root.$emit('scanQRCode', 'addErc20');
+    //   this.addErc20ModalOpened = false;
+    //   this.$root.$emit('walletsModalOpened', false);
+    //   if (typeof QRScanner !== 'undefined') {
+    //     setTimeout(() => {
+    //       QRScanner.scan((err, text) => {
+    //         if (err) {
+    //           // an error occurred, or the scan was canceled (error code `6`)
+    //         } else {
+    //           this.form.tokenContract = text;
+    //           this.$root.$emit('cancelScanning');
+    //           this.$root.$emit('walletsModalOpened', true);
+    //           this.addErc20ModalOpened = true;
+    //         }
+    //       });
+    //     }, this.delay.normal);
+    //   }
+    // },
 
     clearFields() {
       Object.keys(this.form).forEach((k) => { this.form[k] = ''; });
