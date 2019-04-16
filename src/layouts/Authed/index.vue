@@ -278,7 +278,6 @@ export default {
       function onlyUnique(value, index, self) {
         return self.indexOf(value) === index;
       }
-
       this.wallets.forEach((wallet) => {
         promises.push(new Promise(async (resolve, reject) => {
           try {
@@ -304,7 +303,6 @@ export default {
             } else if (wallet.sdk === 'ERC20') {
               newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
             }
-
             // update balance
             Wallet.$update({
               where: (record) => { return record.id === wallet.id; },

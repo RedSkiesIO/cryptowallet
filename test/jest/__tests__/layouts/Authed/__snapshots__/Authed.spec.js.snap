@@ -12,7 +12,6 @@ exports[`Authed.vue renders and matches snapshot 1`] = `
   >
     <q-pull-to-refresh-stub
       color="cyan"
-      disable="true"
     >
       <div
         class="background"
@@ -26,7 +25,13 @@ exports[`Authed.vue renders and matches snapshot 1`] = `
         <div
           class="total-balance-wrapper"
         >
-          <!---->
+          <div
+            class="total-balance"
+          >
+            <div>
+              £38,181.20
+            </div>
+          </div>
         </div>
          
         <div
