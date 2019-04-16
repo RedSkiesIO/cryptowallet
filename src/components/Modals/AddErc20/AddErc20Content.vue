@@ -118,7 +118,7 @@
         </div>
         <span class="error-label error-label-decimals">
           {{ decimalsError }}
-          </span>
+        </span>
         <div class="send">
           <q-btn
             :disable="disableButton"
