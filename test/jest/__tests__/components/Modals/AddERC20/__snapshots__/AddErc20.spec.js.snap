@@ -126,6 +126,8 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
         class="error-label error-label-contract"
       >
         
+        
+      
       </span>
        
       <div
@@ -174,6 +176,8 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
         class="error-label error-label-name"
       >
         
+        
+      
       </span>
        
       <div
@@ -224,6 +228,8 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
         class="error-label error-label-symbol"
       >
         
+        
+      
       </span>
        
       <div
@@ -272,6 +278,8 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
         class="error-label error-label-decimals"
       >
         
+        
+      
       </span>
        
       <div

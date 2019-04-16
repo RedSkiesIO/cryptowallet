@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Authed.vue renders and matches snapshot 1`] = `
+<q-layout-stub
+  class=""
+  view="lHh Lpr lFf"
+>
+  <header-stub />
+   
+  <div
+    class="q-pull-to-refresh-wrapper"
+  >
+    <q-pull-to-refresh-stub
+      color="cyan"
+      disable="true"
+    >
+      <div
+        class="background"
+      />
+       
+      <div
+        class="layout-wrapper"
+      >
+        <!---->
+         
+        <div
+          class="total-balance-wrapper"
+        >
+          <!---->
+        </div>
+         
+        <div
+          class="layout-shape"
+        >
+          <keep-alive-stub>
+            <router-view-stub
+              name="default"
+            />
+          </keep-alive-stub>
+        </div>
+      </div>
+    </q-pull-to-refresh-stub>
+  </div>
+   
+  <q-footer-stub
+    enter-active-class="animated slideInUp"
+    leave-active-class="animated slideOutDown"
+    value="true"
+  >
+    <mainnav-stub />
+  </q-footer-stub>
+</q-layout-stub>
+`;
