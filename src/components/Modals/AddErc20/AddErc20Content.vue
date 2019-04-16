@@ -50,7 +50,9 @@
             <img src="~assets/QR.svg">
           </div>
         </div>
-        <span class="error-label error-label-contract">{{ contractError }}</span>
+        <span class="error-label error-label-contract">
+          {{ contractError }}
+        </span>
         <div class="send-modal-heading">
           <h3>{{ $t('tokenName') }}</h3>
           <span class="h3-line" />
@@ -69,7 +71,9 @@
             @input="checkField('name')"
           />
         </div>
-        <span class="error-label error-label-name">{{ nameError }}</span>
+        <span class="error-label error-label-name">
+          {{ nameError }}
+        </span>
 
         <div class="send-modal-heading">
           <h3>{{ $t('tokenSymbol') }}</h3>
@@ -90,7 +94,9 @@
             @input="checkField('symbol')"
           />
         </div>
-        <span class="error-label error-label-symbol">{{ symbolError }}</span>
+        <span class="error-label error-label-symbol">
+          {{ symbolError }}
+        </span>
         <div class="send-modal-heading">
           <h3>{{ $t('tokenDecimal') }}</h3>
           <span class="h3-line" />
@@ -110,7 +116,9 @@
             @input="checkField('decimals')"
           />
         </div>
-        <span class="error-label error-label-decimals">{{ decimalsError }}</span>
+        <span class="error-label error-label-decimals">
+          {{ decimalsError }}
+          </span>
         <div class="send">
           <q-btn
             :disable="disableButton"
