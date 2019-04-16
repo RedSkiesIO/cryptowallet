@@ -18,6 +18,10 @@ const QRScanner = {
       if (this.mockBehaviour === 2) {
         callback(null, '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE');
       }
+
+      if (this.mockBehaviour === 3) {
+        callback(null, '0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
+      }
     }, this.delay);
   },
 };

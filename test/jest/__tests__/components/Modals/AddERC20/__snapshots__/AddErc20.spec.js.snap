@@ -49,9 +49,9 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       <div
         class="send-modal-heading"
       >
-        <h4>
+        <h3>
           Contract Address
-        </h4>
+        </h3>
          
         <span
           class="h3-line"
@@ -104,6 +104,22 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
             </div>
           </div>
         </div>
+         
+        <div
+          class="side-content qr-code-wrapper"
+        >
+          <div
+            class="hor-line"
+          />
+           
+          <div
+            class="ver-line"
+          />
+           
+          <img
+            src="~assets/QR.svg"
+          />
+        </div>
       </div>
        
       <span
@@ -115,9 +131,9 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       <div
         class="send-modal-heading"
       >
-        <h4>
+        <h3>
           Name
-        </h4>
+        </h3>
          
         <span
           class="h3-line"
@@ -129,7 +145,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       >
         <div
           class="q-field row no-wrap items-start sm-input name-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
-          placeholder="name"
+          placeholder="Name"
         >
           <div
             class="q-field__inner relative-position col self-stretch column justify-center"
@@ -144,7 +160,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
                 <input
                   class="q-field__native"
                   disabled="disabled"
-                  placeholder="name"
+                  placeholder="Name"
                   tabindex="0"
                   type="text"
                 />
@@ -163,9 +179,9 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       <div
         class="send-modal-heading"
       >
-        <h4>
+        <h3>
           Symbol
-        </h4>
+        </h3>
          
         <span
           class="h3-line"
@@ -177,7 +193,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       >
         <div
           class="q-field row no-wrap items-start sm-input symbol-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
-          placeholder="symbol"
+          placeholder="Symbol"
           upper-case=""
         >
           <div
@@ -193,7 +209,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
                 <input
                   class="q-field__native"
                   disabled="disabled"
-                  placeholder="symbol"
+                  placeholder="Symbol"
                   tabindex="0"
                   type="text"
                   upper-case=""
@@ -213,9 +229,9 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       <div
         class="send-modal-heading"
       >
-        <h4>
+        <h3>
           Decimals
-        </h4>
+        </h3>
          
         <span
           class="h3-line"
@@ -227,7 +243,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
       >
         <div
           class="q-field row no-wrap items-start sm-input decimals-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
-          placeholder="decimals"
+          placeholder="Decimals"
         >
           <div
             class="q-field__inner relative-position col self-stretch column justify-center"
@@ -242,7 +258,7 @@ exports[`AddERC20 component renders and matches snapshot 1`] = `
                 <input
                   class="q-field__native"
                   disabled="disabled"
-                  placeholder="decimals"
+                  placeholder="Decimals"
                   tabindex="0"
                   type="number"
                 />

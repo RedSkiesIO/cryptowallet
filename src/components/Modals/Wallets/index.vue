@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     openAddWalletModal() {
-      this.$root.$emit('erc20ModalOpened', true);
+      this.$store.dispatch('modals/setAddErc20ModalOpened', true);
     },
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
       const {

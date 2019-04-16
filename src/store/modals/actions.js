@@ -32,3 +32,9 @@ export function setSendFailureModalOpened(context, payload) {
 export function setSendSuccessModalOpened(context, payload) {
   context.commit('SET_SENDSUCCESS_MODAL_OPENED', payload);
 }
+/**
+ * Action setAddErc20ModalOpened
+ */
+export function setAddErc20ModalOpened(context, payload) {
+  context.commit('SET_ADDERC20_MODAL_OPENED', payload);
+}

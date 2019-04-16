@@ -14,46 +14,12 @@
         {{ $t('addToken') }}
       </h1>
     </div>
-    <!-- <q-tabs
-        swipeable
-        color="secondary"
-        inverted
-        align="justify"
-      >
-        <q-tab
-          slot="title"
-          disable
-          name="search"
-          label="Search"
-        />
-        <q-tab
-          slot="title"
-          default
-          name="custom"
-          label="Custom Token"
-        />
-
-
-        <q-tab-pane name="search">
-          <q-search
-            v-model="searchName"
-            placeholder="Start typing a token name"
-          >
-            <q-autocomplete
-              :static-data="tokens"
-              :value-field="v => ` ${ v.label } (${ v.symbol })`"
-              class="autocomplete"
-              @selected="selected"
-            />
-          </q-search>
-        </q-tab-pane> -->
-    <!-- <q-tab-pane name="custom"> -->
     <div
       class="modal-layout-wrapper"
     >
       <div class="send-coin-box">
         <div class="send-modal-heading">
-          <h4>{{ $t('contractAddress') }}</h4>
+          <h3>{{ $t('contractAddress') }}</h3>
           <span class="h3-line" />
           <q-btn
             :label="$t('paste')"
@@ -75,18 +41,18 @@
             @blur="checkField('contract')"
             @input="checkField('contract')"
           />
-          <!-- <div
+          <div
             class="side-content qr-code-wrapper"
             @click="scan"
           >
             <div class="hor-line" />
             <div class="ver-line" />
             <img src="~assets/QR.svg">
-          </div> -->
+          </div>
         </div>
         <span class="error-label error-label-contract">{{ contractError }}</span>
         <div class="send-modal-heading">
-          <h4>{{ $t('tokenName') }}</h4>
+          <h3>{{ $t('tokenName') }}</h3>
           <span class="h3-line" />
         </div>
         <div class="to">
@@ -95,7 +61,7 @@
             :error="$v.form.tokenName.$error"
             :disable="disableInputs"
             :loading="loadingInputs"
-            placeholder="name"
+            :placeholder="$t('tokenName')"
             class="sm-input name-input"
             outlined
             dense
@@ -106,7 +72,7 @@
         <span class="error-label error-label-name">{{ nameError }}</span>
 
         <div class="send-modal-heading">
-          <h4>{{ $t('tokenSymbol') }}</h4>
+          <h3>{{ $t('tokenSymbol') }}</h3>
           <span class="h3-line" />
         </div>
         <div class="to">
@@ -115,7 +81,7 @@
             :error="$v.form.tokenSymbol.$error"
             :disable="disableInputs"
             :loading="loadingInputs"
-            placeholder="symbol"
+            :placeholder="$t('tokenSymbol')"
             class="sm-input symbol-input"
             outlined
             dense
@@ -126,7 +92,7 @@
         </div>
         <span class="error-label error-label-symbol">{{ symbolError }}</span>
         <div class="send-modal-heading">
-          <h4>{{ $t('tokenDecimal') }}</h4>
+          <h3>{{ $t('tokenDecimal') }}</h3>
           <span class="h3-line" />
         </div>
         <div class="to">
@@ -135,7 +101,7 @@
             :error="$v.form.tokenDecimals.$error"
             :disable="disableInputs"
             :loading="loadingInputs"
-            placeholder="decimals"
+            :placeholder="$t('tokenDecimal')"
             class="sm-input decimals-input"
             type="number"
             outlined
@@ -157,8 +123,6 @@
         </div>
       </div>
     </div>
-    <!-- </q-tab-pane>
-      </q-tabs> -->
   </div>
 </template>
 
@@ -180,7 +144,6 @@ export default {
   name: 'AddErc20',
   data() {
     return {
-      addErc20ModalOpened: false,
       form: {
         tokenContract: '',
         tokenContractLength: 42,
@@ -210,11 +173,10 @@ export default {
           required,
           alphaNum,
           between: (value) => {
-            // eslint-disable-next-line max-len
-            return value.length <= this.form.tokenContractLength && value.length >= this.form.tokenContractLength;
+            return value.length <= this.form.tokenContractLength
+            && value.length >= this.form.tokenContractLength;
           },
           isValidAddress: (value) => { return this.validateAddress(value); },
-          // isValidContract: (value) => { return this.validateContract(value); },
         },
         tokenName: {
           required,
@@ -235,24 +197,20 @@ export default {
   },
   computed: {
     ...mapState({
-      id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      scannedAddress: (state) => { return state.qrcode.scannedAddress; },
+
     }),
-    account() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
-    },
-    wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
-    },
     supportedCoins() {
       return Coin.all();
     },
   },
   mounted() {
-    this.$root.$on('erc20ModalOpened', (value) => {
-      this.addErc20ModalOpened = value;
-    });
+    if (this.scannedAddress) {
+      this.form.tokenContract = this.scannedAddress;
+      this.$store.dispatch('qrcode/setScannedAddress', null);
+    }
   },
   methods: {
     isEthEnabled(network) {
@@ -278,15 +236,8 @@ export default {
           this.form.tokenSymbol = info.symbol;
           this.form.tokenDecimals = info.decimals;
         }
-        // this.loadingInputs = false;
-        // this.disableInputs = false;
-        // this.disableButton = false;
-
         return true;
       } catch (err) {
-        // this.disableButton = true;
-        // this.loadingInputs = false;
-        // this.contractError = err.message;
         return false;
       }
     },
@@ -299,46 +250,21 @@ export default {
           this.disableButton = true;
           this.contractError = this.$t('invalidContractLength');
         } else if (!this.$v.form.tokenContract.isValidAddress) {
-          this.contractError = 'Invalid ERC20 contract';
-        // } else if (!this.validateContract(this.form.tokenContract)) {
-        //   this.$v.form.tokenContract.$error = true;
-        //   this.disableButton = true;
-        //   this.loadingInputs = false;
-        //   this.contractError = 'Invalid ERC20 contract';
-        // }
+          this.contractError = this.$t('invalidContractAddress');
         } else {
+          this.loadingInputs = true;
           const valid = await this.validateContract(this.form.tokenContract);
           if (!valid) {
+            this.disableInputs = true;
             this.disableButton = true;
             this.loadingInputs = false;
-            this.contractError = 'Invalid ERC20 contract';
+            this.contractError = this.$t('invalidContractAddress');
           } else {
-          // this.loadingInputs = true;
             this.contractError = ' ';
             this.loadingInputs = false;
             this.disableInputs = false;
             this.disableButton = false;
           }
-
-          // const coinSDK = this.coinSDKS.ERC20;
-          // try {
-          //   const info = await coinSDK.getTokenData(this.form.tokenContract, 'ETHEREUM_ROPSTEN');
-          //   if (info) {
-          //     this.form.tokenName = info.name;
-          //     this.form.tokenSymbol = info.symbol;
-          //     this.form.tokenDecimals = info.decimals;
-          //     this.loadingInputs = false;
-          //     this.disableButton = false;
-          //   } else {
-          //     this.loadingInputs = false;
-          //     this.disableInputs = false;
-          //     this.disableButton = false;
-          //   }
-          // } catch (err) {
-          //   this.disableButton = true;
-          //   this.loadingInputs = false;
-          //   this.contractError = err.message;
-          // }
         }
       }
       if (field === 'name') {
@@ -346,54 +272,33 @@ export default {
 
         if (this.$v.form.tokenName.$error) {
           this.nameError = this.$t('invalidTokenName');
-          return;
+        } else {
+          this.nameError = ' ';
         }
-        this.nameError = ' ';
       }
       if (field === 'symbol') {
         this.$v.form.tokenSymbol.$touch();
         if (this.$v.form.tokenSymbol.$error) {
           this.symbolError = this.$t('invalidTokenSymbol');
-          return;
+        } else {
+          this.symbolError = ' ';
         }
-        this.symbolError = ' ';
       }
       if (field === 'decimals') {
         this.$v.form.tokenDecimals.$touch();
         if (this.$v.form.tokenDecimals.$error) {
           this.decimalsError = this.$t('invalidTokenDecimals');
-          return;
+        } else {
+          this.decimalsError = ' ';
         }
-        this.decimalsError = ' ';
       }
     },
     async validate() {
       this.$v.form.$touch();
-      if (this.$v.form.$error) {
-        // if (this.$v.form.tokenContract.$error) {
-        //   this.contractError = this.$t('invalidContractLength');
-        // }
-        // if (this.$v.form.tokenName.$error) {
-        //   this.nameError = this.$t('invalidTokenName');
-        // }
-        // if (this.$v.form.tokenSymbol.$error) {
-        //   this.symbolError = this.$t('invalidTokenSymbol');
-        // }
-        // if (this.$v.form.tokenDecimals.$error) {
-        //   this.decimalsError = this.$t('invalidTokenDecimals');
-        // }
-        return false;
+      if (!this.$v.form.$error) {
+        await this.enableWallet();
+        this.goBack();
       }
-      // const coinSDK = this.coinSDKS.Ethereum;
-      // eslint-disable-next-line max-len
-      // const valid = await coinSDK.validateAddress(this.form.tokenContract.toLowerCase(), 'ETHEREUM_ROPSTEN');
-
-      // if (!valid || !this.form.tokenName || !this.form.tokenSymbol || !this.form.tokenContract) {
-      //   return false;
-      // }
-      await this.enableWallet();
-      this.goBack();
-      return true;
     },
 
     async enableWallet() {
@@ -476,191 +381,37 @@ export default {
     /**
      * Initiates the QR code scanner
      */
-    // scan() {
-    //   this.$root.$emit('scanQRCode', 'addErc20');
-    //   this.addErc20ModalOpened = false;
-    //   this.$root.$emit('walletsModalOpened', false);
-    //   if (typeof QRScanner !== 'undefined') {
-    //     setTimeout(() => {
-    //       QRScanner.scan((err, text) => {
-    //         if (err) {
-    //           // an error occurred, or the scan was canceled (error code `6`)
-    //         } else {
-    //           this.form.tokenContract = text;
-    //           this.$root.$emit('cancelScanning');
-    //           this.$root.$emit('walletsModalOpened', true);
-    //           this.addErc20ModalOpened = true;
-    //         }
-    //       });
-    //     }, this.delay.normal);
-    //   }
-    // },
+    scan() {
+      this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setAddErc20ModalOpened', false);
+
+      if (typeof QRScanner !== 'undefined') {
+        setTimeout(() => {
+          QRScanner.scan((err, text) => {
+            if (err) {
+              this.errorHandler(err);
+            }
+
+            this.$store.dispatch('qrcode/setScannedAddress', text);
+            this.$store.dispatch('qrcode/cancelScanning');
+            this.$store.dispatch('modals/setAddErc20ModalOpened', true);
+          });
+        }, this.delay.normal);
+      }
+    },
 
     clearFields() {
       Object.keys(this.form).forEach((k) => { this.form[k] = ''; });
     },
     goBack() {
       this.clearFields();
-      this.addErc20ModalOpened = false;
+      this.$store.dispatch('modals/setAddErc20ModalOpened', false);
     },
   },
 };
 </script>
 
 <style>
-/* .to {
-  display: flex;
-  justify-content: space-between;
-}
-
-.send-coin-box .q-input {
-  flex: 1;
-}
-
-.amount > div {
-  display: flex;
-  align-items: center;
-}
-
-.sending-wallet-modal {
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  font-size: 1.1em;
-  line-height: 1;
-}
-
-.fee > .label {
-  margin-right: 2rem;
-}
-
-.fee .q-slider-label {
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-.estimated-fee {
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-.send {
-  margin-top: 1rem;
-  display: flex;
-  padding-top: 1rem;
-  justify-content: center;
-}
-.to .q-if-inverted .q-if-control {
-  color: #ccc;
-}
-
-/* .send button.q-btn {
-    border: 1px solid;
-    border-color: #475876;
-    background: white;
-} */
-/* .send-modal-heading {
-  position: relative;
-  margin: 0.7rem 0 .5rem 0;
-  overflow: hidden;
-}
-
-.send-modal-heading h4 {
-  display: inline-block;
-  margin: 0;
-  margin-right: 1rem;
-}
-
-.send-modal-heading .h3-line {
-  width: 100%;
-  border-bottom: 1px solid whitesmoke;
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-}
-
-.sm-input {
-  font-size: 0.7rem;
-}
-
-.qr-code-wrapper {
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid black;
-  position: relative;
-  cursor: pointer;
-}
-
-.qr-code-wrapper {
-  width: 90%;
-  height: 90%;
-  position: relative;
-  z-index: 2;
-}
-
-.qr-code-wrapper .hor-line {
-  height: 50%;
-  width: 110%;
-  background: white;
-  position: absolute;
-  z-index: 1;
-}
-
-.qr-code-wrapper .ver-line {
-  height: 110%;
-  width: 50%;
-  background: white;
-  position: absolute;
-  z-index: 1;
-}
-
-.side-content {
-  width: 3rem;
-  margin-left: 0.5rem;
-  text-align: center;
-}
-
-.amount-div-wrapper {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.grey-input {
-  background: whitesmoke!important;
-  box-shadow: none;
-  border: 1px solid rgba(0,0,0,0.2);
-}
-
-.grey-input input {
-  color: #1e3c57!important;
-}
-
-.grey-input.q-if-inverted:not(.q-if-inverted-light) .q-input-target::-webkit-input-placeholder {
-  color: #afafaf !important;
-}
-
-.error {
-  color: red;
-  min-height: 0.5em;
-  display: inline-block;
-}
-
-.autocomplete .q-item{
-  margin: 0.5em;
-}
-.autocomplete .q-item-image{
-  min-width: 48px;
-  max-width: 48px;
-}
-.autocomplete .q-item-label{
-  color:black;
-} */
 .send-coin-box {
   margin-top: 1rem;
   width: 100%;
@@ -722,7 +473,7 @@ export default {
 
 .send-modal-heading {
   position: relative;
-  margin: 0 0 .5rem 0;
+  margin: .5rem 0 .5rem 0;
   overflow: hidden;
 }
 

@@ -23,30 +23,11 @@ const coinSDKSMock = {
   Ethereum: {
     validateAddress: jest.fn().mockReturnValue(false),
     generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
-    async createEthTx() {
-      return {
-        transaction: {
-          value: 10,
-          fee: 0.00002292,
-        },
-        hexTx: '01000000000101b40e427611c0eead720b813d4dd2884c24ceccc49821663ea2b9f550490909ff01000000171600149fcebc74505da311ed8b28e36036945e2fc38282ffffffff02a6fe01000000000017a9148540dfedbf1bda7c1a8e29b28f7b914bd8e128cc87eacd7c000000000017a9146fdbb9c720eb4482235279dab579a80e71080fd1870247304402202c8d14b4745bde39cac8fd5cadbe49a637f9d63ba1e7a69cb9e06a69933b93bc022021dfee161715504f9fa1087da66bf13ef6ceed8c7e465fa5f457a21215634f58012103a5f8746a824a6a197bfe6fdc47e3de574abf0ebe0debddf0795945fde2c3a20800000000',
-      };
-    },
   },
   ERC20: {
     generateERC20Wallet: jest.fn(),
     getTokenData: jest.fn().mockReturnValue({ name: 'Dai', symbol: 'DAI', decimals: '18' }),
     validateAddress: jest.fn().mockReturnValue(false),
-    generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
-    async transfer() {
-      return {
-        transaction: {
-          value: 10,
-          fee: 0.00002292,
-        },
-        hexTx: '01000000000101b40e427611c0eead720b813d4dd2884c24ceccc49821663ea2b9f550490909ff01000000171600149fcebc74505da311ed8b28e36036945e2fc38282ffffffff02a6fe01000000000017a9148540dfedbf1bda7c1a8e29b28f7b914bd8e128cc87eacd7c000000000017a9146fdbb9c720eb4482235279dab579a80e71080fd1870247304402202c8d14b4745bde39cac8fd5cadbe49a637f9d63ba1e7a69cb9e06a69933b93bc022021dfee161715504f9fa1087da66bf13ef6ceed8c7e465fa5f457a21215634f58012103a5f8746a824a6a197bfe6fdc47e3de574abf0ebe0debddf0795945fde2c3a20800000000',
-      };
-    },
   },
 };
 
@@ -116,7 +97,7 @@ describe('AddERC20 component', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  describe('Address section', () => {
+  describe('Inputs', () => {
     describe('paste', () => {
       it('pastes the contract address if paste button is clicked', () => {
         cordova.plugins.clipboard.mockBehaviour = 1;
@@ -132,14 +113,29 @@ describe('AddERC20 component', () => {
     });
 
 
-    /*    describe('QRScanner', () => {
+    describe('QRScanner', () => {
       it('opens the QR code scanner when code icon is clicked', async (done) => {
         QRScanner.mockBehaviour = 2;
         wrapper.find('.qr-code-wrapper').trigger('click');
         expect(storeMocks.actions.scanQRCode).toHaveBeenCalled();
-        expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
-        expect(storeMocks.actions.setSendCoinModalOpened.mock.calls[0][1]).toBe(false);
+        expect(storeMocks.actions.setAddErc20ModalOpened).toHaveBeenCalled();
+        expect(storeMocks.actions.setAddErc20ModalOpened.mock.calls[0][1]).toBe(false);
         done();
+      });
+
+      it('dispatches correct actions', async (done) => {
+        QRScanner.mockBehaviour = 3;
+        // wrapper.vm.scannedAddress.mockReturnValue('0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
+        wrapper.find('.qr-code-wrapper').trigger('click');
+
+        setTimeout(() => {
+          expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
+          expect(storeMocks.actions.setScannedAddress.mock.calls[0][1]).toBe('0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
+          expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
+          expect(storeMocks.actions.setAddErc20ModalOpened).toHaveBeenCalled();
+          expect(storeMocks.actions.setAddErc20ModalOpened.mock.calls[0][1]).toBe(false);
+          done();
+        }, 700);
       });
 
       it('passes the error to the errorHandler if QRScanner fails', async (done) => {
@@ -152,44 +148,37 @@ describe('AddERC20 component', () => {
         }, 1000);
       });
 
-      it('does nothing if scanned qrcode contains invalid address', async (done) => {
-        QRScanner.mockBehaviour = 1;
-        wrapper.find('.qr-code-wrapper').trigger('click');
-
-        setTimeout(() => {
-          expect(storeMocks.actions.setScannedAddress.mock.calls.length).toBe(0);
-          expect(storeMocks.actions.cancelScanning.mock.calls.length).toBe(0);
-          done();
-        }, 1000);
-      });
-
-      it('dispatches correct actions', async (done) => {
-        coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(true);
-        QRScanner.mockBehaviour = 2;
-        wrapper.find('.qr-code-wrapper').trigger('click');
-
-        setTimeout(() => {
-          expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
-          expect(storeMocks.actions.setScannedAddress.mock.calls[0][1]).toBe('2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE');
-          expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
-          expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
-          expect(storeMocks.actions.setSendCoinModalOpened.mock.calls[0][1]).toBe(false);
-          done();
-        }, 700);
-      });
-
       it('does nothing if device doesn\'t have a camera', async (done) => {
         QRScanner = undefined;
         wrapper.find('.qr-code-wrapper').trigger('click');
 
         setTimeout(() => {
-          expect(storeMocks.state.sendCoinModalOpened).toBe(false);
+          expect(storeMocks.state.addErc20ModalOpened).toBe(false);
           done();
         }, 1000);
       });
-    }); */
 
-    /*  describe('contract address input', () => {
+      it('uses scanned QRCode address if available', async (done) => {
+        const custom = {
+          state: {
+            qrcode: {
+              scannedAddress: 'scannedString',
+            },
+          },
+          mutations: {},
+          getters: {},
+          actions: {},
+        };
+
+        storeInit(custom, defaultProps);
+        setTimeout(() => {
+          expect(wrapper.vm.form.tokenContract).toBe(custom.state.qrcode.scannedAddress);
+          done();
+        }, 25);
+      });
+    });
+
+    describe('contract address input', () => {
       it('recognizes invalid and valid address if you input into the field', (done) => {
         coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(false);
         const input = wrapper.find('.contract-input input');
@@ -236,7 +225,7 @@ describe('AddERC20 component', () => {
           }, 100);
         }, 100);
       });
-    }); */
+    });
 
     describe('other inputs', () => {
       it('checks if the token name has been entered', (done) => {
@@ -246,7 +235,7 @@ describe('AddERC20 component', () => {
         contractInput.trigger('input');
         setTimeout(() => {
           const nameInput = wrapper.find('.name-input input');
-          nameInput.element.value = undefined;
+          nameInput.element.value = '';
           nameInput.trigger('input');
           setTimeout(() => {
             expect(wrapper.contains('.name-input.q-field--error')).toBe(true);
@@ -314,7 +303,21 @@ describe('AddERC20 component', () => {
     });
   });
 
-  /* describe('Add button', () => {
+  describe('Add button', () => {
+    it('validates the input fields', (done) => {
+      const input = wrapper.find('.contract-input input');
+      coinSDKSMock.ERC20.getTokenData = jest.fn().mockReturnValue({ name: 'Dai', symbol: 'DAI', decimals: '100' });
+      input.element.value = '0xcda4cddb41b60fd84252912967397df7d3c1bfdd';
+      input.trigger('input');
+      setTimeout(() => {
+        wrapper.find('.add-button').trigger('click');
+        setTimeout(() => {
+          expect(wrapper.contains('.decimals-input.q-field--error')).toBe(true);
+          done();
+        }, 100);
+      }, 100);
+    });
+
     it('creates a new Coin and wallet and adds them to the database', (done) => {
       const input = wrapper.find('.contract-input input');
       coinSDKSMock.ERC20.getTokenData = jest.fn().mockReturnValue({ name: 'Dai', symbol: 'DAI', decimals: '18' });
@@ -372,165 +375,5 @@ describe('AddERC20 component', () => {
         }, 100);
       }, 100);
     });
-  }); */
-/*
-  describe('Send button', () => {
-    it('validates required inputs when clicked', async (done) => {
-      wrapper.vm.$toast.create = jest.fn();
-      wrapper.find('.send-btn').trigger('click');
-      setTimeout(() => {
-        expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('fillAllInputs'), 500);
-
-        wrapper.vm.address = '123';
-        wrapper.vm.$toast.create = jest.fn();
-        wrapper.find('.send-btn').trigger('click');
-        setTimeout(() => {
-          expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('fillAllInputs'), 500);
-          done();
-        }, 25);
-      }, 25);
-    });
-
-    it('checks if provided address is valid', async (done) => {
-      wrapper.vm.$toast.create = jest.fn();
-      const input = wrapper.find('.address-input input');
-      input.trigger('focus');
-      input.element.value = '123';
-      input.trigger('input');
-
-      wrapper.vm.inCoin = 0.01;
-
-      wrapper.find('.send-btn').trigger('click');
-      setTimeout(() => {
-        expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('ethereumAddressInvalidLength'), 500);
-        done();
-      }, 25);
-    });
-
-    it('check if provided amount is valid', async (done) => {
-      wrapper.vm.$toast.create = jest.fn();
-      wrapper.vm.address = '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE';
-
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 9999;
-      inputInCoin.trigger('input');
-
-      setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
-        setTimeout(() => {
-          expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('notEnoughFunds'), 500);
-          done();
-        }, 25);
-      }, 25);
-    });
-
-    it('it dispatches correct actions with correct payloads if passed all the checks', async (done) => {
-      wrapper.vm.$toast.create = jest.fn();
-      wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDEE';
-
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 0.001;
-      inputInCoin.trigger('input');
-
-      setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
-        setTimeout(() => {
-          expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[0][1]).toBe(true);
-          const txData = storeMocks.actions.setConfirmTransactionData.mock.calls[0][1];
-          expect(txData.hexTx).toBeTruthy();
-          expect(txData.transaction).toBeTruthy();
-          done();
-        }, 25);
-      }, 25);
-    });
-
-    it('it dispatches correct actions with correct payloads if passed all the checks for ERC20 tokens', async (done) => {
-      storeInit({}, defaultProps, 4);
-      wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDEE';
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 0.001;
-      inputInCoin.trigger('input');
-      setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
-        setTimeout(() => {
-          expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[0][1]).toBe(true);
-          const txData = storeMocks.actions.setConfirmTransactionData.mock.calls[0][1];
-          expect(txData.hexTx).toBeTruthy();
-          expect(txData.transaction).toBeTruthy();
-          done();
-        }, 25);
-      }, 25);
-    });
   });
-
-  describe('Other', () => {
-    it('passes the error to the errorHandler if async method coinSDK.createEthTX fails', async (done) => {
-      coinSDKSMock.Ethereum.createEthTx = async function createEthTx() {
-        throw new Error('test error');
-      };
-
-      wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDEE';
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 0.001;
-      inputInCoin.trigger('input');
-      setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
-
-        setTimeout(() => {
-          expect(wrapper.vm.errorHandler).toHaveBeenCalled();
-          coinSDKSMock.Ethereum.createEthTx = async function createEthTx() {
-            return { transaction: { value: 10, fee: 0.00002292 } };
-          };
-          done();
-        }, 25);
-      }, 25);
-    });
-
-    it('passes the error to the errorHandler if async method coinSDK.transfer fails', async (done) => {
-      storeInit({}, defaultProps, 4);
-      coinSDKSMock.ERC20.transfer = async function transfer() {
-        throw new Error('test error');
-      };
-      wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDEE';
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 0.001;
-      inputInCoin.trigger('input');
-      setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
-
-        setTimeout(() => {
-          expect(wrapper.vm.errorHandler).toHaveBeenCalled();
-          coinSDKSMock.ERC20.transfer = async function transfer() {
-            return { transaction: { value: 10, fee: 0.00002292 } };
-          };
-          done();
-        }, 25);
-      }, 25);
-    });
-
-
-    it('uses scanned QRCode address if available', async (done) => {
-      const custom = {
-        state: {
-          qrcode: {
-            scannedAddress: 'scannedString',
-          },
-        },
-        mutations: {},
-        getters: {},
-        actions: {},
-      };
-
-      storeInit(custom, defaultProps);
-      setTimeout(() => {
-        expect(wrapper.vm.address).toBe(custom.state.qrcode.scannedAddress);
-        done();
-      }, 25);
-    });
-  }); */
 });

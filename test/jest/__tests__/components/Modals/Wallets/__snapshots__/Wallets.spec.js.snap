@@ -35,6 +35,20 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
         Wallets
       
       </h1>
+       
+      <div
+        class="header-settings-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn icon-btn-right"
+          color="secondary"
+          flat="true"
+          icon="add"
+          ripple="true"
+          size="lg"
+        />
+      </div>
     </div>
      
     <div
