@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, createWrapper } from '@vue/test-utils';
 import Authed from '@/layouts/Authed';
 import Header from '@/layouts/Header';
 import MainNav from '@/layouts/MainNav';
@@ -28,9 +28,13 @@ const bitcoinLatestPriceData = JSON.parse('{"$id":"BTC_GBP","coin":"BTC","curren
 const coinSDKSMock = {
   Bitcoin: {
     getUTXOs: jest.fn().mockReturnValue([utxoData]),
+    getTransactionHistory: jest.fn().mockReturnValue({
+      txs: [{ hash: 123, receiver: [], sender: [] }],
+    }),
   },
   Ethereum: {
     getBalance: jest.fn().mockReturnValue(20),
+    getTransactionHistory: jest.fn().mockReturnValue({ txs: [{ hash: 123 }] }),
     validateAddress: jest.fn().mockReturnValue(false),
     generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
     async createEthTx() {
@@ -45,6 +49,7 @@ const coinSDKSMock = {
   },
   ERC20: {
     getBalance: jest.fn().mockReturnValue(20),
+    getTransactionHistory: jest.fn().mockReturnValue([{ hash: 123 }]),
     validateAddress: jest.fn().mockReturnValue(false),
     generateKeyPair: jest.fn().mockReturnValue({ address: '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd' }),
     async transfer() {
@@ -84,7 +89,7 @@ describe('Authed.vue', () => {
     return shallowMount(Authed, options);
   }
 
-  function storeInit(custom) {
+  function storeInit(custom, path = '/wallet') {
     storeMocks = createStoreMocks(custom);
     Wallet.insert({ data: [bitcoinWalletData, walletData] });
     Wallet.insert({ data: erc20WalletData });
@@ -94,7 +99,7 @@ describe('Authed.vue', () => {
     Utxo.insert({ data: utxoData });
     LatestPrice.insert({ data: [bitcoinLatestPriceData, latestPriceData] });
     router = createRouter(storeMocks.store);
-    router.push({ path: '/wallet' });
+    router.push({ path });
     wrapper = wrapperInit({
       i18n,
       router,
@@ -109,7 +114,10 @@ describe('Authed.vue', () => {
     });
   }
 
-  beforeEach(() => { return storeInit(); });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    return storeInit();
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -127,37 +135,63 @@ describe('Authed.vue', () => {
     expect(wrapper.contains(MainNav)).toBe(true);
   });
 
-  it('refresher updates the balances', (done) => {
-    wrapper.vm.refresher(done);
+  it('checks if pull to refresh is enabled on route change', () => {
+    expect(wrapper.vm.isPullEnabled).toBe(true);
+    router.push({ path: '/settings' });
+    expect(wrapper.vm.isPullEnabled).toBe(false);
+  });
+
+  it('hides balance on isHomeBalanceVisible false event', () => {
+    wrapper.vm.$root.$emit('isHomeBalanceVisible', false);
+    expect(wrapper.vm.isBalanceVisible).toBe(false);
+    expect(wrapper.contains('.no-balance')).toBe(true);
+  });
+
+  it('prevent method returns false', () => {
+    wrapper.vm.$root.$emit('isHomeBalanceVisible', false);
+    expect(wrapper.vm.prevent()).toBe(false);
+  });
+
+  it('Coin header is set to display on wallet single pages', () => {
+    const routes = ['/wallet/single/3', '/wallet/single/send/3', '/wallet/single/receive/3', '/wallet/single/prices/3'];
+    routes.forEach((route) => {
+      router.push({ path: route });
+      expect(wrapper.vm.showCoinHeader).toBeTruthy();
+    });
+  });
+
+  it('refresher fires an updateWalletSingle event on /wallet/single', (done) => {
+    storeInit(undefined, '/wallet/single/3');
+    const rootWrapper = createWrapper(wrapper.vm.$root);
+    wrapper.vm.refresher();
     setTimeout(() => {
-      expect(Wallet.all()[0].confirmedBalance).toEqual(20);
-      expect(Wallet.all()[1].confirmedBalance).toEqual(20);
-      expect(Wallet.all()[2].confirmedBalance).toEqual(0.0027175);
+      expect(rootWrapper.emitted('updateWalletSingle')).toBeTruthy();
       done();
     }, 500);
   });
 
-/*     it('calls updateMainNavVisibility() on route change', () => {
-      const updateMainNavVisibilityMock = jest.fn();
-      wrapper.setMethods({ updateMainNavVisibility: updateMainNavVisibilityMock });
-      router.push({ path: '/fake1' });
-      router.push({ path: '/fake2' });
-      expect(updateMainNavVisibilityMock).toHaveBeenCalledTimes(2);
+  it('refresher updates the balances of all imported wallets on /wallet', (done) => {
+    wrapper.vm.refresher(() => {
+      expect(Wallet.all()[0].confirmedBalance).toEqual(20);
+      expect(Wallet.all()[1].confirmedBalance).toEqual(20);
+      expect(Wallet.all()[2].confirmedBalance).toEqual(0.0027175);
+      done();
     });
+  });
 
-    it('calls updateMainNavVisibility() on isSearchingContacts change', () => {
-      const updateMainNavVisibilityMock = jest.fn();
-      wrapper.setMethods({ updateMainNavVisibility: updateMainNavVisibilityMock });
-      store.state.search.isSearchingContacts = true;
-      expect(updateMainNavVisibilityMock).toHaveBeenCalledTimes(1);
-      store.state.search.isSearchingContacts = false;
-      expect(updateMainNavVisibilityMock).toHaveBeenCalledTimes(2);
+  it('updateBalances function handles errors', (done) => {
+    coinSDKSMock.Ethereum.getBalance.mockImplementation(() => { throw new Error('Update balance Error'); });
+    wrapper.vm.refresher(() => {
+      expect(wrapper.vm.errorHandler).toHaveBeenCalledWith(new Error('Update balance Error'));
+      done();
     });
+  });
 
-  it('hides MainNav if searching contacts and route is "/wallet/payments"', () => {
-    expect(wrapper.find('qlayoutfooter-stub').isVisible()).toBe(true);
-    store.state.search.isSearchingContacts = true;
-    router.push({ path: '/wallet/payments' });
-    expect(wrapper.find('qlayoutfooter-stub').isVisible()).toBe(false);
-  }); */
+  it('refresher function handles errors', (done) => {
+    backEndServiceMock.loadPriceFeed.mockImplementation(() => { throw new Error('Test Error'); });
+    wrapper.vm.refresher(() => {
+      expect(wrapper.vm.errorHandler).toHaveBeenCalledWith(new Error('Test Error'));
+      done();
+    });
+  });
 });
