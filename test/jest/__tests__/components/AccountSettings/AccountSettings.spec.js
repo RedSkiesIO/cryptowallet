@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import { shallowMount } from '@vue/test-utils';
 import AccountSettings from '@/components/AccountSettings';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
