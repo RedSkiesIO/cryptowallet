@@ -176,6 +176,7 @@ export default {
   tokenSymbol: 'Symbol',
   tokenDecimal: 'Decimals',
   invalidContractLength: 'The contract address must be 42 characters in length.',
+  invalidContractAddress: 'Invalid ERC20 contract',
   invalidTokenName: 'Token name is required',
   invalidTokenSymbol: 'Token Symbol must be between 0 and 12 characters',
   invalidTokenDecimals: 'Token Decimals must be at least 0, and not over 36.',
