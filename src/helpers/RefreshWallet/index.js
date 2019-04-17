@@ -110,8 +110,9 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
     addressesRaw,
     wallet.network,
   );
-
+  let newBalance = 0;
   utxos.forEach((utxo) => {
+    newBalance += utxo.amount;
     const found = Utxo.query()
       .where('txid', utxo.txid)
       .where('vout', utxo.vout)
@@ -123,6 +124,11 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
       utxo.wallet_id = wallet.id;
       Utxo.$insert({ data: utxo });
     }
+  });
+
+  Wallet.$update({
+    where: (record) => { return record.id === wallet.id; },
+    data: { confirmedBalance: parseFloat(newBalance, 10) },
   });
 
   return true;
@@ -137,7 +143,6 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
 
   let addressesRaw = addresses.map((item) => { return item.address; });
   addressesRaw = addressesRaw.filter(onlyUnique);
-
   const { network } = wallet;
 
   const apiReturnLimit = 50;
