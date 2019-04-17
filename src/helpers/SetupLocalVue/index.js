@@ -54,13 +54,27 @@ const createRouter = (store = null) => {
         path: '/',
       },
       {
+        path: '/wallet',
+        name: 'wallet',
+      },
+      {
         path: '/setup/:id',
       },
       {
-        path: '/wallet/single/send/:id',
+        path: '/wallet/single/:id',
+        name: 'walletSingle',
       },
       {
-        path: '/wallet/single/:id',
+        path: '/wallet/single/prices/:id',
+        name: 'coinSinglePrices',
+      },
+      {
+        path: '/wallet/single/send/:id',
+        name: 'sendCoinSingle',
+      },
+      {
+        path: '/wallet/single/receive/:id',
+        name: 'receiveCoinSingle',
       },
     ],
   });

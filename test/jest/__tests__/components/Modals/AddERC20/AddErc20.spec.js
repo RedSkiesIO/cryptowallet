@@ -34,13 +34,13 @@ describe('AddERC20 component', () => {
     return mount(AddErc20, options);
   }
 
-  function storeInit(custom, propsData, id = 3) {
+  function storeInit(custom, propsData) {
     storeMocks = createStoreMocks(custom);
     Wallet.insert({ data: walletData });
     Wallet.insert({ data: erc20WalletData });
     Coin.insert({ data: [coinData, erc20CoinData] });
     router = createRouter(storeMocks.store);
-    router.push({ path: `/wallet/single/send/${id}` });
+    router.push({ path: '/wallet' });
     wrapper = wrapperInit({
       i18n,
       router,

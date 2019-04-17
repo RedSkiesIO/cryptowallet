@@ -3,7 +3,7 @@
     :class="{
       'no-balance': !isBalanceVisible,
       'short-top': shortTop,
-      'single-wallet-top': singleWalletTop,
+      'single-wallet-top': showCoinHeader,
     }"
     view="lHh Lpr lFf"
   >
@@ -68,11 +68,10 @@ import Wallet from '@/store/wallet/entities/wallet';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-import Address from '@/store/wallet/entities/address';
-import Utxo from '@/store/wallet/entities/utxo';
 import {
   AmountFormatter,
   getBalance,
+  refreshWallet,
 } from '@/helpers';
 
 export default {
@@ -112,11 +111,6 @@ export default {
 
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
-    },
-
-    latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/all'];
-      return prices;
     },
 
     totalBalance() {
@@ -179,12 +173,6 @@ export default {
              || (this.$route.name === 'receiveCoinSingle' && this.wallet)
              || (this.$route.name === 'coinSinglePrices' && this.wallet);
     },
-    singleWalletTop() {
-      return (this.$route.name === 'walletSingle' && this.wallet)
-             || (this.$route.name === 'sendCoinSingle' && this.wallet)
-             || (this.$route.name === 'receiveCoinSingle' && this.wallet)
-             || (this.$route.name === 'coinSinglePrices' && this.wallet);
-    },
   },
 
   watch: {
@@ -231,86 +219,21 @@ export default {
             done();
           }
         }, this.delay.long);
-        return false;
-      }
-
-      if (this.$route.name === 'walletSingle') {
+      } else {
         setTimeout(() => {
           this.$root.$emit('updateWalletSingle', done);
         }, this.delay.long);
       }
-
-      return false;
-    },
-
-    async getUtxos(combinedAddresses, wallet) {
-      if (wallet.sdk) {
-        const coinSDK = this.coinSDKS[wallet.sdk];
-        const utxos = await coinSDK.getUTXOs(combinedAddresses, wallet.network);
-
-        let balance = 0;
-        utxos.forEach((utxo) => {
-          balance += utxo.amount;
-          const found = Utxo.query()
-            .where('txid', utxo.txid)
-            .where('vout', utxo.vout)
-            .where('wallet_id', wallet.id)
-            .get();
-
-          if (!found[0]) {
-            utxo.account_id = this.authenticatedAccount;
-            utxo.wallet_id = wallet.id;
-            Utxo.$insert({ data: utxo });
-          }
-        });
-
-        return {
-          utxos,
-          balance,
-        };
-      }
-      return {};
     },
 
     async updateBalances(done) {
       const promises = [];
 
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
       this.wallets.forEach((wallet) => {
         promises.push(new Promise(async (resolve, reject) => {
           try {
             const coinSDK = this.coinSDKS[wallet.sdk];
-
-            const addresses = Address.query()
-              .where('account_id', this.authenticatedAccount)
-              .where('wallet_id', wallet.id)
-              .where('used', false)
-              .get();
-
-            let addressesRaw = addresses.map((item) => { return item.address; });
-
-            addressesRaw = addressesRaw.filter(onlyUnique);
-
-            let newBalance;
-            if (wallet.sdk === 'Bitcoin') {
-              const result = await this.getUtxos(addressesRaw, wallet);
-              const { balance } = result;
-              newBalance = balance;
-            } else if (wallet.sdk === 'Ethereum') {
-              newBalance = await coinSDK.getBalance(addressesRaw, wallet.network);
-            } else if (wallet.sdk === 'ERC20') {
-              newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
-            }
-
-            // update balance
-            Wallet.$update({
-              where: (record) => { return record.id === wallet.id; },
-              data: { confirmedBalance: parseFloat(newBalance, 10) },
-            });
-
+            await refreshWallet(coinSDK, wallet, this.authenticatedAccount);
             resolve();
           } catch (err) {
             reject(err);
