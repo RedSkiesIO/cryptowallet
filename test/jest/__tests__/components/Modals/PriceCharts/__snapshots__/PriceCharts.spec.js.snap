@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modals/PriceCharts renders and matches snapshot 1`] = `
+<div>
+  <q-dialog-stub
+    contentclass="dark-modal"
+    maximized="true"
+    persistent="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+  >
+    <div
+      class="sending-spinner-overlay"
+    >
+      <spinner-stub />
+    </div>
+     
+    <!---->
+     
+    <!---->
+  </q-dialog-stub>
+</div>
+`;
