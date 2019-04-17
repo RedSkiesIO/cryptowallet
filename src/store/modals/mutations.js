@@ -32,3 +32,10 @@ export function SET_SENDFAILURE_MODAL_OPENED(state, payload) {
 export function SET_SENDSUCCESS_MODAL_OPENED(state, payload) {
   state.sendSuccessModalOpened = payload;
 }
+
+/*
+ * Set STATE addErc20 modal opened
+ */
+export function SET_ADDERC20_MODAL_OPENED(state, payload) {
+  state.addErc20ModalOpened = payload;
+}

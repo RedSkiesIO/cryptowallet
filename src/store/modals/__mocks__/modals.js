@@ -4,6 +4,7 @@ const actions = {
   setConfirmTransactionData: jest.fn(),
   setSendFailureModalOpened: jest.fn(),
   setSendSuccessModalOpened: jest.fn(),
+  setAddErc20ModalOpened: jest.fn(),
 };
 
 const getters = {};
@@ -14,6 +15,7 @@ const state = {
   sendConfirmTxData: null,
   sendFailureModalOpened: false,
   sendSuccessModalOpened: false,
+  addErc20ModalOpened: false,
 };
 
 const qrcode = {

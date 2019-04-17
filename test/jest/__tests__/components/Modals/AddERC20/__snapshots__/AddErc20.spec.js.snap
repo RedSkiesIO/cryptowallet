@@ -1,0 +1,311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddERC20 component renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn back-arrow-btn q-btn--flat q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            arrow_back
+          </i>
+        </div>
+      </button>
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      Add Token
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper"
+  >
+    <div
+      class="send-coin-box"
+    >
+      <div
+        class="send-modal-heading"
+      >
+        <h3>
+          Contract Address
+        </h3>
+         
+        <span
+          class="h3-line"
+        />
+         
+        <button
+          class="q-btn inline q-btn-item non-selectable send-heading-btn paste-btn q-btn--standard q-btn--rectangle q-focusable q-hoverable"
+          style="font-size: 10px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <div>
+              Paste
+            </div>
+          </div>
+        </button>
+      </div>
+       
+      <div
+        class="to"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input contract-input q-input q-field--outlined q-field--dense"
+          placeholder="token contract address"
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  placeholder="token contract address"
+                  tabindex="0"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+         
+        <div
+          class="side-content qr-code-wrapper"
+        >
+          <div
+            class="hor-line"
+          />
+           
+          <div
+            class="ver-line"
+          />
+           
+          <img
+            src="~assets/QR.svg"
+          />
+        </div>
+      </div>
+       
+      <span
+        class="error-label error-label-contract"
+      >
+        
+        
+      
+      </span>
+       
+      <div
+        class="send-modal-heading"
+      >
+        <h3>
+          Name
+        </h3>
+         
+        <span
+          class="h3-line"
+        />
+      </div>
+       
+      <div
+        class="to"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input name-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
+          placeholder="Name"
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  disabled="disabled"
+                  placeholder="Name"
+                  tabindex="0"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <span
+        class="error-label error-label-name"
+      >
+        
+        
+      
+      </span>
+       
+      <div
+        class="send-modal-heading"
+      >
+        <h3>
+          Symbol
+        </h3>
+         
+        <span
+          class="h3-line"
+        />
+      </div>
+       
+      <div
+        class="to"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input symbol-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
+          placeholder="Symbol"
+          upper-case=""
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  disabled="disabled"
+                  placeholder="Symbol"
+                  tabindex="0"
+                  type="text"
+                  upper-case=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <span
+        class="error-label error-label-symbol"
+      >
+        
+        
+      
+      </span>
+       
+      <div
+        class="send-modal-heading"
+      >
+        <h3>
+          Decimals
+        </h3>
+         
+        <span
+          class="h3-line"
+        />
+      </div>
+       
+      <div
+        class="to"
+      >
+        <div
+          class="q-field row no-wrap items-start sm-input decimals-input q-input q-field--outlined q-field--dense disabled no-pointer-events"
+          placeholder="Decimals"
+        >
+          <div
+            class="q-field__inner relative-position col self-stretch column justify-center"
+          >
+            <div
+              class="q-field__control relative-position row no-wrap"
+              tabindex="-1"
+            >
+              <div
+                class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+              >
+                <input
+                  class="q-field__native"
+                  disabled="disabled"
+                  placeholder="Decimals"
+                  tabindex="0"
+                  type="number"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       
+      <span
+        class="error-label error-label-decimals"
+      >
+        
+        
+      
+      </span>
+       
+      <div
+        class="send"
+      >
+        <button
+          class="q-btn inline q-btn-item non-selectable add-button q-btn--standard q-btn--rectangle bg-blueish text-white disabled"
+          disabled="disabled"
+          style="font-size: 14px;"
+          tabindex="-1"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <div>
+              add
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

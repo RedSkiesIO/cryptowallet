@@ -18,7 +18,7 @@ const Bitcoin = {
     return balance;
   },
 
-  getUnconfrimed(walletId, accountId) {
+  getUnconfirmed(walletId, accountId) {
     let balance = 0;
 
     const utxos = Utxo.query()
@@ -72,7 +72,7 @@ const Ethereum = {
     return wallet[0].confirmedBalance;
   },
 
-  getUnconfrimed(walletId, accountId) {
+  getUnconfirmed(walletId, accountId) {
     const wallet = Wallet.query()
       .where('account_id', accountId)
       .where('id', walletId)
@@ -122,7 +122,7 @@ function getBalance(wallet, accountId) {
   if (wallet.sdk === 'Bitcoin') {
     return {
       confirmed: Bitcoin.getConfirmed(wallet.id, accountId),
-      unconfirmed: Bitcoin.getUnconfrimed(wallet.id, accountId),
+      unconfirmed: Bitcoin.getUnconfirmed(wallet.id, accountId),
       available: Bitcoin.getAvailable(wallet.id, accountId),
     };
   }
@@ -130,7 +130,7 @@ function getBalance(wallet, accountId) {
   if (wallet.sdk === 'Ethereum') {
     return {
       confirmed: Ethereum.getConfirmed(wallet.id, accountId),
-      unconfirmed: Ethereum.getUnconfrimed(wallet.id, accountId),
+      unconfirmed: Ethereum.getUnconfirmed(wallet.id, accountId),
       available: Ethereum.getAvailable(wallet.id, accountId),
     };
   }
@@ -138,7 +138,7 @@ function getBalance(wallet, accountId) {
   if (wallet.sdk === 'ERC20') {
     return {
       confirmed: Ethereum.getConfirmed(wallet.id, accountId),
-      unconfirmed: Ethereum.getUnconfrimed(wallet.id, accountId),
+      unconfirmed: Ethereum.getUnconfirmed(wallet.id, accountId),
       available: Ethereum.getAvailable(wallet.id, accountId),
     };
   }

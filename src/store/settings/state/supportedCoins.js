@@ -36,7 +36,7 @@ export default [
     coinType: 60,
     symbol: 'ETH',
     network: 'ETHEREUM_ROPSTEN',
-    denomination: '0.000000000000000000',
+    denomination: '0.00000000',
     minConfirmations: 11,
   },
   {
@@ -49,7 +49,7 @@ export default [
     decimals: 3,
     parentName: 'Ethereum',
     network: 'ETHEREUM_ROPSTEN',
-    denomination: '0.00000000',
+    denomination: '0.000',
     minConfirmations: 11,
   },
 ];

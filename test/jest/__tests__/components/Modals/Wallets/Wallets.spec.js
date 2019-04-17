@@ -3,8 +3,6 @@ import Wallets from '@/components/Modals/Wallets';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-// import SupportedCoins from '@/store/settings/state/supportedCoins.js';
-// import Coin from '@/store/wallet/entities/coin';
 import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
