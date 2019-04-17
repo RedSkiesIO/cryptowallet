@@ -94,6 +94,12 @@ export default {
           this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
           this.$i18n.locale = this.account.locale;
 
+          const currency = this.$store.state.settings.supportedCurrencies.find((item) => {
+            return item.code === this.account.currency;
+          });
+
+          this.$store.dispatch('settings/setCurrency', currency);
+
           await this.decryptData(this.account.id, this.pin.join(''));
           await this.initializeWallets(this.account.id);
 

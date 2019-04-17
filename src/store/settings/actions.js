@@ -25,3 +25,10 @@ export function setAuthenticatedAccount(context, payload) {
 export function setLayout(context, payload) {
   context.commit('SET_LAYOUT', payload);
 }
+
+/*
+* Action setCurrency
+*/
+export function setCurrency(context, payload) {
+  context.commit('SET_CURRENCY', payload);
+}

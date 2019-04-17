@@ -32,6 +32,9 @@ describe('Pin component', () => {
     Account.$insert({ data: accountData });
     Wallet.$insert({ data: walletData });
 
+    Account.$update = Account.update;
+    Wallet.$update = Wallet.update;
+
     wrapper = wrapperInit({
       i18n,
       router,
@@ -65,8 +68,12 @@ describe('Pin component', () => {
 
     describe('getSalt()', () => {
       it('returns a salt string', () => {
-        const result = wrapper.vm.getSalt();
-        expect(typeof result).toBe('string');
+        const result1 = wrapper.vm.getSalt();
+        expect(typeof result1).toBe('string');
+
+        const result2 = wrapper.vm.getSalt();
+        expect(typeof result2).toBe('string');
+        expect(result1 === result2).toBe(true);
       });
     });
 
