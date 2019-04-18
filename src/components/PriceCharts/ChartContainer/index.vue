@@ -43,7 +43,7 @@ export default {
     return {
       loaded: false,
       legendMarkup: '',
-      newChart: 'test',
+      newChart: '',
       gradient: '',
     };
   },
@@ -121,9 +121,6 @@ export default {
         scales: {
           xAxes: [{
             type: 'time',
-            // time: {
-            //   stepSize: 4,
-            // },
             ticks: {
               minRotation: '45',
               fontColor: '#78d2e6',
@@ -139,7 +136,7 @@ export default {
             color: '#78d2e6',
             ticks: {
               fontColor: '#78d2e6',
-              callback: (value) => { return `£${value}`; },
+              callback: (value) => { return `${this.selectedCurrency.symbol}${value}`; },
             },
           }],
         },

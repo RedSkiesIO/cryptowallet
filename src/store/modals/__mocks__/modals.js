@@ -5,6 +5,7 @@ const actions = {
   setSendFailureModalOpened: jest.fn(),
   setSendSuccessModalOpened: jest.fn(),
   setAddErc20ModalOpened: jest.fn(),
+  setPriceChartModalOpened: jest.fn(),
 };
 
 const getters = {};
@@ -16,6 +17,7 @@ const state = {
   sendFailureModalOpened: false,
   sendSuccessModalOpened: false,
   addErc20ModalOpened: false,
+  priceChartModalOpened: false,
 };
 
 const qrcode = {

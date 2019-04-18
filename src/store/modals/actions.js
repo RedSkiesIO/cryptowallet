@@ -38,3 +38,9 @@ export function setSendSuccessModalOpened(context, payload) {
 export function setAddErc20ModalOpened(context, payload) {
   context.commit('SET_ADDERC20_MODAL_OPENED', payload);
 }
+/**
+ * Action setPriceChartModalOpened
+ */
+export function setPriceChartModalOpened(context, payload) {
+  context.commit('SET_PRICECHART_MODAL_OPENED', payload);
+}
