@@ -12,7 +12,7 @@ export default ({ Vue, store }) => {
     captureUnhandledRejections: true,
     enabled: true,
     source_map_enabled: false,
-    environment: 'development', // @todo automatically detect the env
+    environment: 'development',
     payload: {
       client: {
         javascript: {
