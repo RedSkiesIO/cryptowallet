@@ -36,18 +36,6 @@
     </div>
 
     <div
-      v-if="displaySettings"
-      class="header-settings-button-wrapper"
-    >
-      <q-btn
-        :label="$t('settings')"
-        color="secondary"
-        size="sm"
-        @click.prevent="goToSettings"
-      />
-    </div>
-
-    <div
       v-if="displayAddWallet"
       class="header-settings-button-wrapper"
     >
@@ -193,10 +181,6 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
-    },
-
-    goToSettings() {
-      this.$router.push({ path: '/settings' });
     },
 
     setAccountModalOpened(value) {
