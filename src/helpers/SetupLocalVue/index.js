@@ -54,6 +54,18 @@ const createRouter = (store = null) => {
         path: '/',
       },
       {
+        path: '/setup/:id',
+        name: 'setup',
+      },
+      {
+        path: '/exchange',
+        name: 'exchange',
+      },
+      {
+        path: '/settings',
+        name: 'settings',
+      },
+      {
         path: '/wallet',
         name: 'wallet',
       },
