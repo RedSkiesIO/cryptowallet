@@ -160,28 +160,16 @@ export default {
      */
     async encryptPersistentData() {
       const wallets = Wallet.query().where('account_id', this.authenticatedAccount).get();
+
       wallets.forEach((wallet) => {
         Wallet.AES.forEach((property) => {
           const data = {};
-
-          if (wallet[property]) {
-            data[property] = wallet[property];
-          }
-
-          const accountId = this.authenticatedAccount;
-          function walletWhere(record) {
-            return record.id === wallet.id && record.account_id === accountId;
-          }
+          data[property] = wallet[property];
 
           Wallet.$update({
             data,
-            where: walletWhere,
+            where: (record) => { return record.id === wallet.id; },
             password: this.newPin.join(''),
-          });
-
-          Wallet.update({
-            data,
-            where: walletWhere,
           });
         });
       });

@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteAccount component renders and matches snapshot 1`] = `
+<q-dialog-stub
+  contentclass="dark-modal"
+  maximized="true"
+  persistent="true"
+  position="standard"
+  transitionhide="slide-down"
+  transitionshow="slide-up"
+  value="true"
+>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <q-btn-stub
+        align="center"
+        class="icon-btn back-arrow-btn"
+        flat="true"
+        icon="arrow_back"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      Delete Account
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper center"
+  >
+    <h1
+      class="setup with-margin"
+    >
+      <span>
+        
+        Enter your PIN
+      
+      </span>
+    </h1>
+     
+    <pinpad-stub
+      mode="delete"
+    />
+  </div>
+   
+  <q-dialog-stub
+    position="standard"
+    transitionhide="scale"
+    transitionshow="scale"
+  >
+    <q-card-stub
+      class="dialog"
+      style="width: 300px;"
+    >
+      <q-card-section-stub>
+        <h2>
+          
+          Confirm
+        
+        </h2>
+         
+        <p>
+          
+          Are you sure you want to delete the account Konrad?
+        
+        </p>
+      </q-card-section-stub>
+       
+      <q-card-actions-stub
+        align="right"
+      >
+        <q-btn-stub
+          align="center"
+          color="blueish"
+          flat="true"
+          label="no"
+          ripple="true"
+        />
+         
+        <q-btn-stub
+          align="center"
+          color="blueish"
+          flat="true"
+          label="yes"
+          ripple="true"
+        />
+      </q-card-actions-stub>
+    </q-card-stub>
+  </q-dialog-stub>
+</q-dialog-stub>
+`;

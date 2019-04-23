@@ -7,7 +7,7 @@ import Wallet from './wallet';
 export default class Account extends Model {
   static entity = 'account';
 
-  static AES = ['seed', 'refresh_token'];
+  static AES = ['refresh_token'];
 
   static fields() {
     return {
@@ -21,7 +21,6 @@ export default class Account extends Model {
       currency: this.attr(''),
       node: this.attr(''),
       default: this.attr(false),
-      seed: this.attr(''),
       wallets: this.hasMany(Wallet, 'account_id'),
     };
   }
