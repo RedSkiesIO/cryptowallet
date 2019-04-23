@@ -14,7 +14,7 @@ export class Toast {
    * @param stackTrace obj
    * @param debug array
    */
-  constructor(msg, code, type = 'error', icon = 'report_problem', position = 'bottom', stackTrace = null, debug = []) {
+  constructor(msg, code, type = 'error', icon = 'report_problem', position, stackTrace = null, debug = []) {
     this.msg = msg;
     this.code = code;
     this.type = type;
@@ -100,7 +100,7 @@ class ToasterFactory {
         this.vm.$emit('TEAPOT', new Toaster(new Toast("I'm a techno teapot.", 808, 'info', 'info', 'bottom')));
         break;
       default:
-        this.vm.$emit('1');
+        this.vm.$emit('1', new Toaster(new Toast()));
     }
   }
 }
