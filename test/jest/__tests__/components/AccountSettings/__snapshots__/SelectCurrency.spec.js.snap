@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectCurrency component renders and matches snapshot 1`] = `
+<div>
+  <q-dialog-stub
+    contentclass="dark-modal"
+    maximized="true"
+    persistent="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+    value="true"
+  >
+    <div
+      class="header-section"
+    >
+      <div
+        class="header-back-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn back-arrow-btn"
+          flat="true"
+          icon="arrow_back"
+          ripple="true"
+          size="lg"
+        />
+      </div>
+       
+      <h1
+        class="header-h1"
+      >
+        
+        Currency
+      
+      </h1>
+    </div>
+     
+    <div
+      class="modal-layout-wrapper no-padding"
+    >
+      <div
+        class="account-item"
+      >
+        <div>
+          GBP
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="GBP"
+            value="GBP"
+          />
+        </div>
+      </div>
+      <div
+        class="account-item"
+      >
+        <div>
+          USD
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="USD"
+            value="GBP"
+          />
+        </div>
+      </div>
+      <div
+        class="account-item"
+      >
+        <div>
+          EUR
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="EUR"
+            value="GBP"
+          />
+        </div>
+      </div>
+    </div>
+  </q-dialog-stub>
+</div>
+`;

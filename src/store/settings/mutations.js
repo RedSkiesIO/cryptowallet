@@ -1,6 +1,6 @@
 /*
-* SET STATE for app loading
-*/
+ * SET STATE for app loading
+ */
 export function SET_LOADING(state, payload) {
   state.loading = payload;
 }
@@ -20,8 +20,15 @@ export function SET_AUTHENTICATED_ACCOUNT(state, payload) {
 }
 
 /*
-* SET STATE for app layout
-*/
+ * SET STATE for app layout
+ */
 export function SET_LAYOUT(state, payload) {
   state.layout = payload;
+}
+
+/*
+ * SET_CURRENCY mutation
+ */
+export function SET_CURRENCY(state, payload) {
+  state.selectedCurrency = payload;
 }

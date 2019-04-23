@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pin component renders and matches snapshot 1`] = `
+<q-dialog-stub
+  contentclass="dark-modal"
+  maximized="true"
+  persistent="true"
+  position="standard"
+  transitionhide="slide-down"
+  transitionshow="slide-up"
+  value="true"
+>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <q-btn-stub
+        align="center"
+        class="icon-btn back-arrow-btn"
+        flat="true"
+        icon="arrow_back"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      PIN Code
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper center"
+  >
+    <h1
+      class="setup with-margin"
+    >
+      <span>
+        Enter your PIN
+      </span>
+       
+      <!---->
+       
+      <!---->
+    </h1>
+     
+    <pinpad-stub
+      mode="access"
+    />
+  </div>
+</q-dialog-stub>
+`;
