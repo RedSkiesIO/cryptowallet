@@ -25,7 +25,7 @@
           class="header-settings-button-wrapper"
         >
           <q-btn
-            icon="add"
+            icon="person_add"
             color="primary"
             size="lg"
             class="icon-btn icon-btn-right"

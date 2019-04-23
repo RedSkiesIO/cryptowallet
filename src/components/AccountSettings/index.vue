@@ -2,7 +2,7 @@
   <div>
     <div
       class="settings-row"
-      @click="changeLanguage"
+      @click="languageOpen=true"
     >
       <div>
         {{ $t('language') }}
@@ -14,14 +14,14 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="changeLanguage"
+          @click="languageOpen=true"
         />
       </div>
     </div>
 
     <div
       class="settings-row"
-      @click="changeCurrency"
+      @click="currencyOpen = true"
     >
       <div>
         {{ $t('currency') }}
@@ -33,33 +33,14 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="changeCurrency"
+          @click="currencyOpen = true"
         />
       </div>
     </div>
 
-    <!-- <div
-      class="settings-row"
-      @click="changeNodeIP"
-    >
-      <div>
-        Atlas Node
-      </div>
-      <div>
-        <q-btn
-          icon="chevron_right"
-          size="lg"
-          color="blueish"
-          class="settings-chevron"
-          flat
-          @click="changeNodeIP"
-        />
-      </div>
-    </div> -->
-
     <div
       class="settings-row"
-      @click="changePin"
+      @click="pinOpen = true"
     >
       <div>
         {{ $t('pinCode') }}
@@ -71,7 +52,7 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="changePin"
+          @click="pinOpen = true"
         />
       </div>
     </div>
@@ -97,7 +78,7 @@
 
     <div
       class="settings-row"
-      @click="deleteAccount"
+      @click="deleteAccountOpen = true"
     >
       <div>
         {{ $t('deleteAccount') }}
@@ -109,7 +90,7 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="deleteAccount"
+          @click="deleteAccountOpen = true"
         />
       </div>
     </div>
@@ -125,12 +106,6 @@
       :current-currency="account.currency"
       @closeCurrencyModal="currencyOpen=false"
     />
-
-    <!-- <Node
-      :open="nodeOpen"
-      :current="nodeIp"
-      @closeNodeModal="nodeOpen=false"
-    /> -->
 
     <Pin
       :open="pinOpen"
@@ -150,10 +125,8 @@
 import { mapState } from 'vuex';
 import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
-// import Node from '@/components/AccountSettings/Node';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
-import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
@@ -161,7 +134,6 @@ export default {
   components: {
     SelectLanguage,
     SelectCurrency,
-    // Node,
     Pin,
     DeleteAccount,
   },
@@ -182,63 +154,42 @@ export default {
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
-    nodeIp() {
-      return this.account.node || '';
-    },
   },
   methods: {
     async logout() {
       try {
-        const accountDataLoki = await Account.$find(this.account.id);
-        const encryptedSeed = accountDataLoki[0].seed;
-
-        Account.update({
-          where: (record) => { return record.id === this.account.id; },
-          data: { seed: encryptedSeed },
-        });
+        this.$store.dispatch('settings/setLoading', true);
+        this.$store.dispatch('settings/setLayout', 'dark');
 
         const wallets = await Wallet.query().where('account_id', this.account.id).get();
         const promises = [];
         wallets.forEach((wallet) => {
-          promises.push(new Promise(async (res) => {
-            const walletDataLoki = await Wallet.$find(wallet.id);
-            const encryptedData = walletDataLoki[0].hdWallet;
+          promises.push(new Promise(async (resolve) => {
+            try {
+              const walletDataLoki = await Wallet.$find(wallet.id);
+              const encryptedData = walletDataLoki[0].hdWallet;
 
-            Wallet.update({
-              where: (record) => { return record.name === wallet.name; },
-              data: { hdWallet: encryptedData },
-            });
-            res();
+              Wallet.update({
+                where: (record) => { return record.id === wallet.id; },
+                data: { hdWallet: encryptedData },
+              });
+              resolve();
+            } catch (error) {
+              this.errorHandler(error);
+            }
           }));
         });
 
         await Promise.all(promises);
 
-        this.$store.dispatch('settings/setLoading', true);
-        this.$store.dispatch('settings/setLayout', 'dark');
         this.$router.push({ path: '/' });
         this.$store.dispatch('settings/setAuthenticatedAccount', null);
         setTimeout(() => {
           this.$store.dispatch('settings/setLoading', false);
         }, this.delay.short);
-      } catch (err) {
-        this.errorHandler(err);
+      } catch (error) {
+        this.errorHandler(error);
       }
-    },
-    changeLanguage() {
-      this.languageOpen = true;
-    },
-    changeNodeIP() {
-      this.nodeOpen = true;
-    },
-    changePin() {
-      this.pinOpen = true;
-    },
-    deleteAccount() {
-      this.deleteAccountOpen = true;
-    },
-    changeCurrency() {
-      this.currencyOpen = true;
     },
   },
 };
