@@ -31,7 +31,7 @@
           </div>
 
           <div
-            v-if="wallets > 0"
+            v-if="wallets.length > 0"
             class="total-balance-wrapper"
           >
             <div
@@ -208,7 +208,7 @@ export default {
     },
 
     updateisPullEnabled() {
-      this.isPullEnabled = (this.$route.name === 'wallet' && this.wallets > 0) || this.$route.name === 'walletSingle';
+      this.isPullEnabled = (this.$route.name === 'wallet' && this.wallets.length > 0) || this.$route.name === 'walletSingle';
     },
 
     refresher(done) {
