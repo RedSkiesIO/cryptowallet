@@ -88,6 +88,7 @@ describe('CloudListItem.vue', () => {
     storeInit();
     Wallet.$insert(mockWallets);
     setTimeout(() => {
+      wrapper.vm.$options.activated[0]();
       expect(wrapper.findAll('cloudlistitem-stub').length).toEqual(3);
       done();
     }, 0);
@@ -124,6 +125,22 @@ describe('CloudListItem.vue', () => {
     wrapper.vm.scrolled({ position: 99, direction: 'up' });
     setTimeout(() => {
       expect(rootWrapper.emitted('isHomeBalanceVisible')[1]).toEqual([true]);
+
+      done();
+    }, 0);
+  });
+
+  it('activated lifecycle hook resets scroll position', (done) => {
+    const mockQuerySelector = jest.fn().mockImplementation(() => {
+      return [{ scrollTop: 10 }];
+    });
+    Object.defineProperty(global.document, 'querySelectorAll', {
+      value: mockQuerySelector,
+    });
+    storeInit();
+    wrapper.vm.$options.activated[0]();
+    setTimeout(() => {
+      expect(mockQuerySelector).toHaveBeenCalledTimes(2);
       done();
     }, 0);
   });
