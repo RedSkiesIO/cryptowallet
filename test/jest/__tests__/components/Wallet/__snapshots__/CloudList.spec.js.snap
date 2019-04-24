@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CloudListItem.vue renders and matches snapshot 1`] = `
+<div
+  class="scroll-start"
+>
+  <div>
+    <button
+      class="q-btn inline q-btn-item non-selectable large-cloud-btn q-btn--standard q-btn--rectangle bg-primary text-white q-focusable q-hoverable"
+      style="font-size: 24px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <i
+          aria-hidden="true"
+          class="material-icons q-icon on-left"
+        >
+          add_circle_outline
+        </i>
+        <div>
+          add
+        </div>
+      </div>
+    </button>
+  </div>
+   
+  <!---->
+</div>
+`;

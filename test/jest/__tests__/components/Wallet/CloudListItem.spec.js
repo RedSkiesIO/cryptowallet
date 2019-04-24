@@ -6,7 +6,7 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Wallet from '@/store/wallet/entities/wallet';
 import Prices from '@/store/prices';
 
-describe('WalletItem.vue', () => {
+describe('CloudListItem.vue', () => {
   let storeMocks;
   let wrapper;
   let router;
