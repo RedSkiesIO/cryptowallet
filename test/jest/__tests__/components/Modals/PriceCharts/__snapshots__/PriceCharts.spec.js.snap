@@ -144,7 +144,9 @@ exports[`modals/PriceCharts renders and matches snapshot 1`] = `
       </div>
     </div>
      
-    <!---->
+    <pricechart-stub
+      gradient=""
+    />
   </div>
 </div>
 `;

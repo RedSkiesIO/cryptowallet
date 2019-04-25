@@ -78,7 +78,7 @@
         </div>
       </div>
       <PriceChart
-        v-if="priceChartModalOpened && (showChart || chartDataExists)"
+        v-if="(chartDataExists || showChart)"
         :gradient="gradientStroke"
       />
     </div>
@@ -108,16 +108,7 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
-    priceChartModalOpened: {
-      get() {
-        return this.$store.state.modals.priceChartModalOpened;
-      },
-      set(value) {
-        this.$store.dispatch('modals/setPriceChartModalOpened', value);
-      },
-    },
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -166,9 +157,6 @@ export default {
     this.loadData();
   },
   methods: {
-    viewChart() {
-      this.priceChartModalOpened = true;
-    },
     async loadData() {
       this.showChart = false;
       this.loading = true;

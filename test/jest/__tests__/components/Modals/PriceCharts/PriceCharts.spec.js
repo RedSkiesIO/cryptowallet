@@ -2,7 +2,6 @@ import PriceCharts from '@/components/Modals/PriceCharts/PriceChartsContent.vue'
 import { mount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import VueChartJS from 'vue-chartjs';
 
 import Wallet from '@/store/wallet/entities/wallet';
 import Prices from '@/store/prices';
@@ -21,25 +20,11 @@ const chartDataMonth = JSON.parse('{"$id":"BTC_GBP_month","coin":"BTC","currency
 const backEndServiceMock = {
   loadCoinPriceData: jest.fn(),
 };
-localVue.use(VueChartJS);
 
 describe('modals/PriceCharts', () => {
   let storeMocks;
   let wrapper;
   let router;
-
-  const customStore = {
-    state: {
-      modals: {
-        priceChartModalOpened: true,
-      },
-    },
-  };
-
-  const mockChart = {
-    getDatasetMeta: jest.fn().mockReturnValue({ hidden: false }),
-    update: jest.fn(),
-  };
 
   function wrapperInit(options) {
     return mount(PriceCharts, options);
@@ -63,7 +48,7 @@ describe('modals/PriceCharts', () => {
         backEndService: backEndServiceMock,
         errorHandler: jest.fn(),
       },
-      stubs: ['Chart'],
+      stubs: { PriceChart: true },
     });
   }
   beforeEach(() => {
@@ -75,9 +60,22 @@ describe('modals/PriceCharts', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
+  it('checks if chart data exists before displaying data', (done) => {
+    expect(wrapper.contains('pricechart-stub')).toEqual(true);
+    Prices.delete('BTC_GBP_day');
+    Prices.delete('BTC_GBP_week');
+    Prices.delete('BTC_GBP_month');
+    setTimeout(() => {
+      wrapper.vm.showChart = false;
+      setTimeout(() => {
+        expect(wrapper.contains('pricechart-stub')).toEqual(false);
+        done();
+      }, 0);
+    }, 0);
+  });
+
   describe('loadData()', () => {
     it('calls the back end service to load the price data', (done) => {
-      wrapper.vm.priceChartModalOpened = true;
       wrapper.vm.loadData();
       setTimeout(() => {
         expect(backEndServiceMock.loadCoinPriceData).toHaveBeenCalled();
@@ -111,17 +109,16 @@ describe('modals/PriceCharts', () => {
         done();
       }, 0);
     });
-  });
 
-  it('chart buttons change the chart dataset', (done) => {
-    storeInit(customStore);
-    wrapper.vm.updateLegend(mockChart);
-    // const dayButton = wrapper.findAll('.chart-button').at(0);
-    const weekButton = wrapper.findAll('.chart-button').at(1);
-    // const monthButton = wrapper.findAll('.chart-button').at(2);
-    weekButton.trigger('click');
-    setTimeout(() => {
-      done();
-    }, 0);
+    it('the back button returns to the previous page', (done) => {
+      router.push({ path: '/wallet' });
+      router.push({ path: '/wallet/single/prices/5' });
+      expect(router.history.current.path).toBe('/wallet/single/prices/5');
+      wrapper.findAll('button').at(0).trigger('click');
+      setTimeout(() => {
+        expect(router.history.current.path).toBe('/wallet');
+        done();
+      }, 10);
+    });
   });
 });
