@@ -79,7 +79,6 @@
       </div>
       <PriceChart
         v-if="(chartDataExists || showChart)"
-        :gradient="gradientStroke"
       />
     </div>
   </div>
@@ -100,7 +99,6 @@ export default {
   },
   data() {
     return {
-      gradientStroke: '',
       loading: false,
       showChart: false,
     };

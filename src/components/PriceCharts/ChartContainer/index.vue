@@ -50,7 +50,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -63,11 +62,6 @@ export default {
     },
     coinSymbol() {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
-    },
-    chartStyles() {
-      return {
-        position: 'relative',
-      };
     },
     dayData() {
       return Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
@@ -147,43 +141,20 @@ export default {
       };
     },
   },
-
-  mounted() {
-    this.loaded = false;
-    this.loaded = true;
-  },
   methods: {
     updateLegend(chart) {
       this.newChart = chart;
     },
 
     onClick(index) {
-      const ci = this.newChart;
-      if (index === 0) {
-        [ci.getDatasetMeta(1),
-          ci.getDatasetMeta(2)].forEach((meta) => {
-          meta.hidden = true;
-        });
-        const selected = ci.getDatasetMeta(0);
-        selected.hidden = false;
-        ci.update();
-      } else if (index === 1) {
-        [ci.getDatasetMeta(0),
-          ci.getDatasetMeta(2)].forEach((meta) => {
-          meta.hidden = true;
-        });
-        const selected = ci.getDatasetMeta(1);
-        selected.hidden = false;
-        ci.update();
-      } else {
-        [ci.getDatasetMeta(0),
-          ci.getDatasetMeta(1)].forEach((meta) => {
-          meta.hidden = true;
-        });
-        const selected = ci.getDatasetMeta(2);
-        selected.hidden = false;
-        ci.update();
-      }
+      const chart = this.newChart;
+      [0, 1, 2].forEach((i) => {
+        if (i !== index) {
+          chart.getDatasetMeta(i).hidden = true;
+        }
+      });
+      chart.getDatasetMeta(index).hidden = false;
+      chart.update();
     },
   },
 };
