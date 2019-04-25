@@ -1,12 +1,14 @@
 import coins from '../state/coins.js';
 import currencies from '../state/currencies.js';
 import supportedCoins from '../state/supportedCoins.js';
+import supportedCurrencies from '../state/supportedCurrencies.js';
 
 const actions = {
   setLoading: jest.fn(),
   setSelectedAccount: jest.fn(),
   setAuthenticatedAccount: jest.fn(),
   setLayout: jest.fn(),
+  setCurrency: jest.fn(),
 };
 const getters = {};
 const mutations = {};
@@ -23,6 +25,7 @@ const state = {
   coins,
   currencies,
   supportedCoins,
+  supportedCurrencies,
   selectedCurrency: {
     code: 'GBP',
     exponent: 2,

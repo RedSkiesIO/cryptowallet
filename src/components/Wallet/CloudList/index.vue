@@ -1,5 +1,6 @@
 <template>
   <div
+    class="scroll-start"
     @touchstart="touchStart"
     @touchmove="touchMove"
   >

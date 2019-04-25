@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectLanguage component renders and matches snapshot 1`] = `
+<div>
+  <q-dialog-stub
+    contentclass="dark-modal"
+    maximized="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+    value="true"
+  >
+    <div
+      class="header-section"
+    >
+      <div
+        class="header-back-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn back-arrow-btn"
+          flat="true"
+          icon="arrow_back"
+          ripple="true"
+          size="lg"
+        />
+      </div>
+       
+      <h1
+        class="header-h1"
+      >
+        
+        Language
+      
+      </h1>
+    </div>
+     
+    <div
+      class="modal-layout-wrapper no-padding"
+    >
+      <div
+        class="account-item"
+      >
+        <div>
+          English
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="en-gb"
+            value="en-gb"
+          />
+        </div>
+      </div>
+      <div
+        class="account-item"
+      >
+        <div>
+          cy-gr
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="cy-gr"
+            value="en-gb"
+          />
+        </div>
+      </div>
+      <div
+        class="account-item"
+      >
+        <div>
+          Greek
+        </div>
+         
+        <div
+          class="default-switch"
+        >
+          <q-radio-stub
+            dark="true"
+            val="el-gr"
+            value="en-gb"
+          />
+        </div>
+      </div>
+    </div>
+  </q-dialog-stub>
+</div>
+`;

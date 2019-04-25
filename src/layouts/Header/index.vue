@@ -36,18 +36,6 @@
     </div>
 
     <div
-      v-if="displaySettings"
-      class="header-settings-button-wrapper"
-    >
-      <q-btn
-        :label="$t('settings')"
-        color="secondary"
-        size="sm"
-        @click.prevent="goToSettings"
-      />
-    </div>
-
-    <div
       v-if="displayAddWallet"
       class="header-settings-button-wrapper"
     >
@@ -93,7 +81,6 @@
 
 <script>
 import { mapState } from 'vuex';
-import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/assets/cc-icons/icons-list.json';
 
 export default {
@@ -107,7 +94,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
 
     wallet() {
@@ -116,10 +102,6 @@ export default {
 
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
-    },
-
-    displaySettings() {
-      return false;
     },
 
     displayAccounts() {
@@ -141,14 +123,10 @@ export default {
       return false;
     },
 
-    supportedCoins() {
-      return Coin.all();
-    },
-
     heading() {
       if (this.$route.name === 'setup') { return ''; }
-      if (this.$route.name === 'exchange') { return 'Exchange'; }
-      if (this.$route.name === 'settings') { return 'Settings'; }
+      if (this.$route.name === 'exchange') { return this.$t('exchange'); }
+      if (this.$route.name === 'settings') { return this.$t('settings'); }
       return 'CryptoWallet';
     },
 
@@ -193,10 +171,6 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
-    },
-
-    goToSettings() {
-      this.$router.push({ path: '/settings' });
     },
 
     setAccountModalOpened(value) {

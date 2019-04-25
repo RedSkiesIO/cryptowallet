@@ -33,7 +33,7 @@
 
           <div class="default-switch">
             <q-radio
-              v-model="selectedLocale"
+              v-model="selectedCurrency"
               :val="key"
               dark
             />
@@ -67,7 +67,10 @@ export default {
     currencies() {
       return this.$store.state.settings.supportedCurrencies.map((item) => { return item.code; });
     },
-    selectedLocale: {
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    selectedCurrency: {
       get() {
         return this.currentCurrency;
       },
@@ -76,6 +79,12 @@ export default {
           where: (record) => { return record.id === this.authenticatedAccount; },
           data: { currency: newCurrency },
         });
+
+        const currency = this.$store.state.settings.supportedCurrencies.find((item) => {
+          return item.code === this.account.currency;
+        });
+
+        this.$store.dispatch('settings/setCurrency', currency);
       },
     },
   },

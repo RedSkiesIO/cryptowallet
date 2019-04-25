@@ -57,7 +57,6 @@
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Prices from '@/store/prices';
-import Coin from '@/store/wallet/entities/coin';
 import { getBalance } from '@/helpers';
 
 export default {
@@ -89,22 +88,9 @@ export default {
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
-    supportedCoins() {
-      return Coin.all();
-    },
-    coinDenomination() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).denomination;
-    },
-    coinSymbol() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).symbol;
-    },
     showChart() {
-      const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
-      if (price) {
+      const chartData = this.$store.getters['entities/prices/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}_day`);
+      if (chartData) {
         return true;
       }
       return false;
@@ -122,21 +108,17 @@ export default {
           && record.period === item.period
         );
       };
-
       let dataset;
-
-      try {
-        const result = await this.backEndService.getHistoricalData(this.coinSymbol, this.selectedCurrency.code, 'day');
+      const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
+      if (result) {
         dataset = result.data;
-      } catch (e) {
-        this.errorHandler(e);
       }
 
-      const price = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
+      const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
       if (!price && dataset) {
         Prices.$insert({
           data: {
-            coin: this.coinSymbol,
+            coin: this.wallet.symbol,
             currency: this.selectedCurrency.code,
             period: 'day',
             updated: +new Date(),
@@ -148,7 +130,7 @@ export default {
         Prices.$update({
           where: (record) => {
             return wherePrice(record, {
-              coin: this.coinSymbol,
+              coin: this.wallet.symbol,
               currency: this.selectedCurrency.code,
               period: 'day',
             });

@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccountSettings component renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="settings-row"
+  >
+    <div>
+      
+      Language
+    
+    </div>
+     
+    <div>
+      <q-btn-stub
+        align="center"
+        class="settings-chevron"
+        color="blueish"
+        flat="true"
+        icon="chevron_right"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+  </div>
+   
+  <div
+    class="settings-row"
+  >
+    <div>
+      
+      Currency
+    
+    </div>
+     
+    <div>
+      <q-btn-stub
+        align="center"
+        class="settings-chevron"
+        color="blueish"
+        flat="true"
+        icon="chevron_right"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+  </div>
+   
+  <div
+    class="settings-row"
+  >
+    <div>
+      
+      PIN Code
+    
+    </div>
+     
+    <div>
+      <q-btn-stub
+        align="center"
+        class="settings-chevron"
+        color="blueish"
+        flat="true"
+        icon="chevron_right"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+  </div>
+   
+  <div
+    class="settings-row"
+  >
+    <div>
+      
+      Logout
+    
+    </div>
+     
+    <div>
+      <q-btn-stub
+        align="center"
+        class="settings-chevron"
+        color="blueish"
+        flat="true"
+        icon="chevron_right"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+  </div>
+   
+  <div
+    class="settings-row"
+  >
+    <div>
+      
+      Delete Account
+    
+    </div>
+     
+    <div>
+      <q-btn-stub
+        align="center"
+        class="settings-chevron"
+        color="blueish"
+        flat="true"
+        icon="chevron_right"
+        ripple="true"
+        size="lg"
+      />
+    </div>
+  </div>
+   
+  <selectlanguage-stub
+    currentlocale="en-gb"
+  />
+   
+  <selectcurrency-stub
+    currentcurrency="GBP"
+  />
+   
+  <pin-stub
+    pinhash="$2a$10$8NJPPf3O6RY3UI98PjOYouYOfeDyVVKD4cPqefFJHmqkhsLwTfEZC"
+  />
+   
+  <deleteaccount-stub
+    pinhash="$2a$10$8NJPPf3O6RY3UI98PjOYouYOfeDyVVKD4cPqefFJHmqkhsLwTfEZC"
+  />
+</div>
+`;
