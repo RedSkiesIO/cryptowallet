@@ -592,8 +592,6 @@ describe('boot/BackEndService', () => {
 
       await backEndService.loadCoinPriceData('BTC');
 
-      expect(backEndService.getHistoricalData).toHaveBeenCalledTimes(3);
-      expect(backEndService.getPriceFeed).toHaveBeenCalled();
       expect(backEndService.storeChartData).toHaveBeenCalledTimes(0);
       expect(backEndService.storePriceData).toHaveBeenCalledTimes(0);
       done();
