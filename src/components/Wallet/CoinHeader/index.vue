@@ -101,12 +101,6 @@ export default {
       return Coin.all();
     },
 
-    coinDenomination() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).denominationShortened;
-    },
-
     coinSymbol() {
       return this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
