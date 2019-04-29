@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
+import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
 
 class BackEndService {
@@ -279,6 +280,53 @@ class BackEndService {
     });
   }
 
+  storeChartData(coin, period, chartData) {
+    const { selectedCurrency } = this.vm.$store.state.settings;
+
+    return new Promise(async (resolve) => {
+      const checkChartDataExists = (symbol, data) => {
+        const chartDataExists = Prices.find([`${symbol}_${selectedCurrency.code}_${period}`]);
+        if (!chartDataExists) {
+          Prices.$insert({
+            data: {
+              coin,
+              currency: selectedCurrency.code,
+              period,
+              updated: +new Date(),
+              data,
+            },
+          });
+          return false;
+        }
+        return true;
+      };
+      const whereChartData = (record, item) => {
+        return (
+          record.coin === item.coin
+          && record.currency === item.currency
+          && record.period === item.period
+        );
+      };
+
+      if (checkChartDataExists(coin, chartData)) {
+        Prices.$update({
+          where: (record) => {
+            return whereChartData(record, {
+              coin,
+              currency: selectedCurrency.code,
+              period,
+            });
+          },
+          data: {
+            updated: +new Date(),
+            data: chartData,
+          },
+        });
+      }
+      resolve();
+    });
+  }
+
   /**
    * Calls the API and and stores the price data
    */
@@ -311,6 +359,33 @@ class BackEndService {
       await Promise.all(promises);
     } catch (error) {
       this.vm.$toast.create(10, error.message, this.delay);
+    }
+  }
+
+  /**
+   * Calls the API and stores the price data for a coin
+   */
+  async loadCoinPriceData(coin) {
+    const { selectedCurrency } = this.vm.$store.state.settings;
+
+    const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day');
+    const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week');
+    const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month');
+
+    if (dayData && weekData && monthData) {
+      this.storeChartData(coin, 'day', dayData.data);
+      this.storeChartData(coin, 'week', weekData.data);
+      this.storeChartData(coin, 'month', monthData.data);
+    }
+
+    const latestPrice = await this.getPriceFeed(
+      [coin],
+      [selectedCurrency.code],
+    );
+
+    if (latestPrice) {
+      const prices = latestPrice.data[0];
+      this.storePriceData(coin, prices[selectedCurrency.code]);
     }
   }
 }

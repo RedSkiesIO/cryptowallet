@@ -6,6 +6,7 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account';
 import LatestPrice from '@/store/latestPrice';
 import axios from 'axios';
+import Prices from '@/store/prices';
 
 jest.mock('axios');
 const mockAxios = axios;
@@ -54,7 +55,7 @@ describe('boot/BackEndService', () => {
     backEndService = new wrapperMock.vm.$root.BackEndService(wrapperMock.vm, accountData.id, pin.join(''));
   }
 
-  beforeEach(() => { storeInit({}, defaultProps); });
+  beforeEach(() => { storeInit({}, defaultProps); jest.clearAllMocks(); });
 
   it('exports a function', async () => {
     expect(typeof BackEndService).toBe('function');
@@ -480,6 +481,45 @@ describe('boot/BackEndService', () => {
     });
   });
 
+  describe('storeChartData()', () => {
+    it('stores the price data if data does not exist', async (done) => {
+      const mockChartData = {
+        data: {
+          x: 3001,
+          y: 123456,
+        },
+      };
+      await backEndService.storeChartData('BTC', 'day', mockChartData);
+      expect(Prices.all()[0].data).toBe(mockChartData);
+      done();
+    });
+
+    it('checks if price data exists and updates if true', async (done) => {
+      const mockChartData = {
+        data: {
+          x: 3001,
+          y: 123456,
+        },
+      };
+      Prices.$insert({
+        data: {
+          coin: 'BTC',
+          currency: 'GBP',
+          period: 'day',
+          updated: +new Date(),
+          data: ['old data'],
+        },
+      });
+      expect(Prices.all()[0].data).toEqual(['old data']);
+      const dataTimestamp = Prices.all()[0].updated;
+      await backEndService.storeChartData('BTC', 'day', mockChartData);
+      expect(Prices.all().length).toBe(1);
+      expect(Prices.all()[0].data).toBe(mockChartData);
+      expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
+      done();
+    });
+  });
+
   describe('loadPriceFeed() method', () => {
     it('takes all of the supported coins and stores their price data', async (done) => {
       backEndService.getPriceFeed = jest.fn().mockImplementation(() => {
@@ -508,6 +548,52 @@ describe('boot/BackEndService', () => {
       await backEndService.loadPriceFeed();
 
       expect(wrapperMock.vm.$toast.create).toHaveBeenCalledWith(10, 'what happened', 500);
+      done();
+    });
+  });
+
+  describe('loadCoinPriceData() method', () => {
+    it('fetches the price data for a coin and stores it', async (done) => {
+      const mockChartData = {
+        data: {
+          x: 3001,
+          y: 123456,
+        },
+      };
+      backEndService.getPriceFeed = jest.fn().mockImplementation(() => {
+        return priceFeedMockData;
+      });
+      backEndService.getHistoricalData = jest.fn().mockImplementation(() => {
+        return mockChartData;
+      });
+
+      backEndService.storeChartData = jest.fn();
+      backEndService.storePriceData = jest.fn();
+
+      await backEndService.loadCoinPriceData('BTC');
+
+      expect(backEndService.getHistoricalData).toHaveBeenCalledTimes(3);
+      expect(backEndService.getPriceFeed).toHaveBeenCalled();
+      expect(backEndService.storeChartData).toHaveBeenCalledTimes(3);
+      expect(backEndService.storePriceData).toHaveBeenCalled();
+      done();
+    });
+
+    it('only stores the price data if the api returns data', async (done) => {
+      backEndService.getPriceFeed = jest.fn().mockImplementation(() => {
+        return undefined;
+      });
+      backEndService.getHistoricalData = jest.fn().mockImplementation(() => {
+        return undefined;
+      });
+
+      backEndService.storeChartData = jest.fn();
+      backEndService.storePriceData = jest.fn();
+
+      await backEndService.loadCoinPriceData('BTC');
+
+      expect(backEndService.storeChartData).toHaveBeenCalledTimes(0);
+      expect(backEndService.storePriceData).toHaveBeenCalledTimes(0);
       done();
     });
   });

@@ -1,4 +1,7 @@
 <script>
+// cannot fix this, _chart is coming from vue-chartjs
+/* eslint-disable vue/no-reserved-keys */
+/* eslint-disable no-underscore-dangle */
 import { Line, mixins } from 'vue-chartjs';
 
 const { reactiveProp } = mixins;
@@ -14,8 +17,6 @@ export default {
   },
   data() {
     return {
-      // cannot fix this, _chart is coming from vue-chartjs
-      // eslint-disable-next-line
       _chart: '',
     };
   },
@@ -24,9 +25,9 @@ export default {
       const colour = 450;
       const newGradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, colour);
       const transparency = 0.3;
-      newGradient.addColorStop(0, 'rgba(250, 188, 87, 0.5)'); // show this color at 0%;
-      newGradient.addColorStop(transparency, 'rgba(250, 188, 87, 0.25)'); // show this color at 50%
-      newGradient.addColorStop(1, 'rgba(250, 188, 87, 0)'); // show this color at 100%
+      newGradient.addColorStop(0, 'rgba(250, 188, 87, 0.5)');
+      newGradient.addColorStop(transparency, 'rgba(250, 188, 87, 0.25)');
+      newGradient.addColorStop(1, 'rgba(250, 188, 87, 0)');
 
       return newGradient;
     },
@@ -34,38 +35,27 @@ export default {
   watch: {
     chartData: {
       handler() {
-        const chart = this.chartData;
-        chart.datasets[0].backgroundColor = this.gradient;
-        chart.datasets[1].backgroundColor = this.gradient;
-        chart.datasets[2].backgroundColor = this.gradient;
-        this.renderChart(chart, this.options);
-        // cannot fix this, _chart is coming from vue-chartjs
-        // eslint-disable-next-line
-        this.chart = this.$data._chart;
-        this.newLegend();
+        this.loadChart();
       },
     },
   },
   mounted() {
-    const chart = this.chartData;
-    chart.datasets[0].backgroundColor = this.gradient;
-    chart.datasets[1].backgroundColor = this.gradient;
-    chart.datasets[2].backgroundColor = this.gradient;
-    this.renderChart(chart, this.options);
-    // cannot fix this, _chart is coming from vue-chartjs
-    // eslint-disable-next-line
-    this.chart = this.$data._chart;
-    this.newLegend();
+    this.loadChart();
   },
   methods: {
     newLegend() {
       this.$emit('legendHtml', this.chart);
     },
+    loadChart() {
+      this.chartData.datasets.forEach((set) => {
+        set.backgroundColor = this.gradient;
+      });
+      this.renderChart(this.chartData, this.options);
+      this.chart = this.$data._chart;
+      this.newLegend();
+    },
   },
-
 };
 </script>
-
 <style>
-
 </style>
