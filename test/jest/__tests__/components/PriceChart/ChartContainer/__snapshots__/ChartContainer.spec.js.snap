@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ChartContainer renders and matches snapshot 1`] = `
+<div
+  class="chart-container"
+>
+  <div
+    class="row justify-center"
+  >
+    <button
+      class="q-btn inline q-btn-item non-selectable chart-button q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          24H
+        </div>
+      </div>
+    </button>
+     
+    <button
+      class="q-btn inline q-btn-item non-selectable chart-button q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          1W
+        </div>
+      </div>
+    </button>
+     
+    <button
+      class="q-btn inline q-btn-item non-selectable chart-button q-btn--standard q-btn--rectangle bg-secondary text-white q-focusable q-hoverable"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          1M
+        </div>
+      </div>
+    </button>
+  </div>
+   
+  <chart-stub
+    chartdata="[object Object]"
+    chartid="line-chart"
+    cssclasses=""
+    height="400"
+    options="[object Object]"
+    plugins=""
+    width="400"
+  />
+</div>
+`;

@@ -7,8 +7,6 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
-import Prices from '@/store/prices';
-
 
 describe('Modals/Wallets.vue', () => {
   let storeMocks;
@@ -101,6 +99,7 @@ describe('Modals/Wallets.vue', () => {
     getPriceFeed: jest.fn(),
     storePriceData: jest.fn(),
     getHistoricalData: jest.fn(),
+    loadCoinPriceData: jest.fn(),
   };
 
   const activeWallets = {};
@@ -164,7 +163,7 @@ describe('Modals/Wallets.vue', () => {
   });
 
   it('catches errors', (done) => {
-    backEndService.getPriceFeed.mockImplementationOnce(() => {
+    backEndService.loadCoinPriceData.mockImplementationOnce(() => {
       throw new Error('Test error');
     });
     storeInit();
@@ -201,24 +200,24 @@ describe('Modals/Wallets.vue', () => {
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
       setTimeout(() => {
-        expect(backEndService.getPriceFeed).toHaveBeenCalledTimes(1);
-        expect(backEndService.storePriceData).toHaveBeenCalled();
-        expect(backEndService.getHistoricalData).toHaveBeenCalledTimes(3);
+        expect(backEndService.loadCoinPriceData).toHaveBeenCalledTimes(1);
+        // expect(backEndService.storePriceData).toHaveBeenCalled();
+        // expect(backEndService.getHistoricalData).toHaveBeenCalledTimes(3);
         done();
       }, 0);
     });
 
-    it('enables a wallet without any price data', (done) => {
-      storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
-      Wallet.$insert({ data: [bitcoinWallet] });
-      wrapper.vm.addWalletModalOpened = true;
-      wrapper.vm.close();
-      setTimeout(() => {
-        expect(backEndService.getPriceFeed).toHaveBeenCalledTimes(1);
-        done();
-      }, 0);
-    });
+    // it('enables a wallet without any price data', (done) => {
+    //   storeInit();
+    //   backEndService.getHistoricalData.mockReturnValue(mockChartData);
+    //   Wallet.$insert({ data: [bitcoinWallet] });
+    //   wrapper.vm.addWalletModalOpened = true;
+    //   wrapper.vm.close();
+    //   setTimeout(() => {
+    //     expect(backEndService.getPriceFeed).toHaveBeenCalledTimes(1);
+    //     done();
+    //   }, 0);
+    // });
 
     it('catches errors', () => {
       coinSDKS.Bitcoin.generateKeyPair.mockImplementationOnce(() => {
@@ -236,9 +235,7 @@ describe('Modals/Wallets.vue', () => {
 
   describe('enableBitcoin()', () => {
     it('it updates the wallet database with the next address', (done) => {
-      backEndService.getPriceFeed.mockReturnValueOnce(mockPriceFeed);
       storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
       Wallet.$insert({ data: [bitcoinWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
@@ -253,9 +250,7 @@ describe('Modals/Wallets.vue', () => {
     it('it store the tx and utxo history in the database', (done) => {
       discovery.txHistory.txs = [{ confirmed: true }, { confirmed: false }];
       discovery.utxos = [{ confirmed: true }, { confirmed: false }];
-      backEndService.getPriceFeed.mockReturnValueOnce(mockPriceFeed);
       storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
       Wallet.$insert({ data: [bitcoinWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
@@ -277,9 +272,7 @@ describe('Modals/Wallets.vue', () => {
         { index: 0, address: '321' },
         { index: 1, address: '654' },
         { index: 2, address: '987' }];
-      backEndService.getPriceFeed.mockReturnValueOnce(mockPriceFeed);
       storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
       Wallet.$insert({ data: [bitcoinWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
@@ -293,9 +286,7 @@ describe('Modals/Wallets.vue', () => {
   describe('enableEthereum()', () => {
     it('it updates the wallet database with the next address', (done) => {
       discovery.accounts = [{ index: 0, address: '123' }];
-      backEndService.getPriceFeed.mockReturnValueOnce(mockPriceFeed);
       storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
       Wallet.$insert({ data: [ethereumWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
@@ -314,9 +305,7 @@ describe('Modals/Wallets.vue', () => {
         { confirmedTime: 121, confirmed: true },
         { confirmedTime: 122, confirmed: false },
       ];
-      backEndService.getPriceFeed.mockReturnValueOnce(mockPriceFeed);
       storeInit();
-      backEndService.getHistoricalData.mockReturnValue(mockChartData);
       Wallet.$insert({ data: [ethereumWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
@@ -333,7 +322,6 @@ describe('Modals/Wallets.vue', () => {
     it('it enables the ethereum wallet before enabling the ERC20 wallet', (done) => {
       discovery.txHistory.txs = [{ confirmed: true }, { confirmed: false }];
       discovery.accounts = [{ index: 0, address: '123' }];
-      backEndService.getPriceFeed.mockReturnValue(mockPriceFeed);
       storeInit();
       Wallet.$insert({ data: [erc20Wallet] });
       Wallet.$insert({ data: [ethereumWallet] });
@@ -352,7 +340,6 @@ describe('Modals/Wallets.vue', () => {
     it('it sorts and stores the transaction history', (done) => {
       discovery.txHistory = [{ confirmed: true }, { confirmed: false }];
       discovery.accounts = [{ index: 0, address: '123' }];
-      backEndService.getPriceFeed.mockReturnValueOnce('');
       storeInit();
       Wallet.$insert({ data: [erc20Wallet] });
       ethereumWallet.imported = true;
@@ -364,36 +351,6 @@ describe('Modals/Wallets.vue', () => {
         expect(txs.length).toEqual(2);
         expect(txs[0].confirmed).toBe(false);
         done();
-      }, 0);
-    });
-  });
-
-  describe('storeChartData()', () => {
-    it('stores the price data if data does not exist', async (done) => {
-      wrapper.vm.storeChartData('BTC', 'day', mockChartData);
-      setTimeout(() => {
-        expect(Prices.all()[0].data).toBe(mockChartData);
-        done();
-      }, 0);
-    });
-
-    it('checks if price data exists and updates if true', () => {
-      Prices.$insert({
-        data: {
-          coin: 'BTC',
-          currency: 'GBP',
-          period: 'day',
-          updated: +new Date(),
-          data: ['old data'],
-        },
-      });
-      expect(Prices.all()[0].data).toEqual(['old data']);
-      const dataTimestamp = Prices.all()[0].updated;
-      wrapper.vm.storeChartData('BTC', 'day', mockChartData);
-      setTimeout(() => {
-        expect(Prices.all().length).toBe(1);
-        expect(Prices.all()[0].data).toBe(mockChartData);
-        expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
       }, 0);
     });
   });
