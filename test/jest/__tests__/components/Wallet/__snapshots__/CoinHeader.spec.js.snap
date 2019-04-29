@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoinHeader.vue renders and matches snapshot 1`] = `
+<div
+  class="simple"
+>
+  <div
+    class="wrapper"
+  >
+    <div>
+      <div
+        class="wallet-name"
+      >
+        <img
+          src="./statics/cc-icons/color/generic.svg"
+        />
+        
+        Catalyst
+      
+      </div>
+       
+      <div
+        class="quick-coin-actions"
+      >
+        <div
+          class="q-btn-group row no-wrap inline"
+        >
+          <button
+            class="q-btn inline q-btn-item non-selectable wallet-group-btn q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+            style="font-size: 14px;"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="q-focus-helper"
+              tabindex="-1"
+            />
+            <div
+              class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons q-icon on-left"
+              >
+                send
+              </i>
+              <div>
+                Send
+              </div>
+            </div>
+          </button>
+           
+          <button
+            class="q-btn inline q-btn-item non-selectable wallet-group-btn q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+            style="font-size: 14px;"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="q-focus-helper"
+              tabindex="-1"
+            />
+            <div
+              class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+            >
+              <i
+                aria-hidden="true"
+                class="material-icons q-icon on-left"
+              >
+                call_received
+              </i>
+              <div>
+                Receive
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+     
+    <div
+      class="wallet-prices"
+    >
+      <!---->
+       
+      <div
+        class="in-coin"
+      >
+        
+        10 CAT
+      
+      </div>
+    </div>
+  </div>
+</div>
+`;
