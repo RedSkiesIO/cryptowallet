@@ -41,10 +41,7 @@ export default {
   components: { Chart },
   data() {
     return {
-      loaded: false,
-      legendMarkup: '',
       newChart: '',
-      gradient: '',
     };
   },
   computed: {

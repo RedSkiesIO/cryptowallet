@@ -36,7 +36,6 @@ export default {
       handler(to) {
         if (to.name === 'coinPrices' || to.name === 'coinSinglePrices') {
           this.$store.dispatch('modals/setPriceChartModalOpened', true);
-          // this.loadData();
         } else {
           this.$store.dispatch('modals/setPriceChartModalOpened', false);
         }
