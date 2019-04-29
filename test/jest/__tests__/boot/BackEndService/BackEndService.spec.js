@@ -490,10 +490,8 @@ describe('boot/BackEndService', () => {
         },
       };
       await backEndService.storeChartData('BTC', 'day', mockChartData);
-      setTimeout(() => {
-        expect(Prices.all()[0].data).toBe(mockChartData);
-        done();
-      }, 0);
+      expect(Prices.all()[0].data).toBe(mockChartData);
+      done();
     });
 
     it('checks if price data exists and updates if true', async (done) => {
@@ -515,12 +513,10 @@ describe('boot/BackEndService', () => {
       expect(Prices.all()[0].data).toEqual(['old data']);
       const dataTimestamp = Prices.all()[0].updated;
       await backEndService.storeChartData('BTC', 'day', mockChartData);
-      setTimeout(() => {
-        expect(Prices.all().length).toBe(1);
-        expect(Prices.all()[0].data).toBe(mockChartData);
-        expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
-        done();
-      }, 0);
+      expect(Prices.all().length).toBe(1);
+      expect(Prices.all()[0].data).toBe(mockChartData);
+      expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
+      done();
     });
   });
 

@@ -112,12 +112,16 @@ describe('modals/PriceCharts', () => {
 
     it('the back button returns to the previous page', (done) => {
       router.push({ path: '/wallet' });
-      router.push({ path: '/wallet/single/prices/5' });
-      expect(router.history.current.path).toBe('/wallet/single/prices/5');
-      wrapper.findAll('button').at(0).trigger('click');
       setTimeout(() => {
-        expect(router.history.current.path).toBe('/wallet');
-        done();
+        router.push({ path: '/wallet/single/prices/5' });
+        setTimeout(() => {
+          expect(router.history.current.path).toBe('/wallet/single/prices/5');
+          wrapper.findAll('button').at(0).trigger('click');
+          setTimeout(() => {
+            expect(router.history.current.path).toBe('/wallet');
+            done();
+          }, 10);
+        }, 10);
       }, 10);
     });
   });

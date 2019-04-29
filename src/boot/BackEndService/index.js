@@ -280,13 +280,13 @@ class BackEndService {
     });
   }
 
-  storeChartData(coin, period, latestPrice) {
+  storeChartData(coin, period, chartData) {
     const { selectedCurrency } = this.vm.$store.state.settings;
 
     return new Promise(async (resolve) => {
-      const checkPriceExists = (symbol, data) => {
-        const price = Prices.find([`${symbol}_${selectedCurrency.code}_${period}`]);
-        if (!price) {
+      const checkChartDataExists = (symbol, data) => {
+        const chartDataExists = Prices.find([`${symbol}_${selectedCurrency.code}_${period}`]);
+        if (!chartDataExists) {
           Prices.$insert({
             data: {
               coin,
@@ -300,7 +300,7 @@ class BackEndService {
         }
         return true;
       };
-      const whereLatestPrice = (record, item) => {
+      const whereChartData = (record, item) => {
         return (
           record.coin === item.coin
           && record.currency === item.currency
@@ -308,10 +308,10 @@ class BackEndService {
         );
       };
 
-      if (checkPriceExists(coin, latestPrice)) {
+      if (checkChartDataExists(coin, chartData)) {
         Prices.$update({
           where: (record) => {
-            return whereLatestPrice(record, {
+            return whereChartData(record, {
               coin,
               currency: selectedCurrency.code,
               period,
@@ -319,7 +319,7 @@ class BackEndService {
           },
           data: {
             updated: +new Date(),
-            data: latestPrice,
+            data: chartData,
           },
         });
       }
