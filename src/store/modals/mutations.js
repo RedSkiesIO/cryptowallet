@@ -39,3 +39,7 @@ export function SET_SENDSUCCESS_MODAL_OPENED(state, payload) {
 export function SET_ADDERC20_MODAL_OPENED(state, payload) {
   state.addErc20ModalOpened = payload;
 }
+
+export function SET_PRICECHART_MODAL_OPENED(state, payload) {
+  state.priceChartModalOpened = payload;
+}
