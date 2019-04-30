@@ -131,16 +131,16 @@ describe('ConfirmSend component', () => {
   });
 
   it('displays an erc20 transaction', async (done) => {
-    customStore.state.modals.sendConfirmTxData.transaction.fee = 10000000000000000;
+    customStore.state.modals.sendConfirmTxData.transaction.fee = 10000000000000;
     customStore.state.modals.sendConfirmTxData.transaction.receiver = '456';
     storeInit(customStore, {}, 4);
     setTimeout(() => {
       expect(wrapper.text()).toMatch('456');
       expect(wrapper.text()).toMatch('1 CAT');
-      expect(wrapper.text()).toMatch('0.01 ETH');
+      expect(wrapper.text()).toMatch('0.00001 ETH');
       expect(wrapper.vm.to).toEqual('456');
       expect(wrapper.vm.txData.transaction.value).toEqual(1);
-      expect(wrapper.vm.txData.transaction.fee).toEqual(10000000000000000);
+      expect(wrapper.vm.txData.transaction.fee).toEqual(10000000000000);
       done();
     }, 100);
   });
