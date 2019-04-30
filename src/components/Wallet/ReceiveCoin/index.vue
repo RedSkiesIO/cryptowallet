@@ -7,7 +7,7 @@
       <span class="h3-line" />
     </div>
     <div class="address break">
-      {{ getAddress() }}
+      {{ address }}
     </div>
 
     <q-btn
@@ -66,11 +66,13 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     address() {
-      return this.getAddress();
+      if (this.wallet.externalAddress) { return this.wallet.externalAddress; }
+      return this.generateExternalAddress();
     },
   },
   watch: {
     address() {
+      console.log(this.address);
       this.qrCode();
     },
   },
@@ -78,36 +80,48 @@ export default {
     this.qrCode();
   },
   methods: {
-    getAddress() {
-      if (this.wallet.externalAddress) { return this.wallet.externalAddress; }
-      return this.generateExternalAddress();
-    },
     generateExternalAddress() {
-      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const keyPair = coinSDK.generateKeyPair(wallet, this.wallet.externalChainAddressIndex);
+      let address;
+      if (this.wallet.sdk === 'ERC20') {
+        ({ address } = this.wallet.erc20Wallet);
+      } else {
+        const coinSDK = this.coinSDKS[this.wallet.sdk];
 
-      Wallet.$update({
-        where: (record) => { return record.id === this.wallet.id; },
-        data: { externalAddress: keyPair.address },
-      });
+        const keyPair = coinSDK.generateKeyPair(
+          this.wallet.hdWallet, this.wallet.externalChainAddressIndex,
+        );
 
-      const newAddress = {
-        account_id: this.authenticatedAccount,
-        wallet_id: this.wallet.id,
-        chain: 'external',
-        address: keyPair.address,
-        index: this.wallet.externalChainAddressIndex,
-      };
+        const newAddress = {
+          account_id: this.authenticatedAccount,
+          wallet_id: this.wallet.id,
+          chain: 'external',
+          address: keyPair.address,
+          index: this.wallet.externalChainAddressIndex,
+        };
 
-      Address.$insert({ data: newAddress });
+        Address.$insert({ data: newAddress });
 
-      Wallet.$update({
-        where: (record) => { return record.id === this.wallet.id; },
-        data: { externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1 },
-      });
+        ({ address } = keyPair);
+      }
+      if (this.wallet.sdk === 'Bitcoin') {
+        Wallet.$update({
+          where: (record) => { return record.id === this.wallet.id; },
+          data: {
+            externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1,
+            externalAddress: address,
+          },
+        });
+      } else {
+        Wallet.$update({
+          where: (record) => { return record.id === this.wallet.id; },
+          data: {
+            externalChainAddressIndex: 0,
+            externalAddress: address,
+          },
+        });
+      }
 
-      return keyPair.address;
+      return address;
     },
     copyToClipboard() {
       try {
@@ -124,7 +138,6 @@ export default {
       };
 
       if (typeof this.address !== 'string') { return false; }
-
       QRCode.toDataURL(this.address, options, (err, url) => {
         if (err) {
           this.errorHandler(err);
@@ -137,16 +150,14 @@ export default {
       return false;
     },
     share() {
-      const that = this;
       const options = {
         message: `${this.address}`,
         subject: `Here's my ${this.wallet.name} address`,
       };
 
-      function onError(msg) {
-        that.errorHandler(new Error(msg));
-      }
-
+      const onError = (msg) => {
+        this.errorHandler(new Error(msg));
+      };
       window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
     },
   },

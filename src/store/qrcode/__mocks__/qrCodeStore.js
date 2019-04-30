@@ -2,6 +2,7 @@ const actions = {
   scanQRCode: jest.fn(),
   cancelScanning: jest.fn(),
   setScannedAddress: jest.fn(),
+  toDataURL: jest.fn(),
 };
 
 const getters = {};
