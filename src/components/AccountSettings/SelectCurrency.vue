@@ -47,6 +47,7 @@
 <script>
 import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'SelectCurrency',
@@ -70,6 +71,12 @@ export default {
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
+    wallets() {
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('imported', true)
+        .get();
+    },
     selectedCurrency: {
       get() {
         return this.currentCurrency;
@@ -83,13 +90,22 @@ export default {
         const currency = this.$store.state.settings.supportedCurrencies.find((item) => {
           return item.code === this.account.currency;
         });
-
         this.$store.dispatch('settings/setCurrency', currency);
       },
     },
   },
   methods: {
+    async refreshPrices() {
+      const promises = [];
+      this.wallets.forEach((wallet) => {
+        promises.push(new Promise((res) => {
+          return res(this.backEndService.loadCoinPriceData(wallet.symbol));
+        }));
+      });
+      await Promise.all(promises);
+    },
     closeModal() {
+      this.refreshPrices();
       this.$emit('closeCurrencyModal');
     },
   },

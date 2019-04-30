@@ -34,12 +34,13 @@ const mockData = {
   accountName: 'Stephen',
   salt: '$2a$10$KE86k38NXlqTBgOQUC9bF.',
   accountLocale: 'en-gb',
+  accountCurrency: 'GBP',
   seed: {
     real: 'real', debate: 'debate', another: 'another', phone: 'phone', response: 'response', toddler: 'toddler', fee: 'fee', offer: 'offer', bundle: 'bundle', crack: 'crack', monster: 'monster', earth: 'earth',
   },
 };
 
-describe('boot/WalletDiscovery', () => {
+describe('boot/AccountInitializer', () => {
   beforeEach(async () => {
     wrapperMock = shallowMount({ name: 'mock', template: '<div/>' }, { i18n, localVue, store });
   });

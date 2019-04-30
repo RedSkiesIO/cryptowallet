@@ -13,6 +13,7 @@ const accountInitializer = {
     const data = {
       uid: uid(),
       name: setup.accountName,
+      currency: setup.accountCurrency || accounts[0].currency,
       salt: setup.salt,
       pinHash,
       default: accounts.length === 0,
