@@ -5,4 +5,5 @@ export default {
   sendFailureModalOpened: false,
   sendSuccessModalOpened: false,
   addErc20ModalOpened: false,
+  priceChartModalOpened: false,
 };

@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modals/PriceCharts renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="sending-spinner-overlay"
+  >
+    <div
+      class="lds-ring"
+    >
+      <div />
+       
+      <div />
+       
+      <div />
+       
+      <div />
+    </div>
+  </div>
+   
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn back-arrow-btn q-btn--flat q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            arrow_back
+          </i>
+        </div>
+      </button>
+    </div>
+     
+    <div>
+      <img
+        class="coin-logo"
+        src="./statics/cc-icons/color/btc.svg"
+      />
+      
+      Bitcoin
+    
+    </div>
+     
+    <div
+      class="header-settings-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn icon-btn-right q-btn--flat q-btn--rectangle text-secondary q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            refresh
+          </i>
+        </div>
+      </button>
+    </div>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper"
+  >
+    <div
+      class="price-info justify-center"
+    >
+      <div
+        class="row labels"
+      >
+        <div
+          class="col-6"
+        >
+          
+          1 BTC / GBP
+        
+        </div>
+         
+        <div
+          class="col-6"
+        >
+          
+          Volume 24h GBP
+        
+        </div>
+      </div>
+       
+      <div
+        class="row price"
+      >
+        <div
+          class="col-6"
+        >
+          
+          £3818.12
+        
+        </div>
+         
+        <div
+          class="col-6"
+        >
+          
+          £10147126
+        
+        </div>
+      </div>
+       
+      <div
+        class="row"
+        style="color: rgb(0, 255, 0);"
+      >
+        <div
+          class="col-6"
+        >
+          
+          4.73%
+        
+        </div>
+      </div>
+    </div>
+     
+    <pricechart-stub />
+  </div>
+</div>
+`;
