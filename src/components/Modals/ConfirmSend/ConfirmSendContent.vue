@@ -137,15 +137,6 @@ export default {
       txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
 
-    sendConfirmModalOpened: {
-      get() {
-        return this.$store.state.modals.sendConfirmModalOpened;
-      },
-      set(value) {
-        this.$store.dispatch('modals/setConfirmSendModalOpened', value);
-      },
-    },
-
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -164,28 +155,19 @@ export default {
 
     newBalance() {
       const { unconfirmed } = getBalance(this.wallet, this.authenticatedAccount);
-      if (this.wallet.sdk === 'Ethereum') {
-        let newBalance = (unconfirmed * this.weiMultiplier)
-                           - ((this.txData.transaction.value * this.weiMultiplier)
-                           + (parseFloat(this.txData.transaction.fee) * this.weiMultiplier));
-
-        if (newBalance < 0) { newBalance = 0; }
-        return newBalance / this.weiMultiplier;
-      }
-      if (this.wallet.sdk === 'ERC20') {
+      if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
         let newBalance = (unconfirmed * this.weiMultiplier)
                            - (this.txData.transaction.value * this.weiMultiplier);
-
+        if (this.wallet.sdk === 'Ethereum') {
+          newBalance += (parseFloat(this.txData.transaction.fee) * this.weiMultiplier);
+        }
         if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
-      if (this.wallet.sdk === 'Bitcoin') {
-        const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
-        let newBalance = unconfirmed - totalCost;
-        if (newBalance < this.tinyBalance) { newBalance = 0; }
-        return newBalance;
-      }
-      return false;
+      const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
+      let newBalance = unconfirmed - totalCost;
+      if (newBalance < this.tinyBalance) { newBalance = 0; }
+      return newBalance;
     },
 
     to() {
@@ -273,7 +255,6 @@ export default {
         });
 
         this.completeTransaction();
-        return false;
       }
 
       if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
@@ -290,10 +271,7 @@ export default {
         await Tx.$insert({ data: transaction });
 
         this.completeTransaction();
-        return false;
       }
-
-      return false;
     },
     coinToCurrency(amount, fee) {
       let formattedAmount = new AmountFormatter({
@@ -328,7 +306,7 @@ export default {
       return formattedAmount.getFormatted();
     },
     goBack() {
-      this.sendConfirmModalOpened = false;
+      this.$store.dispatch('modals/setConfirmSendModalOpened', false);
     },
     confirm() {
       this.loading = true;
