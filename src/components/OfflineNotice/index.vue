@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       online: null,
-      dissmis: null,
+      dismiss: null,
       onlineInterval: null,
     };
   },
@@ -26,7 +26,6 @@ export default {
   mounted() {
     this.network = new Network();
     this.online = this.network.isOnline();
-
     if (!this.online) {
       this.online = false;
       this.showOfflineNotice();
@@ -39,17 +38,16 @@ export default {
       })
       .on('online', () => {
         this.online = true;
-        if (this.dissmis) {
-          this.dissmis();
+        if (this.dismiss) {
+          this.dismiss();
         }
       });
-
 
     this.onlineInterval = setInterval(() => {
       if (this.online === false) {
         if (this.network.isOnline()) {
           this.online = false;
-          this.dissmis();
+          this.dismiss();
         }
       }
     }, this.delay.vlong);
@@ -63,14 +61,14 @@ export default {
   },
   methods: {
     showOfflineNotice() {
-      this.dissmis = this.$q.notify({
+      this.dismiss = this.$q.notify({
         message: this.$t('noConnection'),
         timeout: 0,
         color: 'negative',
         position: 'top',
         closeBtn: false,
         onDismiss() {
-          this.dissmis = null;
+          this.dismiss = null;
         },
       });
     },
