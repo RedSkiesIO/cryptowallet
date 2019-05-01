@@ -55,9 +55,6 @@ describe('modals/SendSuccess', () => {
       mocks: {
         errorHandler: jest.fn(),
       },
-      stubs: {
-        CoinHeader: true,
-      },
     });
   }
 
