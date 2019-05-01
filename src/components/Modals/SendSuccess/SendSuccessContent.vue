@@ -89,7 +89,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
       txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
@@ -122,7 +121,7 @@ export default {
   },
   methods: {
     complete() {
-      this.sendSuccessModalOpened = false;
+      this.$store.dispatch('modals/setSendSuccessModalOpened', false);
       this.$router.go(-1);
     },
     coinToCurrency(amount) {

@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`modals/SendSuccess renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn back-arrow-btn q-btn--flat q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            arrow_back
+          </i>
+        </div>
+      </button>
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      Success
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper center-modal-content"
+  >
+    <div
+      class="done-content-wrapper"
+    >
+      <div
+        class="done-icon-wrapper"
+      >
+        <i
+          aria-hidden="true"
+          class="material-icons q-icon done-icon"
+        >
+          done
+        </i>
+      </div>
+       
+      <div
+        class="done-msg-wrapper"
+      >
+        <h1>
+          PLAYFUL SUCCESS MESSAGE HERE
+        </h1>
+      </div>
+       
+      <div
+        class="done-tx-details-wrapper"
+      >
+        <div
+          class="tx-details-row"
+        >
+          <div
+            class="detail"
+          >
+            
+            TX Hash:
+          
+          </div>
+           
+          <div
+            class="break"
+          >
+            <span
+              class="tx-hash-span"
+            >
+              0000
+            </span>
+             
+            <button
+              class="q-btn inline q-btn-item non-selectable copy-hash-btn q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+              style="font-size: 8px;"
+              tabindex="0"
+              type="button"
+            >
+              <div
+                class="q-focus-helper"
+                tabindex="-1"
+              />
+              <div
+                class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+              >
+                <div>
+                  Copy
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+         
+        <div
+          class="tx-details-row"
+        >
+          <div
+            class="detail"
+          >
+            
+            Recipient
+          
+          </div>
+           
+          <div
+            class="break"
+          >
+            
+            123
+          
+          </div>
+        </div>
+         
+        <div
+          class="tx-details-row"
+        >
+          <div
+            class="detail"
+          >
+            
+            Amount
+          
+          </div>
+           
+          <div
+            class="nowrap"
+          >
+            
+            1 BTC (£3,818.12)
+          
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="send"
+      >
+        <button
+          class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+          style="font-size: 14px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <div>
+              Close
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
