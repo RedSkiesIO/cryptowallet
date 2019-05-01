@@ -79,14 +79,14 @@ export default {
         this.errorHandler(err);
       }
     },
-    qrCode() {
+    async qrCode() {
       const options = {
         width: 250,
         height: 250,
       };
 
       if (typeof this.address !== 'string') { return false; }
-      QRCode.toDataURL(this.address, options, (err, url) => {
+      await QRCode.toDataURL(this.address, options, (err, url) => {
         if (err) {
           this.errorHandler(err);
           return false;

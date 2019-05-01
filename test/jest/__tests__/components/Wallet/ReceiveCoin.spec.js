@@ -22,6 +22,10 @@ describe('ReceiveCoin component', () => {
     },
   };
 
+  QRCode.toDataURL = jest.fn().mockImplementation((address, options, onSuccess) => {
+    return onSuccess(undefined, 'qrcode.png');
+  });
+
   const defaultProps = {};
   function wrapperInit(options) {
     return mount(ReceiveCoin, options);
@@ -61,56 +65,56 @@ describe('ReceiveCoin component', () => {
   });
 
   describe('qrCode()', () => {
-    it('it renders a qr code', async (done) => {
+    it('it renders a qr code', (done) => {
       setTimeout(() => {
         expect(wrapper.contains('img')).toBe(true);
         done();
-      }, 1000);
+      }, 0);
     });
 
-    it('it does not render a qr code if there is no wallet address', async (done) => {
+    it('it does not render a qr code if there is no wallet address', (done) => {
       storeInit({}, defaultProps, '/wallet/single/receive/4');
       setTimeout(() => {
         expect(wrapper.contains('img')).toBe(false);
         done();
-      }, 1000);
+      }, 0);
       QRCode.toDataURL = jest.fn().mockImplementationOnce((address, options, onError) => {
         return onError('error', {});
       });
     });
 
-    it('can handle errors when the copy button is clicked', async (done) => {
+    it('can handle errors when the copy button is clicked', (done) => {
       setTimeout(() => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalled();
         done();
-      }, 1000);
+      }, 0);
     });
   });
 
   describe('copyToClipboard()', () => {
-    it('can copy the address when the copy button is clicked', async (done) => {
+    it('can copy the address when the copy button is clicked', (done) => {
       wrapper.vm.$toast.create = jest.fn();
       cordova.plugins.clipboard.mockBehaviour = 1;
       wrapper.findAll('button').at(0).trigger('click');
       setTimeout(() => {
         expect(wrapper.vm.$toast.create).toHaveBeenCalled();
         done();
-      }, 1000);
+      }, 0);
     });
 
-    it('can handle errors if a qr code cannot be generated', async (done) => {
+    it('can handle errors if a qr code cannot be generated', (done) => {
       wrapper.vm.$toast.create = jest.fn();
       cordova.plugins.clipboard.mockBehaviour = 2;
       wrapper.findAll('button').at(0).trigger('click');
       setTimeout(() => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalled();
         done();
-      }, 1000);
+      }, 0);
     });
   });
 
   describe('share()', () => {
-    it('calls the share api if the share button is clicked', async (done) => {
+    it('calls the share api if the share button is clicked', (done) => {
       const mockPlugins = {
         socialsharing: {
           shareWithOptions: jest.fn().mockImplementationOnce((options, onSuccess) => {
@@ -123,10 +127,10 @@ describe('ReceiveCoin component', () => {
       setTimeout(() => {
         expect(mockPlugins.socialsharing.shareWithOptions).toHaveBeenCalledTimes(1);
         done();
-      }, 1000);
+      }, 0);
     });
 
-    it('can handle errors when the share button is clicked', async (done) => {
+    it('can handle errors when the share button is clicked', (done) => {
       const mockPlugins = {
         socialsharing: {
           shareWithOptions: jest.fn().mockImplementationOnce((options, onSuccess, onError) => {
@@ -140,7 +144,7 @@ describe('ReceiveCoin component', () => {
         expect(mockPlugins.socialsharing.shareWithOptions).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.errorHandler).toHaveBeenCalledWith(Error('Test Error'));
         done();
-      }, 1000);
+      }, 0);
     });
   });
 });
