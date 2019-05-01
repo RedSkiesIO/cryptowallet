@@ -94,7 +94,7 @@ describe('modals/SendSuccess', () => {
       }, 0);
     });
 
-    it('can handle errors tx has cannot be copied', (done) => {
+    it('can handle errors if tx cannot be copied', (done) => {
       customStore.state.modals.sendConfirmTxData.transaction.receiver = '123';
       storeInit(customStore, defaultProps);
       wrapper.vm.$toast.create = jest.fn();
