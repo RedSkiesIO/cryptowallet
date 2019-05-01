@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReceiveCoin component renders and matches snapshot 1`] = `
+<div
+  class="receive-coin-box"
+>
+  <coinheader-stub
+    wallet="[object Object]"
+  />
+   
+  <div
+    class="send-modal-heading"
+  >
+    <h3>
+      Your Address
+    </h3>
+     
+    <span
+      class="h3-line"
+    />
+  </div>
+   
+  <div
+    class="address break"
+  >
+    
+    2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd
+  
+  </div>
+   
+  <button
+    class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+    style="font-size: 10px;"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="q-focus-helper"
+      tabindex="-1"
+    />
+    <div
+      class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+    >
+      <div>
+        Copy
+      </div>
+    </div>
+  </button>
+   
+  <button
+    class="q-btn inline q-btn-item non-selectable share-btn q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+    style="font-size: 10px;"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="q-focus-helper"
+      tabindex="-1"
+    />
+    <div
+      class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+    >
+      <div>
+        Share
+      </div>
+    </div>
+  </button>
+   
+  <div
+    class="send-modal-heading"
+  >
+    <h3>
+      Scan QR Code
+    </h3>
+     
+    <span
+      class="h3-line"
+    />
+  </div>
+   
+  <div
+    class="qr-code"
+  >
+    <!---->
+  </div>
+</div>
+`;
