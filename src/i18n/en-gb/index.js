@@ -1,6 +1,10 @@
 export default {
   'en-gb': 'English',
   'el-gr': 'Greek',
+  GBP: 'GBP (£)',
+  USD: 'USD ($)',
+  EUR: 'EUR (€)',
+  supportedCurrency: 'GBP',
   setupTitle: 'CryptoWallet Setup!',
   continue: 'Continue',
   profile: 'Profile',

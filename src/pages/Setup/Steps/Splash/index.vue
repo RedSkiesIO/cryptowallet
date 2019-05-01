@@ -128,12 +128,15 @@ export default {
     importAccount() {
       this.$i18n.locale = this.selectedLang.value;
       this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+      this.$store.dispatch('setup/setAccountCurrency', this.$t('supportedCurrency'));
       this.$store.dispatch('setup/setAccountType', 'restored');
       this.$router.push({ path: `/setup/${this.id + 1}` });
       return true;
     },
 
     getStarted() {
+      this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+      this.$store.dispatch('setup/setAccountCurrency', this.$t('supportedCurrency'));
       this.$store.dispatch('setup/setGetStartedModalOpened', true);
     },
   },
