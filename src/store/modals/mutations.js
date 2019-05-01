@@ -43,3 +43,11 @@ export function SET_ADDERC20_MODAL_OPENED(state, payload) {
 export function SET_PRICECHART_MODAL_OPENED(state, payload) {
   state.priceChartModalOpened = payload;
 }
+
+export function SET_SELECTACCOUNT_MODAL_OPENED(state, payload) {
+  state.selectAccountModalOpened = payload;
+}
+
+export function SET_NEWACCOUNT_MODAL_OPENED(state, payload) {
+  state.newAccountModalOpened = payload;
+}

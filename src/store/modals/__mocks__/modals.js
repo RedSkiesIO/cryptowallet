@@ -6,6 +6,8 @@ const actions = {
   setSendSuccessModalOpened: jest.fn(),
   setAddErc20ModalOpened: jest.fn(),
   setPriceChartModalOpened: jest.fn(),
+  setSelectAccountModalOpened: jest.fn(),
+  setNewAccountModalOpened: jest.fn(),
 };
 
 const getters = {};
@@ -18,6 +20,8 @@ const state = {
   sendSuccessModalOpened: false,
   addErc20ModalOpened: false,
   priceChartModalOpened: false,
+  selectAccountModalOpened: false,
+  newAccountModalOpened: false,
 };
 
 const qrcode = {

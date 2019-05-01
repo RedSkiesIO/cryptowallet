@@ -90,11 +90,10 @@ describe('Header.vue', () => {
     }, 0);
   });
 
-  it('fires selectAccountModalOpened event on account button click', (done) => {
-    const rootWrapper = createWrapper(wrapper.vm.$root);
+  it('calls setSelectAccountModalOpened action on account button click', (done) => {
     wrapper.findAll('button').at(1).trigger('click');
     setTimeout(() => {
-      expect(rootWrapper.emitted('selectAccountModalOpened')).toEqual([[true]]);
+      expect(storeMocks.actions.setSelectAccountModalOpened.mock.calls[0][1]).toEqual(true);
       done();
     }, 0);
   });
