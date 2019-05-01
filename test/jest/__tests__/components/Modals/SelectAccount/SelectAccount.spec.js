@@ -5,7 +5,7 @@ import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account.js';
 
-describe('GetStartedModalContent component', () => {
+describe('SelectAccountuModalContent component', () => {
   let wrapper;
   let router;
   let storeMocks;

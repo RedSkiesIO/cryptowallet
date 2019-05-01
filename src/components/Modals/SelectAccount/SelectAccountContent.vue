@@ -64,15 +64,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Account from '@/store/wallet/entities/account.js';
 
 export default {
   name: 'SelectAccountContent',
   computed: {
-    ...mapState({
-      id: (state) => { return parseInt(state.route.params.id, 10); },
-    }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
     },

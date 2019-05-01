@@ -4,7 +4,7 @@ import NewAccount from '@/components/Modals/NewAccount/NewAccountContent';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
-describe('GetStartedModalContent component', () => {
+describe('NewModalContent component', () => {
   let wrapper;
   let router;
   let storeMocks;
