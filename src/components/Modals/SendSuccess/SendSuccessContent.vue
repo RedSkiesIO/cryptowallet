@@ -36,7 +36,9 @@
               {{ $t('txHash') }}:
             </div>
             <div class="break">
-              <span class="tx-hash-span">{{ txData.transaction.hash }}</span>
+              <span class="tx-hash-span">
+                {{ txData.transaction.hash }}
+              </span>
               <q-btn
                 :label="$t('copy')"
                 color="blueish"
