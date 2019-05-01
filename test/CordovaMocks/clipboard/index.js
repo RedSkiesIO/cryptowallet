@@ -14,6 +14,20 @@ const clipboard = {
       throw new Error('fake error');
     }
   },
+
+  copy() {
+    if (this.mockBehaviour === null) {
+      throw new Error('please specify the clipboard mock behaviour');
+    }
+
+    if (this.mockBehaviour === 1) {
+      return;
+    }
+
+    if (this.mockBehaviour === 2) {
+      throw new Error('fake error');
+    }
+  },
 };
 
 export default clipboard;
