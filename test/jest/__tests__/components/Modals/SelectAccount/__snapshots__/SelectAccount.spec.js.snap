@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GetStartedModalContent component renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn back-arrow-btn q-btn--flat q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            arrow_back
+          </i>
+        </div>
+      </button>
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      Accounts
+    
+    </h1>
+     
+    <div
+      class="header-settings-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn icon-btn-right q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            person_add
+          </i>
+        </div>
+      </button>
+    </div>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper no-padding"
+  >
+    <div
+      class="account-item"
+    >
+      <div>
+        
+        Account1
+      
+      </div>
+       
+      <div
+        class="default-switch"
+      >
+        <div
+          class="q-toggle cursor-pointer no-outline row inline no-wrap items-center"
+          disabled="disabled"
+          tabindex="0"
+        >
+          <div
+            class="q-toggle__inner relative-position q-toggle__inner--active"
+          >
+            <input
+              class="q-toggle__native absolute q-ma-none q-pa-none invisible"
+              type="toggle"
+            />
+            <div
+              class="q-toggle__track"
+            />
+            <div
+              class="q-toggle__thumb-container absolute"
+            >
+              <div
+                class="q-toggle__thumb row flex-center"
+              />
+            </div>
+          </div>
+          <div
+            class="q-toggle__label q-anchor--skip"
+          >
+            Default
+          </div>
+        </div>
+      </div>
+       
+      <div>
+        <button
+          class="q-btn inline q-btn-item non-selectable list-chevron q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+          style="font-size: 20px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              chevron_right
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="account-item"
+    >
+      <div>
+        
+        Account2
+      
+      </div>
+       
+      <div
+        class="default-switch"
+      >
+        <div
+          class="q-toggle cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+        >
+          <div
+            class="q-toggle__inner relative-position"
+          >
+            <input
+              class="q-toggle__native absolute q-ma-none q-pa-none invisible"
+              type="toggle"
+            />
+            <div
+              class="q-toggle__track"
+            />
+            <div
+              class="q-toggle__thumb-container absolute"
+            >
+              <div
+                class="q-toggle__thumb row flex-center"
+              />
+            </div>
+          </div>
+          <div
+            class="q-toggle__label q-anchor--skip"
+          >
+            Default
+          </div>
+        </div>
+      </div>
+       
+      <div>
+        <button
+          class="q-btn inline q-btn-item non-selectable list-chevron q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+          style="font-size: 20px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              chevron_right
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="account-item"
+    >
+      <div>
+        
+        Account3
+      
+      </div>
+       
+      <div
+        class="default-switch"
+      >
+        <div
+          class="q-toggle cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+        >
+          <div
+            class="q-toggle__inner relative-position"
+          >
+            <input
+              class="q-toggle__native absolute q-ma-none q-pa-none invisible"
+              type="toggle"
+            />
+            <div
+              class="q-toggle__track"
+            />
+            <div
+              class="q-toggle__thumb-container absolute"
+            >
+              <div
+                class="q-toggle__thumb row flex-center"
+              />
+            </div>
+          </div>
+          <div
+            class="q-toggle__label q-anchor--skip"
+          >
+            Default
+          </div>
+        </div>
+      </div>
+       
+      <div>
+        <button
+          class="q-btn inline q-btn-item non-selectable list-chevron q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+          style="font-size: 20px;"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="q-focus-helper"
+            tabindex="-1"
+          />
+          <div
+            class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons q-icon"
+            >
+              chevron_right
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
