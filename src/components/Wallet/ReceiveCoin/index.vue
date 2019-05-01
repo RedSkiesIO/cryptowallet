@@ -7,7 +7,7 @@
       <span class="h3-line" />
     </div>
     <div class="address break">
-      {{ getAddress() }}
+      {{ address }}
     </div>
 
     <q-btn
@@ -43,8 +43,6 @@
 import { mapState } from 'vuex';
 import QRCode from 'qrcode';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-import Wallet from '@/store/wallet/entities/wallet';
-import Address from '@/store/wallet/entities/address';
 
 export default {
   name: 'Receive',
@@ -59,56 +57,20 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     address() {
-      return this.getAddress();
-    },
-  },
-  watch: {
-    address() {
-      this.qrCode();
+      if (!this.wallet.externalAddress) { return null; }
+      return this.wallet.externalAddress;
     },
   },
   mounted() {
     this.qrCode();
   },
   methods: {
-    getAddress() {
-      if (this.wallet.externalAddress) { return this.wallet.externalAddress; }
-      return this.generateExternalAddress();
-    },
-    generateExternalAddress() {
-      const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      const keyPair = coinSDK.generateKeyPair(wallet, this.wallet.externalChainAddressIndex);
-
-      Wallet.$update({
-        where: (record) => { return record.id === this.wallet.id; },
-        data: { externalAddress: keyPair.address },
-      });
-
-      const newAddress = {
-        account_id: this.authenticatedAccount,
-        wallet_id: this.wallet.id,
-        chain: 'external',
-        address: keyPair.address,
-        index: this.wallet.externalChainAddressIndex,
-      };
-
-      Address.$insert({ data: newAddress });
-
-      Wallet.$update({
-        where: (record) => { return record.id === this.wallet.id; },
-        data: { externalChainAddressIndex: this.wallet.externalChainAddressIndex + 1 },
-      });
-
-      return keyPair.address;
-    },
     copyToClipboard() {
       try {
         cordova.plugins.clipboard.copy(this.address);
@@ -117,15 +79,14 @@ export default {
         this.errorHandler(err);
       }
     },
-    qrCode() {
+    async qrCode() {
       const options = {
         width: 250,
         height: 250,
       };
 
       if (typeof this.address !== 'string') { return false; }
-
-      QRCode.toDataURL(this.address, options, (err, url) => {
+      await QRCode.toDataURL(this.address, options, (err, url) => {
         if (err) {
           this.errorHandler(err);
           return false;
@@ -137,16 +98,13 @@ export default {
       return false;
     },
     share() {
-      const that = this;
       const options = {
         message: `${this.address}`,
-        subject: `Here's my ${this.wallet.name} address`,
       };
 
-      function onError(msg) {
-        that.errorHandler(new Error(msg));
-      }
-
+      const onError = (msg) => {
+        this.errorHandler(new Error(msg));
+      };
       window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
     },
   },
