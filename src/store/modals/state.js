@@ -6,4 +6,6 @@ export default {
   sendSuccessModalOpened: false,
   addErc20ModalOpened: false,
   priceChartModalOpened: false,
+  selectAccountModalOpened: false,
+  newAccountModalOpened: false,
 };

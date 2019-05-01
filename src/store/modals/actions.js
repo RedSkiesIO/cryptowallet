@@ -44,3 +44,11 @@ export function setAddErc20ModalOpened(context, payload) {
 export function setPriceChartModalOpened(context, payload) {
   context.commit('SET_PRICECHART_MODAL_OPENED', payload);
 }
+
+export function setSelectAccountModalOpened(context, payload) {
+  context.commit('SET_SELECTACCOUNT_MODAL_OPENED', payload);
+}
+
+export function setNewAccountModalOpened(context, payload) {
+  context.commit('SET_NEWACCOUNT_MODAL_OPENED', payload);
+}

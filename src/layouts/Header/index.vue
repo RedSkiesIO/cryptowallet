@@ -174,7 +174,7 @@ export default {
     },
 
     setAccountModalOpened(value) {
-      this.$root.$emit('selectAccountModalOpened', value);
+      this.$store.dispatch('modals/setSelectAccountModalOpened', value);
     },
 
     openWalletsModal() {
