@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewModalContent component renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="header-section"
+  >
+    <div
+      class="header-back-button-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable icon-btn back-arrow-btn q-btn--flat q-btn--rectangle q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            arrow_back
+          </i>
+        </div>
+      </button>
+    </div>
+     
+    <h1
+      class="header-h1"
+    >
+      
+      New Account
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper centered"
+  >
+    <div>
+      <button
+        class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-primary text-blueish q-focusable q-hoverable"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon on-left"
+          >
+            add_box
+          </i>
+          <div>
+            Create Account
+          </div>
+        </div>
+      </button>
+    </div>
+     
+    <div
+      class="btns-wrapper"
+    >
+      <button
+        class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-primary text-blueish q-focusable q-hoverable"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon on-left"
+          >
+            get_app
+          </i>
+          <div>
+            Import Account
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
