@@ -212,7 +212,7 @@ export default {
   enterAccountName: 'Please enter an account name',
   invalidSeedPhrase: 'Invalid seed phrase',
   // other
-  noConnection: 'No internet connction',
+  noConnection: 'No internet connection',
   volume24h: 'Volume 24h',
   failedToConnect: 'Failed to connect to the server',
   'N/A': 'N/A',

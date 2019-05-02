@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import OfflineNotice from '@/components/OfflineNotice';
 import { mount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
@@ -8,21 +9,35 @@ describe('modals/SendSuccess', () => {
   let router;
   let storeMocks;
   let setOnline = true;
-  const map = {};
-
-  const mockNotify = {
-    notify: jest.fn().mockImplementation((object) => {
-      return object.onDismiss;
-    }),
+  let mockQ;
+  const connection = {
+    type: 'none',
   };
+  const browserEvents = {};
+  const mobileEvents = {};
+
   function wrapperInit(options) {
     window.addEventListener = jest.fn((event, cb) => {
-      map[event] = cb;
+      browserEvents[event] = cb;
+    });
+    document.addEventListener = jest.fn((event, cb) => {
+      mobileEvents[event] = cb;
     });
     return mount(OfflineNotice, options);
   }
 
-  function storeInit() {
+  function storeInit(online = true, device = { desktop: true }) {
+    mockQ = {
+      notify: jest.fn().mockImplementation((object) => {
+        return object.onDismiss;
+      }),
+      platform: {
+        is: null,
+      },
+    };
+    mockQ.platform.is = device;
+    setOnline = online;
+    if (online) { connection.type = true; } else { connection.type = 'none'; }
     storeMocks = createStoreMocks();
     router = createRouter(storeMocks.store);
     router.push({ path: '/' });
@@ -32,59 +47,80 @@ describe('modals/SendSuccess', () => {
       localVue,
       store: storeMocks.store,
       mocks: {
-        $q: mockNotify,
+        $q: mockQ,
+        errorHandler: jest.fn(),
       },
     });
   }
 
   beforeEach(() => {
     Object.defineProperty(window.navigator, 'onLine', { value: setOnline, configurable: true });
-    storeInit();
+    Object.defineProperty(navigator, 'connection', { value: connection, configurable: true });
+    jest.clearAllMocks();
   });
 
   it('renders and matches snapshot', () => {
+    storeInit();
     expect(wrapper.element).toMatchSnapshot();
-    setOnline = false;
   });
 
-  it('displays bg-offline class when offline', (done) => {
+  it('displays bg-offline class when offline', () => {
+    storeInit(false);
+    expect(wrapper.contains('.bg-offline')).toBe(true);
+  });
+
+  it('displays offline notice if a desktop device goes offline', () => {
+    storeInit(true);
+    browserEvents.offline();
+    expect(wrapper.vm.online).toBe(false);
+    expect(mockQ.notify).toHaveBeenCalled();
+  });
+
+  it('displays an offline notice if a mobile device goes offline', () => {
+    storeInit(true, { android: true });
+    mobileEvents.offline();
+    expect(wrapper.vm.online).toBe(false);
+    expect(mockQ.notify).toHaveBeenCalled();
+  });
+
+  it('dismisses the offline notice if a desktop device reconnects', (done) => {
+    storeInit(false);
+    browserEvents.offline();
     setTimeout(() => {
-      expect(wrapper.contains('.bg-offline')).toBe(true);
-      setOnline = true;
+      browserEvents.online();
+      expect(wrapper.vm.online).toBe(true);
+      expect(wrapper.vm.dismiss).toBe(null);
       done();
-    }, 0);
+    }, 1000);
   });
 
-  it('displays offline notice if device goes offline', (done) => {
-    wrapper.vm.dismiss = null;
-    map.offline();
+  it('dismisses the offline notice if a mobile device reconnects', (done) => {
+    storeInit(false, { ios: true });
+
+    mobileEvents.offline();
     setTimeout(() => {
-      wrapper.vm.dismiss = () => {};
-      expect(wrapper.vm.online).toBe(false);
-      expect(mockNotify.notify).toHaveBeenCalled();
-      setOnline = false;
+      mobileEvents.online();
+      expect(wrapper.vm.online).toBe(true);
+      expect(wrapper.vm.dismiss).toBe(null);
       done();
-    }, 0);
-  });
-
-  it('dismisses the offline notice if device reconnects', () => {
-    map.online();
-    expect(wrapper.vm.online).toBe(true);
-    expect(wrapper.vm.dismiss).toBe(null);
+    }, 1000);
     setOnline = true;
   });
 
-  // it('checks if device is online periodically', (done) => {
-  //   // wrapper.vm.dismiss = () => {};
-  //   setTimeout(() => {
-  //     expect(wrapper.vm.online).toBe(true);
-  //     // expect(wrapper.vm.dismiss).toBe(null);
-  //     // map.offline();
-  //     // setTimeout(() => {
-  //     //   expect(wrapper.vm.online).toBe(true);
+  it('checks if device is online periodically', (done) => {
+    storeInit();
+    setTimeout(() => {
+      expect(wrapper.vm.online).toBe(true);
+      expect(wrapper.vm.dismiss).toBe(null);
+      setTimeout(() => {
+        wrapper.vm.$options.beforeDestroy[2]();
+        done();
+      }, 1000);
+    }, 1000);
+  });
 
-  //     done();
-  //     // }, 10);
-  //   }, 0);
-  // });
+  it('handles errors if platform can\'t be detected', () => {
+    storeInit(true, {});
+    expect(wrapper.vm.errorHandler).toHaveBeenCalledWith(Error('Platform not detected'));
+  });
 });

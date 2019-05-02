@@ -24,37 +24,37 @@ export default {
     }),
   },
   mounted() {
-    this.network = new Network();
-    this.online = this.network.isOnline();
-    if (!this.online) {
-      this.online = false;
-      this.showOfflineNotice();
-    }
-
-    this.network
-      .on('offline', () => {
+    try {
+      this.network = new Network(this.$q.platform.is);
+      this.online = this.network.isOnline();
+      if (!this.online) {
         this.online = false;
         this.showOfflineNotice();
-      })
-      .on('online', () => {
-        this.online = true;
-        if (this.dismiss) {
-          this.dismiss();
-        }
-      });
-
-    this.onlineInterval = setInterval(() => {
-      if (this.online === false) {
-        if (this.network.isOnline()) {
-          this.online = false;
-          this.dismiss();
-        }
       }
-    }, this.delay.vlong);
 
-    this.$root.$on('getStartedModalOpened', (value) => {
-      this.getStartedModalOpened = value;
-    });
+      this.network
+        .on('offline', () => {
+          this.online = false;
+          this.showOfflineNotice();
+        })
+        .on('online', () => {
+          this.online = true;
+          if (this.dismiss) {
+            this.dismiss();
+          }
+        });
+
+      this.onlineInterval = setInterval(() => {
+        if (this.online === false) {
+          if (this.network.isOnline()) {
+            this.online = true;
+            this.dismiss();
+          }
+        }
+      }, this.delay.vlong);
+    } catch (error) {
+      this.errorHandler(error);
+    }
   },
   beforeDestroy() {
     if (this.onlineInterval) { clearInterval(this.onlineInterval); }
