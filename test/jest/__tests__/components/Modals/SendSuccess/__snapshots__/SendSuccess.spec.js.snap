@@ -85,7 +85,9 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
             <span
               class="tx-hash-span"
             >
+              
               0000
+            
             </span>
              
             <button
