@@ -20,6 +20,7 @@ const state = {
   },
   delay: {
     normal: 500,
+    vlong: 1000,
   },
   acNode: {},
   coins,

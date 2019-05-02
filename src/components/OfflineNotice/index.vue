@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       online: null,
-      dissmis: null,
+      dismiss: null,
       onlineInterval: null,
     };
   },
@@ -24,53 +24,51 @@ export default {
     }),
   },
   mounted() {
-    this.network = new Network();
-    this.online = this.network.isOnline();
-
-    if (!this.online) {
-      this.online = false;
-      this.showOfflineNotice();
-    }
-
-    this.network
-      .on('offline', () => {
+    try {
+      this.network = new Network(this.$q.platform.is);
+      this.online = this.network.isOnline();
+      if (!this.online) {
         this.online = false;
         this.showOfflineNotice();
-      })
-      .on('online', () => {
-        this.online = true;
-        if (this.dissmis) {
-          this.dissmis();
-        }
-      });
-
-
-    this.onlineInterval = setInterval(() => {
-      if (this.online === false) {
-        if (this.network.isOnline()) {
-          this.online = false;
-          this.dissmis();
-        }
       }
-    }, this.delay.vlong);
 
-    this.$root.$on('getStartedModalOpened', (value) => {
-      this.getStartedModalOpened = value;
-    });
+      this.network
+        .on('offline', () => {
+          this.online = false;
+          this.showOfflineNotice();
+        })
+        .on('online', () => {
+          this.online = true;
+          if (this.dismiss) {
+            this.dismiss();
+          }
+        });
+
+      this.onlineInterval = setInterval(() => {
+        if (this.online === false) {
+          if (this.network.isOnline()) {
+            this.online = true;
+            this.dismiss();
+          }
+        }
+      }, this.delay.vlong);
+    } catch (error) {
+      this.errorHandler(error);
+    }
   },
   beforeDestroy() {
     if (this.onlineInterval) { clearInterval(this.onlineInterval); }
   },
   methods: {
     showOfflineNotice() {
-      this.dissmis = this.$q.notify({
+      this.dismiss = this.$q.notify({
         message: this.$t('noConnection'),
         timeout: 0,
         color: 'negative',
         position: 'top',
         closeBtn: false,
         onDismiss() {
-          this.dissmis = null;
+          this.dismiss = null;
         },
       });
     },
