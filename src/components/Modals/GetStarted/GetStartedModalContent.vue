@@ -194,7 +194,7 @@ export default {
     };
   },
   mounted() {
-    this.network = new Network();
+    this.network = new Network(this.$q.platform.is);
     this.online = this.network.isOnline();
 
     this.network

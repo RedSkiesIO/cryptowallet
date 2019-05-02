@@ -56,6 +56,13 @@ export function SET_ACCOUNT_NAME(state, payload) {
 }
 
 /**
+ * SET ACCOUNT CURRENCY
+ */
+export function SET_ACCOUNT_CURRENCY(state, payload) {
+  state.accountCurrency = payload;
+}
+
+/**
  * SET ACCOUNT TYPE
  */
 export function SET_ACCOUNT_TYPE(state, payload) {
