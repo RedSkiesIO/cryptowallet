@@ -57,7 +57,7 @@ export default {
       }
 
       this.$store.dispatch('setup/setAccountName', this.accountName);
-      this.$root.$emit('termsModalOpened', true);
+      this.$store.dispatch('modals/setTermsModalOpened', true);
       return true;
     },
   },

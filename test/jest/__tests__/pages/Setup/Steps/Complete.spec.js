@@ -14,8 +14,12 @@ describe('Complete.vue', () => {
   let router;
   const delay = 501;
   const propsData = {};
+  const map = [];
 
   function wrapperInit(options) {
+    window.addEventListener = jest.fn((event, cb) => {
+      map[event] = cb;
+    });
     return shallowMount(Complete, options);
   }
 
@@ -61,57 +65,99 @@ describe('Complete.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('displays a loading modal', () => {
-    expect(storeMocks.actions.setLoading).toHaveBeenCalled();
+  it('displays a loading modal', (done) => {
+    setTimeout(() => {
+      expect(storeMocks.actions.setLoading).toHaveBeenCalled();
+      done();
+    }, delay);
   });
 
-  it('creates an account and adds it to the database', (done) => {
+  it('displays reconnect to internet screen if offline', (done) => {
+    map.offline();
     wrapper.vm.$nextTick(() => {
       setTimeout(() => {
-        expect(accountInitializer.createAccount).toHaveBeenCalled();
-        expect(storeMocks.actions.setAuthenticatedAccount).toHaveBeenCalled();
+        expect(wrapper.vm.showContent).toBe(true);
+        expect(wrapper.text()).toMatch(wrapper.vm.$t('completeSetup'));
+        expect(wrapper.text()).toMatch(wrapper.vm.$t('reconnectToInternet'));
         done();
       }, delay);
     });
   });
 
-  it('calls accountInitializer to generate the wallets', (done) => {
+  it('enables activate wallet button when connected to internet', (done) => {
+    map.offline();
     wrapper.vm.$nextTick(() => {
       setTimeout(() => {
-        expect(accountInitializer.createWallets).toHaveBeenCalled();
-        expect(accountInitializer.createERC20Wallets).toHaveBeenCalled();
-        done();
+        expect(wrapper.contains('q-btn-stub[disabled="true"')).toBe(true);
+        map.online();
+        setTimeout(() => {
+          expect(wrapper.contains('q-btn-stub[disabled="true"')).toBe(false);
+          done();
+        }, delay);
       }, delay);
     });
   });
+  describe('createAccount()', () => {
+    it('creates an account and adds it to the database', (done) => {
+      wrapper.vm.$nextTick(() => {
+        setTimeout(() => {
+          expect(accountInitializer.createAccount).toHaveBeenCalled();
+          expect(storeMocks.actions.setAuthenticatedAccount).toHaveBeenCalled();
+          done();
+        }, delay);
+      });
+    });
 
-  it('initialises the back end service and fetches the price feed', (done) => {
-    wrapper.vm.$nextTick(() => {
-      setTimeout(() => {
-        expect(backEndService.connect).toHaveBeenCalled();
-        expect(backEndService.loadPriceFeed).toHaveBeenCalled();
-        done();
-      }, delay);
+    it('calls accountInitializer to generate the wallets', (done) => {
+      wrapper.vm.$nextTick(() => {
+        setTimeout(() => {
+          expect(accountInitializer.createWallets).toHaveBeenCalled();
+          expect(accountInitializer.createERC20Wallets).toHaveBeenCalled();
+          done();
+        }, delay);
+      });
+    });
+
+    it('handles errors', (done) => {
+      wrapper.vm.$nextTick(() => {
+        accountInitializer.createAccount = null;
+        setTimeout(() => {
+          expect(wrapper.vm.errorHandler).toHaveBeenCalled();
+          done();
+        }, delay);
+      });
     });
   });
 
-  it('clears the setup data and loads the wallet screen', (done) => {
-    wrapper.vm.$nextTick(() => {
-      setTimeout(() => {
-        expect(storeMocks.actions.clearSetupData).toHaveBeenCalled();
-        expect(store.state.route.path).toBe('/wallet');
-        done();
-      }, delay);
+  describe('complete()', () => {
+    it('initialises the back end service and fetches the price feed', (done) => {
+      wrapper.vm.$nextTick(() => {
+        setTimeout(() => {
+          expect(backEndService.connect).toHaveBeenCalled();
+          expect(backEndService.loadPriceFeed).toHaveBeenCalled();
+          done();
+        }, delay);
+      });
     });
-  });
 
-  it('handles errors', (done) => {
-    wrapper.vm.$nextTick(() => {
-      accountInitializer.createAccount = null;
-      setTimeout(() => {
-        expect(wrapper.vm.errorHandler).toHaveBeenCalled();
-        done();
-      }, delay);
+    it('clears the setup data and loads the wallet screen', (done) => {
+      wrapper.vm.$nextTick(() => {
+        setTimeout(() => {
+          expect(storeMocks.actions.clearSetupData).toHaveBeenCalled();
+          expect(store.state.route.path).toBe('/wallet');
+          done();
+        }, delay);
+      });
+    });
+
+    it('handles errors', (done) => {
+      wrapper.vm.$nextTick(() => {
+        backEndService.connect.mockImplementation(() => { throw new Error('Test Error'); });
+        setTimeout(() => {
+          expect(wrapper.vm.errorHandler).toHaveBeenCalled();
+          done();
+        }, delay);
+      });
     });
   });
 });

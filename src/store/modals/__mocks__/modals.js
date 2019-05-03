@@ -1,3 +1,5 @@
+import MockState from '../state.js';
+
 const actions = {
   setSendCoinModalOpened: jest.fn(),
   setConfirmSendModalOpened: jest.fn(),
@@ -8,21 +10,13 @@ const actions = {
   setPriceChartModalOpened: jest.fn(),
   setSelectAccountModalOpened: jest.fn(),
   setNewAccountModalOpened: jest.fn(),
+  setTermsModalOpened: jest.fn(),
 };
 
 const getters = {};
 const mutations = {};
-const state = {
-  sendCoinModalOpened: false,
-  sendConfirmModalOpened: false,
-  sendConfirmTxData: null,
-  sendFailureModalOpened: false,
-  sendSuccessModalOpened: false,
-  addErc20ModalOpened: false,
-  priceChartModalOpened: false,
-  selectAccountModalOpened: false,
-  newAccountModalOpened: false,
-};
+
+const state = MockState;
 
 const qrcode = {
   namespaced: true,

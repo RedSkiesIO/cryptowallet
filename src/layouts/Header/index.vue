@@ -159,6 +159,7 @@ export default {
     $route() {
       if (window.history.length > 0
           && this.$route.path !== '/setup/0'
+          && this.$route.path !== '/setup/7'
           && this.$route.path !== '/'
           && this.$route.path !== '/wallet') {
         this.isBackButtonEnabled = true;

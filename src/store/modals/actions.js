@@ -52,3 +52,7 @@ export function setSelectAccountModalOpened(context, payload) {
 export function setNewAccountModalOpened(context, payload) {
   context.commit('SET_NEWACCOUNT_MODAL_OPENED', payload);
 }
+
+export function setTermsModalOpened(context, payload) {
+  context.commit('SET_TERMS_MODAL_OPENED', payload);
+}
