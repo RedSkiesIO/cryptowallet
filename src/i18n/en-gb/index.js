@@ -211,6 +211,9 @@ export default {
   seedConfirmation: 'Have you stored your seed?',
   enterAccountName: 'Please enter an account name',
   invalidSeedPhrase: 'Invalid seed phrase',
+  termsBox: 'I have read and I accept the Terms & Conditions',
+  reconnectToInternet: 'Nearly there! We just need you to reconnect your device to the internet so we can complete your setup.',
+  completeSetup: 'Connect to the Internet',
   // other
   noConnection: 'No internet connection',
   volume24h: 'Volume 24h',
