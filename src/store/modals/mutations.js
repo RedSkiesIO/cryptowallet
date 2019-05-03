@@ -51,3 +51,7 @@ export function SET_SELECTACCOUNT_MODAL_OPENED(state, payload) {
 export function SET_NEWACCOUNT_MODAL_OPENED(state, payload) {
   state.newAccountModalOpened = payload;
 }
+
+export function SET_TERMS_MODAL_OPENED(state, payload) {
+  state.termsModalOpened = payload;
+}
