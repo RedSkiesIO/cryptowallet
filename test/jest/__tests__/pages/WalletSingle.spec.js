@@ -10,6 +10,7 @@ describe('WalletSingle.vue', () => {
   let wrapper;
   let storeMocks;
   let router;
+
   const delay = 501;
   const coinSDKS = {
     Bitcoin: jest.fn(),
