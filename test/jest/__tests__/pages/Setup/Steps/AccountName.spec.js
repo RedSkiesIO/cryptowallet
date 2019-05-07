@@ -1,4 +1,4 @@
-import { mount, shallowMount, createWrapper } from '@vue/test-utils';
+import { mount, shallowMount } from '@vue/test-utils';
 import AccountName from '@/pages/Setup/Steps/AccountName';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
@@ -63,8 +63,7 @@ describe('AccountName.vue', () => {
     const submit = wrapper.find('button');
     textInput.setValue('Konrad');
     submit.trigger('click');
-    const rootWrapper = createWrapper(wrapper.vm.$root);
-    expect(rootWrapper.emitted('termsModalOpened')).toEqual([[true]]);
+    expect(storeMocks.actions.setTermsModalOpened).toHaveBeenCalled();
   });
 
   it('displays an error toast if no name is entered', () => {

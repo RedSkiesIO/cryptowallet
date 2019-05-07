@@ -8,4 +8,5 @@ export default {
   priceChartModalOpened: false,
   selectAccountModalOpened: false,
   newAccountModalOpened: false,
+  termsModalOpened: false,
 };

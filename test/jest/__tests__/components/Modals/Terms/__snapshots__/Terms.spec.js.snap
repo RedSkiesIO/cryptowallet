@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Terms modal renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="header-section"
+  >
+    <h1
+      class="header-h1"
+    >
+      
+      Terms & Conditions
+    
+    </h1>
+  </div>
+   
+  <div
+    class="modal-layout-wrapper"
+  >
+    <div
+      class="terms-wrapper"
+    >
+      <div
+        class="checkbox-wrapper"
+      >
+        <div
+          class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+          text-color="primary"
+        >
+          <div
+            class="q-checkbox__inner relative-position"
+          >
+            <input
+              class="q-checkbox__native q-ma-none q-pa-none invisible"
+              type="checkbox"
+            />
+            <div
+              class="q-checkbox__bg absolute"
+            >
+              <svg
+                class="q-checkbox__check fit absolute-full"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                class="q-checkbox__check-indet absolute"
+              />
+            </div>
+          </div>
+          <div
+            class="q-checkbox__label q-anchor--skip"
+          >
+            I have read and I accept the Terms & Conditions
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
