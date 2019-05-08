@@ -38,17 +38,17 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
       .get();
 
     if (result[0]) {
+      // update the tx
+      Tx.$update({
+        where: (record) => {
+          return record.hash === tx.hash
+          && record.wallet_id === wallet.id;
+        },
+        data: tx,
+      });
+
       const foundTx = result[0];
       if (foundTx.sent) {
-        // update the tx
-        Tx.$update({
-          where: (record) => {
-            return record.hash === tx.hash
-            && record.wallet_id === wallet.id;
-          },
-          data: tx,
-        });
-
         // delete utxo that were used for that transaction
         tx.sender.forEach((inputAddress) => {
           const pendingUtxo = Utxo.query()
@@ -70,17 +70,6 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
             data: { used: true },
           });
         });
-      } else {
-        // update found received
-        Tx.$update({
-          where: (record) => {
-            return (
-              record.hash === tx.hash
-            && record.wallet_id === wallet.id
-            );
-          },
-          data: tx,
-        });
       }
     } else {
       // insert tx
@@ -94,11 +83,24 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
 
       // update external address
       if (tx.receiver.includes(wallet.externalAddress)) {
+        // generate new address
+        const addr = coinSDK.generateAddress(wallet.hdWallet, wallet.externalChainAddressIndex + 1);
+
+        const newAddress = {
+          account_id: wallet.account_id,
+          wallet_id: wallet.id,
+          chain: 'external',
+          address: addr.address,
+          index: addr.index,
+        };
+
+        Address.$insert({ data: newAddress });
+
         Wallet.$update({
           where: (record) => { return record.id === wallet.id; },
           data: {
-            externalChainAddressIndex: wallet.externalChainAddressIndex + 1,
-            externalAddress: null,
+            externalChainAddressIndex: addr.index,
+            externalAddress: addr.address,
           },
         });
       }
@@ -135,19 +137,11 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
 }
 
 async function refreshEthereum(coinSDK, wallet, accountId) {
-  const addresses = Address.query()
-    .where('account_id', accountId)
-    .where('wallet_id', wallet.id)
-    .where('used', false)
-    .get();
-
-  let addressesRaw = addresses.map((item) => { return item.address; });
-  addressesRaw = addressesRaw.filter(onlyUnique);
   const { network } = wallet;
 
   const apiReturnLimit = 50;
   const txHistory = await coinSDK.getTransactionHistory(
-    addressesRaw,
+    [wallet.externalAddress],
     network,
     0,
     apiReturnLimit,
@@ -165,28 +159,14 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
       .get();
 
     if (result[0]) {
-      const foundTx = result[0];
-      if (foundTx.sent) {
-        // update the tx
-        Tx.$update({
-          where: (record) => {
-            return record.hash === tx.hash
+      // update the tx
+      Tx.$update({
+        where: (record) => {
+          return record.hash === tx.hash
             && record.wallet_id === wallet.id;
-          },
-          data: tx,
-        });
-      } else {
-        // update found received
-        Tx.$update({
-          where: (record) => {
-            return (
-              record.hash === tx.hash
-            && record.wallet_id === wallet.id
-            );
-          },
-          data: tx,
-        });
-      }
+        },
+        data: tx,
+      });
     } else {
       // insert tx
       Tx.$insert({
@@ -200,7 +180,7 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
   });
 
   const newBalance = await coinSDK.getBalance(
-    addressesRaw,
+    [wallet.externalAddress],
     wallet.network,
   );
 
@@ -226,26 +206,14 @@ async function refreshERC20(coinSDK, wallet, accountId) {
       .get();
 
     if (result[0]) {
-      const foundTx = result[0];
-      if (foundTx.sent) {
-        // update the tx
-        Tx.$update({
-          where: (record) => {
-            return record.hash === tx.hash
+      // update the tx
+      Tx.$update({
+        where: (record) => {
+          return record.hash === tx.hash
             && record.wallet_id === wallet.id;
-          },
-          data: tx,
-        });
-      } else {
-        // update found received
-        Tx.$update({
-          where: (record) => {
-            return record.hash === tx.hash
-            && record.wallet_id === wallet.id;
-          },
-          data: tx,
-        });
-      }
+        },
+        data: tx,
+      });
     } else {
       // insert tx
       Tx.$insert({
