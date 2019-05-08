@@ -56,3 +56,7 @@ export function setNewAccountModalOpened(context, payload) {
 export function setTermsModalOpened(context, payload) {
   context.commit('SET_TERMS_MODAL_OPENED', payload);
 }
+
+export function setReceiveCoinModalOpened(context, payload) {
+  context.commit('SET_RECEIVECOIN_MODAL_OPENED', payload);
+}

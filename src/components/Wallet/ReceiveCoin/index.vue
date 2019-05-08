@@ -1,40 +1,61 @@
 <template>
-  <div class="receive-coin-box">
-    <CoinHeader :wallet="wallet" />
-
-    <div class="send-modal-heading">
-      <h3>{{ $t('yourAddress') }}</h3>
-      <span class="h3-line" />
+  <div>
+    <div class="header-section">
+      <div class="header-back-button-wrapper">
+        <q-btn
+          icon="arrow_back"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="goBack"
+        />
+      </div>
+      <h1 class="header-h1">
+        {{ $t('receive') }}
+      </h1>
     </div>
-    <div class="address break">
-      {{ address }}
-    </div>
+    <div
+      v-if="wallet"
+      class="modal-layout-wrapper"
+    >
+      <div class="receive-coin-box">
+        <CoinHeader :wallet="wallet" />
 
-    <q-btn
-      :label="$t('copy')"
-      color="blueish"
-      size="sm"
-      @click="copyToClipboard"
-    />
+        <div class="send-modal-heading">
+          <h3>{{ $t('yourAddress') }}</h3>
+          <span class="h3-line" />
+        </div>
+        <div class="address break">
+          {{ address }}
+        </div>
 
-    <q-btn
-      :label="$t('share')"
-      class="share-btn"
-      color="blueish"
-      size="sm"
-      @click="share()"
-    />
+        <q-btn
+          :label="$t('copy')"
+          color="blueish"
+          size="sm"
+          @click="copyToClipboard"
+        />
 
-    <div class="send-modal-heading">
-      <h3>{{ $t('scanQR') }}</h3>
-      <span class="h3-line" />
-    </div>
+        <q-btn
+          :label="$t('share')"
+          class="share-btn"
+          color="blueish"
+          size="sm"
+          @click="share()"
+        />
 
-    <div class="qr-code">
-      <img
-        v-if="qrCodeDataURL"
-        :src="qrCodeDataURL"
-      >
+        <div class="send-modal-heading">
+          <h3>{{ $t('scanQR') }}</h3>
+          <span class="h3-line" />
+        </div>
+
+        <div class="qr-code">
+          <img
+            v-if="qrCodeDataURL"
+            :src="qrCodeDataURL"
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -106,6 +127,9 @@ export default {
         this.errorHandler(new Error(msg));
       };
       window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
+    },
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
