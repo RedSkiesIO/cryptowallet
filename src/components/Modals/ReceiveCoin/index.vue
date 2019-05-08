@@ -8,32 +8,12 @@
       transition-hide="slide-down"
       content-class="light-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click.prevent="goBack"
-          />
-        </div>
-        <h1 class="header-h1">
-          {{ $t('receive') }}
-        </h1>
-      </div>
-      <div
-        v-if="wallet"
-        class="modal-layout-wrapper"
-      >
-        <Receive />
-      </div>
+      <Receive />
     </q-dialog>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Receive from '@/components/Wallet/ReceiveCoin';
 
 export default {
@@ -41,18 +21,14 @@ export default {
   components: {
     Receive,
   },
-  data() {
-    return {
-      receiveCoinModalOpened: false,
-    };
-  },
   computed: {
-    ...mapState({
-      id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-    }),
-    wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+    receiveCoinModalOpened: {
+      get() {
+        return this.$store.state.modals.receiveCoinModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setReceiveCoinModalOpened', value);
+      },
     },
   },
   watch: {
@@ -71,16 +47,6 @@ export default {
           if (this.$store.state.route.name === 'receiveCoin') { this.$router.go(-1); }
         }
       },
-    },
-  },
-  mounted() {
-    this.$root.$on('receiveCoinModalOpened', (value) => {
-      this.receiveCoinModalOpened = value;
-    });
-  },
-  methods: {
-    goBack() {
-      this.$router.go(-1);
     },
   },
 };

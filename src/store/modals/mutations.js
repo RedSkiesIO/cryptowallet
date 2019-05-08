@@ -55,3 +55,7 @@ export function SET_NEWACCOUNT_MODAL_OPENED(state, payload) {
 export function SET_TERMS_MODAL_OPENED(state, payload) {
   state.termsModalOpened = payload;
 }
+
+export function SET_RECEIVECOIN_MODAL_OPENED(state, payload) {
+  state.receiveCoinModalOpened = payload;
+}
