@@ -10,7 +10,6 @@
           src="~/assets/logo-white-horizontal.png"
         >
       </div>
-
       <Spinner />
     </div>
 
@@ -27,7 +26,6 @@
 
         <div v-if="settings.authenticatedAccount">
           <OfflineNotice />
-
           <WalletsModal />
           <PriceChartModal />
           <SendCoinModal />
@@ -92,14 +90,10 @@ export default {
   computed: {
     ...mapState({
       settings: (state) => { return state.settings; },
-      delay: (state) => { return state.settings.delay; },
       scanning: (state) => { return state.qrcode.scanning; },
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
-    },
-    selectedCurrency() {
-      return this.$store.state.settings.selectedCurrency;
     },
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
@@ -144,7 +138,6 @@ export default {
   async mounted() {
     window.store = this.$store;
     window.app = this;
-
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },
 
