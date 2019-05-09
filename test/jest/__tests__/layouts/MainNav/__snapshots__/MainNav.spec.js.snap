@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainNav.vue renders and matches snapshot 1`] = `
+<section
+  class="main-nav"
+>
+  <div>
+    <a
+      class="main-nav-link"
+      href="#/wallet"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons q-icon"
+      >
+        account_balance_wallet
+      </i>
+       
+      <div>
+        Wallets
+      </div>
+    </a>
+  </div>
+   
+  <div>
+    <a
+      class="main-nav-link"
+      href="#/settings"
+    >
+      <i
+        aria-hidden="true"
+        class="material-icons q-icon"
+      >
+        settings
+      </i>
+       
+      <div>
+        Settings
+      </div>
+    </a>
+  </div>
+</section>
+`;

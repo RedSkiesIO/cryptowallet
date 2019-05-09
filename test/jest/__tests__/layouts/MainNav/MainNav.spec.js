@@ -3,26 +3,26 @@ import MainNav from '@/layouts/MainNav';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
-const menuItems = ['Wallet', 'Settings',];
+const menuItems = ['Wallet', 'Settings'];
 
 describe('MainNav.vue', () => {
   let storeMocks;
   let wrapper;
-  let store;
   let router;
 
-  function wrapperInit (options) {
+  function wrapperInit(options) {
     return mount(MainNav, options);
   }
 
-  function storeInit (custom) {
+  function storeInit(custom) {
     router = createRouter();
     storeMocks = createStoreMocks(custom);
-    wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store, });
-    store = wrapper.vm.$store;
+    wrapper = wrapperInit({
+      i18n, router, localVue, store: storeMocks.store,
+    });
   }
 
-  beforeEach(() => storeInit());
+  beforeEach(() => { return storeInit(); });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -35,7 +35,7 @@ describe('MainNav.vue', () => {
   it('renders all of the menu items', () => {
     expect(wrapper.findAll('a.main-nav-link').length).toBe(2);
     menuItems.forEach((item, index) => {
-      expect(wrapper.findAll('a').at(index).text()).toBe(menuItems[index]);
+      expect(wrapper.findAll('a').at(index).text()).toMatch(menuItems[index]);
     });
   });
 

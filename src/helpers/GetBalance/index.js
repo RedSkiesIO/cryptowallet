@@ -119,15 +119,7 @@ const Ethereum = {
 
 
 function getBalance(wallet, accountId) {
-  if (wallet.sdk === 'Bitcoin') {
-    return {
-      confirmed: Bitcoin.getConfirmed(wallet.id, accountId),
-      unconfirmed: Bitcoin.getUnconfirmed(wallet.id, accountId),
-      available: Bitcoin.getAvailable(wallet.id, accountId),
-    };
-  }
-
-  if (wallet.sdk === 'Ethereum') {
+  if (wallet.sdk === 'Ethereum' || wallet.sdk === 'ERC20') {
     return {
       confirmed: Ethereum.getConfirmed(wallet.id, accountId),
       unconfirmed: Ethereum.getUnconfirmed(wallet.id, accountId),
@@ -135,15 +127,11 @@ function getBalance(wallet, accountId) {
     };
   }
 
-  if (wallet.sdk === 'ERC20') {
-    return {
-      confirmed: Ethereum.getConfirmed(wallet.id, accountId),
-      unconfirmed: Ethereum.getUnconfirmed(wallet.id, accountId),
-      available: Ethereum.getAvailable(wallet.id, accountId),
-    };
-  }
-
-  return false;
+  return {
+    confirmed: Bitcoin.getConfirmed(wallet.id, accountId),
+    unconfirmed: Bitcoin.getUnconfirmed(wallet.id, accountId),
+    available: Bitcoin.getAvailable(wallet.id, accountId),
+  };
 }
 
 export default getBalance;
