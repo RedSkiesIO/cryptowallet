@@ -67,7 +67,13 @@ describe('Setup.vue', () => {
   });
 
   it('mounts the seed confirmed component', () => {
-    storeInit({}, 3);
+    const shuffledSeed = ['debate', 'monster', 'another', 'crack', 'bundle', 'phone', 'response', 'offer', 'toddler', 'fee', 'real', 'earth'];
+    const customStore = {
+      getters: {
+        'setup/getShuffledSeed': () => { return () => { return shuffledSeed; }; },
+      },
+    };
+    storeInit(customStore, 3);
     expect(wrapper.contains(SeedConfirm)).toBe(true);
   });
 

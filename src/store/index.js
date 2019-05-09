@@ -53,16 +53,6 @@ const options = {
   env: 'browser',
 };
 
-function hydrationCompletedCallback() {
-  const delay = 1000;
-  setTimeout(() => {
-    /* eslint-disable-next-line */
-    store.dispatch('settings/setLoading', false);
-  }, delay);
-}
-
-VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
-
 /**
  * Create CryptoWallet Vuex store obj.
  * @type {Store<any>}
@@ -76,6 +66,15 @@ const store = new Vuex.Store({
   },
   plugins: [VuexORM.install(database)],
 });
+
+function hydrationCompletedCallback() {
+  const delay = 1000;
+  setTimeout(() => {
+    store.dispatch('settings/setLoading', false);
+  }, delay);
+}
+
+VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
 
 Vue.prototype.activeWallets = {};
 

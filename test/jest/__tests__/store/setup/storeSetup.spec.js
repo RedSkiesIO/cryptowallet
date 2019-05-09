@@ -119,19 +119,19 @@ describe('store setup module', () => {
   describe('getters', () => {
     it('get salt', () => {
       state.salt = 'salt';
-      const response = getters.getSalty(state);
+      const response = getters.getSalty(state)();
       expect(response).toBe('salt');
     });
 
     it('get pin hash', () => {
       state.pinHash = 'pinHash';
-      const response = getters.getPinHash(state);
+      const response = getters.getPinHash(state)();
       expect(response).toBe('pinHash');
     });
 
     it('get seed', () => {
       state.seed = 'seed';
-      const response = getters.getSeed(state);
+      const response = getters.getSeed(state)();
       expect(response).toBe('seed');
     });
 
@@ -139,13 +139,13 @@ describe('store setup module', () => {
       state.seed = {
         another: 'another', bundle: 'bundle', crack: 'crack', debate: 'debate', earth: 'earth', fee: 'fee', monster: 'monster', offer: 'offer', phone: 'phone', real: 'real', response: 'response', toddler: 'toddler',
       };
-      const response = getters.getShuffledSeed(state);
+      const response = getters.getShuffledSeed(state)();
       expect(Array.isArray(response)).toBe(true);
     });
 
     it('get spv mode', () => {
       state.spvMode = true;
-      const response = getters.getSPVmode(state);
+      const response = getters.getSPVmode(state)();
       expect(response).toBe(true);
     });
   });

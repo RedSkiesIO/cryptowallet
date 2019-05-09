@@ -8,7 +8,7 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 describe('SeedConfirm.vue', () => {
   const shuffledSeed = ['debate', 'monster', 'another', 'crack', 'bundle', 'phone', 'response', 'offer', 'toddler', 'fee', 'real', 'earth'];
   const getters = {
-    'setup/getShuffledSeed': () => { return shuffledSeed; },
+    'setup/getShuffledSeed': () => { return () => { return shuffledSeed; }; },
   };
   const delay = 501;
 
