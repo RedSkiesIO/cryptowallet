@@ -1,12 +1,12 @@
 /* eslint-disable no-magic-numbers */
 import ReceiveCoin from '@/components/Wallet/ReceiveCoin';
-import { mount } from '@vue/test-utils';
+import { mount, config } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Wallet from '@/store/wallet/entities/wallet';
 import cordovaMocks from '~/test/CordovaMocks';
 import QRCode from 'qrcode';
-
+import ReceiveCoinModal from '@/components/Modals/ReceiveCoin';
 
 describe('ReceiveCoin component', () => {
   let wrapper;
@@ -33,8 +33,8 @@ describe('ReceiveCoin component', () => {
 
   function storeInit(custom, propsData, path = '/wallet/single/receive/3') {
     storeMocks = createStoreMocks(custom);
+    config.mocks.$store = storeMocks.store;
     Wallet.insert({ data: [walletData, walletData2] });
-
     router = createRouter(storeMocks.store);
     router.push({ path });
     wrapper = wrapperInit({
@@ -43,6 +43,7 @@ describe('ReceiveCoin component', () => {
       localVue,
       propsData,
       store: storeMocks.store,
+      parentComponent: ReceiveCoinModal,
       mocks: {
         coinSDKS: coinSDKSMock,
         errorHandler: jest.fn(),
@@ -63,6 +64,17 @@ describe('ReceiveCoin component', () => {
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
+
+  it('back button routes to previous screen', (done) => {
+    router.push({ path: '/wallet' });
+    router.push({ path: '/wallet/single/receive/4' });
+    wrapper.findAll('button').at(0).trigger('click');
+    setTimeout(() => {
+      expect(router.history.current.path).toBe('/wallet');
+      done();
+    }, 500);
+  });
+
 
   describe('qrCode()', () => {
     it('it renders a qr code', (done) => {
@@ -95,7 +107,7 @@ describe('ReceiveCoin component', () => {
     it('can copy the address when the copy button is clicked', (done) => {
       wrapper.vm.$toast.create = jest.fn();
       cordova.plugins.clipboard.mockBehaviour = 1;
-      wrapper.findAll('button').at(0).trigger('click');
+      wrapper.findAll('button').at(1).trigger('click');
       setTimeout(() => {
         expect(wrapper.vm.$toast.create).toHaveBeenCalled();
         done();
@@ -105,7 +117,7 @@ describe('ReceiveCoin component', () => {
     it('can handle errors if a qr code cannot be generated', (done) => {
       wrapper.vm.$toast.create = jest.fn();
       cordova.plugins.clipboard.mockBehaviour = 2;
-      wrapper.findAll('button').at(0).trigger('click');
+      wrapper.findAll('button').at(1).trigger('click');
       setTimeout(() => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalled();
         done();
@@ -123,7 +135,7 @@ describe('ReceiveCoin component', () => {
         },
       };
       global.plugins = mockPlugins;
-      wrapper.findAll('button').at(1).trigger('click');
+      wrapper.findAll('button').at(2).trigger('click');
       setTimeout(() => {
         expect(mockPlugins.socialsharing.shareWithOptions).toHaveBeenCalledTimes(1);
         done();
@@ -139,12 +151,21 @@ describe('ReceiveCoin component', () => {
         },
       };
       global.plugins = mockPlugins;
-      wrapper.findAll('button').at(1).trigger('click');
+      wrapper.findAll('button').at(2).trigger('click');
       setTimeout(() => {
         expect(mockPlugins.socialsharing.shareWithOptions).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.errorHandler).toHaveBeenCalledWith(Error('Test Error'));
         done();
       }, 0);
+    });
+  });
+
+  describe(' receive coin modal', () => {
+    it('open and closes the modal', () => {
+      wrapper.vm.$parent.receiveCoinModalOpened = true;
+      expect(storeMocks.actions.setReceiveCoinModalOpened.mock.calls[0][1]).toBe(true);
+      wrapper.vm.$parent.receiveCoinModalOpened = false;
+      expect(storeMocks.actions.setReceiveCoinModalOpened.mock.calls[1][1]).toBe(false);
     });
   });
 });

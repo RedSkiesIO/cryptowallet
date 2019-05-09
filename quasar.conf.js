@@ -13,7 +13,6 @@ module.exports = (ctx) => {
       'ErrorHandler',
       'CryptoWalletSDK',
       'WalletDiscovery',
-      'CoinFormatter',
       'VueTrend',
       'VueSelect',
       'Vuelidate',

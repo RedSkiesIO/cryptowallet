@@ -9,4 +9,5 @@ export default {
   selectAccountModalOpened: false,
   newAccountModalOpened: false,
   termsModalOpened: false,
+  receiveCoinModalOpened: false,
 };
