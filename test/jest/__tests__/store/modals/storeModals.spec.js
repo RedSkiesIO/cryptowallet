@@ -69,5 +69,10 @@ describe('store setup module', () => {
       mutations.SET_TERMS_MODAL_OPENED(state, true);
       expect(state.termsModalOpened).toBe(true);
     });
+
+    it('set receive coin modal', () => {
+      mutations.SET_RECEIVECOIN_MODAL_OPENED(state, true);
+      expect(state.receiveCoinModalOpened).toBe(true);
+    });
   });
 });
