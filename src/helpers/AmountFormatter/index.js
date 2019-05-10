@@ -43,9 +43,7 @@ export default class AmountFormatter {
       if (amount < 0) {
         return `- ${formatted}`;
       }
-      if (amount > 0) {
-        return `+ ${formatted}`;
-      }
+      return `+ ${formatted}`;
     }
 
     return formatted;

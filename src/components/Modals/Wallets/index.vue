@@ -79,9 +79,6 @@ export default {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
-    selectedCurrency() {
-      return this.$store.state.settings.selectedCurrency;
-    },
     supportedCoins() {
       return Coin.all();
     },

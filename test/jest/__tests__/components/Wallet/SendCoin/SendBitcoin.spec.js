@@ -284,6 +284,36 @@ describe('SendBitcoin component', () => {
           done();
         }, 25);
       });
+
+      it('validates the number of decimal places in the amount', (done) => {
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = '0.0111111111111111122222222';
+        inputInCoin.trigger('input');
+        wrapper.find('.amount-in-currency').trigger('focus');
+        setTimeout(() => {
+          wrapper.find('.amount-in-coin').trigger('blur');
+          setTimeout(() => {
+            expect(inputInCoin.element.value).toEqual('0.01111111');
+            done();
+          }, 50);
+        }, 50);
+      });
+
+      it('validates the number of decimal places in the FIAT amount', (done) => {
+        const inputInCoin = wrapper.find('.amount-in-currency input');
+        wrapper.find('.amount-in-currency').trigger('focus');
+        inputInCoin.element.value = '5.0111111111111111122222222';
+        inputInCoin.trigger('input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        setTimeout(() => {
+          wrapper.find('.amount-in-currency').trigger('blur');
+          setTimeout(() => {
+            expect(inputInCoin.element.value).toEqual('5.01');
+            done();
+          }, 50);
+        }, 50);
+      });
     });
 
     describe('Max button', () => {
