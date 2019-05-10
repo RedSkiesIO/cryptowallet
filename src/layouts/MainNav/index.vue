@@ -11,15 +11,6 @@
         <div>{{ $t('wallets') }}</div>
       </router-link>
     </div>
-    <!-- <div class="">
-      <router-link
-        class="main-nav-link"
-        to="/wallet/exchange"
-      >
-        <q-icon name="cached" />
-        <div>{{ $t('exchange') }}</div>
-      </router-link>
-    </div> -->
     <div class="">
       <router-link
         class="main-nav-link"
