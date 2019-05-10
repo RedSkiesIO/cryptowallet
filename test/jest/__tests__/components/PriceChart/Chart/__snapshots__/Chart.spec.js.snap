@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/Chart loads new chart when chartData changes 1`] = `
+<div
+  class=""
+>
+  <canvas
+    height="400"
+    id="line-chart"
+    width="400"
+  />
+</div>
+`;
+
+exports[`components/Chart renders and matches snapshot 1`] = `
+<div
+  class=""
+>
+  <canvas
+    height="400"
+    id="line-chart"
+    width="400"
+  />
+</div>
+`;
