@@ -3,7 +3,7 @@
  * @param {*} state
  */
 export function getSalty(state) {
-  return state.salt;
+  return () => { return state.salt; };
 }
 
 /**
@@ -11,7 +11,7 @@ export function getSalty(state) {
  * @param {*} state
  */
 export function getPinHash(state) {
-  return state.pinHash;
+  return () => { return state.pinHash; };
 }
 
 /**
@@ -19,7 +19,7 @@ export function getPinHash(state) {
  * @param {*} state
  */
 export function getSeed(state) {
-  return state.seed;
+  return () => { return state.seed; };
 }
 
 export function getShuffledSeed(state) {
@@ -28,12 +28,12 @@ export function getShuffledSeed(state) {
     const j = Math.floor(Math.random() * (i + 1));
     [seed[i], seed[j]] = [seed[j], seed[i]];
   }
-  return seed;
+  return () => { return seed; };
 }
 
 /**
  * get SPV Mode.
  */
 export function getSPVmode(state) {
-  return state.spvMode;
+  return () => { return state.spvMode; };
 }

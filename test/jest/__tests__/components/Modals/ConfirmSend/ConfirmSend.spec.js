@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { mount } from '@vue/test-utils';
 import ConfirmSend from '@/components/Modals/ConfirmSend/ConfirmSendContent.vue';
+import ConfirmSendModal from '@/components/Modals/ConfirmSend';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Wallet from '@/store/wallet/entities/wallet';
@@ -114,6 +115,7 @@ describe('ConfirmSend component', () => {
       localVue,
       propsData,
       store: storeMocks.store,
+      parentComponent: ConfirmSendModal,
       mocks: {
         coinSDKS: coinSDKSMock,
         backEndService: backEndServiceMock,
@@ -225,6 +227,17 @@ describe('ConfirmSend component', () => {
       setTimeout(() => {
         done();
       }, 100);
+    });
+  });
+
+  describe('parent modal', () => {
+    it('opens and closes the modal', () => {
+      wrapper.vm.$parent.$store = wrapper.vm.$store;
+      wrapper.vm.$parent.sendConfirmModalOpened = false;
+      expect(wrapper.vm.$parent.sendConfirmModalOpened).toBe(false);
+      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[1][1]).toBe(false);
+      wrapper.vm.$parent.sendConfirmModalOpened = true;
+      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[2][1]).toBe(true);
     });
   });
 });

@@ -14,6 +14,7 @@ const actions = {
 const getters = {};
 const mutations = {};
 const state = {
+  getStartedModalOpened: false,
   accountName: 'Stephen',
   pinArray: [0, 0, 0, 0, 0, 0],
   pinConfirmArray: [0, 0, 0, 0, 0, 0],

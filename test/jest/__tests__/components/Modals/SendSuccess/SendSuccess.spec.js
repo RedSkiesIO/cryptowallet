@@ -1,5 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import SendSuccess from '@/components/Modals/SendSuccess/SendSuccessContent.vue';
+import SendSuccessModal from '@/components/Modals/SendSuccess';
+
 import { mount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
@@ -51,6 +53,7 @@ describe('modals/SendSuccess', () => {
       router,
       localVue,
       propsData,
+      parentComponent: SendSuccessModal,
       store: storeMocks.store,
       mocks: {
         errorHandler: jest.fn(),
@@ -101,6 +104,17 @@ describe('modals/SendSuccess', () => {
         expect(wrapper.vm.errorHandler).toHaveBeenCalled();
         done();
       }, 0);
+    });
+  });
+
+  describe('parent modal', () => {
+    it('opens and closes the modal', () => {
+      wrapper.vm.$parent.$store = wrapper.vm.$store;
+      wrapper.vm.$parent.sendSuccessModalOpened = false;
+      expect(wrapper.vm.$parent.sendSuccessModalOpened).toBe(false);
+      expect(storeMocks.actions.setSendSuccessModalOpened.mock.calls[1][1]).toBe(false);
+      wrapper.vm.$parent.sendSuccessModalOpened = true;
+      expect(storeMocks.actions.setSendSuccessModalOpened.mock.calls[2][1]).toBe(true);
     });
   });
 });

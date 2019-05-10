@@ -59,7 +59,7 @@ export default {
       delay: (state) => { return state.settings.delay; },
     }),
     shuffledSeed() {
-      return this.$store.getters['setup/getShuffledSeed'];
+      return this.$store.getters['setup/getShuffledSeed']();
     },
     resetDisabled() {
       return this.pipSeq.length === 0;

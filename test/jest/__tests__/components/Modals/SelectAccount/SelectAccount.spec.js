@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import { mount } from '@vue/test-utils';
 import SelectAccount from '@/components/Modals/SelectAccount/SelectAccountContent';
+import SelectAccountModal from '@/components/Modals/SelectAccount';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account.js';
@@ -27,6 +28,7 @@ describe('SelectAccountuModalContent component', () => {
       router,
       localVue,
       propsData,
+      parentComponent: SelectAccountModal,
       store: storeMocks.store,
     });
   }
@@ -69,5 +71,16 @@ describe('SelectAccountuModalContent component', () => {
       wrapper.findAll('.q-toggle__inner').at(1).trigger('click');
       done();
     }, 0);
+  });
+
+  describe('parent modal', () => {
+    it('opens and closes the modal', () => {
+      wrapper.vm.$parent.$store = wrapper.vm.$store;
+      wrapper.vm.$parent.selectAccountModalOpened = false;
+      expect(wrapper.vm.$parent.selectAccountModalOpened).toBe(false);
+      expect(storeMocks.actions.setSelectAccountModalOpened.mock.calls[3][1]).toBe(false);
+      wrapper.vm.$parent.selectAccountModalOpened = true;
+      expect(storeMocks.actions.setSelectAccountModalOpened.mock.calls[4][1]).toBe(true);
+    });
   });
 });

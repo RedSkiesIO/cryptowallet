@@ -1,5 +1,7 @@
 import { mount } from '@vue/test-utils';
 import GetStartedModalContent from '@/components/Modals/GetStarted/GetStartedModalContent';
+import GetStartedModal from '@/components/Modals/GetStarted';
+
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
@@ -17,7 +19,7 @@ describe('GetStartedModalContent component', () => {
     return mount(GetStartedModalContent, options);
   }
 
-  function storeInit(custom, propsData, parentComponent = null) {
+  function storeInit(custom, propsData) {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
     router.push({ path: '/setup/0' });
@@ -26,7 +28,7 @@ describe('GetStartedModalContent component', () => {
       router,
       localVue,
       propsData,
-      parentComponent,
+      parentComponent: GetStartedModal,
       store: storeMocks.store,
     });
     store = wrapper.vm.$store;
@@ -85,6 +87,17 @@ describe('GetStartedModalContent component', () => {
     it('navigates to /setup/2 path', () => {
       wrapper.vm.done();
       expect(store.state.route.path).toBe('/setup/2');
+    });
+  });
+
+  describe('parent modal', () => {
+    it('opens and closes the modal', () => {
+      wrapper.vm.$parent.$store = wrapper.vm.$store;
+      wrapper.vm.$parent.getStartedModalOpened = false;
+      expect(wrapper.vm.$parent.getStartedModalOpened).toBe(false);
+      expect(storeMocks.actions.setGetStartedModalOpened.mock.calls[0][1]).toBe(false);
+      wrapper.vm.$parent.getStartedModalOpened = true;
+      expect(storeMocks.actions.setGetStartedModalOpened.mock.calls[4][1]).toBe(true);
     });
   });
 });
