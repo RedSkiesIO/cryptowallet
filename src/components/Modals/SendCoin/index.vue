@@ -60,7 +60,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -87,7 +86,7 @@ export default {
     sendCoinModalOpened: {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
-          if (this.$store.state.route.name === 'sendCoin' && !this.$q.scanning) { this.$router.go(-1); }
+          if ((this.$store.state.route.name === 'sendCoin' || this.$store.state.route.name === 'sendCoinSingle') && !this.$q.scanning) { this.$router.go(-1); }
         }
       },
     },
