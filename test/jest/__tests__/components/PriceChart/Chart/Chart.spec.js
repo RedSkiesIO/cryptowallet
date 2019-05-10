@@ -9,6 +9,9 @@ describe('components/Chart', () => {
   let wrapper;
   let router;
 
+  // hides chartJS errors due to chartData being mocked
+  // eslint-disable-next-line no-console
+  console.error = jest.fn();
 
   const mockChartData = {
     datasets: [{ backgroundColor: null }],
@@ -55,6 +58,7 @@ describe('components/Chart', () => {
     };
     wrapper.vm.chartData = newChartData;
     setTimeout(() => {
+      expect(newChartData.datasets[0].backgroundColor.addColorStop).toBeTruthy();
       done();
     }, 500);
   });
