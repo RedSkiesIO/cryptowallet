@@ -7,6 +7,7 @@ const actions = {
   setSendFailureModalOpened: jest.fn(),
   setSendSuccessModalOpened: jest.fn(),
   setAddErc20ModalOpened: jest.fn(),
+  setAddWalletModalOpened: jest.fn(),
   setPriceChartModalOpened: jest.fn(),
   setSelectAccountModalOpened: jest.fn(),
   setNewAccountModalOpened: jest.fn(),

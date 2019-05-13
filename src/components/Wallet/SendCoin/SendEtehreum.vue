@@ -612,7 +612,8 @@ export default {
             if (err) {
               this.errorHandler(err);
             } else {
-              const coinSDK = this.coinSDKS[this.wallet.sdk];
+              let coinSDK = this.coinSDKS[this.wallet.sdk];
+              if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
               const isValid = coinSDK.validateAddress(text, this.wallet.network);
               if (isValid) {
                 this.$store.dispatch('qrcode/setScannedAddress', text);

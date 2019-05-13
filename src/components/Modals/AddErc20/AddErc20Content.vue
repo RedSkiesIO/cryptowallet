@@ -392,9 +392,9 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
-      this.$store.dispatch('qrcode/scanQRMode', 'addERC20');
+      this.$store.dispatch('qrcode/setQRMode', 'addERC20');
       this.$store.dispatch('qrcode/scanQRCode');
-      this.$root.$emit('walletsModalOpened', false);
+      this.$store.dispatch('modals/setAddWalletModalOpened', false);
       this.$store.dispatch('modals/setAddErc20ModalOpened', false);
 
       if (typeof QRScanner !== 'undefined') {
@@ -406,8 +406,8 @@ export default {
 
             this.$store.dispatch('qrcode/setScannedAddress', text);
             this.$store.dispatch('qrcode/cancelScanning');
-            this.$store.dispatch('qrcode/scanQRMode', null);
-            this.$root.$emit('walletsModalOpened', true);
+            this.$store.dispatch('qrcode/setQRMode', null);
+            this.$store.dispatch('modals/setAddWalletModalOpened', true);
             this.$store.dispatch('modals/setAddErc20ModalOpened', true);
           });
         }, this.delay.normal);

@@ -70,7 +70,6 @@ export default {
   },
   data() {
     return {
-      addWalletModalOpened: false,
       loading: false,
       msToS: 1000,
     };
@@ -82,11 +81,14 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
-  },
-  mounted() {
-    this.$root.$on('walletsModalOpened', (value) => {
-      this.addWalletModalOpened = value;
-    });
+    addWalletModalOpened: {
+      get() {
+        return this.$store.state.modals.addWalletModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setAddWalletModalOpened', value);
+      },
+    },
   },
   methods: {
     openAddWalletModal() {

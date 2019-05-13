@@ -126,11 +126,11 @@ export default {
 
         if (oldValue === true && newValue === false) {
           if (this.qrMode === 'addERC20') {
-            this.$root.$emit('walletsModalOpened', true);
+            this.$store.dispatch('modals/setAddWalletModalOpened', true);
             this.$store.dispatch('modals/setAddErc20ModalOpened', true);
-            this.$store.dispatch('qrcode/scanQRMode', null);
+            this.$store.dispatch('qrcode/setQRMode', null);
           } else {
-            this.$root.$emit('sendCoinModalOpened', true);
+            this.$store.dispatch('modals/setSendCoinModalOpened', true);
           }
           this.$q.scanning = false;
           if (typeof QRScanner !== 'undefined') {

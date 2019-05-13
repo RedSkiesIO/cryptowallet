@@ -22,6 +22,6 @@ export function SET_SCANNED_ADDRESS(state, payload) {
 /*
  * SET STATE qrMode
  */
-export function SCAN_QR_MODE(state, payload) {
+export function SET_QR_MODE(state, payload) {
   state.qrMode = payload;
 }

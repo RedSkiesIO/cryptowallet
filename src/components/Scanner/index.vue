@@ -18,7 +18,6 @@ export default {
   methods: {
     cancel() {
       this.$store.dispatch('qrcode/cancelScanning');
-      this.$store.dispatch('modals/setSendCoinModalOpened', true);
     },
   },
 };

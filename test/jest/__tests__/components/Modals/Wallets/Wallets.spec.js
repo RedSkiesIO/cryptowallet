@@ -158,8 +158,8 @@ describe('Modals/Wallets.vue', () => {
 
   it('opens the modal on walletsModalOpened event', () => {
     storeInit();
-    wrapper.vm.$root.$emit('walletsModalOpened', true);
-    expect(wrapper.vm.addWalletModalOpened).toBe(true);
+    wrapper.vm.$store.dispatch('modals/setAddWalletModalOpened', true);
+    expect(storeMocks.actions.setAddWalletModalOpened).toHaveBeenCalled();
   });
 
   it('opens the add wallet modal when add button is pressed', () => {
