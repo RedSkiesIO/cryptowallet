@@ -1,7 +1,7 @@
 {
   "name": "cryptowallet",
   "version": "0.0.1",
-  "description": "CryptoWalley - By Atlas City",
+  "description": "CryptoWallet - By Atlas City",
   "productName": "CryptoWallet",
   "cordovaId": "com.atlascity.wallet.mobile",
   "author": "James Kirkby <james.kirby@atlascity.io>",
