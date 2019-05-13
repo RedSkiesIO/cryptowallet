@@ -56,6 +56,21 @@ describe('boot/AccountInitializer', () => {
     expect(mockAccount).toEqual({ uid: 1 });
   });
 
+  it('uses the currency setting from the first account if no currency was set', async () => {
+    Account.all = jest.fn(() => {
+      return [{
+        uid: 2,
+        currency: 'USD',
+      }];
+    });
+    Account.$insert = jest.fn(({ data, password }) => {
+      return { account: [{ data, password }] };
+    });
+    mockData.accountCurrency = undefined;
+    mockAccount = await wrapperMock.vm.accountInitializer.createAccount(mockData);
+    expect(mockAccount.data.currency).toEqual('USD');
+  });
+
   it('uses the language setting from the first account if no language was set', async () => {
     Account.all = jest.fn(() => {
       return [{

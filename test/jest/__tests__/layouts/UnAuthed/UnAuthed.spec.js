@@ -6,22 +6,22 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 describe('UnAuthed.vue', () => {
   let storeMocks;
   let wrapper;
-  let store;
   let router;
 
-  function wrapperInit (options) {
+  function wrapperInit(options) {
     return shallowMount(UnAuthed, options);
   }
 
-  function storeInit (custom) {
+  function storeInit(custom) {
     storeMocks = createStoreMocks(custom);
     router = createRouter(storeMocks.store);
-    router.push({ path: `/` });
-    wrapper = wrapperInit({ i18n, router, localVue, store: storeMocks.store });
-    store = wrapper.vm.$store;
+    router.push({ path: '/' });
+    wrapper = wrapperInit({
+      i18n, router, localVue, store: storeMocks.store,
+    });
   }
 
-  beforeEach(() => storeInit());
+  beforeEach(() => { return storeInit(); });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();

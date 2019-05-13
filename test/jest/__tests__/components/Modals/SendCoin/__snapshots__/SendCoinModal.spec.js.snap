@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendCoinModal.vue renders and matches snapshot 1`] = `
+<div>
+  <q-dialog-stub
+    contentclass="light-modal"
+    maximized="true"
+    noroutedismiss="true"
+    persistent="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+  >
+    <div
+      class="header-section"
+    >
+      <div
+        class="header-back-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn back-arrow-btn"
+          icon="arrow_back"
+          ripple="true"
+          size="lg"
+        />
+      </div>
+       
+      <h1
+        class="header-h1"
+      >
+        
+        Send
+      
+      </h1>
+    </div>
+     
+    <!---->
+  </q-dialog-stub>
+</div>
+`;

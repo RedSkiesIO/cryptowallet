@@ -1,15 +1,5 @@
 <template>
   <q-layout>
-    <!-- <div
-      v-if="showParticles"
-      class="particles"
-    >
-      <vue-particles
-        :particles-number="125"
-        :move-speed="2"
-        color="#c7c7c7"
-      />
-    </div> -->
     <q-header>
       <Header />
     </q-header>
@@ -35,11 +25,6 @@ export default {
     return {
       isMainNavVisible: false,
     };
-  },
-  computed: {
-    /* showParticles() {
-      return this.$route.path === '/setup/0';
-    }, */
   },
 };
 </script>

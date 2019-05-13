@@ -105,18 +105,15 @@ export default {
         width: 250,
         height: 250,
       };
-
-      if (typeof this.address !== 'string') { return false; }
-      await QRCode.toDataURL(this.address, options, (err, url) => {
-        if (err) {
-          this.errorHandler(err);
-          return false;
-        }
-        this.qrCodeDataURL = url;
-        return false;
-      });
-
-      return false;
+      if (typeof this.address === 'string') {
+        await QRCode.toDataURL(this.address, options, (err, url) => {
+          if (err) {
+            this.errorHandler(err);
+          } else {
+            this.qrCodeDataURL = url;
+          }
+        });
+      }
     },
     share() {
       const options = {

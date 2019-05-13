@@ -162,6 +162,12 @@ describe('Modals/Wallets.vue', () => {
     expect(wrapper.vm.addWalletModalOpened).toBe(true);
   });
 
+  it('opens the add wallet modal when add button is pressed', () => {
+    storeInit();
+    wrapper.vm.openAddWalletModal();
+    expect(storeMocks.actions.setAddErc20ModalOpened).toHaveBeenCalled();
+  });
+
   it('catches errors', (done) => {
     backEndService.loadCoinPriceData.mockImplementationOnce(() => {
       throw new Error('Test error');
@@ -201,23 +207,9 @@ describe('Modals/Wallets.vue', () => {
       wrapper.vm.close();
       setTimeout(() => {
         expect(backEndService.loadCoinPriceData).toHaveBeenCalledTimes(1);
-        // expect(backEndService.storePriceData).toHaveBeenCalled();
-        // expect(backEndService.getHistoricalData).toHaveBeenCalledTimes(3);
         done();
       }, 0);
     });
-
-    // it('enables a wallet without any price data', (done) => {
-    //   storeInit();
-    //   backEndService.getHistoricalData.mockReturnValue(mockChartData);
-    //   Wallet.$insert({ data: [bitcoinWallet] });
-    //   wrapper.vm.addWalletModalOpened = true;
-    //   wrapper.vm.close();
-    //   setTimeout(() => {
-    //     expect(backEndService.getPriceFeed).toHaveBeenCalledTimes(1);
-    //     done();
-    //   }, 0);
-    // });
 
     it('catches errors', () => {
       coinSDKS.Bitcoin.generateKeyPair.mockImplementationOnce(() => {

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PriceChartsModal.vue renders and matches snapshot 1`] = `
+<div>
+  <q-dialog-stub
+    contentclass="dark-modal"
+    maximized="true"
+    persistent="true"
+    position="standard"
+    transitionhide="slide-down"
+    transitionshow="slide-up"
+  >
+    <pricechartscontent-stub />
+  </q-dialog-stub>
+</div>
+`;
