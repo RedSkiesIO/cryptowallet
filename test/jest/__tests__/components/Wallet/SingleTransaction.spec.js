@@ -15,7 +15,7 @@ describe('SingleTransaction.vue', () => {
 
   const propsData = {
     data: {
-      amount: 4.97,
+      value: 4.97,
       receiver: ['1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE'],
       hash: 'd02995c1faf572c5d9ae966915aa7958c88ed2e47f8f208b68d82d863bf61010',
       sent: true,
@@ -101,7 +101,7 @@ describe('SingleTransaction.vue', () => {
   it('displays a received Bitcoin transaction', () => {
     wrapper.setProps({
       data: {
-        amount: 4.97,
+        value: 4.97,
         sender: ['1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE'],
         hash: 'd02995c1faf572c5d9ae966915aa7958c88ed2e47f8f208b68d82d863bf61010',
         sent: false,
@@ -130,7 +130,7 @@ describe('SingleTransaction.vue', () => {
     router.push({ path: '/wallet/single/5' });
     wrapper.setProps({
       data: {
-        amount: 3.654,
+        value: 3.654,
         sender: '0x8f52d186aa4a6b169abe85d999dcbe289aa215f8',
         hash: '0xdd1cb7b94395b3b0b81e38e898e2128b8e71d47c810f3450b252e216bb9039ba',
         sent: false,
@@ -150,7 +150,7 @@ describe('SingleTransaction.vue', () => {
     router.push({ path: '/wallet/single/5' });
     wrapper.setProps({
       data: {
-        amount: 20,
+        value: 20,
         receiver: '0x0a1443a629847f4d487cf1cf00c5b417bb27238f',
         hash: '0x629ecef1111fedc99851efdf97e94645335a8ca19361f0401601f1008cf4714c',
         sent: true,
@@ -170,7 +170,7 @@ describe('SingleTransaction.vue', () => {
     router.push({ path: '/wallet/single/6' });
     wrapper.setProps({
       data: {
-        amount: 25,
+        value: 25,
         sender: '0x8f52d186aa4a6b169abe85d999dcbe289aa215f8',
         hash: '0x9774378c83edcbf35c584f18ca8b0620b0d69cca2c8c346a963c3c7466636733',
         sent: false,
@@ -190,7 +190,7 @@ describe('SingleTransaction.vue', () => {
     router.push({ path: '/wallet/single/6' });
     wrapper.setProps({
       data: {
-        amount: 100,
+        value: 100,
         receiver: '0xcc345035d14458b3c012977f96fa1e116760d60a',
         hash: '0x4b796488cdad06be0b74bc5f3f43ba9f0def3880c6e9919a540bf8fdfb3fe015',
         sent: true,

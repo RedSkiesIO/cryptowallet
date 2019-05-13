@@ -23,6 +23,28 @@ const addressData = JSON.parse('{"$id":1,"id":1,"wallet_id":3,"account_id":1,"ad
 const utxoData = JSON.parse('{"$id":1,"id":1,"account_id":1,"wallet_id":5,"pending":false,"address":"2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX7","amount":10,"scriptPubKey":"a9142df2990ee914d0a0c0dc8ed92abe91642d7a415b87","txid":"9e792178e63be3d05b7f03f822c060909bd9fa5c451ce4ab11c1827108c5fb6d","value":271750,"vout":0}');
 const latestPriceData = JSON.parse('{"$id":"ETH_GBP","coin":"ETH","currency":"GBP","updated":1554305869988,"data":{"VOLUME24HOURTO":10147125.523436274,"PRICE":3818.12,"CHANGEPCT24HOUR":4.734003741558176}}');
 
+const TxData = [{
+  account_id: 1,
+  wallet_id: 3,
+  confirmations: 0,
+  fee: 0.00047616,
+  value: 0.46666667,
+},
+{
+  account_id: 1,
+  wallet_id: 5,
+  confirmations: 0,
+  fee: 0.00027347,
+  value: 0.16236767,
+},
+{
+  account_id: 1,
+  wallet_id: 4,
+  confirmations: 0,
+  fee: 0.00027566,
+  value: 0.4546667,
+}];
+
 const customStore = {
   state: {
     modals: {
@@ -83,6 +105,7 @@ describe('ConfirmSend component', () => {
     Coin.insert({ data: [coinData, bitcoinCoinData, erc20CoinData] });
     Address.insert({ data: addressData });
     Utxo.insert({ data: utxoData });
+    Tx.insert({ data: TxData });
     LatestPrice.insert({ data: latestPriceData });
     router = createRouter(storeMocks.store);
     router.push({ path: `/wallet/single/send/${id}` });
@@ -188,7 +211,7 @@ describe('ConfirmSend component', () => {
       storeInit(customStore, {}, 5);
       wrapper.findAll('button').at(1).trigger('click');
       setTimeout(() => {
-        expect(Tx.all()[0].wallet_id).toEqual(5);
+        expect(Tx.all()[3].wallet_id).toEqual(5);
         expect(Address.all()[1].wallet_id).toEqual(5);
         expect(storeMocks.actions.setSendSuccessModalOpened).toHaveBeenCalled();
         done();

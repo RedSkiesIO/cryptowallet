@@ -44,7 +44,7 @@ export default {
     receiveCoinModalOpened: {
       handler(newVal, oldVal) {
         if (oldVal === true && newVal === false) {
-          if (this.$store.state.route.name === 'receiveCoin') { this.$router.go(-1); }
+          if (this.$store.state.route.name === 'receiveCoin' || this.$store.state.route.name === 'receiveCoinSingle') { this.$router.go(-1); }
         }
       },
     },

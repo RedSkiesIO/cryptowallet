@@ -152,7 +152,6 @@ export default {
       this.$refs.PinPad.resetState();
       this.resetPin();
       this.mode = 'confirm-new-pin';
-      return false;
     },
 
     /**
@@ -187,8 +186,6 @@ export default {
         where: (record) => { return record.id === this.authenticatedAccount; },
         password: this.newPin.join(''),
       });
-
-      return true;
     },
 
     /**
