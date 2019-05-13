@@ -14,6 +14,9 @@ export default {
       type: Object,
       default: null,
     },
+    chartData: {
+      type: Object,
+    },
   },
   data() {
     return {

@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Scanner.vue renders and matches snapshot 1`] = `
+<div
+  class="target-wrapper"
+>
+  <div
+    class="target"
+  />
+   
+  <div
+    class="controls-box"
+  >
+    <button
+      class="q-btn inline q-btn-item non-selectable q-btn--standard q-btn--rectangle bg-blueish text-white q-focusable q-hoverable"
+      style="font-size: 14px;"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="q-focus-helper"
+        tabindex="-1"
+      />
+      <div
+        class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+      >
+        <div>
+          Cancel
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+`;

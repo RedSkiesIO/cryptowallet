@@ -8,7 +8,7 @@ exports[`SingleTransaction.vue renders and matches snapshot 1`] = `
 >
   <q-expansion-item-stub
     class="negative-amount"
-    label="0 BTC (£0)"
+    label="- 4.97 BTC (£19,110.59)"
   >
     <q-card-stub>
       <q-card-section-stub>

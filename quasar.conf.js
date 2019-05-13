@@ -6,7 +6,6 @@ module.exports = (ctx) => {
   return {
     boot: [
       'i18n',
-      'Axios',
       'CWCrypto',
       'VuexRouterSync',
       'Toaster',
