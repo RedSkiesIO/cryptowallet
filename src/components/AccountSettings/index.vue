@@ -127,7 +127,6 @@ import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
-import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'AccountSettings',
@@ -156,40 +155,8 @@ export default {
     },
   },
   methods: {
-    async logout() {
-      try {
-        this.$store.dispatch('settings/setLoading', true);
-        this.$store.dispatch('settings/setLayout', 'dark');
-
-        const wallets = await Wallet.query().where('account_id', this.account.id).get();
-        const promises = [];
-        wallets.forEach((wallet) => {
-          promises.push(new Promise(async (resolve) => {
-            try {
-              const walletDataLoki = await Wallet.$find(wallet.id);
-              const encryptedData = walletDataLoki[0].hdWallet;
-
-              Wallet.update({
-                where: (record) => { return record.id === wallet.id; },
-                data: { hdWallet: encryptedData },
-              });
-              resolve();
-            } catch (error) {
-              this.errorHandler(error);
-            }
-          }));
-        });
-
-        await Promise.all(promises);
-
-        this.$router.push({ path: '/' });
-        this.$store.dispatch('settings/setAuthenticatedAccount', null);
-        setTimeout(() => {
-          this.$store.dispatch('settings/setLoading', false);
-        }, this.delay.short);
-      } catch (error) {
-        this.errorHandler(error);
-      }
+    logout() {
+      window.location.reload(true);
     },
   },
 };

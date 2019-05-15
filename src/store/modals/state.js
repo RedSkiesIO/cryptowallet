@@ -10,4 +10,5 @@ export default {
   newAccountModalOpened: false,
   termsModalOpened: false,
   receiveCoinModalOpened: false,
+  addWalletModalOpened: false,
 };

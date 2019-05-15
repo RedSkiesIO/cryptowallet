@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import { mount, createWrapper } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Header from '@/layouts/Header';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
@@ -98,12 +98,11 @@ describe('Header.vue', () => {
     }, 0);
   });
 
-  it('fires walletsModalOpened event on add wallet button click', (done) => {
-    const rootWrapper = createWrapper(wrapper.vm.$root);
+  it('calls setAddwalletModalOpened action on add wallet button click', (done) => {
     router.push({ path: '/wallet' });
     wrapper.findAll('button').at(1).trigger('click');
     setTimeout(() => {
-      expect(rootWrapper.emitted('walletsModalOpened')).toEqual([[true]]);
+      expect(storeMocks.actions.setAddWalletModalOpened.mock.calls[0][1]).toEqual(true);
       done();
     }, 0);
   });

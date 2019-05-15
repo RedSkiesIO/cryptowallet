@@ -74,12 +74,11 @@ describe('CloudListItem.vue', () => {
     expect(wrapper.find('button').text()).toMatch('add_circle_outline');
   });
 
-  it('fires a walletsModalOpened event on add walet button click', (done) => {
+  it('calls setAddWalletModalOpened action on add walet button click', (done) => {
     storeInit();
-    const rootWrapper = createWrapper(wrapper.vm.$root);
     wrapper.find('button').trigger('click');
     setTimeout(() => {
-      expect(rootWrapper.emitted('walletsModalOpened', true)).toEqual([[true]]);
+      expect(storeMocks.actions.setAddWalletModalOpened.mock.calls[0][1]).toEqual(true);
       done();
     }, 0);
   });

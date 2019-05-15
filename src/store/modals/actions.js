@@ -60,3 +60,7 @@ export function setTermsModalOpened(context, payload) {
 export function setReceiveCoinModalOpened(context, payload) {
   context.commit('SET_RECEIVECOIN_MODAL_OPENED', payload);
 }
+
+export function setAddWalletModalOpened(context, payload) {
+  context.commit('SET_ADDWALLET_MODAL_OPENED', payload);
+}
