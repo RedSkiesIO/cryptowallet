@@ -72,7 +72,7 @@ export default {
 
   methods: {
     openWalletsModal() {
-      this.$root.$emit('walletsModalOpened', true);
+      this.$store.dispatch('modals/setAddWalletModalOpened', true);
     },
 
     touchStart(event) {

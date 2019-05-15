@@ -179,7 +179,7 @@ export default {
     },
 
     openWalletsModal() {
-      this.$root.$emit('walletsModalOpened', true);
+      this.$store.dispatch('modals/setAddWalletModalOpened', true);
     },
 
     openChartModal() {

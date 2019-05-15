@@ -27,9 +27,8 @@ describe('Scanner.vue', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('cancels scanning and opens the send coin modal when cancel button is pressed', () => {
+  it('cancels scanning when cancel button is pressed', () => {
     wrapper.find('button').trigger('click');
     expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
-    expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
   });
 });

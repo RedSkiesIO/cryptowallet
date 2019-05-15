@@ -91,6 +91,7 @@ export default {
     ...mapState({
       settings: (state) => { return state.settings; },
       scanning: (state) => { return state.qrcode.scanning; },
+      qrMode: (state) => { return state.qrcode.qrMode; },
     }),
     accounts() {
       return this.$store.getters['entities/account/query']().get();
@@ -124,7 +125,13 @@ export default {
         }
 
         if (oldValue === true && newValue === false) {
-          this.$root.$emit('sendCoinModalOpened', true);
+          if (this.qrMode === 'addERC20') {
+            this.$store.dispatch('modals/setAddWalletModalOpened', true);
+            this.$store.dispatch('modals/setAddErc20ModalOpened', true);
+            this.$store.dispatch('qrcode/setQRMode', null);
+          } else {
+            this.$store.dispatch('modals/setSendCoinModalOpened', true);
+          }
           this.$q.scanning = false;
           if (typeof QRScanner !== 'undefined') {
             QRScanner.hide(() => {});

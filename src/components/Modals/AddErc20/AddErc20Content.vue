@@ -305,7 +305,6 @@ export default {
       this.$v.form.$touch();
       if (!this.$v.form.$error) {
         await this.enableWallet();
-        this.goBack();
       }
     },
 
@@ -347,7 +346,8 @@ export default {
         Coin.$insert({
           data,
         });
-        const keypair = this.coinSDKS.Ethereum.generateKeyPair(wallet, 0);
+
+        const keypair = this.coinSDKS.Ethereum.generateKeyPair(wallet[0].hdWallet, 0);
         const erc20 = this.coinSDKS.ERC20.generateERC20Wallet(
           keypair,
           this.form.tokenName,
@@ -355,6 +355,7 @@ export default {
           this.form.tokenContract,
           this.form.tokenDecimals,
         );
+
         const newWalletResult = await Wallet.$insert({ data });
         const newWalletId = newWalletResult.wallet[0].id;
         await Wallet.$update({
@@ -367,6 +368,7 @@ export default {
             erc20Wallet: erc20,
           },
         });
+        this.goBack();
       } else {
         this.$toast.create(10, this.$t('tokenAlreadyEnabled'), this.delay.normal);
         this.clearFields();
@@ -390,7 +392,9 @@ export default {
      * Initiates the QR code scanner
      */
     scan() {
+      this.$store.dispatch('qrcode/setQRMode', 'addERC20');
       this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setAddWalletModalOpened', false);
       this.$store.dispatch('modals/setAddErc20ModalOpened', false);
 
       if (typeof QRScanner !== 'undefined') {
@@ -402,6 +406,8 @@ export default {
 
             this.$store.dispatch('qrcode/setScannedAddress', text);
             this.$store.dispatch('qrcode/cancelScanning');
+            this.$store.dispatch('qrcode/setQRMode', null);
+            this.$store.dispatch('modals/setAddWalletModalOpened', true);
             this.$store.dispatch('modals/setAddErc20ModalOpened', true);
           });
         }, this.delay.normal);
