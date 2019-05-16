@@ -50,23 +50,23 @@
           <div class="col-6">
             1 {{ coinSymbol }} / {{ selectedCurrency.code }}
           </div>
-          <div
+          <!-- <div
             v-if="latestPrice.data.VOLUME24HOURTO !== 0"
             class="col-6"
           >
             {{ $t('volume24h') }} {{ selectedCurrency.code }}
-          </div>
+          </div> -->
         </div>
         <div class="row price">
           <div class="col-6">
             {{ selectedCurrency.symbol }}{{ latestPrice.data.PRICE.toFixed(2) }}
           </div>
-          <div
+          <!-- <div
             v-if="latestPrice.data.VOLUME24HOURTO !== 0"
             class="col-6"
           >
             {{ selectedCurrency.symbol }}{{ latestPrice.data.VOLUME24HOURTO.toFixed(0) }}
-          </div>
+          </div> -->
         </div>
         <div
           :style="{ color: percentColor}"
@@ -211,12 +211,12 @@ export default {
   color: #de4662;
 }
 
-.row .price{
+.price{
   font-size: x-large;
   color: white;
 }
 
-.row .labels{
+.labels{
   color: sandybrown;
 }
 
