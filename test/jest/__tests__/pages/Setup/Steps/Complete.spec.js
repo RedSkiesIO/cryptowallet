@@ -76,7 +76,6 @@ describe('Complete.vue', () => {
     map.offline();
     wrapper.vm.$nextTick(() => {
       setTimeout(() => {
-        expect(wrapper.vm.showContent).toBe(true);
         expect(wrapper.text()).toMatch(wrapper.vm.$t('completeSetup'));
         expect(wrapper.text()).toMatch(wrapper.vm.$t('reconnectToInternet'));
         done();

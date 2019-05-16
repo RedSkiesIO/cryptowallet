@@ -1,3 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Complete.vue renders and matches snapshot 1`] = `<!---->`;
+exports[`Complete.vue renders and matches snapshot 1`] = `
+<div
+  class="container"
+>
+  <div>
+    <h1
+      class="setup"
+    >
+      
+      Connect to the Internet
+    
+    </h1>
+  </div>
+   
+  <div
+    class="slide-wrapper"
+  >
+    <div
+      class="icon-wrapper"
+    >
+      <q-icon-stub
+        class="temp-ill"
+        color="white"
+        name="wifi"
+        size="10rem"
+      />
+    </div>
+     
+    <p>
+      
+      Nearly there! We just need you to reconnect your device to the internet so we can complete your setup.
+    
+    </p>
+  </div>
+   
+  <div
+    class="btns-wrapper"
+  >
+    <q-btn-stub
+      align="center"
+      color="yellow"
+      disabled="true"
+      label="Activate Your Wallet"
+      ripple="true"
+      textcolor="blueish"
+    />
+  </div>
+</div>
+`;
