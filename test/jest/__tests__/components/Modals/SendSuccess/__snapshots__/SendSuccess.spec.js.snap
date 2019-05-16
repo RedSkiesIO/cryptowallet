@@ -61,7 +61,7 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
         class="done-msg-wrapper"
       >
         <h1>
-          PLAYFUL SUCCESS MESSAGE HERE
+          YOUR TRANSACTION WAS SUCCESSFULLY SENT
         </h1>
       </div>
        
