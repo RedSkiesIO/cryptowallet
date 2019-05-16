@@ -106,6 +106,8 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
+      delay: (state) => { return state.settings.delay; },
+
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -152,7 +154,13 @@ export default {
 
   },
   async mounted() {
-    this.loadData();
+    const updateTime = 120000;
+    const currentTime = new Date().getTime();
+    if ((currentTime - this.latestPrice.updated) > updateTime) {
+      setTimeout(() => {
+        this.loadData();
+      }, this.delay.normal);
+    }
   },
   methods: {
     async loadData() {
