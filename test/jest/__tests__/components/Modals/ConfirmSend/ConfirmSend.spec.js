@@ -235,9 +235,9 @@ describe('ConfirmSend component', () => {
       wrapper.vm.$parent.$store = wrapper.vm.$store;
       wrapper.vm.$parent.sendConfirmModalOpened = false;
       expect(wrapper.vm.$parent.sendConfirmModalOpened).toBe(false);
-      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[1][1]).toBe(false);
+      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[3][1]).toBe(false);
       wrapper.vm.$parent.sendConfirmModalOpened = true;
-      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[2][1]).toBe(true);
+      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[4][1]).toBe(true);
     });
   });
 });

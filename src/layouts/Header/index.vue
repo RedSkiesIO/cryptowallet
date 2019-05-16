@@ -5,6 +5,7 @@
   >
     <div class="header-back-button-wrapper">
       <q-btn
+        :class="{ hideBackButton: !isBackButtonEnabled }"
         :disable="!isBackButtonEnabled"
         icon="arrow_back"
         color="primary"
@@ -259,5 +260,9 @@ export default {
   margin-right: 0.2rem;
   position: relative;
   top: 0.2em;
+}
+
+.hideBackButton {
+  display: none;
 }
 </style>

@@ -50,23 +50,23 @@
           <div class="col-6">
             1 {{ coinSymbol }} / {{ selectedCurrency.code }}
           </div>
-          <div
+          <!-- <div
             v-if="latestPrice.data.VOLUME24HOURTO !== 0"
             class="col-6"
           >
             {{ $t('volume24h') }} {{ selectedCurrency.code }}
-          </div>
+          </div> -->
         </div>
         <div class="row price">
           <div class="col-6">
             {{ selectedCurrency.symbol }}{{ latestPrice.data.PRICE.toFixed(2) }}
           </div>
-          <div
+          <!-- <div
             v-if="latestPrice.data.VOLUME24HOURTO !== 0"
             class="col-6"
           >
             {{ selectedCurrency.symbol }}{{ latestPrice.data.VOLUME24HOURTO.toFixed(0) }}
-          </div>
+          </div> -->
         </div>
         <div
           :style="{ color: percentColor}"
@@ -106,6 +106,8 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
+      delay: (state) => { return state.settings.delay; },
+
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -152,7 +154,13 @@ export default {
 
   },
   async mounted() {
-    this.loadData();
+    const updateTime = 120000;
+    const currentTime = new Date().getTime();
+    if ((currentTime - this.latestPrice.updated) > updateTime) {
+      setTimeout(() => {
+        this.loadData();
+      }, this.delay.normal);
+    }
   },
   methods: {
     async loadData() {
@@ -203,12 +211,12 @@ export default {
   color: #de4662;
 }
 
-.row .price{
+.price{
   font-size: x-large;
   color: white;
 }
 
-.row .labels{
+.labels{
   color: sandybrown;
 }
 
