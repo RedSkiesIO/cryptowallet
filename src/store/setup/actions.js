@@ -81,6 +81,13 @@ export function setAccountIpNode(context, payload) {
 }
 
 /**
+ * Action setAccountCreated
+ */
+export function setAccountCreated(context) {
+  context.commit('SET_ACCOUNT_CREATED');
+}
+
+/**
  * Action setPin
  */
 export function setPin(context, payload) {

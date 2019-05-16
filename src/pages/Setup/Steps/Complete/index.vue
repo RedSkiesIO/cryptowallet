@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="showContent"
     class="container"
   >
     <div>
@@ -48,6 +47,7 @@ export default {
   },
   computed: {
     ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       setup: (state) => { return state.setup; },
       delay: (state) => { return state.settings.delay; },
     }),
@@ -68,13 +68,15 @@ export default {
       .on('online', () => {
         this.online = true;
       });
-
-    setTimeout(() => {
-      if (!this.showContent) {
-        this.$store.dispatch('settings/setLoading', true);
-        this.createAccount();
-      }
-    }, this.delay.normal);
+    if (!this.setup.accountCreated) {
+      this.$store.dispatch('settings/setLoading', true);
+      setTimeout(async () => {
+        await this.createAccount();
+        if (this.online) {
+          await this.complete();
+        }
+      }, this.delay.normal);
+    }
   },
 
   methods: {
@@ -86,12 +88,11 @@ export default {
       try {
         this.$store.dispatch('settings/setLoading', true);
 
-        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.setup.pinArray.join(''));
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
         await this.backEndService.connect();
         await this.backEndService.loadPriceFeed();
 
         this.$store.dispatch('setup/clearSetupData');
-        this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
         this.$store.dispatch('settings/setLayout', 'light');
         this.$router.push({ path: '/wallet' });
 
@@ -109,7 +110,6 @@ export default {
     async createAccount() {
       try {
         const account = await this.accountInitializer.createAccount(this.setup);
-        this.account = account;
         this.$store.dispatch('settings/setSelectedAccount', this.setup.accountName);
         await this.accountInitializer.createWallets(this.setup, account.id, this.supportedCoins);
         await this.accountInitializer.createERC20Wallets(
@@ -117,13 +117,12 @@ export default {
           account.id,
           this.supportedCoins,
         );
+        this.$store.dispatch('setup/setAccountCreated');
+        this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
 
-        if (this.online) {
-          this.complete();
-        } else {
-          this.showContent = true;
+        setTimeout(() => {
           this.$store.dispatch('settings/setLoading', false);
-        }
+        }, this.delay.normal);
       } catch (err) {
         this.errorHandler(err);
       }
