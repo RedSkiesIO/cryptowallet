@@ -2,6 +2,7 @@ const actions = {
   setAccountLocale: jest.fn(),
   setAccountType: jest.fn(),
   setAccountName: jest.fn(),
+  setAccountCreated: jest.fn(),
   resetPin: jest.fn(),
   resetPinConfirm: jest.fn(),
   setPinConfirm: jest.fn(),
@@ -23,6 +24,7 @@ const state = {
   seed: {
     real: 'real', debate: 'debate', another: 'another', phone: 'phone', response: 'response', toddler: 'toddler', fee: 'fee', offer: 'offer', bundle: 'bundle', crack: 'crack', monster: 'monster', earth: 'earth',
   },
+  accountCreated: null,
 };
 
 const account = {
