@@ -51,7 +51,7 @@ describe('Splash Setup', () => {
       wrapper.vm.selectedLang = {
         label: 'Greek',
         value: 'gr-gr',
-        icon: '/assets/flags/gr-gr.svg',
+        icon: './statics/flags/gr-gr.svg',
       };
 
       wrapper.find('.import-account-btn').trigger('click');

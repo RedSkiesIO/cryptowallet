@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="showContent"
     class="container"
   >
     <div>
@@ -57,7 +58,7 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.network = new Network(this.$q.platform.is);
     this.online = this.network.isOnline();
 
@@ -69,46 +70,21 @@ export default {
         this.online = true;
       });
     if (!this.setup.accountCreated) {
-      this.$store.dispatch('settings/setLoading', true);
-      setTimeout(async () => {
-        await this.createAccount();
-        if (this.online) {
-          await this.complete();
-        }
-      }, this.delay.normal);
+      if (this.online) {
+        await this.complete();
+      } else {
+        this.showContent = true;
+      }
     }
   },
 
   methods: {
-
     /**
      * complete setup and store account entity.
      */
     async complete() {
       try {
         this.$store.dispatch('settings/setLoading', true);
-
-        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
-        await this.backEndService.connect();
-        await this.backEndService.loadPriceFeed();
-
-        this.$store.dispatch('setup/clearSetupData');
-        this.$store.dispatch('settings/setLayout', 'light');
-        this.$router.push({ path: '/wallet' });
-
-        setTimeout(() => {
-          this.$store.dispatch('settings/setLoading', false);
-        }, this.delay.normal);
-      } catch (err) {
-        this.errorHandler(err);
-      }
-    },
-
-    /**
-     * create account and generate walltes
-     */
-    async createAccount() {
-      try {
         const account = await this.accountInitializer.createAccount(this.setup);
         this.$store.dispatch('settings/setSelectedAccount', this.setup.accountName);
         await this.accountInitializer.createWallets(this.setup, account.id, this.supportedCoins);
@@ -119,6 +95,14 @@ export default {
         );
         this.$store.dispatch('setup/setAccountCreated');
         this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
+
+        Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
+        await this.backEndService.connect();
+        await this.backEndService.loadPriceFeed();
+
+        this.$store.dispatch('setup/clearSetupData');
+        this.$store.dispatch('settings/setLayout', 'light');
+        this.$router.push({ path: '/wallet' });
 
         setTimeout(() => {
           this.$store.dispatch('settings/setLoading', false);
