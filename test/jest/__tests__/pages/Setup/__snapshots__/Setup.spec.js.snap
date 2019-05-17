@@ -84,7 +84,7 @@ exports[`Setup.vue renders and matches snapshot 1`] = `
         >
           <img
             class="select-icon"
-            src="/assets/flags/en-gb.svg"
+            src="./statics/flags/en-gb.svg"
           />
         </div>
          

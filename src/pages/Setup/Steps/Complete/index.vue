@@ -69,6 +69,7 @@ export default {
       .on('online', () => {
         this.online = true;
       });
+
     if (!this.setup.accountCreated) {
       if (this.online) {
         await this.complete();
