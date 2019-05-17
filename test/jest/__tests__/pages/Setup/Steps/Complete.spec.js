@@ -12,6 +12,7 @@ describe('Complete.vue', () => {
   let errorHandler;
   let storeMocks;
   let router;
+  let setOnline = true;
   const delay = 501;
   const propsData = {};
   const map = [];
@@ -59,7 +60,10 @@ describe('Complete.vue', () => {
     store = wrapper.vm.$store;
   }
 
-  beforeEach(() => { storeInit(); });
+  beforeEach(() => {
+    Object.defineProperty(window.navigator, 'onLine', { value: setOnline, configurable: true });
+    storeInit();
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -68,6 +72,7 @@ describe('Complete.vue', () => {
   it('displays a loading modal', (done) => {
     setTimeout(() => {
       expect(storeMocks.actions.setLoading).toHaveBeenCalled();
+      setOnline = false;
       done();
     }, delay);
   });
@@ -92,12 +97,14 @@ describe('Complete.vue', () => {
         map.online();
         setTimeout(() => {
           expect(wrapper.contains('q-btn-stub[disabled="true"')).toBe(false);
+          setOnline = true;
           done();
         }, delay);
       }, delay);
     });
   });
-  describe('createAccount()', () => {
+
+  describe('complete()', () => {
     it('creates an account and adds it to the database', (done) => {
       wrapper.vm.$nextTick(() => {
         setTimeout(() => {
@@ -118,18 +125,6 @@ describe('Complete.vue', () => {
       });
     });
 
-    it('handles errors', (done) => {
-      wrapper.vm.$nextTick(() => {
-        accountInitializer.createAccount = null;
-        setTimeout(() => {
-          expect(wrapper.vm.errorHandler).toHaveBeenCalled();
-          done();
-        }, delay);
-      });
-    });
-  });
-
-  describe('complete()', () => {
     it('initialises the back end service and fetches the price feed', (done) => {
       wrapper.vm.$nextTick(() => {
         setTimeout(() => {
@@ -151,8 +146,8 @@ describe('Complete.vue', () => {
     });
 
     it('handles errors', (done) => {
+      backEndService.connect.mockImplementation(() => { throw new Error('Test Error'); });
       wrapper.vm.$nextTick(() => {
-        backEndService.connect.mockImplementation(() => { throw new Error('Test Error'); });
         setTimeout(() => {
           expect(wrapper.vm.errorHandler).toHaveBeenCalled();
           done();
