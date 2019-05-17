@@ -101,48 +101,26 @@ export default {
   },
   async mounted() {
     try {
-      const wherePrice = (record, item) => {
-        return (
-          record.coin === item.coin
-          && record.currency === item.currency
-          && record.period === item.period
-        );
-      };
-      let dataset;
-      const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
-      if (result) {
-        dataset = result.data;
-      }
+      const hour = 3600000;
+      const currentTime = new Date().getTime();
 
       const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
-      if (!price && dataset) {
-        Prices.$insert({
-          data: {
-            coin: this.wallet.symbol,
-            currency: this.selectedCurrency.code,
-            period: 'day',
-            updated: +new Date(),
-            data: dataset,
-          },
-        });
-        this.chartData = dataset.map((item) => { return item.y; });
-      } else if (dataset) {
-        Prices.$update({
-          where: (record) => {
-            return wherePrice(record, {
-              coin: this.wallet.symbol,
-              currency: this.selectedCurrency.code,
-              period: 'day',
-            });
-          },
-          data: {
-            updated: +new Date(),
-            data: dataset,
-          },
-        });
-        this.chartData = dataset.map((item) => { return item.y; });
-      } else if (price && !dataset) {
-        this.chartData = price.data.map((item) => { return item.y; });
+      if (price) {
+        if ((currentTime - price.updated) < hour) {
+          this.chartData = price.data.map((item) => { return item.y; });
+        } else {
+          let dataset;
+          const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
+          if (result) {
+            dataset = result.data;
+          }
+          if (dataset) {
+            this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
+            this.chartData = dataset.map((item) => { return item.y; });
+          } else {
+            this.chartData = price.data.map((item) => { return item.y; });
+          }
+        }
       }
     } catch (err) {
       this.errorHandler(err);
