@@ -406,9 +406,6 @@ export default {
 
             this.$store.dispatch('qrcode/setScannedAddress', text);
             this.$store.dispatch('qrcode/cancelScanning');
-            this.$store.dispatch('qrcode/setQRMode', null);
-            this.$store.dispatch('modals/setAddWalletModalOpened', true);
-            this.$store.dispatch('modals/setAddErc20ModalOpened', true);
           });
         }, this.delay.normal);
       }

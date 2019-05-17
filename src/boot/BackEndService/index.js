@@ -174,6 +174,11 @@ class BackEndService {
           if (err.response.status === unauthorized) {
             await this.connect();
           }
+          const notFound = 422;
+          const internalError = 500;
+          if (err.response.status === notFound || err.response.status === internalError) {
+            return resolve(false);
+          }
         }
       }
 
@@ -206,6 +211,7 @@ class BackEndService {
   async getHistoricalData(coin, currency, period) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`);
     const msToS = 1000;
+    if (!result) { return false; }
 
     result.data.data = result.data.data.map((x) => {
       return { t: x.time * msToS, y: x.close };
