@@ -11,12 +11,13 @@ describe('CloudListItem.vue', () => {
   let wrapper;
   let router;
 
-  const chartData = JSON.parse('{"$id":"CAT_GBP_day","coin":"CAT","currency":"GBP","period":"day","updated":1556099369630,"data":[{"t":15560100,"y":135.02},{"t":15560136,"y":134.7},{"t":15560172,"y":134.33},{"t":15560208,"y":134.57},{"t":15560244,"y":135.14},{"t":15560280,"y":135.43},{"t":15560316,"y":134.65},{"t":15560352,"y":134.81},{"t":15560388,"y":134.8},{"t":15560424,"y":134.79},{"t":15560460,"y":134.12},{"t":15560496,"y":133.71},{"t":15560532,"y":134.17},{"t":15560568,"y":132.86},{"t":15560604,"y":132.23},{"t":15560640,"y":132.27},{"t":15560676,"y":131.07},{"t":15560712,"y":131.49},{"t":15560748,"y":131.61},{"t":15560784,"y":131.92},{"t":15560820,"y":131.59},{"t":15560856,"y":131.29},{"t":15560892,"y":128.03},{"t":15560928,"y":128.1},{"t":15560964,"y":128.02}]}');
+  const chartData = JSON.parse('{"$id":"CAT_GBP_day","coin":"CAT","currency":"GBP","period":"day","updated":15580,"data":[{"t":15560100,"y":135.02},{"t":15560136,"y":134.7},{"t":15560172,"y":134.33},{"t":15560208,"y":134.57},{"t":15560244,"y":135.14},{"t":15560280,"y":135.43},{"t":15560316,"y":134.65},{"t":15560352,"y":134.81},{"t":15560388,"y":134.8},{"t":15560424,"y":134.79},{"t":15560460,"y":134.12},{"t":15560496,"y":133.71},{"t":15560532,"y":134.17},{"t":15560568,"y":132.86},{"t":15560604,"y":132.23},{"t":15560640,"y":132.27},{"t":15560676,"y":131.07},{"t":15560712,"y":131.49},{"t":15560748,"y":131.61},{"t":15560784,"y":131.92},{"t":15560820,"y":131.59},{"t":15560856,"y":131.29},{"t":15560892,"y":128.03},{"t":15560928,"y":128.1},{"t":15560964,"y":128.02}]}');
 
   const errorHandler = jest.fn();
 
   const backEndService = {
     getHistoricalData: jest.fn(),
+    storeChartData: jest.fn(),
   };
 
   const propsData = {
@@ -38,6 +39,7 @@ describe('CloudListItem.vue', () => {
 
   function storeInit(custom) {
     storeMocks = createStoreMocks(custom);
+    Prices.$insert({ data: chartData });
     Wallet.$insert({
       data: [{
         id: 1,
@@ -87,17 +89,16 @@ describe('CloudListItem.vue', () => {
 
   it('calls the api for chart data and updates the database', (done) => {
     storeInit();
-    Prices.$insert({ data: chartData });
     setTimeout(() => {
-      expect(Prices.all()[0].data[0].t).toEqual(15560136);
-      expect(Prices.all()[0].data[0].y).toEqual(134.7);
+      expect(backEndService.storeChartData).toHaveBeenCalled();
       done();
     }, 0);
   });
 
-  it('calls the api and inserts the chart data if does not exist', (done) => {
+  it('hides the chart if no price data exists', (done) => {
     backEndService.getHistoricalData.mockImplementationOnce(() => {});
     storeInit();
+    Prices.$delete('CAT_GBP_day');
     setTimeout(() => {
       expect(wrapper.vm.showChart).toEqual(false);
       done();

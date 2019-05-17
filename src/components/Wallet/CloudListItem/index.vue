@@ -103,8 +103,8 @@ export default {
     try {
       const hour = 3600000;
       const currentTime = new Date().getTime();
-
       const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
+
       if (price) {
         if ((currentTime - price.updated) < hour) {
           this.chartData = price.data.map((item) => { return item.y; });
