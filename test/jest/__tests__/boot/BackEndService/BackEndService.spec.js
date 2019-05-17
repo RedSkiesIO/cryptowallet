@@ -311,7 +311,7 @@ describe('boot/BackEndService', () => {
 
         const errorMock = new Error();
         errorMock.response = {
-          status: 500,
+          status: 404,
         };
 
         mockAxios.get = jest.fn().mockImplementation(() => {

@@ -70,7 +70,27 @@ exports[`CloudListItem.vue renders and matches snapshot 1`] = `
         </div>
       </button>
        
-      <!---->
+      <button
+        class="q-btn inline q-btn-item non-selectable wallet-group-btn just-icon q-btn--flat q-btn--rectangle text-primary q-focusable q-hoverable"
+        style="font-size: 20px;"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="q-focus-helper"
+          tabindex="-1"
+        />
+        <div
+          class="q-btn__content text-center col items-center q-anchor--skip justify-center row"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            timeline
+          </i>
+        </div>
+      </button>
     </div>
   </div>
 </div>
