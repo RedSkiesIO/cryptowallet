@@ -328,7 +328,7 @@ export default {
 
       setTimeout(() => {
         this.loading = false;
-        this.sendConfirmModalOpened = false;
+        this.$store.dispatch('modals/setConfirmSendModalOpened', false);
       }, this.delay.short);
     },
   },

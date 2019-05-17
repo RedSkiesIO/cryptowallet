@@ -172,7 +172,7 @@ export default {
   send: 'Send',
   receive: 'Receive',
   success: 'Success',
-  successMessage: 'PLAYFUL SUCCESS MESSAGE HERE',
+  successMessage: 'YOUR TRANSACTION WAS SUCCESSFULLY SENT',
   wallet: 'Wallets',
   addToken: 'Add Token',
   contractAddress: 'Contract Address',
