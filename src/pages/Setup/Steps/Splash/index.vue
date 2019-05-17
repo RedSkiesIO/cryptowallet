@@ -88,7 +88,7 @@ export default {
       selectedLang: {
         label: 'English',
         value: 'en-gb',
-        icon: '/assets/flags/en-gb.svg',
+        icon: './statics/flags/en-gb.svg',
       },
     };
   },
@@ -114,7 +114,7 @@ export default {
         return {
           label: this.$t(lang),
           value: lang,
-          icon: `/assets/flags/${lang}.svg`,
+          icon: `./statics/flags/${lang}.svg`,
         };
       });
     },
