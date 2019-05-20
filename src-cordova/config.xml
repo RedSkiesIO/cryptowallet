@@ -15,10 +15,13 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="ldpi" src="res/icon/android/ldpi.png" />
-        <icon density="mdpi" src="res/icon/android/mdpi.png" />
-        <icon density="hdpi" src="res/icon/android/hdpi.png" />
-        <icon density="xhdpi" src="res/icon/android/xhdpi.png" />
+        <resource-file src="res/values/colors.xml" target="/app/src/main/res/values/colors.xml" />
+        <icon background="@color/background" density="ldpi" foreground="res/icon/android/ldpi-foreground.png" src="res/icon/android/ldpi.png" />
+        <icon background="@color/background" density="mdpi" foreground="res/icon/android/mdpi-foreground.png" src="res/icon/android/mdpi.png" />
+        <icon background="@color/background" density="hdpi" foreground="res/icon/android/hdpi-foreground.png" src="res/icon/android/hdpi.png" />
+        <icon background="@color/background" density="xhdpi" foreground="res/icon/android/xhdpi-foreground.png" src="res/icon/android/xhdpi.png" />
+        <icon background="@color/background" density="xxhdpi" foreground="res/icon/android/xxhdpi-foreground.png" src="res/icon/android/xxhdpi.png" />
+        <icon background="@color/background" density="xxxhdpi" foreground="res/icon/android/xxxhdpi-foreground.png" src="res/icon/android/xxxhdpi.png" />
         <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png" />
         <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
         <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png" />
@@ -51,6 +54,13 @@
     </platform>
     <preference name="Orientation" value="portrait" />
     <preference name="StatusBarBackgroundColor" value="#1e3c57" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
     <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
