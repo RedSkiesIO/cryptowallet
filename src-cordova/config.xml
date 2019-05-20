@@ -65,6 +65,9 @@
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
     <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2">
+        <preference name="StatusBarBackgroundColor" value="##1e3c57" />
+    </plugin>
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
 </widget>

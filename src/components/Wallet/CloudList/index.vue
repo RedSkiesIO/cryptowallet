@@ -68,6 +68,9 @@ export default {
     if (document.querySelectorAll('.cloud-scroll .scroll')[0]) {
       document.querySelectorAll('.cloud-scroll .scroll')[0].scrollTop = this.scrollPosition;
     }
+    document.addEventListener('backbutton', (e) => {
+      e.preventDefault();
+    }, false);
   },
 
   methods: {
