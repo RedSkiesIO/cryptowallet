@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.atlas.mobile.wallet" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.atlas.mobile.wallet" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CryptoWallet</name>
     <description>CryptoWallet - By Atlas City</description>
     <author email="james.kirby@atlascity.io" href="https://atlascity.io">
@@ -15,13 +15,28 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <resource-file src="res/values/colors.xml" target="/app/src/main/res/values/colors.xml" />
-        <icon background="@color/background" density="ldpi" foreground="res/icon/android/ldpi-foreground.png" src="res/icon/android/ldpi.png" />
-        <icon background="@color/background" density="mdpi" foreground="res/icon/android/mdpi-foreground.png" src="res/icon/android/mdpi.png" />
-        <icon background="@color/background" density="hdpi" foreground="res/icon/android/hdpi-foreground.png" src="res/icon/android/hdpi.png" />
-        <icon background="@color/background" density="xhdpi" foreground="res/icon/android/xhdpi-foreground.png" src="res/icon/android/xhdpi.png" />
-        <icon background="@color/background" density="xxhdpi" foreground="res/icon/android/xxhdpi-foreground.png" src="res/icon/android/xxhdpi.png" />
-        <icon background="@color/background" density="xxxhdpi" foreground="res/icon/android/xxxhdpi-foreground.png" src="res/icon/android/xxxhdpi.png" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:icon="@mipmap/cryptowallet" android:roundIcon="@mipmap/cryptowallet_round" />
+        </edit-config>
+        <resource-file src="res/icon/cryptowallet-web.png" target="app/src/main/cryptowallet-web.png" />
+        <resource-file src="res/icon/android/values/ic_launcher_background.xml" target="app/src/main/res/values/ic_launcher_background.xml" />
+        <resource-file src="res/icon/android/mipmap-anydpi-v26/cryptowallet.xml" target="app/src/main/res/mipmap-anydpi-v26/cryptowallet.xml" />
+        <resource-file src="res/icon/android/mipmap-anydpi-v26/cryptowallet_round.xml" target="app/src/main/res/mipmap-anydpi-v26/cryptowallet_round.xml" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet.png" target="app/src/main/res/mipmap-hdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-hdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-hdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet.png" target="app/src/main/res/mipmap-mdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-mdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-mdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet_round.png" />
         <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png" />
         <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
         <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png" />
