@@ -130,7 +130,7 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
 
   Wallet.$update({
     where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance, 10) },
+    data: { confirmedBalance: parseFloat(newBalance) },
   });
 
   return true;
@@ -186,7 +186,7 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
 
   Wallet.$update({
     where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance, 10) },
+    data: { confirmedBalance: parseFloat(newBalance) },
   });
 
   return true;
@@ -230,7 +230,7 @@ async function refreshERC20(coinSDK, wallet, accountId) {
 
   Wallet.$update({
     where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance, 10) },
+    data: { confirmedBalance: parseFloat(newBalance) },
   });
 
   return true;
