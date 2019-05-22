@@ -154,7 +154,6 @@ export default {
     },
 
     newBalance() {
-      console.log(this.txData.transaction);
       const { unconfirmed } = getBalance(this.wallet, this.authenticatedAccount);
       if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
         let newBalance = (unconfirmed * this.weiMultiplier)

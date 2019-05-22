@@ -1,6 +1,6 @@
 import Utxo from '@/store/wallet/entities/utxo';
 import Tx from '@/store/wallet/entities/tx';
-// import Wallet from '@/store/wallet/entities/wallet';
+import Wallet from '@/store/wallet/entities/wallet';
 
 const Bitcoin = {
   getConfirmed(walletId, accountId) {
@@ -36,7 +36,7 @@ const Bitcoin = {
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations === 0) {
+      if (tx.confirmations === 0 && tx.sent) {
         balance -= (parseFloat(tx.value)
         + parseFloat(tx.fee));
       }
@@ -77,7 +77,7 @@ const Ethereum = {
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations === 0) {
+      if (tx.confirmations === 0 && tx.sent) {
         if (wallet.sdk !== 'ERC20') {
           balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
         } else {
@@ -85,12 +85,23 @@ const Ethereum = {
         }
       }
     });
-
     return balance;
   },
 
   getAvailable(wallet, accountId) {
     let balance = wallet.confirmedBalance;
+
+    if (wallet.sdk === 'ERC20') {
+      const parentWallet = Wallet.query()
+        .where('account_id', accountId)
+        .where('name', wallet.parentName)
+        .get();
+
+      if (parentWallet[0].confirmedBalance === 0) {
+        balance = 0;
+        return balance;
+      }
+    }
 
     const txs = Tx.query()
       .where('account_id', accountId)
@@ -98,7 +109,7 @@ const Ethereum = {
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations < 1) {
+      if (tx.confirmations === 0 && tx.sent) {
         if (wallet.sdk !== 'ERC20') {
           balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
         } else {
