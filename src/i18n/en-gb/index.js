@@ -219,4 +219,5 @@ export default {
   volume24h: 'Volume 24h',
   failedToConnect: 'Failed to connect to the server',
   'N/A': 'N/A',
+  exitConfirm: 'Do you really want to exit CryptoWallet?',
 };
