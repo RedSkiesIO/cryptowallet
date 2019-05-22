@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.atlas.mobile.wallet" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.atlas.mobile.wallet" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CryptoWallet</name>
     <description>CryptoWallet - By Atlas City</description>
     <author email="james.kirby@atlascity.io" href="https://atlascity.io">
         Atlas City
     </author>
     <content src="index.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -16,24 +15,59 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:icon="@mipmap/cryptowallet" android:roundIcon="@mipmap/cryptowallet_round" />
+        </edit-config>
+        <resource-file src="res/icon/cryptowallet-web.png" target="app/src/main/cryptowallet-web.png" />
+        <resource-file src="res/icon/android/values/ic_launcher_background.xml" target="app/src/main/res/values/ic_launcher_background.xml" />
+        <resource-file src="res/icon/android/mipmap-anydpi-v26/cryptowallet.xml" target="app/src/main/res/mipmap-anydpi-v26/cryptowallet.xml" />
+        <resource-file src="res/icon/android/mipmap-anydpi-v26/cryptowallet_round.xml" target="app/src/main/res/mipmap-anydpi-v26/cryptowallet_round.xml" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet.png" target="app/src/main/res/mipmap-hdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-hdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-hdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-hdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet.png" target="app/src/main/res/mipmap-mdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-mdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-mdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-mdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xhdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xxhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xxhdpi/cryptowallet_round.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet_foreground.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet_foreground.png" />
+        <resource-file src="res/icon/android/mipmap-xxxhdpi/cryptowallet_round.png" target="app/src/main/res/mipmap-xxxhdpi/cryptowallet_round.png" />
+        <splash density="port-hdpi" src="res/screen/android/splash-port-hdpi.png" />
+        <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
+        <splash density="port-mdpi" src="res/screen/android/splash-port-mdpi.png" />
+        <splash density="port-xhdpi" src="res/screen/android/splash-port-xhdpi.png" />
     </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-    </platform>
-    <plugin name="cordova-plugin-contacts" spec="3.0.1" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="StatusBarBackgroundColor" value="#1e3c57" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="SplashScreenDelay" value="5000" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-contacts" spec="^3.0.1" />
     <plugin name="cordova-plugin-android-permissions" spec="^1.0.0" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-email-composer" spec="^0.8.15" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-sms-plugin" spec="0.1.13" />
+    <plugin name="cordova-sms-plugin" spec="^0.1.13" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-clipboard" spec="^1.2.1" />
-    <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.4" />
+    <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.4">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
+    </plugin>
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="StatusBarBackgroundColor" value="#1e3c57" />
+    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
+    <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
     <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
 </widget>
