@@ -144,7 +144,7 @@ export default {
   fee: 'Fee',
   estimatedTransaction: 'Estimated transaction cost:',
   bitcoinAddressInvalidLength: 'The address must be 26-35 characters in length',
-  bitcoinAddressInvalid: 'Invalid Bitcoin address',
+  bitcoinAddressInvalid: 'Invalid address',
   ethereumAddressInvalidLength: 'The address must be 42 characters in length',
   ethereumAddressInvalid: 'Invalid Ethereum address',
   noAmount: 'You must provide an amount',
