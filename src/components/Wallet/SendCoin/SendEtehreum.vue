@@ -444,24 +444,24 @@ export default {
 
       const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
-      const gweiToWei = 10000;
-
+      // const gweiToWei = 10000;
+      console.log(data);
       const fees = {
         low: data.low,
         medium: data.medium,
         high: data.high,
-        txLow: (data.low * gweiToWei) / this.weiMultiplier,
-        txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
-        txHigh: (data.high * gweiToWei) / this.weiMultiplier,
+        // txLow: (data.low * gweiToWei) / this.weiMultiplier,
+        // txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
+        // txHigh: (data.high * gweiToWei) / this.weiMultiplier,
       };
 
-      let fee = fees.txMedium;
+      let fee = (fees.medium * gasLimit) / this.weiMultiplier;
       if (this.feeSetting === 0) {
-        fee = fees.txLow;
+        fee = (fees.low * gasLimit) / this.weiMultiplier;
       }
 
       if (this.feeSetting === 2) {
-        fee = fees.txHigh;
+        fee = (fees.high * gasLimit) / this.weiMultiplier;
       }
 
       let rawFee = fees.medium;
@@ -472,6 +472,10 @@ export default {
       if (this.feeSetting === 2) {
         rawFee = fees.high;
       }
+
+      this.fee = rawFee;
+      this.rawFee = rawFee * gasLimit;
+      this.feeData = fees;
 
       const formattedFee = new AmountFormatter({
         amount: fee,
@@ -484,10 +488,7 @@ export default {
       });
       const decimals = 6;
 
-      this.fee = rawFee;
-      this.rawFee = rawFee * gasLimit;
-      this.feeData = fees;
-      this.estimatedFee = formattedFee.getFormatted();
+
       this.estimatedFee = `${fee.toFixed(decimals)} ${this.coinSymbol} (${formattedFee.getFormatted()})`;
     },
 
