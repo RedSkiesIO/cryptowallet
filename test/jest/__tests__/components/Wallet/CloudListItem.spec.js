@@ -53,6 +53,18 @@ describe('CloudListItem.vue', () => {
         confirmedBalance: 20,
         enabled: true,
         imported: true,
+      },
+      {
+        id: 2,
+        account_id: 1,
+        name: 'Ethereum',
+        displayName: 'Ethereum',
+        symbol: 'ETH',
+        network: 'ETHEREUM_ROPSTEN',
+        sdk: 'ERC20',
+        confirmedBalance: 20,
+        enabled: true,
+        imported: true,
       }],
     });
     router = createRouter(storeMocks.store);
