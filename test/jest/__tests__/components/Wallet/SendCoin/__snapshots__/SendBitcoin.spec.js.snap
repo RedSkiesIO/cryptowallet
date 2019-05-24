@@ -255,7 +255,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
       <h3>
         
         Fee
-        
+      
       </h3>
        
       <span

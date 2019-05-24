@@ -212,10 +212,8 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
       <h3>
         
         Fee
-        
+      
       </h3>
-       
-      <!---->
        
       <span
         class="h3-line"
