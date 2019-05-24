@@ -99,12 +99,12 @@
       <div class="send-modal-heading">
         <h3>
           Fee
-          <q-icon
+          <!-- <q-icon
             name="help_outline"
             size="1.1rem"
             class="help-icon"
             @click="feeDialogOpened = true"
-          />
+          /> -->
         </h3>
         <FeeDialog
           :opened="feeDialogOpened"
@@ -482,10 +482,13 @@ export default {
         toCurrency: true,
         withCurrencySymbol: true,
       });
+      const decimals = 6;
+
       this.fee = rawFee;
       this.rawFee = rawFee * gasLimit;
       this.feeData = fees;
       this.estimatedFee = formattedFee.getFormatted();
+      this.estimatedFee = `${fee.toFixed(decimals)} ${this.coinSymbol} (${formattedFee.getFormatted()})`;
     },
 
     /**

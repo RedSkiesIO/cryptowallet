@@ -622,8 +622,8 @@ export default {
           toCurrency: true,
           withCurrencySymbol: true,
         });
-
-        this.estimatedFee = formattedFee.getFormatted();
+        const decimals = 6;
+        this.estimatedFee = `${transaction.fee.toFixed(decimals)} ${this.wallet.symbol} (${formattedFee.getFormatted()})`;
 
         return {
           hexTx,
