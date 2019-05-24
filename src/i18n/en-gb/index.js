@@ -136,7 +136,7 @@ export default {
   // Wallet
   balance: 'Balance',
   availableBalance: 'Available Balance',
-  availableBalanceExplanation: 'Explain me here please',
+  availableBalanceExplanation: 'Your available balance is the funds in your wallet that have been confirmed. It may be less than your total balance if you have received transactions that haven\'t been confirmed yet or if you have recently sent a transaction.',
   yourAddress: 'Your Address',
   scanQR: 'Scan QR Code',
   recipient: 'Recipient',
@@ -144,7 +144,7 @@ export default {
   fee: 'Fee',
   estimatedTransaction: 'Estimated transaction cost:',
   bitcoinAddressInvalidLength: 'The address must be 26-35 characters in length',
-  bitcoinAddressInvalid: 'Invalid Bitcoin address',
+  bitcoinAddressInvalid: 'Invalid address',
   ethereumAddressInvalidLength: 'The address must be 42 characters in length',
   ethereumAddressInvalid: 'Invalid Ethereum address',
   noAmount: 'You must provide an amount',

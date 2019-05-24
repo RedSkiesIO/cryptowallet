@@ -19,12 +19,28 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
 
   const { network } = wallet;
 
+  const txs = Tx.query()
+    .where('account_id', accountId)
+    .where('wallet_id', wallet.id)
+    .get();
+
+  let from;
+  let to;
   const apiReturnLimit = 50;
+  const newAmount = 5;
+  if (apiReturnLimit <= txs.length) {
+    from = Math.max(0, (txs.length - apiReturnLimit)) + newAmount;
+    to = from + apiReturnLimit;
+  } else {
+    from = 0;
+    to = apiReturnLimit;
+  }
+
   const txHistory = await coinSDK.getTransactionHistory(
     addressesRaw,
     network,
-    0,
-    apiReturnLimit,
+    from,
+    to,
   );
 
   if (!txHistory) {
