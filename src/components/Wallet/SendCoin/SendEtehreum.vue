@@ -99,18 +99,7 @@
       <div class="send-modal-heading">
         <h3>
           Fee
-          <!-- <q-icon
-            name="help_outline"
-            size="1.1rem"
-            class="help-icon"
-            @click="feeDialogOpened = true"
-          /> -->
         </h3>
-        <FeeDialog
-          :opened="feeDialogOpened"
-          :message="$t('helpFeesEtheruem')"
-          @closeFeeDialog="feeDialogOpened = false"
-        />
         <span class="h3-line" />
       </div>
       <div>
@@ -157,12 +146,10 @@ import {
 } from '@/helpers';
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
 export default {
   name: 'SendEthereum',
   components: {
-    FeeDialog,
   },
   data() {
     return {
