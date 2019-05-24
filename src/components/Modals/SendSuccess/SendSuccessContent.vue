@@ -142,7 +142,7 @@ export default {
     },
     copyToClipboard() {
       try {
-        cordova.plugins.clipboard.copy(this.address);
+        cordova.plugins.clipboard.copy(this.txData.transaction.hash);
         this.$toast.create(0, this.$t('copied'), this.delay.short);
       } catch (err) {
         this.errorHandler(err);

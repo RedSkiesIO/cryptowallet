@@ -367,7 +367,7 @@ describe('SendBitcoin component', () => {
       inputInCoin.trigger('input');
 
       setTimeout(() => {
-        expect(wrapper.vm.estimatedFee).toBe('£0.09');
+        expect(wrapper.vm.estimatedFee).toBe('0.000023 BTC (£0.09)');
         done();
       }, 750);
     });
@@ -379,7 +379,7 @@ describe('SendBitcoin component', () => {
         wrapper.vm.feeChange(2);
 
         setTimeout(() => {
-          expect(wrapper.vm.estimatedFee).toBe('£0.09');
+          expect(wrapper.vm.estimatedFee).toBe('0.000023 BTC (£0.09)');
           done();
         }, 750);
       }, 25);

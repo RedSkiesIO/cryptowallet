@@ -159,12 +159,14 @@ export default {
         let newBalance = (unconfirmed * this.weiMultiplier)
                            - (this.txData.transaction.value * this.weiMultiplier);
         if (this.wallet.sdk === 'Ethereum') {
-          newBalance += (parseFloat(this.txData.transaction.fee) * this.weiMultiplier);
+          newBalance -= (parseFloat(this.txData.transaction.fee) * this.weiMultiplier);
         }
         if (newBalance < 0) { newBalance = 0; }
         return newBalance / this.weiMultiplier;
       }
-      const totalCost = this.txData.transaction.value + parseFloat(this.txData.transaction.fee);
+      const totalCost = parseFloat(this.txData.transaction.value)
+        + parseFloat(this.txData.transaction.fee);
+
       let newBalance = unconfirmed - totalCost;
       if (newBalance < this.tinyBalance) { newBalance = 0; }
       return newBalance;

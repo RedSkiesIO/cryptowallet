@@ -36,14 +36,18 @@ describe('Terms modal', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('renders a checkbox', () => {
+  it('renders three checkboxes', () => {
     expect(wrapper.contains('.checkbox-wrapper')).toBe(true);
-    expect(wrapper.text()).toMatch(wrapper.vm.$t('termsBox'));
+    expect(wrapper.text()).toMatch(wrapper.vm.$t('termsBox1'));
+    expect(wrapper.text()).toMatch(wrapper.vm.$t('termsBox2'));
+    expect(wrapper.text()).toMatch(wrapper.vm.$t('termsBox3'));
   });
 
-  it('goes to next setup step and closes modal when checkbox is entered', (done) => {
+  it('goes to next setup step and closes modal when all checkboxes are entered', (done) => {
     wrapper.vm.$parent.$store = wrapper.vm.$store;
-    wrapper.find('.q-checkbox__native').trigger('click');
+    wrapper.findAll('.q-checkbox__native').at(0).trigger('click');
+    wrapper.findAll('.q-checkbox__native').at(1).trigger('click');
+    wrapper.findAll('.q-checkbox__native').at(2).trigger('click');
     wrapper.vm.$parent.termsModalOpened = true;
     setTimeout(() => {
       expect(wrapper.vm.$parent.termsModalOpened).toBe(false);

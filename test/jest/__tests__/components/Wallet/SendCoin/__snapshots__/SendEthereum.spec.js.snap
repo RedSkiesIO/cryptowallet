@@ -213,13 +213,6 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
         
         Fee
         
-        <i
-          aria-hidden="true"
-          class="material-icons q-icon help-icon"
-          style="font-size: 1.1rem;"
-        >
-          help_outline
-        </i>
       </h3>
        
       <!---->
@@ -296,7 +289,7 @@ exports[`SendEthereum component renders and matches snapshot 1`] = `
         class="estimated-fee"
       >
         
-        Estimated transaction cost: £0.43
+        Estimated transaction cost: 0.000237 ETH (£0.90)
       
       </div>
     </div>

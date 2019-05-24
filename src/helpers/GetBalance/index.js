@@ -36,8 +36,9 @@ const Bitcoin = {
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations === 0) {
-        balance -= (tx.fee + tx.value);
+      if (tx.confirmations === 0 && tx.sent) {
+        balance -= (parseFloat(tx.value)
+        + parseFloat(tx.fee));
       }
     });
 
@@ -63,53 +64,57 @@ const Bitcoin = {
 };
 
 const Ethereum = {
-  getConfirmed(walletId, accountId) {
-    const wallet = Wallet.query()
-      .where('account_id', accountId)
-      .where('id', walletId)
-      .get();
-
-    return wallet[0].confirmedBalance;
+  getConfirmed(wallet) {
+    return wallet.confirmedBalance;
   },
 
-  getUnconfirmed(walletId, accountId) {
-    const wallet = Wallet.query()
-      .where('account_id', accountId)
-      .where('id', walletId)
-      .get();
-
-    let balance = wallet[0].confirmedBalance;
+  getUnconfirmed(wallet, accountId) {
+    let balance = wallet.confirmedBalance;
 
     const txs = Tx.query()
       .where('account_id', accountId)
-      .where('wallet_id', walletId)
+      .where('wallet_id', wallet.id)
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations === 0) {
-        balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
+      if (tx.confirmations === 0 && tx.sent) {
+        if (wallet.sdk !== 'ERC20') {
+          balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
+        } else {
+          balance -= parseFloat(tx.value);
+        }
       }
     });
-
     return balance;
   },
 
-  getAvailable(walletId, accountId) {
-    const wallet = Wallet.query()
-      .where('account_id', accountId)
-      .where('id', walletId)
-      .get();
+  getAvailable(wallet, accountId) {
+    let balance = wallet.confirmedBalance;
 
-    let balance = wallet[0].confirmedBalance;
+    if (wallet.sdk === 'ERC20') {
+      const parentWallet = Wallet.query()
+        .where('account_id', accountId)
+        .where('name', wallet.parentName)
+        .get();
+
+      if (parentWallet[0].confirmedBalance === 0) {
+        balance = 0;
+        return balance;
+      }
+    }
 
     const txs = Tx.query()
       .where('account_id', accountId)
-      .where('wallet_id', walletId)
+      .where('wallet_id', wallet.id)
       .get();
 
     txs.forEach((tx) => {
-      if (tx.confirmations === 0) {
-        balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
+      if (tx.confirmations === 0 && tx.sent) {
+        if (wallet.sdk !== 'ERC20') {
+          balance -= (parseFloat(tx.fee) + parseFloat(tx.value));
+        } else {
+          balance -= parseFloat(tx.value);
+        }
       }
     });
 
@@ -121,9 +126,9 @@ const Ethereum = {
 function getBalance(wallet, accountId) {
   if (wallet.sdk === 'Ethereum' || wallet.sdk === 'ERC20') {
     return {
-      confirmed: Ethereum.getConfirmed(wallet.id, accountId),
-      unconfirmed: Ethereum.getUnconfirmed(wallet.id, accountId),
-      available: Ethereum.getAvailable(wallet.id, accountId),
+      confirmed: Ethereum.getConfirmed(wallet),
+      unconfirmed: Ethereum.getUnconfirmed(wallet, accountId),
+      available: Ethereum.getAvailable(wallet, accountId),
     };
   }
 

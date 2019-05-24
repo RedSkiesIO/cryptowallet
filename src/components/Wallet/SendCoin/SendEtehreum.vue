@@ -438,9 +438,15 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      const gasLimit = 21000;
+      let gasLimit = 21000;
       let coinSymbol = this.wallet.symbol;
-      if (this.wallet.sdk === 'ERC20') { coinSymbol = 'ETH'; }
+      let currentPrice = this.latestPrice;
+      if (this.wallet.sdk === 'ERC20') {
+        const erc20GasLimit = 100000;
+        gasLimit = erc20GasLimit;
+        coinSymbol = 'ETH';
+        currentPrice = this.$store.getters['entities/latestPrice/find'](`${coinSymbol}_${this.selectedCurrency.code}`).data.PRICE;
+      }
 
       const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
@@ -474,7 +480,7 @@ export default {
 
       const formattedFee = new AmountFormatter({
         amount: fee,
-        rate: this.latestPrice,
+        rate: currentPrice,
         format: '0.00',
         coin: this.wallet.name,
         currency: this.selectedCurrency,
@@ -483,7 +489,7 @@ export default {
       });
 
       const decimals = 6;
-      this.estimatedFee = `${fee.toFixed(decimals)} ${this.coinSymbol} (${formattedFee.getFormatted()})`;
+      this.estimatedFee = `${fee.toFixed(decimals)} ${coinSymbol} (${formattedFee.getFormatted()})`;
     },
 
     /**

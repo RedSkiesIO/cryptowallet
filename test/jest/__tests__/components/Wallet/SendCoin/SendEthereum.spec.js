@@ -409,7 +409,7 @@ describe('SendEthereum component', () => {
         wrapper.vm.feeChange(2);
 
         setTimeout(() => {
-          expect(wrapper.vm.estimatedFee).toBe('£0.43');
+          expect(wrapper.vm.estimatedFee).toBe('0.000237 ETH (£0.90)');
           done();
         }, 750);
       }, 25);

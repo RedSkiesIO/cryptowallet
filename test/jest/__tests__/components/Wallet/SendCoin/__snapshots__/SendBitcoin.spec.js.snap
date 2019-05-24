@@ -256,16 +256,7 @@ exports[`SendBitcoin component renders and matches snapshot 1`] = `
         
         Fee
         
-        <i
-          aria-hidden="true"
-          class="material-icons q-icon help-icon"
-          style="font-size: 1.1rem;"
-        >
-          help_outline
-        </i>
       </h3>
-       
-      <!---->
        
       <span
         class="h3-line"

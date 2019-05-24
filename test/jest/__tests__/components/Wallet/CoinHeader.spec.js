@@ -34,6 +34,7 @@ describe('CoinHeader.vue', () => {
       symbol: 'CAT',
       network: 'ETHEREUM_ROPSTEN',
       sdk: 'ERC20',
+      confirmedBalance: 10,
     },
     simple: true,
   };
@@ -80,6 +81,7 @@ describe('CoinHeader.vue', () => {
         symbol: 'ETH',
         network: 'ETHEREUM_ROPSTEN',
         sdk: 'Ethereum',
+        confirmedBalance: 10,
       },
       simple: true,
     };
