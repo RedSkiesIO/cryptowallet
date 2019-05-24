@@ -119,7 +119,7 @@ export default {
   getStartedSecurity: 'You are about to create the wallet. Some security precautions have to be made. Please make sure no one is watching you. Please disconnect from the Internet.',
   enableAirplaneDisableInternet: 'Enable the Airplane Mode or disable your Internet connection',
   activateYourWallet: 'Activate Your Wallet',
-  termsAndConditions: 'Terms & Conditions',
+  termsAndConditions: 'Account Confirmation',
   notEnoughWords: 'Please enter 12 words',
   error: 'Error',
   // Settings
@@ -211,7 +211,10 @@ export default {
   seedConfirmation: 'Have you stored your seed?',
   enterAccountName: 'Please enter an account name',
   invalidSeedPhrase: 'Invalid seed phrase',
-  termsBox: 'I have read and I accept the Terms & Conditions',
+  termsBox1: 'I understand that my funds are held securely on this device and not by CryptoWallet',
+  termsBox2: 'I understand that if I lose this device or uninstall the app my digital assets can only be recovered using my 12 word recovery seed ',
+  termsBox3: 'I understand that if I lose my 12 word recovery seed, CryptoWallet will not be able to recover my account',
+
   reconnectToInternet: 'Nearly there! We just need you to reconnect your device to the internet so we can complete your setup.',
   completeSetup: 'Connect to the Internet',
   // other

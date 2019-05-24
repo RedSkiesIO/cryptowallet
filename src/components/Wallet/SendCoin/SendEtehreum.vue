@@ -444,15 +444,10 @@ export default {
 
       const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
-      // const gweiToWei = 10000;
-      console.log(data);
       const fees = {
         low: data.low,
         medium: data.medium,
         high: data.high,
-        // txLow: (data.low * gweiToWei) / this.weiMultiplier,
-        // txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
-        // txHigh: (data.high * gweiToWei) / this.weiMultiplier,
       };
 
       let fee = (fees.medium * gasLimit) / this.weiMultiplier;
@@ -486,9 +481,8 @@ export default {
         toCurrency: true,
         withCurrencySymbol: true,
       });
+
       const decimals = 6;
-
-
       this.estimatedFee = `${fee.toFixed(decimals)} ${this.coinSymbol} (${formattedFee.getFormatted()})`;
     },
 

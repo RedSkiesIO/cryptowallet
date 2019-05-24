@@ -10,12 +10,26 @@
       <div class="terms-wrapper">
         <div class="checkbox-wrapper">
           <q-checkbox
-            v-model="terms"
+            v-model="terms1"
             color="primary"
             text-color="primary"
-            :label="$t('termsBox')"
-            true-value="yes"
-            false-value="no"
+            :label="$t('termsBox1')"
+          />
+        </div>
+        <div class="checkbox-wrapper">
+          <q-checkbox
+            v-model="terms2"
+            color="primary"
+            text-color="primary"
+            :label="$t('termsBox2')"
+          />
+        </div>
+        <div class="checkbox-wrapper">
+          <q-checkbox
+            v-model="terms3"
+            color="primary"
+            text-color="primary"
+            :label="$t('termsBox3')"
           />
         </div>
       </div>
@@ -31,17 +45,22 @@ export default {
   data() {
     return {
       termsModalOpened: false,
-      terms: 'no',
+      terms1: false,
+      terms2: false,
+      terms3: false,
     };
   },
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
     }),
+    allTerms() {
+      return this.terms1 && this.terms2 && this.terms3;
+    },
   },
   watch: {
-    terms(val) {
-      if (val === 'yes') {
+    allTerms(val) {
+      if (val) {
         const delay = 500;
         setTimeout(() => {
           this.$router.push({ path: `/setup/${this.id + 1}` });
