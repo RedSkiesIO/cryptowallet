@@ -69,10 +69,10 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
         class="done-tx-details-wrapper"
       >
         <div
-          class="tx-details-row"
+          class="tx-details-row row"
         >
           <div
-            class="detail"
+            class="col-3"
           >
             
             TX Hash:
@@ -80,7 +80,7 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
           </div>
            
           <div
-            class="break"
+            class="break col-9"
           >
             <span
               class="tx-hash-span"
@@ -112,10 +112,10 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
         </div>
          
         <div
-          class="tx-details-row"
+          class="tx-details-row row"
         >
           <div
-            class="detail"
+            class="col-3"
           >
             
             Recipient
@@ -123,7 +123,7 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
           </div>
            
           <div
-            class="break"
+            class=" break col-9"
           >
             
             123
@@ -132,10 +132,10 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
         </div>
          
         <div
-          class="tx-details-row"
+          class="tx-details-row row"
         >
           <div
-            class="detail"
+            class="col-3"
           >
             
             Amount
@@ -143,7 +143,7 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
           </div>
            
           <div
-            class="nowrap"
+            class="nowrap col-9"
           >
             
             1 BTC (£3,818.12)
