@@ -89,7 +89,7 @@ import { mapState } from 'vuex';
 import PriceChart from '@/components/PriceCharts/ChartContainer';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
-import IconList from '@/assets/cc-icons/icons-list.json';
+import IconList from '@/statics/cc-icons/icons-list.json';
 
 export default {
   name: 'PriceCharts',

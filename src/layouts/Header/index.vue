@@ -82,7 +82,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import IconList from '@/assets/cc-icons/icons-list.json';
+import IconList from '@/statics/cc-icons/icons-list.json';
 
 export default {
   name: 'Header',
