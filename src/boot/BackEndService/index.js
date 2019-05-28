@@ -2,6 +2,7 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
+import Coin from '@/store/wallet/entities/coin';
 
 class BackEndService {
   vm = null;
@@ -337,13 +338,15 @@ class BackEndService {
    * Calls the API and and stores the price data
    */
   async loadPriceFeed() {
-    const {
-      supportedCoins,
-      selectedCurrency,
-    } = this.vm.$store.state.settings;
+    const { selectedCurrency } = this.vm.$store.state.settings;
+    const supportedCoins = Coin.all();
 
-    const coins = supportedCoins.map((coin) => {
-      return coin.symbol;
+    const coins = [];
+    supportedCoins.forEach((coin) => {
+      const price = LatestPrice.find(`${coin.symbol}_${selectedCurrency.code}`);
+      if (price) {
+        coins.push(coin.symbol);
+      }
     });
 
     function onlyUnique(value, index, self) {
