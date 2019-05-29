@@ -171,6 +171,12 @@ export default {
   margin-right: 1rem;
 }
 
+.send-modal-heading h4 {
+  display: inline-block;
+  margin: 0;
+  margin-right: 1rem;
+}
+
 .send-modal-heading .h3-line {
   width: 100%;
   border-bottom: 1px solid whitesmoke;

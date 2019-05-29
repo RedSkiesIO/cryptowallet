@@ -269,7 +269,9 @@ export default {
         transaction.wallet_id = this.wallet.id;
         transaction.isChange = false;
         transaction.sent = true;
-
+        if (this.wallet.sdk === 'ERC20') {
+          transaction.fee /= this.weiMultiplier;
+        }
         await Tx.$insert({ data: transaction });
 
         this.completeTransaction();

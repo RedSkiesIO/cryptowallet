@@ -158,18 +158,7 @@
       <div class="send-modal-heading">
         <h3>
           {{ $t('fee') }}
-          <q-icon
-            name="help_outline"
-            size="1.1rem"
-            class="help-icon"
-            @click="feeDialogOpened = true"
-          />
         </h3>
-        <FeeDialog
-          :opened="feeDialogOpened"
-          :message="$t('helpFeesBitcoin')"
-          @closeFeeDialog="feeDialogOpened = false"
-        />
         <span class="h3-line" />
       </div>
 
@@ -221,14 +210,12 @@ import { debounce } from 'quasar';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
-import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 import Amount from '@/components/Wallet/Amount';
 
 const delay = 500;
 export default {
   name: 'SendCoin',
   components: {
-    FeeDialog,
     Amount,
   },
   data() {
@@ -622,8 +609,8 @@ export default {
           toCurrency: true,
           withCurrencySymbol: true,
         });
-
-        this.estimatedFee = formattedFee.getFormatted();
+        const decimals = 6;
+        this.estimatedFee = `${transaction.fee.toFixed(decimals)} ${this.wallet.symbol} (${formattedFee.getFormatted()})`;
 
         return {
           hexTx,

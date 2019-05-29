@@ -99,18 +99,7 @@
       <div class="send-modal-heading">
         <h3>
           Fee
-          <q-icon
-            name="help_outline"
-            size="1.1rem"
-            class="help-icon"
-            @click="feeDialogOpened = true"
-          />
         </h3>
-        <FeeDialog
-          :opened="feeDialogOpened"
-          :message="$t('helpFeesEtheruem')"
-          @closeFeeDialog="feeDialogOpened = false"
-        />
         <span class="h3-line" />
       </div>
       <div>
@@ -157,12 +146,10 @@ import {
 } from '@/helpers';
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
-import FeeDialog from '@/components/Wallet/SendCoin/FeeDialog';
 
 export default {
   name: 'SendEthereum',
   components: {
-    FeeDialog,
   },
   data() {
     return {
@@ -450,23 +437,19 @@ export default {
 
       const response = await this.backEndService.getTransactionFee(coinSymbol);
       const { data } = response.data;
-      const gweiToWei = 10000;
       const fees = {
         low: data.low,
         medium: data.medium,
         high: data.high,
-        txLow: (data.low * gweiToWei) / this.weiMultiplier,
-        txMedium: (data.medium * gweiToWei) / this.weiMultiplier,
-        txHigh: (data.high * gweiToWei) / this.weiMultiplier,
       };
 
-      let fee = fees.txMedium;
+      let fee = (fees.medium * gasLimit) / this.weiMultiplier;
       if (this.feeSetting === 0) {
-        fee = fees.txLow;
+        fee = (fees.low * gasLimit) / this.weiMultiplier;
       }
 
       if (this.feeSetting === 2) {
-        fee = fees.txHigh;
+        fee = (fees.high * gasLimit) / this.weiMultiplier;
       }
 
       let rawFee = fees.medium;
@@ -478,6 +461,10 @@ export default {
         rawFee = fees.high;
       }
 
+      this.fee = rawFee;
+      this.rawFee = rawFee * gasLimit;
+      this.feeData = fees;
+
       const formattedFee = new AmountFormatter({
         amount: fee,
         rate: currentPrice,
@@ -487,10 +474,9 @@ export default {
         toCurrency: true,
         withCurrencySymbol: true,
       });
-      this.fee = rawFee;
-      this.rawFee = rawFee * gasLimit;
-      this.feeData = fees;
-      this.estimatedFee = formattedFee.getFormatted();
+
+      const decimals = 6;
+      this.estimatedFee = `${fee.toFixed(decimals)} ${coinSymbol} (${formattedFee.getFormatted()})`;
     },
 
     /**
