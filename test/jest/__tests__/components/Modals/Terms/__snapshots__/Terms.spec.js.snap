@@ -9,7 +9,7 @@ exports[`Terms modal renders and matches snapshot 1`] = `
       class="header-h1"
     >
       
-      Terms & Conditions
+      Account Confirmation
     
     </h1>
   </div>
@@ -55,7 +55,87 @@ exports[`Terms modal renders and matches snapshot 1`] = `
           <div
             class="q-checkbox__label q-anchor--skip"
           >
-            I have read and I accept the Terms & Conditions
+            I understand that my funds are held securely on this device and not by CryptoWallet
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="checkbox-wrapper"
+      >
+        <div
+          class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+          text-color="primary"
+        >
+          <div
+            class="q-checkbox__inner relative-position"
+          >
+            <input
+              class="q-checkbox__native q-ma-none q-pa-none invisible"
+              type="checkbox"
+            />
+            <div
+              class="q-checkbox__bg absolute"
+            >
+              <svg
+                class="q-checkbox__check fit absolute-full"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                class="q-checkbox__check-indet absolute"
+              />
+            </div>
+          </div>
+          <div
+            class="q-checkbox__label q-anchor--skip"
+          >
+            I understand that if I lose this device or uninstall the app my digital assets can only be recovered using my 12 word recovery seed 
+          </div>
+        </div>
+      </div>
+       
+      <div
+        class="checkbox-wrapper"
+      >
+        <div
+          class="q-checkbox cursor-pointer no-outline row inline no-wrap items-center"
+          tabindex="0"
+          text-color="primary"
+        >
+          <div
+            class="q-checkbox__inner relative-position"
+          >
+            <input
+              class="q-checkbox__native q-ma-none q-pa-none invisible"
+              type="checkbox"
+            />
+            <div
+              class="q-checkbox__bg absolute"
+            >
+              <svg
+                class="q-checkbox__check fit absolute-full"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                  fill="none"
+                />
+              </svg>
+              <div
+                class="q-checkbox__check-indet absolute"
+              />
+            </div>
+          </div>
+          <div
+            class="q-checkbox__label q-anchor--skip"
+          >
+            I understand that if I lose my 12 word recovery seed, CryptoWallet will not be able to recover my account
           </div>
         </div>
       </div>

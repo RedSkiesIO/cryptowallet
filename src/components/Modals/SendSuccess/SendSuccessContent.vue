@@ -31,11 +31,11 @@
         </div>
 
         <div class="done-tx-details-wrapper">
-          <div class="tx-details-row">
-            <div class="detail">
+          <div class="tx-details-row row">
+            <div class="col-3">
               {{ $t('txHash') }}:
             </div>
-            <div class="break">
+            <div class="break col-9">
               <span class="tx-hash-span">
                 {{ txData.transaction.hash }}
               </span>
@@ -49,20 +49,20 @@
             </div>
           </div>
 
-          <div class="tx-details-row">
-            <div class="detail">
+          <div class="tx-details-row row">
+            <div class="col-3">
               {{ $t('recipient') }}
             </div>
-            <div class="break">
+            <div class=" break col-9">
               {{ recipient }}
             </div>
           </div>
 
-          <div class="tx-details-row">
-            <div class="detail">
+          <div class="tx-details-row row">
+            <div class="col-3">
               {{ $t('amount') }}
             </div>
-            <div class="nowrap">
+            <div class="nowrap col-9">
               {{ amount }}
             </div>
           </div>
@@ -108,7 +108,10 @@ export default {
     },
     amount() {
       const inCurrency = this.coinToCurrency(this.txData.transaction.value);
-      return `${this.txData.transaction.value} ${this.coinSymbol} (${inCurrency})`;
+      if (this.latestPrice) {
+        return `${this.txData.transaction.value} ${this.coinSymbol} (${inCurrency})`;
+      }
+      return `${this.txData.transaction.value} ${this.coinSymbol}`;
     },
     recipient() {
       if (Array.isArray(this.txData.transaction.receiver)) {
@@ -118,7 +121,10 @@ export default {
     },
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
-      return prices.data.PRICE;
+      if (prices) {
+        return prices.data.PRICE;
+      }
+      return null;
     },
   },
   methods: {
