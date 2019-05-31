@@ -8,38 +8,40 @@
       transition-hide="slide-down"
       content-class="dark-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click.prevent="close"
-          />
+      <div>
+        <div class="header-section">
+          <div class="header-back-button-wrapper">
+            <q-btn
+              icon="arrow_back"
+              size="lg"
+              class="icon-btn back-arrow-btn"
+              flat
+              @click.prevent="close"
+            />
+          </div>
+          <h1 class="header-h1">
+            {{ $t('wallets') }}
+          </h1>
+          <div
+            class="header-settings-button-wrapper"
+          >
+            <q-btn
+              icon="add"
+              color="secondary"
+              size="lg"
+              class="icon-btn icon-btn-right"
+              flat
+              @click.prevent="openAddWalletModal"
+            />
+          </div>
         </div>
-        <h1 class="header-h1">
-          {{ $t('wallets') }}
-        </h1>
-        <div
-          class="header-settings-button-wrapper"
-        >
-          <q-btn
-            icon="add"
-            color="secondary"
-            size="lg"
-            class="icon-btn icon-btn-right"
-            flat
-            @click.prevent="openAddWalletModal"
-          />
-        </div>
-      </div>
 
-      <div class="modal-layout-wrapper no-padding">
-        <WalletsList
-          :wallets="supportedCoins"
-          click-item-action="addWallet"
-        />
+        <div class="modal-layout-wrapper no-padding">
+          <WalletsList
+            :wallets="supportedCoins"
+            click-item-action="addWallet"
+          />
+        </div>
       </div>
     </q-dialog>
 

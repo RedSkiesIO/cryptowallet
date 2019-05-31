@@ -196,9 +196,13 @@ export default {
   justify-content: center;
   align-items: center;
   height: 2.5rem;
+  height: 2.5rem + constant(safe-area-inset-top);
+  height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
   background: #1e3c57;
   position: relative;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 }
 
 .header-h1 {

@@ -7,35 +7,37 @@
       transition-hide="slide-down"
       content-class="dark-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click.prevent="closeModal"
-          />
-        </div>
-        <h1 class="header-h1">
-          {{ $t('language') }}
-        </h1>
-      </div>
-
-      <div class="modal-layout-wrapper no-padding">
-        <div
-          v-for="key in languages"
-          :key="key"
-          class="account-item"
-        >
-          <div>{{ $t(key) }}</div>
-
-          <div class="default-switch">
-            <q-radio
-              v-model="selectedLocale"
-              :val="key"
-              dark
+      <div>
+        <div class="header-section">
+          <div class="header-back-button-wrapper">
+            <q-btn
+              icon="arrow_back"
+              size="lg"
+              class="icon-btn back-arrow-btn"
+              flat
+              @click.prevent="closeModal"
             />
+          </div>
+          <h1 class="header-h1">
+            {{ $t('language') }}
+          </h1>
+        </div>
+
+        <div class="modal-layout-wrapper no-padding">
+          <div
+            v-for="key in languages"
+            :key="key"
+            class="account-item"
+          >
+            <div>{{ $t(key) }}</div>
+
+            <div class="default-switch">
+              <q-radio
+                v-model="selectedLocale"
+                :val="key"
+                dark
+              />
+            </div>
           </div>
         </div>
       </div>
