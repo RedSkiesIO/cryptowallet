@@ -35,9 +35,9 @@ export default {
     $route: {
       handler(to) {
         if (to.name === 'receiveCoin' || to.name === 'receiveCoinSingle') {
-          this.receiveCoinModalOpened = true;
-        } else {
-          this.receiveCoinModalOpened = false;
+          this.$store.dispatch('modals/setReceiveCoinModalOpened', true);
+        } else if ((to.name === 'wallet' || to.name === 'walletSingle')) {
+          this.$store.dispatch('modals/setReceiveCoinModalOpened', false);
         }
       },
     },
