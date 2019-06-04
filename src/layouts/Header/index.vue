@@ -17,11 +17,13 @@
     </div>
 
     <div v-if="coinHeading">
-      <img
-        :src="coinLogo"
-        class="coin-logo"
-      >
-      {{ wallet.displayName }}
+      <h1 class="header-h1">
+        <img
+          :src="coinLogo"
+          class="coin-logo"
+        >
+        {{ wallet.displayName }}
+      </h1>
     </div>
     <div v-else>
       <div v-if="heading === 'CryptoWallet'">
