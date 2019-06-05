@@ -218,7 +218,6 @@ body > div {
   width: 100%;
   height: 100%;
   position: absolute;
-  background: linear-gradient(to bottom, #193650 5%,#1e3c57 46%,#1a354e 100%);
 }
 
 .shrinked .background {
@@ -274,7 +273,7 @@ body > div {
 }
 
 .dark-modal .modal-layout-wrapper {
-  background: linear-gradient(to bottom, #193650 5%, #1e3c57 46%, #1a354e 100%);
+    background-color: #1e3c57;
 }
 
 .light-modal .modal-layout-wrapper {
