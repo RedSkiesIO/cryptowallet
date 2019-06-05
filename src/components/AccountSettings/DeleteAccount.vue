@@ -33,6 +33,7 @@
         mode="delete"
         @inputPin="pinInputListener"
         @attemptUnlock="attemptUnlock"
+        @resetPin="resetPin"
       />
     </div>
 
