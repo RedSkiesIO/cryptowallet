@@ -26,6 +26,9 @@ describe('DeleteAccount component', () => {
     create: jest.fn(),
   };
 
+  const resetStateMock = jest.fn();
+
+
   function wrapperInit(options) {
     return shallowMount(DeleteAccount, options);
   }
@@ -55,7 +58,12 @@ describe('DeleteAccount component', () => {
     });
   }
 
-  beforeEach(() => { storeInit({}, defaultProps); });
+  beforeEach(() => {
+    storeInit({}, defaultProps);
+    wrapper.vm.$refs.PinPad = {
+      resetState: resetStateMock,
+    };
+  });
 
   it('renders and matches snapshot', async (done) => {
     setTimeout(() => {
@@ -84,36 +92,20 @@ describe('DeleteAccount component', () => {
 
     describe('attemptUnlock()', () => {
       it('opens the confirmation dialog and resets the PinPad state if valid pin was entered', () => {
-        const resetStateMock = jest.fn();
-        wrapper.vm.$refs.PinPad = {
-          resetState: resetStateMock,
-        };
-
-        const resetPinMock = jest.fn();
-        wrapper.setMethods({ resetPin: resetPinMock });
-
         wrapper.vm.pin = [0, 0, 0, 0, 0, 0];
         wrapper.vm.attemptUnlock();
 
         expect(resetStateMock).toHaveBeenCalled();
-        expect(resetPinMock).toHaveBeenCalled();
+        expect(wrapper.vm.pin.length).toBe(0);
         expect(wrapper.vm.confirmDeleteOpen).toBeTruthy();
       });
 
       it('display an error if an invalid pin was entered', () => {
-        const resetStateMock = jest.fn();
-        wrapper.vm.$refs.PinPad = {
-          resetState: resetStateMock,
-        };
-        const resetPinMock = jest.fn();
-        wrapper.setMethods({ resetPin: resetPinMock });
-
-
         wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
         wrapper.vm.attemptUnlock();
 
-        expect(resetStateMock).toHaveBeenCalled();
-        expect(resetPinMock).toHaveBeenCalled();
+        expect(resetStateMock).toHaveBeenCalledTimes(2);
+        expect(wrapper.vm.pin.length).toBe(0);
         expect(wrapper.vm.confirmDeleteOpen).toBeFalsy();
         expect(mockToast.create).toHaveBeenCalled();
       });
@@ -122,18 +114,9 @@ describe('DeleteAccount component', () => {
     describe('closeModal()', () => {
       it('emits closePinModal event and resets state', () => {
         wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
-        const resetStateMock = jest.fn();
-        wrapper.vm.$refs.PinPad = {
-          resetState: resetStateMock,
-        };
-
-        const resetPinMock = jest.fn();
-        wrapper.setMethods({ resetPin: resetPinMock });
-
         wrapper.vm.closeModal();
 
-        expect(resetStateMock).toHaveBeenCalled();
-        expect(resetPinMock).toHaveBeenCalled();
+        expect(resetStateMock).toHaveBeenCalledTimes(3);
         expect(wrapper.vm.pin.length).toBe(0);
         expect(wrapper.emitted().closePinModal).toBeTruthy();
       });
