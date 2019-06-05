@@ -119,7 +119,6 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.05);
   margin-bottom: 2px;
 }
 

@@ -18,6 +18,7 @@
         "cordova-plugin-contacts": "^3.0.1",
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-email-composer": "^0.8.15",
+        "cordova-plugin-navigationbar-color": "0.0.9",
         "cordova-plugin-network-information": "^2.0.1",
         "cordova-plugin-qrscanner": "^2.6.0",
         "cordova-plugin-splashscreen": "^5.0.2",
@@ -44,7 +45,8 @@
             "cordova-plugin-network-information": {},
             "cordova-plugin-vibration": {},
             "cordova-plugin-splashscreen": {},
-            "cordova-plugin-statusbar": {}
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-navigationbar-color": {}
         },
         "platforms": [
             "android",
