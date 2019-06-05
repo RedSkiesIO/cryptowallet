@@ -22,6 +22,10 @@ describe('DeleteAccount component', () => {
     pinHash: accountData.pinHash,
   };
 
+  const mockToast = {
+    create: jest.fn(),
+  };
+
   function wrapperInit(options) {
     return shallowMount(DeleteAccount, options);
   }
@@ -46,6 +50,7 @@ describe('DeleteAccount component', () => {
       store: storeMocks.store,
       mocks: {
         errorHandler: jest.fn(),
+        $toast: mockToast,
       },
     });
   }
@@ -87,19 +92,30 @@ describe('DeleteAccount component', () => {
         const resetPinMock = jest.fn();
         wrapper.setMethods({ resetPin: resetPinMock });
 
-        wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
-        wrapper.vm.attemptUnlock();
-
-        expect(resetStateMock).toHaveBeenCalledTimes(0);
-        expect(resetPinMock).toHaveBeenCalledTimes(0);
-        expect(wrapper.vm.confirmDeleteOpen).toBeFalsy();
-
         wrapper.vm.pin = [0, 0, 0, 0, 0, 0];
         wrapper.vm.attemptUnlock();
 
         expect(resetStateMock).toHaveBeenCalled();
         expect(resetPinMock).toHaveBeenCalled();
         expect(wrapper.vm.confirmDeleteOpen).toBeTruthy();
+      });
+
+      it('display an error if an invalid pin was entered', () => {
+        const resetStateMock = jest.fn();
+        wrapper.vm.$refs.PinPad = {
+          resetState: resetStateMock,
+        };
+        const resetPinMock = jest.fn();
+        wrapper.setMethods({ resetPin: resetPinMock });
+
+
+        wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
+        wrapper.vm.attemptUnlock();
+
+        expect(resetStateMock).toHaveBeenCalled();
+        expect(resetPinMock).toHaveBeenCalled();
+        expect(wrapper.vm.confirmDeleteOpen).toBeFalsy();
+        expect(mockToast.create).toHaveBeenCalled();
       });
     });
 
