@@ -104,7 +104,7 @@ describe('DeleteAccount component', () => {
     });
 
     describe('closeModal()', () => {
-      it('emits closePinModal event and resets state', () => {
+      it('closes modal and resets state', () => {
         wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
         const resetStateMock = jest.fn();
         wrapper.vm.$refs.PinPad = {
@@ -119,7 +119,7 @@ describe('DeleteAccount component', () => {
         expect(resetStateMock).toHaveBeenCalled();
         expect(resetPinMock).toHaveBeenCalled();
         expect(wrapper.vm.pin.length).toBe(0);
-        expect(wrapper.emitted().closePinModal).toBeTruthy();
+        expect(storeMocks.actions.setDeleteAccountModalOpened).toHaveBeenCalled();
       });
     });
 

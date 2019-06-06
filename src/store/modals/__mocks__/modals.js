@@ -13,6 +13,10 @@ const actions = {
   setNewAccountModalOpened: jest.fn(),
   setTermsModalOpened: jest.fn(),
   setReceiveCoinModalOpened: jest.fn(),
+  setSelectCurrencyModalOpened: jest.fn(),
+  setSelectLanguageModalOpened: jest.fn(),
+  setDeleteAccountModalOpened: jest.fn(),
+  setNewPinModalOpened: jest.fn(),
 };
 
 const getters = {};

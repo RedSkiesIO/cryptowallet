@@ -123,7 +123,7 @@ describe('Pin component', () => {
     });
 
     describe('closeModal()', () => {
-      it('emits closePinModal event and resets state', () => {
+      it('closes the modal and resets state', () => {
         wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
         const resetStateMock = jest.fn();
         wrapper.vm.$refs.PinPad = {
@@ -138,7 +138,7 @@ describe('Pin component', () => {
         expect(resetStateMock).toHaveBeenCalled();
         expect(resetPinMock).toHaveBeenCalled();
         expect(wrapper.vm.pin.length).toBe(0);
-        expect(wrapper.emitted().closePinModal).toBeTruthy();
+        expect(storeMocks.actions.setNewPinModalOpened).toHaveBeenCalled();
       });
     });
 

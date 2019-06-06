@@ -4,11 +4,11 @@ exports[`Pin component renders and matches snapshot 1`] = `
 <q-dialog-stub
   contentclass="dark-modal"
   maximized="true"
+  open="true"
   persistent="true"
   position="standard"
   transitionhide="slide-down"
   transitionshow="slide-up"
-  value="true"
 >
   <div
     class="header-section"
