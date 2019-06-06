@@ -128,19 +128,9 @@ export default {
     Pin,
     DeleteAccount,
   },
-  data() {
-    return {
-      languageOpen: false,
-      nodeOpen: false,
-      pinOpen: false,
-      deleteAccountOpen: false,
-      currencyOpen: false,
-    };
-  },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
