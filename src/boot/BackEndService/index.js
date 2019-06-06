@@ -161,7 +161,7 @@ class BackEndService {
       const attemptLimit = this.maxTryAttempts;
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
-        return false;
+        return resolve(false);
       }
 
       try {

@@ -1,6 +1,6 @@
 <template>
   <q-dialog
-    v-model="open"
+    v-model="deleteAccountModalOpened"
     persistent
     :maximized="true"
     transition-show="slide-up"
@@ -87,10 +87,6 @@ export default {
     PinPad,
   },
   props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
     pinHash: {
       type: String,
       required: true,
@@ -112,6 +108,14 @@ export default {
     },
     accounts() {
       return this.$store.getters['entities/account/query']().get();
+    },
+    deleteAccountModalOpened: {
+      get() {
+        return this.$store.state.modals.deleteAccountModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setDeleteAccountModalOpened', value);
+      },
     },
   },
   methods: {
@@ -142,7 +146,7 @@ export default {
       this.$refs.PinPad.resetState();
       this.resetPin();
       Object.assign(this.$data, this.$options.data.apply(this));
-      this.$emit('closePinModal');
+      this.deleteAccountModalOpened = false;
     },
 
     deleteAccount() {

@@ -63,3 +63,19 @@ export function SET_RECEIVECOIN_MODAL_OPENED(state, payload) {
 export function SET_ADDWALLET_MODAL_OPENED(state, payload) {
   state.addWalletModalOpened = payload;
 }
+
+export function SET_SELECTCURRENCY_MODAL_OPENED(state, payload) {
+  state.selectCurrencyModalOpened = payload;
+}
+
+export function SET_SELECTLANGUAGE_MODAL_OPENED(state, payload) {
+  state.selectLanguageModalOpened = payload;
+}
+
+export function SET_DELETEACCOUNT_MODAL_OPENED(state, payload) {
+  state.deleteAccountModalOpened = payload;
+}
+
+export function SET_NEWPIN_MODAL_OPENED(state, payload) {
+  state.newPinModalOpened = payload;
+}
