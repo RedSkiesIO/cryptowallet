@@ -357,15 +357,16 @@ class BackEndService {
 
     try {
       const prices = await this.getPriceFeed(coins);
+      if (prices) {
+        const promises = [];
+        prices.data.forEach((data) => {
+          promises.push(new Promise((res) => {
+            return res(this.storePriceData(data.code, data[selectedCurrency.code]));
+          }));
+        });
 
-      const promises = [];
-      prices.data.forEach((data) => {
-        promises.push(new Promise((res) => {
-          return res(this.storePriceData(data.code, data[selectedCurrency.code]));
-        }));
-      });
-
-      await Promise.all(promises);
+        await Promise.all(promises);
+      }
     } catch (error) {
       this.vm.$toast.create(10, error.message, this.delay);
     }
