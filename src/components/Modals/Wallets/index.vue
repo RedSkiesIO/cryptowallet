@@ -95,6 +95,10 @@ export default {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
     },
 
+    createDate(timestamp) {
+      return new Date(timestamp * this.msToS).getTime();
+    },
+
     async storeTransactions(txs, id) {
       if (txs.length > 0) {
         const transactions = txs.map((tx) => {
@@ -102,11 +106,8 @@ export default {
           tx.wallet_id = id;
           return tx;
         });
-        const createDate = ((timestamp) => {
-          return new Date(timestamp * this.msToS).getTime();
-        });
         transactions.sort((a, b) => {
-          return createDate(b.confirmedTime) - createDate(a.confirmedTime);
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
         });
         await Tx.$insert({ data: transactions });
       }
@@ -121,11 +122,8 @@ export default {
           addr.hash = addr.address;
           return addr;
         });
-        const createDate = ((timestamp) => {
-          return new Date(timestamp * this.msToS).getTime();
-        });
         addresses.sort((a, b) => {
-          return createDate(b.confirmedTime) - createDate(a.confirmedTime);
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
         });
         await Address.$insert({ data: addresses });
       }
@@ -275,7 +273,7 @@ export default {
         index: 0,
       };
       await Address.$insert({ data: newAddress });
-      await this.storeTransactions(txHistory.txs, wallet.id);
+      await this.storeTransactions(txHistory, wallet.id);
 
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
