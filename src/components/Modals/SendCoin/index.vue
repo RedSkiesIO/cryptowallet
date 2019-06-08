@@ -9,35 +9,37 @@
       transition-hide="slide-down"
       content-class="light-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            @click.prevent="goBack"
-          />
+      <div>
+        <div class="header-section">
+          <div class="header-back-button-wrapper">
+            <q-btn
+              icon="arrow_back"
+              size="lg"
+              class="icon-btn back-arrow-btn"
+              @click.prevent="goBack"
+            />
+          </div>
+          <h1 class="header-h1">
+            {{ $t('send') }}
+          </h1>
         </div>
-        <h1 class="header-h1">
-          {{ $t('send') }}
-        </h1>
-      </div>
-      <div
-        v-if="wallet"
-        class="modal-layout-wrapper"
-      >
-        <CoinHeader :wallet="wallet" />
+        <div
+          v-if="wallet"
+          class="modal-layout-wrapper"
+        >
+          <CoinHeader :wallet="wallet" />
 
-        <div v-if="wallet.sdk === 'Bitcoin'">
-          <SendBitcoin />
-        </div>
+          <div v-if="wallet.sdk === 'Bitcoin'">
+            <SendBitcoin />
+          </div>
 
-        <div v-if="wallet.sdk === 'Ethereum'">
-          <SendEtehreum />
-        </div>
+          <div v-if="wallet.sdk === 'Ethereum'">
+            <SendEtehreum />
+          </div>
 
-        <div v-if="wallet.sdk === 'ERC20'">
-          <SendEtehreum />
+          <div v-if="wallet.sdk === 'ERC20'">
+            <SendEtehreum />
+          </div>
         </div>
       </div>
     </q-dialog>
