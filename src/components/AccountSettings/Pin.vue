@@ -7,37 +7,39 @@
     transition-hide="slide-down"
     content-class="dark-modal"
   >
-    <div class="header-section">
-      <div class="header-back-button-wrapper">
-        <q-btn
-          icon="arrow_back"
-          size="lg"
-          class="icon-btn back-arrow-btn"
-          flat
-          @click.prevent="closeModal"
+    <div>
+      <div class="header-section">
+        <div class="header-back-button-wrapper">
+          <q-btn
+            icon="arrow_back"
+            size="lg"
+            class="icon-btn back-arrow-btn"
+            flat
+            @click.prevent="closeModal"
+          />
+        </div>
+        <h1 class="header-h1">
+          {{ $t('pinCode') }}
+        </h1>
+      </div>
+
+      <div class="modal-layout-wrapper center">
+        <h1 class="setup with-margin">
+          <span v-if="!authorized">{{ $t('enterPin') }}</span>
+          <span v-if="authorized && !newPinConfirmed">{{ $t('enterNewPin') }}</span>
+          <span v-if="authorized && newPinConfirmed">{{ $t('repeatNewPin') }}</span>
+        </h1>
+
+        <PinPad
+          ref="PinPad"
+          :mode="mode"
+          @inputPin="pinInputListener"
+          @attemptUnlock="attemptUnlock"
+          @resetPin="resetPin"
+          @newPinSet="storeNewPin"
+          @attemptConfirm="updateAccount"
         />
       </div>
-      <h1 class="header-h1">
-        {{ $t('pinCode') }}
-      </h1>
-    </div>
-
-    <div class="modal-layout-wrapper center">
-      <h1 class="setup with-margin">
-        <span v-if="!authorized">{{ $t('enterPin') }}</span>
-        <span v-if="authorized && !newPinConfirmed">{{ $t('enterNewPin') }}</span>
-        <span v-if="authorized && newPinConfirmed">{{ $t('repeatNewPin') }}</span>
-      </h1>
-
-      <PinPad
-        ref="PinPad"
-        :mode="mode"
-        @inputPin="pinInputListener"
-        @attemptUnlock="attemptUnlock"
-        @resetPin="resetPin"
-        @newPinSet="storeNewPin"
-        @attemptConfirm="updateAccount"
-      />
     </div>
   </q-dialog>
 </template>

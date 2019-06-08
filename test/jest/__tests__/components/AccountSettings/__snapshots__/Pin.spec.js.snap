@@ -10,49 +10,51 @@ exports[`Pin component renders and matches snapshot 1`] = `
   transitionshow="slide-up"
   value="true"
 >
-  <div
-    class="header-section"
-  >
+  <div>
     <div
-      class="header-back-button-wrapper"
+      class="header-section"
     >
-      <q-btn-stub
-        align="center"
-        class="icon-btn back-arrow-btn"
-        flat="true"
-        icon="arrow_back"
-        ripple="true"
-        size="lg"
-      />
+      <div
+        class="header-back-button-wrapper"
+      >
+        <q-btn-stub
+          align="center"
+          class="icon-btn back-arrow-btn"
+          flat="true"
+          icon="arrow_back"
+          ripple="true"
+          size="lg"
+        />
+      </div>
+       
+      <h1
+        class="header-h1"
+      >
+        
+        PIN Code
+      
+      </h1>
     </div>
      
-    <h1
-      class="header-h1"
+    <div
+      class="modal-layout-wrapper center"
     >
-      
-      PIN Code
-    
-    </h1>
-  </div>
-   
-  <div
-    class="modal-layout-wrapper center"
-  >
-    <h1
-      class="setup with-margin"
-    >
-      <span>
-        Enter your PIN
-      </span>
+      <h1
+        class="setup with-margin"
+      >
+        <span>
+          Enter your PIN
+        </span>
+         
+        <!---->
+         
+        <!---->
+      </h1>
        
-      <!---->
-       
-      <!---->
-    </h1>
-     
-    <pinpad-stub
-      mode="access"
-    />
+      <pinpad-stub
+        mode="access"
+      />
+    </div>
   </div>
 </q-dialog-stub>
 `;

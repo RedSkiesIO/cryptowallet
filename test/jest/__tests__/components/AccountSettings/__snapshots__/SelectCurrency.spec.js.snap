@@ -11,83 +11,85 @@ exports[`SelectCurrency component renders and matches snapshot 1`] = `
     transitionshow="slide-up"
     value="true"
   >
-    <div
-      class="header-section"
-    >
+    <div>
       <div
-        class="header-back-button-wrapper"
+        class="header-section"
       >
-        <q-btn-stub
-          align="center"
-          class="icon-btn back-arrow-btn"
-          flat="true"
-          icon="arrow_back"
-          ripple="true"
-          size="lg"
-        />
+        <div
+          class="header-back-button-wrapper"
+        >
+          <q-btn-stub
+            align="center"
+            class="icon-btn back-arrow-btn"
+            flat="true"
+            icon="arrow_back"
+            ripple="true"
+            size="lg"
+          />
+        </div>
+         
+        <h1
+          class="header-h1"
+        >
+          
+          Currency
+        
+        </h1>
       </div>
        
-      <h1
-        class="header-h1"
-      >
-        
-        Currency
-      
-      </h1>
-    </div>
-     
-    <div
-      class="modal-layout-wrapper no-padding"
-    >
       <div
-        class="account-item"
+        class="modal-layout-wrapper no-padding"
       >
-        <div>
-          GBP (£)
-        </div>
-         
         <div
-          class="default-switch"
+          class="account-item"
         >
-          <q-radio-stub
-            dark="true"
-            val="GBP"
-            value="GBP"
-          />
+          <div>
+            GBP (£)
+          </div>
+           
+          <div
+            class="default-switch"
+          >
+            <q-radio-stub
+              dark="true"
+              val="GBP"
+              value="GBP"
+            />
+          </div>
         </div>
-      </div>
-      <div
-        class="account-item"
-      >
-        <div>
-          USD ($)
-        </div>
-         
         <div
-          class="default-switch"
+          class="account-item"
         >
-          <q-radio-stub
-            dark="true"
-            val="USD"
-            value="GBP"
-          />
+          <div>
+            USD ($)
+          </div>
+           
+          <div
+            class="default-switch"
+          >
+            <q-radio-stub
+              dark="true"
+              val="USD"
+              value="GBP"
+            />
+          </div>
         </div>
-      </div>
-      <div
-        class="account-item"
-      >
-        <div>
-          EUR (€)
-        </div>
-         
         <div
-          class="default-switch"
+          class="account-item"
         >
-          <q-radio-stub
-            dark="true"
-            val="EUR"
-            value="GBP"
-          />
+          <div>
+            EUR (€)
+          </div>
+           
+          <div
+            class="default-switch"
+          >
+            <q-radio-stub
+              dark="true"
+              val="EUR"
+              value="GBP"
+            />
+          </div>
         </div>
       </div>
     </div>

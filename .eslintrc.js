@@ -21,6 +21,8 @@ module.exports = {
     jest: true,
     sms: true,
     QRScanner: true,
+    StatusBar: true,
+    NavigationBar: true,
   },
   rules: {
     'vue/require-default-prop': 0,
