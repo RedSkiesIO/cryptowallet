@@ -21,11 +21,13 @@
       </div>
 
       <div>
-        <img
-          :src="coinLogo"
-          class="coin-logo"
-        >
-        {{ wallet.displayName }}
+        <h1 class="header-h1">
+          <img
+            :src="coinLogo"
+            class="coin-logo"
+          >
+          {{ wallet.displayName }}
+        </h1>
       </div>
 
       <div
@@ -183,15 +185,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.close-btn .q-btn__content .modal-layout-wrapper{
-  justify-content: flex-start;
-}
-
-.modal-layout-wrapper{
-  padding: 1em;
-  margin-top: "10px";
-}
+<style>
 
 .q-toolbar{
   background-color: #1e3c57;

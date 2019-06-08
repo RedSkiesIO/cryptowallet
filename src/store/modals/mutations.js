@@ -1,7 +1,24 @@
+function changeStatusBarColour(payload) {
+  if (payload === true && window.cordova) {
+    StatusBar.styleDefault();
+    if (cordova.platformId === 'android') {
+      StatusBar.backgroundColorByHexString('#f5f5f5');
+      NavigationBar.backgroundColorByHexString('#f5f5f5', true);
+    }
+  } else if (payload === false && window.cordova) {
+    StatusBar.styleLightContent();
+    if (cordova.platformId === 'android') {
+      StatusBar.backgroundColorByHexString('#1e3c57');
+      NavigationBar.backgroundColorByHexString('#1e3c57');
+    }
+  }
+}
+
 /*
  * SET STATE sendCoin modal opened
  */
 export function SET_SENDCOIN_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.sendCoinModalOpened = payload;
 }
 
@@ -9,6 +26,7 @@ export function SET_SENDCOIN_MODAL_OPENED(state, payload) {
  * SET STATE sendConfirm modal opened
  */
 export function SET_SENDCONFIRM_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.sendConfirmModalOpened = payload;
 }
 
@@ -37,6 +55,7 @@ export function SET_SENDSUCCESS_MODAL_OPENED(state, payload) {
  * Set STATE addErc20 modal opened
  */
 export function SET_ADDERC20_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.addErc20ModalOpened = payload;
 }
 
@@ -53,10 +72,12 @@ export function SET_NEWACCOUNT_MODAL_OPENED(state, payload) {
 }
 
 export function SET_TERMS_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.termsModalOpened = payload;
 }
 
 export function SET_RECEIVECOIN_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.receiveCoinModalOpened = payload;
 }
 
