@@ -48,13 +48,17 @@ exports[`modals/PriceCharts renders and matches snapshot 1`] = `
     </div>
      
     <div>
-      <img
-        class="coin-logo"
-        src="./statics/cc-icons/color/btc.svg"
-      />
+      <h1
+        class="header-h1"
+      >
+        <img
+          class="coin-logo"
+          src="./statics/cc-icons/color/btc.svg"
+        />
+        
+        Bitcoin
       
-      Bitcoin
-    
+      </h1>
     </div>
      
     <div

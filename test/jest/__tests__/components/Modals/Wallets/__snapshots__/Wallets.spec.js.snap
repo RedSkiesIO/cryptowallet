@@ -12,52 +12,54 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
     transitionhide="slide-down"
     transitionshow="slide-up"
   >
-    <div
-      class="header-section"
-    >
+    <div>
       <div
-        class="header-back-button-wrapper"
+        class="header-section"
       >
-        <q-btn-stub
-          align="center"
-          class="icon-btn back-arrow-btn"
-          flat="true"
-          icon="arrow_back"
-          ripple="true"
-          size="lg"
-        />
-      </div>
-       
-      <h1
-        class="header-h1"
-      >
+        <div
+          class="header-back-button-wrapper"
+        >
+          <q-btn-stub
+            align="center"
+            class="icon-btn back-arrow-btn"
+            flat="true"
+            icon="arrow_back"
+            ripple="true"
+            size="lg"
+          />
+        </div>
+         
+        <h1
+          class="header-h1"
+        >
+          
+          Wallets
         
-        Wallets
-      
-      </h1>
+        </h1>
+         
+        <div
+          class="header-settings-button-wrapper"
+        >
+          <q-btn-stub
+            align="center"
+            class="icon-btn icon-btn-right"
+            color="secondary"
+            flat="true"
+            icon="add"
+            ripple="true"
+            size="lg"
+          />
+        </div>
+      </div>
        
       <div
-        class="header-settings-button-wrapper"
+        class="modal-layout-wrapper no-padding"
       >
-        <q-btn-stub
-          align="center"
-          class="icon-btn icon-btn-right"
-          color="secondary"
-          flat="true"
-          icon="add"
-          ripple="true"
-          size="lg"
+        <walletslist-stub
+          clickitemaction="addWallet"
+          wallets=""
         />
       </div>
-    </div>
-     
-    <div
-      class="modal-layout-wrapper no-padding"
-    >
-      <walletslist-stub
-        clickitemaction="addWallet"
-        wallets=""
-      />
     </div>
   </q-dialog-stub>
    

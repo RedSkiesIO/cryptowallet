@@ -9,41 +9,43 @@
       transition-hide="slide-down"
       content-class="dark-modal"
     >
-      <div class="header-section">
-        <div class="header-back-button-wrapper">
-          <q-btn
-            icon="arrow_back"
-            size="lg"
-            class="icon-btn back-arrow-btn"
-            flat
-            @click="dismiss"
-          />
-        </div>
-        <h1 class="header-h1">
-          {{ $t('error') }}
-        </h1>
-      </div>
-      <div class="modal-layout-wrapper center-modal-content">
-        <div class="error-content-wrapper">
-          <div class="error-icon-wrapper">
-            <q-icon
-              name="error_outline"
-              class="error-icon"
-            />
-          </div>
-
-          <div class="error-msg-wrapper">
-            <h1>{{ $t('error') }}</h1>
-            <h3>{{ $t('sendTxFailure') }}</h3>
-          </div>
-
-          <div class="send">
+      <div>
+        <div class="header-section">
+          <div class="header-back-button-wrapper">
             <q-btn
-              :label="$t('close')"
-              color="blueish"
-              size="md"
+              icon="arrow_back"
+              size="lg"
+              class="icon-btn back-arrow-btn"
+              flat
               @click="dismiss"
             />
+          </div>
+          <h1 class="header-h1">
+            {{ $t('error') }}
+          </h1>
+        </div>
+        <div class="modal-layout-wrapper center-modal-content">
+          <div class="error-content-wrapper">
+            <div class="error-icon-wrapper">
+              <q-icon
+                name="error_outline"
+                class="error-icon"
+              />
+            </div>
+
+            <div class="error-msg-wrapper">
+              <h1>{{ $t('error') }}</h1>
+              <h3>{{ $t('sendTxFailure') }}</h3>
+            </div>
+
+            <div class="send">
+              <q-btn
+                :label="$t('close')"
+                color="blueish"
+                size="md"
+                @click="dismiss"
+              />
+            </div>
           </div>
         </div>
       </div>

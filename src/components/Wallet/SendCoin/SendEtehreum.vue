@@ -429,8 +429,21 @@ export default {
       let coinSymbol = this.wallet.symbol;
       let currentPrice = this.latestPrice;
       if (this.wallet.sdk === 'ERC20') {
-        const erc20GasLimit = 100000;
-        gasLimit = erc20GasLimit;
+        let amount = '1';
+        let to = '0xcc345035D14458B3C012977f96fA1E116760D60a';
+        if (this.inCoin) {
+          amount = this.inCoin;
+        }
+        if (this.address) {
+          to = this.address;
+        }
+        const gasUsed = await this.coinSDKS.ERC20.estimateGas(
+          this.wallet.erc20Wallet,
+          to,
+          amount,
+          this.wallet.network,
+        );
+        gasLimit = gasUsed;
         coinSymbol = 'ETH';
         currentPrice = this.$store.getters['entities/latestPrice/find'](`${coinSymbol}_${this.selectedCurrency.code}`).data.PRICE;
       }
