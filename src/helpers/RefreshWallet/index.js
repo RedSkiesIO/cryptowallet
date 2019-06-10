@@ -55,7 +55,6 @@ function insertTxs(txs, wallet, coinSDK) {
       ...tx,
     },
   });
-
   // update external address
   if (wallet.sdk === 'Bitcoin' && tx.receiver.includes(wallet.externalAddress)) {
     // generate new address
@@ -101,7 +100,9 @@ function storeTxs(txs, wallet, coinSDK) {
     const newTxs = txs.filter((tx) => { return !storedTxs.includes(tx.hash); });
 
     updateTxs(foundTxs, wallet);
-    insertTxs(newTxs, wallet, coinSDK);
+    if (newTxs.length > 0) {
+      insertTxs(newTxs, wallet, coinSDK);
+    }
   } else {
     insertTxs(txs, wallet, coinSDK);
   }
@@ -144,6 +145,7 @@ async function refreshBitcoin(coinSDK, wallet) {
   }
 
   storeTxs(txHistory.txs, wallet, coinSDK);
+
   const utxos = await coinSDK.getUTXOs(
     addressesRaw,
     wallet.network,
