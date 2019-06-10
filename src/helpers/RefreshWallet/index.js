@@ -7,22 +7,118 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
-async function refreshBitcoin(coinSDK, wallet, accountId) {
+function updateTxs(txs, wallet) {
+  const tx = txs.shift();
+  Tx.$update({
+    where: (record) => {
+      return record.hash === tx.hash
+      && record.wallet_id === wallet.id;
+    },
+    data: tx,
+  });
+  if (wallet.sdk === 'Bitcoin' && tx.sent) {
+    // delete utxo that were used for that transaction
+    tx.sender.forEach((inputAddress) => {
+      const pendingUtxo = Utxo.query()
+        .where('address', inputAddress)
+        .where('pending', true)
+        .get();
+      pendingUtxo.forEach((pending) => {
+        Utxo.$delete(pending.id);
+      });
+    });
+
+    // find change address that were used and mark them as used
+    tx.receiver.forEach((changeAddress) => {
+      Address.$update({
+        where: (record) => {
+          return record.chain === 'internal'
+          && record.address === changeAddress;
+        },
+        data: { used: true },
+      });
+    });
+  }
+
+  if (txs.length > 0) {
+    updateTxs(txs, wallet);
+  }
+}
+
+function insertTxs(txs, wallet, coinSDK) {
+  const tx = txs.shift();
+
+  Tx.$insert({
+    data: {
+      account_id: wallet.account_id,
+      wallet_id: wallet.id,
+      ...tx,
+    },
+  });
+
+  // update external address
+  if (wallet.sdk === 'Bitcoin' && tx.receiver.includes(wallet.externalAddress)) {
+    // generate new address
+    const addr = coinSDK.generateAddress(wallet.hdWallet, wallet.externalChainAddressIndex + 1);
+
+    const newAddress = {
+      account_id: wallet.account_id,
+      wallet_id: wallet.id,
+      chain: 'external',
+      address: addr.address,
+      index: addr.index,
+    };
+
+    Address.$insert({ data: newAddress });
+
+    Wallet.$update({
+      where: (record) => { return record.id === wallet.id; },
+      data: {
+        externalChainAddressIndex: addr.index,
+        externalAddress: addr.address,
+      },
+    });
+  }
+  if (txs.length > 0) {
+    insertTxs(txs, wallet, coinSDK);
+  }
+}
+
+function storeTxs(txs, wallet, coinSDK) {
+  if (wallet.sdk !== 'Bitcoin') {
+    const newAmount = 100;
+    if (txs.length > newAmount) {
+      txs = txs.slice(0, newAmount);
+    }
+  }
+
+  const storedTxs = Tx.query().where('wallet_id', wallet.id).get().map((tx) => {
+    return tx.hash;
+  });
+
+  if (storedTxs.length > 0) {
+    const foundTxs = txs.filter((tx) => { return storedTxs.includes(tx.hash); });
+    const newTxs = txs.filter((tx) => { return !storedTxs.includes(tx.hash); });
+
+    updateTxs(foundTxs, wallet);
+    insertTxs(newTxs, wallet, coinSDK);
+  } else {
+    insertTxs(txs, wallet, coinSDK);
+  }
+}
+
+async function refreshBitcoin(coinSDK, wallet) {
   const addresses = Address.query()
-    .where('account_id', accountId)
     .where('wallet_id', wallet.id)
     .where('used', false)
-    .get();
+    .get()
+    .map((item) => { return item.address; });
 
-  let addressesRaw = addresses.map((item) => { return item.address; });
-  addressesRaw = addressesRaw.filter(onlyUnique);
+  const addressesRaw = addresses.filter(onlyUnique);
 
   const { network } = wallet;
 
-  const txs = Tx.query()
-    .where('account_id', accountId)
-    .where('wallet_id', wallet.id)
-    .get();
+  const txs = Tx.query().where('wallet_id', wallet.id).get();
 
   let from;
   let to;
@@ -47,102 +143,28 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
     return false;
   }
 
-  txHistory.txs.forEach((tx) => {
-    const result = Tx.query()
-      .where('hash', tx.hash)
-      .where('wallet_id', wallet.id)
-      .get();
-
-    if (result[0]) {
-      // update the tx
-      Tx.$update({
-        where: (record) => {
-          return record.hash === tx.hash
-          && record.wallet_id === wallet.id;
-        },
-        data: tx,
-      });
-
-      const foundTx = result[0];
-      if (foundTx.sent) {
-        // delete utxo that were used for that transaction
-        tx.sender.forEach((inputAddress) => {
-          const pendingUtxo = Utxo.query()
-            .where('address', inputAddress)
-            .where('pending', true)
-            .get();
-          pendingUtxo.forEach((pending) => {
-            Utxo.$delete(pending.id);
-          });
-        });
-
-        // find change address that were used and mark them as used
-        tx.receiver.forEach((changeAddress) => {
-          Address.$update({
-            where: (record) => {
-              return record.chain === 'internal'
-              && record.address === changeAddress;
-            },
-            data: { used: true },
-          });
-        });
-      }
-    } else {
-      // insert tx
-      Tx.$insert({
-        data: {
-          account_id: accountId,
-          wallet_id: wallet.id,
-          ...tx,
-        },
-      });
-
-      // update external address
-      if (tx.receiver.includes(wallet.externalAddress)) {
-        // generate new address
-        const addr = coinSDK.generateAddress(wallet.hdWallet, wallet.externalChainAddressIndex + 1);
-
-        const newAddress = {
-          account_id: wallet.account_id,
-          wallet_id: wallet.id,
-          chain: 'external',
-          address: addr.address,
-          index: addr.index,
-        };
-
-        Address.$insert({ data: newAddress });
-
-        Wallet.$update({
-          where: (record) => { return record.id === wallet.id; },
-          data: {
-            externalChainAddressIndex: addr.index,
-            externalAddress: addr.address,
-          },
-        });
-      }
-    }
-  });
-
-
+  storeTxs(txHistory.txs, wallet, coinSDK);
   const utxos = await coinSDK.getUTXOs(
     addressesRaw,
     wallet.network,
   );
   let newBalance = 0;
-  utxos.forEach((utxo) => {
-    newBalance += utxo.amount;
-    const found = Utxo.query()
-      .where('txid', utxo.txid)
-      .where('vout', utxo.vout)
-      .where('wallet_id', wallet.id)
-      .get();
 
-    if (!found[0]) {
-      utxo.account_id = accountId;
-      utxo.wallet_id = wallet.id;
-      Utxo.$insert({ data: utxo });
-    }
+  const storedUtxos = Utxo.query()
+    .where('wallet_id', wallet.id)
+    .get()
+    .map((utxo) => { return utxo.txid; });
+
+  const newUtxos = utxos.filter((utxo) => {
+    newBalance += utxo.amount;
+    utxo.account_id = wallet.account_id;
+    utxo.wallet_id = wallet.id;
+    return !storedUtxos.includes(utxo.txid);
   });
+
+  if (newUtxos.length > 0) {
+    Utxo.$insert({ data: newUtxos });
+  }
 
   Wallet.$update({
     where: (record) => { return record.id === wallet.id; },
@@ -152,48 +174,20 @@ async function refreshBitcoin(coinSDK, wallet, accountId) {
   return true;
 }
 
-async function refreshEthereum(coinSDK, wallet, accountId) {
+async function refreshEthereum(coinSDK, wallet) {
   const { network } = wallet;
 
-  const apiReturnLimit = 50;
   const txHistory = await coinSDK.getTransactionHistory(
     [wallet.externalAddress],
     network,
     0,
-    apiReturnLimit,
   );
 
   if (!txHistory) {
     return false;
   }
 
-
-  txHistory.txs.forEach((tx) => {
-    const result = Tx.query()
-      .where('hash', tx.hash)
-      .where('wallet_id', wallet.id)
-      .get();
-
-    if (result[0]) {
-      // update the tx
-      Tx.$update({
-        where: (record) => {
-          return record.hash === tx.hash
-            && record.wallet_id === wallet.id;
-        },
-        data: tx,
-      });
-    } else {
-      // insert tx
-      Tx.$insert({
-        data: {
-          account_id: accountId,
-          wallet_id: wallet.id,
-          ...tx,
-        },
-      });
-    }
-  });
+  storeTxs(txHistory.txs, wallet, coinSDK);
 
   const newBalance = await coinSDK.getBalance(
     [wallet.externalAddress],
@@ -208,39 +202,14 @@ async function refreshEthereum(coinSDK, wallet, accountId) {
   return true;
 }
 
-async function refreshERC20(coinSDK, wallet, accountId) {
+async function refreshERC20(coinSDK, wallet) {
   const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
 
   if (!txHistory) {
     return false;
   }
 
-  txHistory.forEach((tx) => {
-    const result = Tx.query()
-      .where('hash', tx.hash)
-      .where('wallet_id', wallet.id)
-      .get();
-
-    if (result[0]) {
-      // update the tx
-      Tx.$update({
-        where: (record) => {
-          return record.hash === tx.hash
-            && record.wallet_id === wallet.id;
-        },
-        data: tx,
-      });
-    } else {
-      // insert tx
-      Tx.$insert({
-        data: {
-          account_id: accountId,
-          wallet_id: wallet.id,
-          ...tx,
-        },
-      });
-    }
-  });
+  storeTxs(txHistory, wallet, coinSDK);
 
   const newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
 
