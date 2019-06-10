@@ -4,7 +4,10 @@
       <h1 class="account-name-h1 setup">
         {{ account.name }}
       </h1>
-      <PinPad mode="auth" />
+      <PinPad
+        ref="PinPad"
+        mode="auth"
+      />
     </div>
   </div>
 </template>
@@ -110,6 +113,8 @@ export default {
             }, this.delay.long);
           } else {
             this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
+            this.$refs.PinPad.resetState();
+            this.resetPin();
           }
         } catch (err) {
           this.errorHandler(err);
