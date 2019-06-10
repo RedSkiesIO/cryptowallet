@@ -22,20 +22,20 @@
           {{ $t('deleteAccount') }}
         </h1>
       </div>
-    <div class="modal-layout-wrapper center">
-      <h1 class="setup with-margin">
-        <span>
-          {{ $t('enterPin') }}
-        </span>
-      </h1>
-      <PinPad
-        ref="PinPad"
-        mode="delete"
-        @inputPin="pinInputListener"
-        @attemptUnlock="attemptUnlock"
-        @resetPin="resetPin"
-      />
-    </div>
+      <div class="modal-layout-wrapper center">
+        <h1 class="setup with-margin">
+          <span>
+            {{ $t('enterPin') }}
+          </span>
+        </h1>
+        <PinPad
+          ref="PinPad"
+          mode="delete"
+          @inputPin="pinInputListener"
+          @attemptUnlock="attemptUnlock"
+          @resetPin="resetPin"
+        />
+      </div>
       <q-dialog
         v-model="confirmDeleteOpen"
       >
