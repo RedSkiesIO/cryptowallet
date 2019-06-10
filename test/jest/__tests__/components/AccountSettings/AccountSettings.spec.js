@@ -48,6 +48,26 @@ describe('AccountSettings component', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
+  it('opens the SelectCurrency modal', () => {
+    wrapper.vm.openSelectCurrencyModal();
+    expect(storeMocks.actions.setSelectCurrencyModalOpened).toHaveBeenCalled();
+  });
+
+  it('opens the Selectlanguage modal', () => {
+    wrapper.vm.openSelectLanguageModal();
+    expect(storeMocks.actions.setSelectLanguageModalOpened).toHaveBeenCalled();
+  });
+
+  it('opens the DeleteAccount modal', () => {
+    wrapper.vm.openDeleteAccountModal();
+    expect(storeMocks.actions.setDeleteAccountModalOpened).toHaveBeenCalled();
+  });
+
+  it('opens the NewPin modal', () => {
+    wrapper.vm.openNewPinModal();
+    expect(storeMocks.actions.setNewPinModalOpened).toHaveBeenCalled();
+  });
+
   describe('logout() method', () => {
     it('it refreshes the vuex state ', (done) => {
       wrapper.vm.logout();

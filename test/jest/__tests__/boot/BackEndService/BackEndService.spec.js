@@ -4,9 +4,11 @@ import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account';
+import Wallet from '@/store/wallet/entities/wallet';
 import LatestPrice from '@/store/latestPrice';
 import axios from 'axios';
 import Prices from '@/store/prices';
+import SupportedCoins from '@/store/settings/state/supportedCoins';
 
 jest.mock('axios');
 const mockAxios = axios;
@@ -15,6 +17,13 @@ const accountData = JSON.parse('{"$id":1,"id":1,"uid":"b2d1d4a8-59ed-f8a1-6476-3
 const priceFeedMockData = {
   data: JSON.parse('[{"code":"LTC","timestamp":1554822001,"USD":{"VOLUME24HOURTO":39452158.366346404,"PRICE":86.93,"CHANGEPCT24HOUR":-2.391646081293505},"GBP":{"VOLUME24HOURTO":300457.538486898,"PRICE":66.78,"CHANGEPCT24HOUR":-2.0246478873239373},"EUR":{"VOLUME24HOURTO":5453299.632552724,"PRICE":77.06,"CHANGEPCT24HOUR":-2.7143037495265645}},{"code":"DASH","timestamp":1554822001,"USD":{"VOLUME24HOURTO":1596366.3342347918,"PRICE":132.65,"CHANGEPCT24HOUR":-2.312394138007207},"GBP":{"VOLUME24HOURTO":0,"PRICE":101.109463,"CHANGEPCT24HOUR":-1.6226912928759842},"EUR":{"VOLUME24HOURTO":108050.5499353159,"PRICE":117.425379,"CHANGEPCT24HOUR":-1.6226912928759891}},{"code":"BTC","timestamp":1554822001,"USD":{"VOLUME24HOURTO":297775557.0302553,"PRICE":5211.81,"CHANGEPCT24HOUR":-0.6485151062844111},"GBP":{"VOLUME24HOURTO":6244012.486024588,"PRICE":3994.74,"CHANGEPCT24HOUR":-0.4190400219366679},"EUR":{"VOLUME24HOURTO":60390862.8537972,"PRICE":4623.64,"CHANGEPCT24HOUR":-0.8447297143702576}},{"code":"ETH","timestamp":1554822002,"USD":{"VOLUME24HOURTO":123274257.58677226,"PRICE":177.51,"CHANGEPCT24HOUR":-1.1031255223132308},"GBP":{"VOLUME24HOURTO":741737.3245507771,"PRICE":135.59,"CHANGEPCT24HOUR":-1.5323166303558355},"EUR":{"VOLUME24HOURTO":19935487.449444696,"PRICE":157.47,"CHANGEPCT24HOUR":-1.2355745107877565}},{"code":"CAT","timestamp":1554822001,"USD":{"VOLUME24HOURTO":0,"PRICE":0.09911949660000001,"CHANGEPCT24HOUR":0},"GBP":{"VOLUME24HOURTO":0,"PRICE":0.0759778626,"CHANGEPCT24HOUR":0},"EUR":{"VOLUME24HOURTO":0,"PRICE":0.08794163280000002,"CHANGEPCT24HOUR":0}}]'),
 };
+const latestPriceMockData = [
+  { coin: 'BTC', currency: 'GBP' },
+  { coin: 'LTC', currency: 'GBP' },
+  { coin: 'ETH', currency: 'GBP' },
+  { coin: 'DASH', currency: 'GBP' },
+  { coin: 'CAT', currency: 'GBP' },
+];
 
 const pin = [0, 0, 0, 0, 0, 0];
 
@@ -22,9 +31,15 @@ describe('boot/BackEndService', () => {
   let errorHandler;
   let wrapperMock;
   let router;
-  let store;
   let storeMocks;
   let backEndService;
+  const supportedCoins = SupportedCoins;
+
+  const wallets = supportedCoins.map((coin) => {
+    coin.account_id = 1;
+    coin.imported = true;
+    return coin;
+  });
 
   const defaultProps = {};
 
@@ -37,7 +52,8 @@ describe('boot/BackEndService', () => {
     storeMocks = createStoreMocks(custom);
     Account.insert({ data: accountData });
     BackEndService({ Vue: localVue });
-
+    Wallet.$insert({ data: wallets });
+    LatestPrice.$insert({ data: latestPriceMockData });
     router = createRouter(storeMocks.store);
     router.push({ path: '/setup/0' });
     wrapperMock = wrapperInit({
@@ -50,8 +66,6 @@ describe('boot/BackEndService', () => {
         errorHandler,
       },
     });
-    store = wrapperMock.vm.$store;
-
     backEndService = new wrapperMock.vm.$root.BackEndService(wrapperMock.vm, accountData.id, pin.join(''));
   }
 
@@ -473,7 +487,7 @@ describe('boot/BackEndService', () => {
 
       setTimeout(async () => {
         await backEndService.storePriceData(coin, mockPriceDataUpdated);
-        expect(LatestPrice.all().length).toBe(1);
+        expect(LatestPrice.all().length).toBe(5);
         expect(LatestPrice.all()[0].data).toBe(mockPriceDataUpdated);
         expect(LatestPrice.all()[0].updated > dataTimestamp).toBe(true);
         done();
@@ -510,13 +524,15 @@ describe('boot/BackEndService', () => {
           data: ['old data'],
         },
       });
-      expect(Prices.all()[0].data).toEqual(['old data']);
-      const dataTimestamp = Prices.all()[0].updated;
-      await backEndService.storeChartData('BTC', 'day', mockChartData);
-      expect(Prices.all().length).toBe(1);
-      expect(Prices.all()[0].data).toBe(mockChartData);
-      expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
-      done();
+      setTimeout(async () => {
+        expect(Prices.all()[0].data).toEqual(['old data']);
+        const dataTimestamp = Prices.all()[0].updated;
+        await backEndService.storeChartData('BTC', 'day', mockChartData);
+        expect(Prices.all().length).toBe(1);
+        expect(Prices.all()[0].data).toBe(mockChartData);
+        expect(Prices.all()[0].updated > dataTimestamp).toBe(true);
+        done();
+      }, 25);
     });
   });
 
@@ -530,25 +546,21 @@ describe('boot/BackEndService', () => {
       await backEndService.loadPriceFeed();
       expect(backEndService.getPriceFeed).toHaveBeenCalled();
 
-      const numOfCoins = store.state.settings.supportedCoins.length;
-      expect(backEndService.storePriceData).toHaveBeenCalledTimes(numOfCoins);
+      expect(backEndService.storePriceData).toHaveBeenCalledTimes(wallets.length);
       done();
     });
 
     it('creates a toast if encountered an error', async (done) => {
       backEndService.getPriceFeed = jest.fn().mockImplementation(() => {
-        return priceFeedMockData;
-      });
-
-      LatestPrice.find = jest.fn().mockImplementation(() => {
         throw new Error('what happened');
       });
 
       wrapperMock.vm.$toast.create = jest.fn();
       await backEndService.loadPriceFeed();
-
-      expect(wrapperMock.vm.$toast.create).toHaveBeenCalledWith(10, 'what happened', 500);
-      done();
+      setTimeout(() => {
+        expect(wrapperMock.vm.$toast.create).toHaveBeenCalledWith(10, 'what happened', 500);
+        done();
+      }, 25);
     });
   });
 

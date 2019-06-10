@@ -96,6 +96,41 @@ export default {
     openAddWalletModal() {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
     },
+
+    createDate(timestamp) {
+      return new Date(timestamp * this.msToS).getTime();
+    },
+
+    async storeTransactions(txs, id) {
+      if (txs.length > 0) {
+        const transactions = txs.map((tx) => {
+          tx.account_id = this.authenticatedaccount;
+          tx.wallet_id = id;
+          return tx;
+        });
+        transactions.sort((a, b) => {
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
+        });
+        await Tx.$insert({ data: transactions });
+      }
+    },
+
+    async storeAddresses(addrs, id, chain) {
+      if (addrs.length > 0) {
+        const addresses = addrs.map((addr) => {
+          addr.account_id = this.authenticatedaccount;
+          addr.wallet_id = id;
+          addr.chain = chain;
+          addr.hash = addr.address;
+          return addr;
+        });
+        addresses.sort((a, b) => {
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
+        });
+        await Address.$insert({ data: addresses });
+      }
+    },
+
     async enableBitcoin(coinSDK, initializedWallet, wallet) {
       const {
         txHistory,
@@ -125,49 +160,19 @@ export default {
         index: externalChainAddressIndex,
       };
 
+      if (utxos.length > 0) {
+        const unspentTxs = utxos.map((utxo) => {
+          utxo.account_id = this.authenticatedAccount;
+          utxo.wallet_id = wallet.id;
+          return utxo;
+        });
+        await Utxo.$insert({ data: unspentTxs });
+      }
+
       await Address.$insert({ data: newAddress });
-
-      const unconfirmedTx = [];
-      const confirmedTx = [];
-
-      txHistory.txs.forEach((tx) => {
-        tx.account_id = this.authenticatedAccount;
-        tx.wallet_id = wallet.id;
-        if (tx.confirmed) { confirmedTx.push(tx); }
-        if (!tx.confirmed) { unconfirmedTx.push(tx); }
-      });
-
-      utxos.forEach((utxo) => {
-        utxo.account_id = this.authenticatedAccount;
-        utxo.wallet_id = wallet.id;
-        Utxo.$insert({ data: utxo });
-      });
-
-      const createDate = ((timestamp) => {
-        return new Date(timestamp * this.msToS).getTime();
-      });
-
-      const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => { return createDate(b.receivedTime) - createDate(a.receivedTime); });
-      allTx.forEach(async (tx) => {
-        await Tx.$insert({ data: tx });
-      });
-
-      externalAccountDiscovery.active.forEach(async (address) => {
-        address.account_id = this.authenticatedAccount;
-        address.wallet_id = wallet.id;
-        address.chain = 'external';
-        address.hash = address.address;
-        await Address.$insert({ data: address });
-      });
-
-      internalAccountDiscovery.used.forEach(async (address) => {
-        address.account_id = this.authenticatedAccount;
-        address.wallet_id = wallet.id;
-        address.chain = 'internal';
-        address.hash = address.address;
-        await Address.$insert({ data: address });
-      });
+      await this.storeTransactions(txHistory.txs, wallet.id);
+      await this.storeAddresses(externalAccountDiscovery.active, wallet.id, 'external');
+      await this.storeAddresses(internalAccountDiscovery.used, wallet.id, 'internal');
     },
 
     async enableEthereum(coinSDK, initializedWallet, wallet) {
@@ -176,6 +181,7 @@ export default {
         accounts,
         balance,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
+
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
         data: {
@@ -195,25 +201,7 @@ export default {
       };
 
       await Address.$insert({ data: newAddress });
-      const unconfirmedTx = [];
-      const confirmedTx = [];
-      txHistory.txs.forEach((tx) => {
-        tx.account_id = this.authenticatedAccount;
-        tx.wallet_id = wallet.id;
-        if (tx.confirmed) { confirmedTx.push(tx); }
-        if (!tx.confirmed) { unconfirmedTx.push(tx); }
-      });
-
-      const createDate = ((timestamp) => {
-        return new Date(timestamp * this.msToS).getTime();
-      });
-
-      const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
-
-      allTx.forEach(async (tx) => {
-        await Tx.$insert({ data: tx });
-      });
+      await this.storeTransactions(txHistory.txs, wallet.id);
     },
 
     async enableWallet(wallet) {
@@ -287,33 +275,14 @@ export default {
         index: 0,
       };
       await Address.$insert({ data: newAddress });
-
-      const unconfirmedTx = [];
-      const confirmedTx = [];
-
-      txHistory.forEach((tx) => {
-        tx.account_id = this.authenticatedAccount;
-        tx.wallet_id = wallet.id;
-        if (tx.confirmed) { confirmedTx.push(tx); }
-        if (!tx.confirmed) { unconfirmedTx.push(tx); }
-      });
-
-      const createDate = ((timestamp) => {
-        return new Date(timestamp * this.msToS).getTime();
-      });
-
-      const allTx = [...unconfirmedTx, ...confirmedTx];
-      allTx.sort((a, b) => { return createDate(b.confirmedTime) - createDate(a.confirmedTime); });
-
-      allTx.forEach(async (tx) => {
-        await Tx.$insert({ data: tx });
-      });
+      await this.storeTransactions(txHistory, wallet.id);
 
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
         data: { imported: true, enabled: true },
       });
     },
+
     async close() {
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
@@ -350,7 +319,6 @@ export default {
             });
           }
         });
-
 
         await Promise.all(promises.map((promise) => { return promise(); }));
         await Promise.all(erc20Promises.map((erc20) => { return erc20(); }));

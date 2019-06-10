@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog
-      v-model="open"
+      v-model="selectCurrencyModalOpened"
       persistent
       :maximized="true"
       transition-show="slide-up"
@@ -54,10 +54,6 @@ import Wallet from '@/store/wallet/entities/wallet';
 export default {
   name: 'SelectCurrency',
   props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
     currentCurrency: {
       type: String,
       required: true,
@@ -95,6 +91,14 @@ export default {
         this.$store.dispatch('settings/setCurrency', currency);
       },
     },
+    selectCurrencyModalOpened: {
+      get() {
+        return this.$store.state.modals.selectCurrencyModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setSelectCurrencyModalOpened', value);
+      },
+    },
   },
   methods: {
     async refreshPrices() {
@@ -108,7 +112,7 @@ export default {
     },
     closeModal() {
       this.refreshPrices();
-      this.$emit('closeCurrencyModal');
+      this.selectCurrencyModalOpened = false;
     },
   },
 };

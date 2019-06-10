@@ -74,9 +74,9 @@ describe('SelectCurrency component', () => {
         }, 0);
       });
 
-      it('emits closeCurrencyModal event and resets state', () => {
+      it('closes the modal', () => {
         wrapper.vm.closeModal();
-        expect(wrapper.emitted().closeCurrencyModal).toBeTruthy();
+        expect(storeMocks.actions.setSelectCurrencyModalOpened).toHaveBeenCalled();
       });
     });
   });

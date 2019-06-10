@@ -56,9 +56,9 @@ describe('SelectLanguage component', () => {
 
   describe('methods', () => {
     describe('closeModal()', () => {
-      it('emits closeLanguageModal event and resets state', () => {
+      it('closes the modal', () => {
         wrapper.vm.closeModal();
-        expect(wrapper.emitted().closeLanguageModal).toBeTruthy();
+        expect(storeMocks.actions.setSelectLanguageModalOpened).toHaveBeenCalled();
       });
     });
   });

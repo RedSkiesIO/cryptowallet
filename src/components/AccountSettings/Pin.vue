@@ -1,6 +1,6 @@
 <template>
   <q-dialog
-    v-model="open"
+    v-model="newPinModalOpened"
     persistent
     :maximized="true"
     transition-show="slide-up"
@@ -58,10 +58,6 @@ export default {
     PinPad,
   },
   props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
     pinHash: {
       type: String,
       required: true,
@@ -86,6 +82,14 @@ export default {
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    newPinModalOpened: {
+      get() {
+        return this.$store.state.modals.newPinModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setNewPinModalOpened', value);
+      },
     },
   },
   methods: {
@@ -131,7 +135,7 @@ export default {
       this.$refs.PinPad.resetState();
       this.resetPin();
       Object.assign(this.$data, this.$options.data.apply(this));
-      this.$emit('closePinModal');
+      this.newPinModalOpened = false;
     },
 
     /**
