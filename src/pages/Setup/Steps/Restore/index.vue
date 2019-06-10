@@ -52,7 +52,8 @@ export default {
   methods: {
     validate() {
       const seedLength = 12;
-      const seedPhrase = this.seedPhrase.trim().split(' ');
+      const lowercase = this.seedPhrase.toLowerCase();
+      const seedPhrase = lowercase.trim().split(' ');
 
       if (seedPhrase.length !== seedLength) {
         this.$toast.create(10, this.$t('notEnoughWords'), this.delay.normal);

@@ -112,13 +112,13 @@ describe('DeleteAccount component', () => {
     });
 
     describe('closeModal()', () => {
-      it('emits closePinModal event and resets state', () => {
+      it('closes modal and resets state', () => {
         wrapper.vm.pin = [1, 2, 3, 4, 5, 6, 7, 8];
         wrapper.vm.closeModal();
 
         expect(resetStateMock).toHaveBeenCalledTimes(3);
         expect(wrapper.vm.pin.length).toBe(0);
-        expect(wrapper.emitted().closePinModal).toBeTruthy();
+        expect(storeMocks.actions.setDeleteAccountModalOpened).toHaveBeenCalled();
       });
     });
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-dialog
-      v-model="open"
+      v-model="selectLanguageModalOpened"
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
@@ -52,10 +52,6 @@ import Account from '@/store/wallet/entities/account';
 export default {
   name: 'SelectLanguage',
   props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
     currentLocale: {
       type: String,
       required: true,
@@ -83,10 +79,18 @@ export default {
         this.$i18n.locale = newLocale;
       },
     },
+    selectLanguageModalOpened: {
+      get() {
+        return this.$store.state.modals.selectLanguageModalOpened;
+      },
+      set(value) {
+        this.$store.dispatch('modals/setSelectLanguageModalOpened', value);
+      },
+    },
   },
   methods: {
     closeModal() {
-      this.$emit('closeLanguageModal');
+      this.selectLanguageModalOpened = false;
     },
   },
 };

@@ -11,4 +11,8 @@ export default {
   termsModalOpened: false,
   receiveCoinModalOpened: false,
   addWalletModalOpened: false,
+  selectCurrencyModalOpened: false,
+  selectLanguageModalOpened: false,
+  deleteAccountModalOpened: false,
+  newPinModalOpened: false,
 };

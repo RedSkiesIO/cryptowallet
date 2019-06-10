@@ -2,7 +2,7 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
-import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
 
 class BackEndService {
   vm = null;
@@ -161,7 +161,7 @@ class BackEndService {
       const attemptLimit = this.maxTryAttempts;
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
-        return false;
+        return resolve(false);
       }
 
       try {
@@ -338,11 +338,14 @@ class BackEndService {
    * Calls the API and and stores the price data
    */
   async loadPriceFeed() {
-    const { selectedCurrency } = this.vm.$store.state.settings;
-    const supportedCoins = Coin.all();
+    const { selectedCurrency, authenticatedAccount } = this.vm.$store.state.settings;
+    const wallets = Wallet.query()
+      .where('account_id', authenticatedAccount)
+      .where('imported', true)
+      .get();
 
     const coins = [];
-    supportedCoins.forEach((coin) => {
+    wallets.forEach((coin) => {
       const price = LatestPrice.find(`${coin.symbol}_${selectedCurrency.code}`);
       if (price) {
         coins.push(coin.symbol);
@@ -356,16 +359,20 @@ class BackEndService {
     coins.filter(onlyUnique);
 
     try {
-      const prices = await this.getPriceFeed(coins);
+      if (coins.length > 0) {
+        const prices = await this.getPriceFeed(coins);
 
-      const promises = [];
-      prices.data.forEach((data) => {
-        promises.push(new Promise((res) => {
-          return res(this.storePriceData(data.code, data[selectedCurrency.code]));
-        }));
-      });
+        if (prices) {
+          const promises = [];
+          prices.data.forEach((data) => {
+            promises.push(new Promise((res) => {
+              return res(this.storePriceData(data.code, data[selectedCurrency.code]));
+            }));
+          });
 
-      await Promise.all(promises);
+          await Promise.all(promises);
+        }
+      }
     } catch (error) {
       this.vm.$toast.create(10, error.message, this.delay);
     }

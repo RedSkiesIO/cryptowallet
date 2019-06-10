@@ -330,7 +330,8 @@ describe('Modals/Wallets.vue', () => {
     });
 
     it('it sorts and stores the transaction history', (done) => {
-      discovery.txHistory = [{ confirmed: true }, { confirmed: false }];
+      discovery.txHistory = [{ confirmed: true, confirmedTime: 1559923740268 },
+        { confirmed: false, confirmedTime: 1559923840268 }];
       discovery.accounts = [{ index: 0, address: '123' }];
       storeInit();
       Wallet.$insert({ data: [erc20Wallet] });

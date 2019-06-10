@@ -37,7 +37,6 @@
             class="sm-input contract-input"
             outlined
             dense
-            autofocus
             @blur="checkField('contract')"
             @input="checkField('contract')"
           />

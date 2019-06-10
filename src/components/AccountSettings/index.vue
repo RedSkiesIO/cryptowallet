@@ -2,7 +2,7 @@
   <div>
     <div
       class="settings-row"
-      @click="languageOpen=true"
+      @click.prevent="openSelectLanguageModal"
     >
       <div>
         {{ $t('language') }}
@@ -14,14 +14,14 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="languageOpen=true"
+          @click.prevent="openSelectLanguageModal"
         />
       </div>
     </div>
 
     <div
       class="settings-row"
-      @click="currencyOpen = true"
+      @click.prevent="openSelectCurrencyModal"
     >
       <div>
         {{ $t('currency') }}
@@ -33,14 +33,14 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="currencyOpen = true"
+          @click.prevent="openSelectCurrencyModal"
         />
       </div>
     </div>
 
     <div
       class="settings-row"
-      @click="pinOpen = true"
+      @click.prevent="openNewPinModal"
     >
       <div>
         {{ $t('pinCode') }}
@@ -52,7 +52,7 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="pinOpen = true"
+          @click.prevent="openNewPinModal"
         />
       </div>
     </div>
@@ -78,7 +78,7 @@
 
     <div
       class="settings-row"
-      @click="deleteAccountOpen = true"
+      @click.prevent="openDeleteAccountModal"
     >
       <div>
         {{ $t('deleteAccount') }}
@@ -90,33 +90,25 @@
           color="blueish"
           class="settings-chevron"
           flat
-          @click="deleteAccountOpen = true"
+          @click.prevent="openDeleteAccountModal"
         />
       </div>
     </div>
 
     <SelectLanguage
-      :open="languageOpen"
       :current-locale="account.locale"
-      @closeLanguageModal="languageOpen=false"
     />
 
     <SelectCurrency
-      :open="currencyOpen"
       :current-currency="account.currency"
-      @closeCurrencyModal="currencyOpen=false"
     />
 
     <Pin
-      :open="pinOpen"
       :pin-hash="account.pinHash"
-      @closePinModal="pinOpen=false"
     />
 
     <DeleteAccount
-      :open="deleteAccountOpen"
       :pin-hash="account.pinHash"
-      @closePinModal="deleteAccountOpen=false"
     />
   </div>
 </template>
@@ -136,25 +128,27 @@ export default {
     Pin,
     DeleteAccount,
   },
-  data() {
-    return {
-      languageOpen: false,
-      nodeOpen: false,
-      pinOpen: false,
-      deleteAccountOpen: false,
-      currencyOpen: false,
-    };
-  },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-      delay: (state) => { return state.settings.delay; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
   },
   methods: {
+    openSelectCurrencyModal() {
+      this.$store.dispatch('modals/setSelectCurrencyModalOpened', true);
+    },
+    openSelectLanguageModal() {
+      this.$store.dispatch('modals/setSelectLanguageModalOpened', true);
+    },
+    openDeleteAccountModal() {
+      this.$store.dispatch('modals/setDeleteAccountModalOpened', true);
+    },
+    openNewPinModal() {
+      this.$store.dispatch('modals/setNewPinModalOpened', true);
+    },
     logout() {
       window.location.reload(true);
     },

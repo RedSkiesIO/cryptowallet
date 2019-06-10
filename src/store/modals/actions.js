@@ -64,3 +64,19 @@ export function setReceiveCoinModalOpened(context, payload) {
 export function setAddWalletModalOpened(context, payload) {
   context.commit('SET_ADDWALLET_MODAL_OPENED', payload);
 }
+
+export function setSelectCurrencyModalOpened(context, payload) {
+  context.commit('SET_SELECTCURRENCY_MODAL_OPENED', payload);
+}
+
+export function setSelectLanguageModalOpened(context, payload) {
+  context.commit('SET_SELECTLANGUAGE_MODAL_OPENED', payload);
+}
+
+export function setDeleteAccountModalOpened(context, payload) {
+  context.commit('SET_DELETEACCOUNT_MODAL_OPENED', payload);
+}
+
+export function setNewPinModalOpened(context, payload) {
+  context.commit('SET_NEWPIN_MODAL_OPENED', payload);
+}
