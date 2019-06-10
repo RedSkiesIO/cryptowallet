@@ -280,9 +280,6 @@ body > div {
   background: white;
 }
 
-.q-dialog__inner .header-section {
-  height: 2.5rem!important;
-}
 
 .modal-layout-wrapper {
   display: flex;

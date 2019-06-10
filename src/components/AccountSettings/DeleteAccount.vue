@@ -7,68 +7,70 @@
     transition-hide="slide-down"
     content-class="dark-modal"
   >
-    <div class="header-section">
-      <div class="header-back-button-wrapper">
-        <q-btn
-          icon="arrow_back"
-          size="lg"
-          class="icon-btn back-arrow-btn"
-          flat
-          @click.prevent="closeModal"
+    <div>
+      <div class="header-section">
+        <div class="header-back-button-wrapper">
+          <q-btn
+            icon="arrow_back"
+            size="lg"
+            class="icon-btn back-arrow-btn"
+            flat
+            @click.prevent="closeModal"
+          />
+        </div>
+        <h1 class="header-h1">
+          {{ $t('deleteAccount') }}
+        </h1>
+      </div>
+
+      <div class="modal-layout-wrapper center">
+        <h1 class="setup with-margin">
+          <span>
+            {{ $t('enterPin') }}
+          </span>
+        </h1>
+        <PinPad
+          ref="PinPad"
+          mode="delete"
+          @inputPin="pinInputListener"
+          @attemptUnlock="attemptUnlock"
         />
       </div>
-      <h1 class="header-h1">
-        {{ $t('deleteAccount') }}
-      </h1>
-    </div>
 
-    <div class="modal-layout-wrapper center">
-      <h1 class="setup with-margin">
-        <span>
-          {{ $t('enterPin') }}
-        </span>
-      </h1>
-      <PinPad
-        ref="PinPad"
-        mode="delete"
-        @inputPin="pinInputListener"
-        @attemptUnlock="attemptUnlock"
-      />
-    </div>
-
-    <q-dialog
-      v-model="confirmDeleteOpen"
-    >
-      <q-card
-        v-if="account"
-        style="width: 300px"
-        class="dialog"
+      <q-dialog
+        v-model="confirmDeleteOpen"
       >
-        <q-card-section>
-          <h2>
-            {{ $t('confirm') }}
-          </h2>
-          <p>
-            {{ `${$t('confirmMessage')} ${account.name}${$t('questionMark')}` }}
-          </p>
-        </q-card-section>
+        <q-card
+          v-if="account"
+          style="width: 300px"
+          class="dialog"
+        >
+          <q-card-section>
+            <h2>
+              {{ $t('confirm') }}
+            </h2>
+            <p>
+              {{ `${$t('confirmMessage')} ${account.name}${$t('questionMark')}` }}
+            </p>
+          </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn
-            v-close-popup
-            flat
-            :label="$t('cancelConfirm')"
-            color="blueish"
-          />
-          <q-btn
-            flat
-            :label="$t('acceptConfirm')"
-            color="blueish"
-            @click="deleteAccount()"
-          />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+          <q-card-actions align="right">
+            <q-btn
+              v-close-popup
+              flat
+              :label="$t('cancelConfirm')"
+              color="blueish"
+            />
+            <q-btn
+              flat
+              :label="$t('acceptConfirm')"
+              color="blueish"
+              @click="deleteAccount()"
+            />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
   </q-dialog>
 </template>
 
