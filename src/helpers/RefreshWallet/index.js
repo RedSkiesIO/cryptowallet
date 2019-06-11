@@ -8,41 +8,28 @@ function onlyUnique(value, index, self) {
 }
 
 function updateTxs(txs, wallet) {
-  const tx = txs.shift();
-  Tx.$update({
-    where: (record) => {
-      return record.hash === tx.hash
-      && record.wallet_id === wallet.id;
-    },
-    data: tx,
+  const sentTxs = txs.map((tx) => {
+    Tx.$update({
+      where: (record) => {
+        return record.hash === tx.hash
+        && record.wallet_id === wallet.id;
+      },
+      data: tx,
+    });
+    return tx.sent ? tx.hash : [];
   });
 
-  if (wallet.sdk === 'Bitcoin' && tx.sent) {
-    // delete utxo that were used for that transaction
-    tx.sender.forEach((inputAddress) => {
-      const pendingUtxo = Utxo.query()
-        .where('address', inputAddress)
-        .where('pending', true)
-        .get();
-      pendingUtxo.forEach((pending) => {
-        Utxo.$delete(pending.id);
-      });
-    });
+  if (wallet.sdk === 'Bitcoin') {
+    const pendingUtxos = Utxo.query()
+      .where('wallet_id', wallet.id)
+      .where('pending', true)
+      .get();
 
-    // find change address that were used and mark them as used
-    tx.receiver.forEach((changeAddress) => {
-      Address.$update({
-        where: (record) => {
-          return record.chain === 'internal'
-          && record.address === changeAddress;
-        },
-        data: { used: true },
-      });
+    pendingUtxos.forEach((utxo) => {
+      if (sentTxs.includes(utxo.spentHash)) {
+        Utxo.$delete(utxo.id);
+      }
     });
-  }
-
-  if (txs.length > 0) {
-    updateTxs(txs, wallet);
   }
 }
 
