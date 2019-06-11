@@ -25,9 +25,23 @@ function updateTxs(txs, wallet) {
       .where('pending', true)
       .get();
 
+    const changeAddrs = Address.query()
+      .where('wallet_id', wallet.id)
+      .where('chain', 'internal')
+      .get();
+
     pendingUtxos.forEach((utxo) => {
       if (sentTxs.includes(utxo.spentHash)) {
         Utxo.$delete(utxo.id);
+        const usedChange = changeAddrs.find((addr) => {
+          return addr.address === utxo.address;
+        });
+        if (usedChange) {
+          Address.$update({
+            where: usedChange.id,
+            data: { used: true },
+          });
+        }
       }
     });
   }
