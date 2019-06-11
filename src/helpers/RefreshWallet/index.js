@@ -38,7 +38,7 @@ function updateTxs(txs, wallet) {
         });
         if (usedChange) {
           Address.$update({
-            where: usedChange.id,
+            where: (record) => { return record.id === usedChange.id; },
             data: { used: true },
           });
         }
@@ -147,21 +147,20 @@ async function refreshBitcoin(coinSDK, wallet) {
     .where('wallet_id', wallet.id)
     .get()
     .map((utxo) => { return utxo.txid; });
-
-  const newUtxos = await coinSDK.getUTXOs(addressesRaw, wallet.network)
-    .filter((utxo) => {
-      newBalance += utxo.amount;
-      utxo.account_id = wallet.account_id;
-      utxo.wallet_id = wallet.id;
-      return !storedUtxos.includes(utxo.txid);
-    });
+  const utxos = await coinSDK.getUTXOs(addressesRaw, wallet.network);
+  const newUtxos = utxos.filter((utxo) => {
+    newBalance += utxo.amount;
+    utxo.account_id = wallet.account_id;
+    utxo.wallet_id = wallet.id;
+    return !storedUtxos.includes(utxo.txid);
+  });
 
   if (newUtxos.length > 0) {
     Utxo.$insert({ data: newUtxos });
   }
 
   Wallet.$update({
-    where: wallet.id,
+    where: (record) => { return record.id === wallet.id; },
     data: { confirmedBalance: parseFloat(newBalance) },
   });
 
@@ -189,7 +188,7 @@ async function refreshEthereum(coinSDK, wallet) {
   );
 
   Wallet.$update({
-    where: wallet.id,
+    where: (record) => { return record.id === wallet.id; },
     data: { confirmedBalance: parseFloat(newBalance) },
   });
 
@@ -208,7 +207,7 @@ async function refreshERC20(coinSDK, wallet) {
   const newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
 
   Wallet.$update({
-    where: wallet.id,
+    where: (record) => { return record.id === wallet.id; },
     data: { confirmedBalance: parseFloat(newBalance) },
   });
 
