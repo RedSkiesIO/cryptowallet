@@ -16,6 +16,7 @@ function updateTxs(txs, wallet) {
     },
     data: tx,
   });
+
   if (wallet.sdk === 'Bitcoin' && tx.sent) {
     // delete utxo that were used for that transaction
     tx.sender.forEach((inputAddress) => {
@@ -46,40 +47,44 @@ function updateTxs(txs, wallet) {
 }
 
 function insertTxs(txs, wallet, coinSDK) {
-  const tx = txs.shift();
+  const transactions = txs.map((tx) => {
+    tx.account_id = wallet.account_id;
+    tx.wallet_id = wallet.id;
+    return tx;
+  });
 
   Tx.$insert({
-    data: {
-      account_id: wallet.account_id,
-      wallet_id: wallet.id,
-      ...tx,
-    },
+    data: transactions,
   });
+
   // update external address
-  if (wallet.sdk === 'Bitcoin' && tx.receiver.includes(wallet.externalAddress)) {
-    // generate new address
-    const addr = coinSDK.generateAddress(wallet.hdWallet, wallet.externalChainAddressIndex + 1);
-
-    const newAddress = {
-      account_id: wallet.account_id,
-      wallet_id: wallet.id,
-      chain: 'external',
-      address: addr.address,
-      index: addr.index,
-    };
-
-    Address.$insert({ data: newAddress });
-
-    Wallet.$update({
-      where: (record) => { return record.id === wallet.id; },
-      data: {
-        externalChainAddressIndex: addr.index,
-        externalAddress: addr.address,
-      },
+  if (wallet.sdk === 'Bitcoin') {
+    const newExternalAddress = txs.some((tx) => {
+      return tx.receiver.includes(wallet.externalAddress);
     });
-  }
-  if (txs.length > 0) {
-    insertTxs(txs, wallet, coinSDK);
+
+    if (newExternalAddress) {
+      // generate new address
+      const addr = coinSDK.generateAddress(wallet.hdWallet, wallet.externalChainAddressIndex + 1);
+
+      const newAddress = {
+        account_id: wallet.account_id,
+        wallet_id: wallet.id,
+        chain: 'external',
+        address: addr.address,
+        index: addr.index,
+      };
+
+      Address.$insert({ data: newAddress });
+
+      Wallet.$update({
+        where: (record) => { return record.id === wallet.id; },
+        data: {
+          externalChainAddressIndex: addr.index,
+          externalAddress: addr.address,
+        },
+      });
+    }
   }
 }
 
