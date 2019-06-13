@@ -1,4 +1,5 @@
 import Rollbar from 'vue-rollbar';
+import { Notify } from 'quasar';
 
 /**
  * Export plugin as vue prototype.
@@ -29,7 +30,7 @@ export default ({ Vue, store }) => {
    * @param vm
    * @param info
    */
-  Vue.config.errorHandler = (err, showToast = true, vm = new Vue()) => {
+  Vue.config.errorHandler = (err, showToast = true) => {
     const accountId = store.state.settings.authenticatedAccount;
     const account = store.getters['entities/account/find'](accountId);
 
@@ -46,8 +47,14 @@ export default ({ Vue, store }) => {
     Vue.rollbar.error(err.message);
 
     if (showToast) {
-      const delay = 500;
-      vm.$toast.create(10, err.message, delay);
+      const delay = 3000;
+      Notify.create({
+        message: err.message,
+        position: 'bottom',
+        color: 'negative',
+        timeout: delay,
+        icon: 'report_problem',
+      });
       // this console.error is needed, otherwise we don't have debugging information, just a toast
       /* eslint-disable-next-line */
       console.error(err);

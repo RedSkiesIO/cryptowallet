@@ -260,7 +260,7 @@ describe('Modals/Wallets.vue', () => {
         { index: 0, address: '123' },
         { index: 1, address: '456' },
         { index: 2, address: '789' }];
-      discovery.internalAccountDiscovery.used = [
+      discovery.internalAccountDiscovery.active = [
         { index: 0, address: '321' },
         { index: 1, address: '654' },
         { index: 2, address: '987' }];

@@ -4,6 +4,8 @@ import { shallowMount } from '@vue/test-utils';
 import { localVue } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account';
+import { Notify } from 'quasar';
+
 
 describe('boot/ErrorHandler', () => {
   let wrapperMock;
@@ -46,7 +48,7 @@ describe('boot/ErrorHandler', () => {
   it('sends error to rollbar when errorHandler is called', () => {
     Account.insert({ data: mockAccount });
     console.error = jest.fn();
-    wrapperMock.vm.$toast.create = jest.fn();
+    Notify.create = jest.fn();
     wrapperMock.vm.errorHandler(new Error('Some Error'));
     expect(localVue.rollbar.configure).toHaveBeenCalledWith({ payload: { account: { name: 'Stephen' } } });
     expect(localVue.rollbar.error).toHaveBeenCalledWith('Some Error');
@@ -56,8 +58,8 @@ describe('boot/ErrorHandler', () => {
   it('no toast is displayed if showToast is false', () => {
     console.error = jest.fn();
     wrapperMock.vm.$toast.create = jest.fn();
-    wrapperMock.vm.errorHandler(new Error('Some Error'), false);
-    expect(wrapperMock.vm.$toast.create).toHaveBeenCalledTimes(0);
+    Notify.create = jest.fn();
+    expect(Notify.create).toHaveBeenCalledTimes(0);
     expect(console.error).toHaveBeenCalledTimes(0);
   });
 });
