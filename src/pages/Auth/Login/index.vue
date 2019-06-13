@@ -61,11 +61,8 @@ export default {
    * If there is no account seleted, selects te default one
    */
   mounted() {
-    if (!this.selectedAccount) {
-      const defaultAccount = this.accounts.find((account) => {
-        return account.default;
-      });
-      this.$store.dispatch('settings/setSelectedAccount', defaultAccount.name);
+    if (this.account) {
+      this.$store.dispatch('settings/setSelectedAccount', this.account.name);
     }
   },
 
