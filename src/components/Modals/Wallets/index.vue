@@ -104,7 +104,7 @@ export default {
     async storeTransactions(txs, id) {
       if (txs.length > 0) {
         const transactions = txs.map((tx) => {
-          tx.account_id = this.authenticatedaccount;
+          tx.account_id = this.authenticatedAccount;
           tx.wallet_id = id;
           return tx;
         });
@@ -118,7 +118,7 @@ export default {
     async storeAddresses(addrs, id, chain) {
       if (addrs.length > 0) {
         const addresses = addrs.map((addr) => {
-          addr.account_id = this.authenticatedaccount;
+          addr.account_id = this.authenticatedAccount;
           addr.wallet_id = id;
           addr.chain = chain;
           addr.hash = addr.address;
