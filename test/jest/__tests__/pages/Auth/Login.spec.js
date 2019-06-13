@@ -48,7 +48,7 @@ describe('Login.vue', () => {
     };
     errorHandler = jest.fn();
     backEndService = {
-      connect: jest.fn(),
+      connect: jest.fn().mockResolvedValue(true),
       loadPriceFeed: jest.fn(),
     };
     BackEndService = jest.fn().mockImplementation(() => {

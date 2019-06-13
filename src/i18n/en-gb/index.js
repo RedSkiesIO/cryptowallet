@@ -219,6 +219,7 @@ export default {
   completeSetup: 'Connect to the Internet',
   // other
   noConnection: 'No internet connection',
+  noInternet: 'You are not connected to the internet',
   volume24h: 'Volume 24h',
   failedToConnect: 'Failed to connect to the server',
   'N/A': 'N/A',
