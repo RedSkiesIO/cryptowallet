@@ -119,7 +119,6 @@ class BackEndService {
    */
   async auth() {
     const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`);
-    console.log(response);
     if (response.data) {
       this.accessToken = response.data.accessToken;
       this.setRefreshToken(response.data.refreshToken);
