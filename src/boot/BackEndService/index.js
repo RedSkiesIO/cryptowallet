@@ -68,9 +68,15 @@ class BackEndService {
   connect(attempts = 0) {
     return new Promise(async (resolve) => {
       const attemptLimit = this.maxConnectAttempts;
+      const network = window ? window.navigator.onLine : navigator.connection === 'none';
+
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
         return false;
+      }
+
+      if (!network) {
+        return resolve(false);
       }
 
       try {
@@ -113,7 +119,6 @@ class BackEndService {
    */
   async auth() {
     const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`);
-
     if (response.data) {
       this.accessToken = response.data.accessToken;
       this.setRefreshToken(response.data.refreshToken);
@@ -157,7 +162,7 @@ class BackEndService {
    * @return {Object}
    */
   try(URL, attempts = 0) {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       const attemptLimit = this.maxTryAttempts;
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
@@ -170,6 +175,10 @@ class BackEndService {
         this.setRefreshToken(response.headers.new_refresh_token);
         return resolve(response);
       } catch (err) {
+        const network = window ? window.navigator.onLine : navigator.connection === 'none';
+        if (!network) {
+          return reject(new Error(this.vm.$t('noInternet')));
+        }
         if (err.response && err.response.status) {
           const unauthorized = 401;
           if (err.response.status === unauthorized) {

@@ -100,8 +100,10 @@ export default {
             await this.initializeWallets(this.account.id);
 
             Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
-            await this.backEndService.connect();
-            await this.backEndService.loadPriceFeed();
+            const connect = await this.backEndService.connect();
+            if (connect) {
+              await this.backEndService.loadPriceFeed();
+            }
             this.$router.push({ path: '/wallet' });
             this.$store.dispatch('settings/setLayout', 'light');
 
