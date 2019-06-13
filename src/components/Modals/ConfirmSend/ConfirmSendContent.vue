@@ -233,6 +233,7 @@ export default {
             },
             data: {
               pending: true,
+              spentHash: transaction.hash,
             },
           });
         });
