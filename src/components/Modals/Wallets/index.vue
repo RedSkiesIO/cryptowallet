@@ -204,17 +204,17 @@ export default {
     async enableWallet(wallet) {
       let success = true;
       const coinSDK = this.coinSDKS[wallet.sdk];
-
-      await this.backEndService.loadCoinPriceData(wallet.symbol);
-
-      const initializedWallet = wallet.hdWallet;
-
-      if (!this.activeWallets[this.authenticatedAccount]) {
-        this.activeWallets[this.authenticatedAccount] = {};
-      }
-
-      this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
       try {
+        await this.backEndService.loadCoinPriceData(wallet.symbol);
+
+        const initializedWallet = wallet.hdWallet;
+
+        if (!this.activeWallets[this.authenticatedAccount]) {
+          this.activeWallets[this.authenticatedAccount] = {};
+        }
+
+        this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
+
         if (wallet.sdk === 'Bitcoin') {
           await this.enableBitcoin(coinSDK, initializedWallet, wallet);
         }
