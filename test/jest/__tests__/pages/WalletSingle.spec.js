@@ -17,7 +17,7 @@ describe('WalletSingle.vue', () => {
   };
   const backEndService = {
     connect: jest.fn(),
-    loadPriceFeed: jest.fn(),
+    loadCoinPriceData: jest.fn(),
   };
 
   const errorHandler = jest.fn();
@@ -52,7 +52,9 @@ describe('WalletSingle.vue', () => {
     });
   }
 
-  beforeEach(() => { storeInit(customStore); });
+  beforeEach(() => {
+    storeInit(customStore);
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -63,7 +65,7 @@ describe('WalletSingle.vue', () => {
     wrapper.vm.$nextTick(() => {
       wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
       setTimeout(() => {
-        expect(backEndService.loadPriceFeed).toHaveBeenCalled();
+        expect(backEndService.loadCoinPriceData).toHaveBeenCalled();
         expect(RefreshWallet).toHaveBeenCalled();
         done();
       }, delay);
@@ -72,11 +74,11 @@ describe('WalletSingle.vue', () => {
 
   it('calls the errorHandler', async (done) => {
     const doneMock = jest.fn();
-    backEndService.loadPriceFeed.mockImplementationOnce(() => { throw new Error(); });
+    backEndService.loadCoinPriceData.mockImplementationOnce(() => { throw new Error(); });
     storeInit(customStore);
     wrapper.vm.$nextTick(() => {
       wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
-      expect(backEndService.loadPriceFeed).toHaveBeenCalled();
+      expect(backEndService.loadCoinPriceData).toHaveBeenCalled();
       expect(wrapper.vm.errorHandler).toHaveBeenCalled();
       done();
     });
