@@ -82,6 +82,9 @@
       <PriceChart
         v-if="(chartDataExists || showChart)"
       />
+      <div class="row justify-center">
+        {{ $t('lastUpdated') }}: {{ new Date(latestPrice.updated).toLocaleString('default') }}
+      </div>
     </div>
   </div>
 </template>
@@ -166,17 +169,20 @@ export default {
   },
   methods: {
     async loadData() {
-      this.showChart = false;
-      this.loading = true;
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        this.showChart = false;
+        this.loading = true;
 
-      try {
-        await this.backEndService.loadCoinPriceData(this.coinSymbol);
-      } catch (err) {
-        this.errorHandler(err);
+        try {
+          await this.backEndService.loadCoinPriceData(this.coinSymbol);
+        } catch (err) {
+          this.errorHandler(err);
+        }
+
+        this.loading = false;
+        this.showChart = true;
       }
-
-      this.loading = false;
-      this.showChart = true;
     },
     goBack() {
       this.$router.go(-1);

@@ -469,7 +469,8 @@ export default {
      * Creates a raw transaction which will calculate and update the fee
      */
     updateFee: debounce((fee, that) => {
-      if (!that.$v.inCoin.$invalid) {
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (!that.$v.inCoin.$invalid && online) {
         const wallet = that.activeWallets[that.authenticatedAccount][that.wallet.name];
         const accounts = that.getAccounts();
         const changeAddresses = that.generateChangeAddresses();
@@ -663,35 +664,38 @@ export default {
      * Creates and sends a transaction
      */
     async send() {
-      if (this.isInvalid()) {
-        this.$toast.create(10, this.isInvalid(), this.delay.normal);
-        return false;
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        if (this.isInvalid()) {
+          this.$toast.create(10, this.isInvalid(), this.delay.normal);
+          return false;
+        }
+
+        const wallet = this.activeWallets[this.authenticatedAccount][
+          this.wallet.name
+        ];
+
+        const changeAddresses = this.generateChangeAddresses();
+        const accounts = this.getAccounts();
+
+        const { hexTx, transaction, utxo } = await this.createRawTx(
+          accounts,
+          changeAddresses,
+          this.utxos,
+          wallet,
+          this.address,
+          this.inCoin,
+        );
+
+        this.$store.dispatch('modals/setConfirmTransactionData', {
+          hexTx,
+          transaction,
+          changeAddresses,
+          utxo,
+        });
+
+        this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       }
-
-      const wallet = this.activeWallets[this.authenticatedAccount][
-        this.wallet.name
-      ];
-
-      const changeAddresses = this.generateChangeAddresses();
-      const accounts = this.getAccounts();
-
-      const { hexTx, transaction, utxo } = await this.createRawTx(
-        accounts,
-        changeAddresses,
-        this.utxos,
-        wallet,
-        this.address,
-        this.inCoin,
-      );
-
-      this.$store.dispatch('modals/setConfirmTransactionData', {
-        hexTx,
-        transaction,
-        changeAddresses,
-        utxo,
-      });
-
-      this.$store.dispatch('modals/setConfirmSendModalOpened', true);
       return false;
     },
 

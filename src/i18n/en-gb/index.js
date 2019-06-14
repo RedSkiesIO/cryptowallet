@@ -224,4 +224,5 @@ export default {
   failedToConnect: 'Failed to connect to the server',
   'N/A': 'N/A',
   exitConfirm: 'Do you really want to exit CryptoWallet?',
+  lastUpdated: 'Last Updated',
 };

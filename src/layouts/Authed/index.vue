@@ -212,21 +212,24 @@ export default {
     },
 
     refresher(done) {
-      if (this.$route.name === 'wallet') {
-        setTimeout(async () => {
-          try {
-            await this.backEndService.loadPriceFeed();
-            await this.updateBalances(done);
-          } catch (err) {
-            this.errorHandler(err);
-            done();
-          }
-        }, this.delay.long);
-      } else {
-        setTimeout(() => {
-          this.$root.$emit('updateWalletSingle', done);
-        }, this.delay.long);
-      }
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        if (this.$route.name === 'wallet') {
+          setTimeout(async () => {
+            try {
+              await this.backEndService.loadPriceFeed();
+              await this.updateBalances(done);
+            } catch (err) {
+              this.errorHandler(err);
+              done();
+            }
+          }, this.delay.long);
+        } else {
+          setTimeout(() => {
+            this.$root.$emit('updateWalletSingle', done);
+          }, this.delay.long);
+        }
+      } else { done(); }
     },
 
     async updateBalances(done) {
