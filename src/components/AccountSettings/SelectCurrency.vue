@@ -102,13 +102,16 @@ export default {
   },
   methods: {
     async refreshPrices() {
-      const promises = [];
-      this.wallets.forEach((wallet) => {
-        promises.push(new Promise((res) => {
-          return res(this.backEndService.loadCoinPriceData(wallet.symbol));
-        }));
-      });
-      await Promise.all(promises);
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        const promises = [];
+        this.wallets.forEach((wallet) => {
+          promises.push(new Promise((res) => {
+            return res(this.backEndService.loadCoinPriceData(wallet.symbol));
+          }));
+        });
+        await Promise.all(promises);
+      }
     },
     closeModal() {
       this.refreshPrices();

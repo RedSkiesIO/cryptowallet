@@ -31,7 +31,7 @@ export default {
   mounted() {
     this.$root.$on('updateWalletSingle', async (done) => {
       try {
-        await this.backEndService.loadPriceFeed();
+        await this.backEndService.loadCoinPriceData(this.wallet.symbol);
         await this.refresher(done);
       } catch (err) {
         this.errorHandler(err);

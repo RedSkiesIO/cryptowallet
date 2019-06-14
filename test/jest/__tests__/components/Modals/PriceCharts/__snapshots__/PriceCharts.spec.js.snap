@@ -133,6 +133,14 @@ exports[`modals/PriceCharts renders and matches snapshot 1`] = `
     </div>
      
     <pricechart-stub />
+     
+    <div
+      class="row justify-center"
+    >
+      
+      Last Updated: 2019-4-3 16:37:49
+    
+    </div>
   </div>
 </div>
 `;

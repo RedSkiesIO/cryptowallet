@@ -246,18 +246,16 @@ class BackEndService {
    * @param  {Object} priceData
    * @return {Promise}
    */
-  async storePriceData(coin, priceData) {
-    const { selectedCurrency } = this.vm.$store.state.settings;
-
+  storePriceData(coin, priceData, currency = this.vm.$store.state.settings.selectedCurrency.code) {
     return new Promise(async (resolve, reject) => {
       try {
         const checkPriceExists = (symbol, data) => {
-          const price = LatestPrice.find([`${symbol}_${selectedCurrency.code}`]);
+          const price = LatestPrice.find([`${symbol}_${currency}`]);
           if (!price) {
             LatestPrice.$insert({
               data: {
                 coin,
-                currency: selectedCurrency.code,
+                currency,
                 updated: +new Date(),
                 data,
               },
@@ -279,7 +277,7 @@ class BackEndService {
             where: (record) => {
               return whereLatestPrice(record, {
                 coin,
-                currency: selectedCurrency.code,
+                currency,
               });
             },
             data: {
@@ -347,7 +345,11 @@ class BackEndService {
    * Calls the API and and stores the price data
    */
   async loadPriceFeed() {
-    const { selectedCurrency, authenticatedAccount } = this.vm.$store.state.settings;
+    const {
+      selectedCurrency,
+      authenticatedAccount,
+      supportedCurrencies,
+    } = this.vm.$store.state.settings;
     const wallets = Wallet.query()
       .where('account_id', authenticatedAccount)
       .where('imported', true)
@@ -374,9 +376,13 @@ class BackEndService {
         if (prices) {
           const promises = [];
           prices.data.forEach((data) => {
-            promises.push(new Promise((res) => {
-              return res(this.storePriceData(data.code, data[selectedCurrency.code]));
-            }));
+            supportedCurrencies.forEach((currency) => {
+              promises.push(new Promise((res) => {
+                return res(this.storePriceData(data.code,
+                  data[currency.code],
+                  currency.code));
+              }));
+            });
           });
 
           await Promise.all(promises);
