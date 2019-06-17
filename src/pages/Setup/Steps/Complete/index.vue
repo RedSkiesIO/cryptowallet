@@ -83,10 +83,10 @@ export default {
      * complete setup and store account entity.
      */
     async complete() {
-      try {
-        this.$store.dispatch('settings/setLoading', true);
+      this.$store.dispatch('settings/setLoading', true);
 
-        setTimeout(async () => {
+      setTimeout(async () => {
+        try {
           const account = await this.accountInitializer.createAccount(this.setup);
           this.$store.dispatch('settings/setSelectedAccount', this.setup.accountName);
           await this.accountInitializer.createWallets(this.setup, account.id, this.supportedCoins);
@@ -105,14 +105,13 @@ export default {
           this.$store.dispatch('setup/clearSetupData');
           this.$store.dispatch('settings/setLayout', 'light');
           this.$router.push({ path: '/wallet' });
-
-          setTimeout(() => {
-            this.$store.dispatch('settings/setLoading', false);
-          }, this.delay.normal);
+        } catch (err) {
+          this.errorHandler(err);
+        }
+        setTimeout(() => {
+          this.$store.dispatch('settings/setLoading', false);
         }, this.delay.normal);
-      } catch (err) {
-        this.errorHandler(err);
-      }
+      }, this.delay.normal);
     },
   },
 };
