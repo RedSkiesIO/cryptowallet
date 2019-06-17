@@ -546,7 +546,7 @@ describe('boot/BackEndService', () => {
       await backEndService.loadPriceFeed();
       expect(backEndService.getPriceFeed).toHaveBeenCalled();
 
-      expect(backEndService.storePriceData).toHaveBeenCalledTimes(wallets.length);
+      expect(backEndService.storePriceData).toHaveBeenCalledTimes(wallets.length * 3);
       done();
     });
 
