@@ -281,6 +281,7 @@ export default {
   },
 
   async mounted() {
+    console.log('start');
     await this.getFee();
     this.maxValueCoin = this.getMaxAmount();
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
@@ -289,6 +290,7 @@ export default {
       this.address = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
     }
+    console.log('finish');
   },
 
   methods: {

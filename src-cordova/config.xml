@@ -58,6 +58,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="NavigationBarBackgroundColor" value="#1e3c57" />
+    <preference name="DisallowOverscroll" value="true" />
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
         <param name="onload" value="true" />

@@ -79,9 +79,9 @@ export default {
     $route: {
       handler(to) {
         if (to.name === 'sendCoin' || to.name === 'sendCoinSingle') {
-          this.$store.dispatch('modals/setSendCoinModalOpened', true);
+          this.sendCoinModalOpened = true;
         } else {
-          this.$store.dispatch('modals/setSendCoinModalOpened', false);
+          this.sendCoinModalOpened = false;
         }
       },
     },
