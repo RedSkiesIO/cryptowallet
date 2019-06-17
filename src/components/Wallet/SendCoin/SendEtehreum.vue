@@ -425,71 +425,76 @@ export default {
      * Fetches and sets an estimated fee
      */
     async getFee() {
-      let gasLimit = 21000;
-      let coinSymbol = this.wallet.symbol;
-      let currentPrice = this.latestPrice;
-      if (this.wallet.sdk === 'ERC20') {
-        let amount = '1';
-        let to = '0xcc345035D14458B3C012977f96fA1E116760D60a';
-        if (this.inCoin) {
-          amount = this.inCoin;
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        let gasLimit = 21000;
+        let coinSymbol = this.wallet.symbol;
+        let currentPrice = this.latestPrice;
+        if (this.wallet.sdk === 'ERC20') {
+          let amount = '1';
+          let to = '0xcc345035D14458B3C012977f96fA1E116760D60a';
+          if (this.inCoin) {
+            amount = this.inCoin;
+          }
+          if (this.address) {
+            to = this.address;
+          }
+          const gasUsed = await this.coinSDKS.ERC20.estimateGas(
+            this.wallet.erc20Wallet,
+            to,
+            amount,
+            this.wallet.network,
+          );
+          gasLimit = gasUsed;
+          coinSymbol = 'ETH';
+          currentPrice = this.$store.getters['entities/latestPrice/find'](`${coinSymbol}_${this.selectedCurrency.code}`).data.PRICE;
         }
-        if (this.address) {
-          to = this.address;
+
+        const response = await this.backEndService.getTransactionFee(coinSymbol);
+        const { data } = response.data;
+        const fees = {
+          low: data.low,
+          medium: data.medium,
+          high: data.high,
+        };
+
+        let fee = (fees.medium * gasLimit) / this.weiMultiplier;
+        if (this.feeSetting === 0) {
+          fee = (fees.low * gasLimit) / this.weiMultiplier;
         }
-        const gasUsed = await this.coinSDKS.ERC20.estimateGas(
-          this.wallet.erc20Wallet,
-          to,
-          amount,
-          this.wallet.network,
-        );
-        gasLimit = gasUsed;
-        coinSymbol = 'ETH';
-        currentPrice = this.$store.getters['entities/latestPrice/find'](`${coinSymbol}_${this.selectedCurrency.code}`).data.PRICE;
+
+        if (this.feeSetting === 2) {
+          fee = (fees.high * gasLimit) / this.weiMultiplier;
+        }
+
+        let rawFee = fees.medium;
+        if (this.feeSetting === 0) {
+          rawFee = fees.low;
+        }
+
+        if (this.feeSetting === 2) {
+          rawFee = fees.high;
+        }
+
+        this.fee = rawFee;
+        this.rawFee = rawFee * gasLimit;
+        this.feeData = fees;
+
+        const formattedFee = new AmountFormatter({
+          amount: fee,
+          rate: currentPrice,
+          format: '0.00',
+          coin: this.wallet.name,
+          currency: this.selectedCurrency,
+          toCurrency: true,
+          withCurrencySymbol: true,
+        });
+
+        const decimals = 6;
+        this.estimatedFee = `${fee.toFixed(decimals)} ${coinSymbol} (${formattedFee.getFormatted()})`;
+      } else {
+        this.estimatedFee = this.$t('N/A');
       }
-
-      const response = await this.backEndService.getTransactionFee(coinSymbol);
-      const { data } = response.data;
-      const fees = {
-        low: data.low,
-        medium: data.medium,
-        high: data.high,
-      };
-
-      let fee = (fees.medium * gasLimit) / this.weiMultiplier;
-      if (this.feeSetting === 0) {
-        fee = (fees.low * gasLimit) / this.weiMultiplier;
-      }
-
-      if (this.feeSetting === 2) {
-        fee = (fees.high * gasLimit) / this.weiMultiplier;
-      }
-
-      let rawFee = fees.medium;
-      if (this.feeSetting === 0) {
-        rawFee = fees.low;
-      }
-
-      if (this.feeSetting === 2) {
-        rawFee = fees.high;
-      }
-
-      this.fee = rawFee;
-      this.rawFee = rawFee * gasLimit;
-      this.feeData = fees;
-
-      const formattedFee = new AmountFormatter({
-        amount: fee,
-        rate: currentPrice,
-        format: '0.00',
-        coin: this.wallet.name,
-        currency: this.selectedCurrency,
-        toCurrency: true,
-        withCurrencySymbol: true,
-      });
-
-      const decimals = 6;
-      this.estimatedFee = `${fee.toFixed(decimals)} ${coinSymbol} (${formattedFee.getFormatted()})`;
     },
 
     /**
@@ -558,12 +563,15 @@ export default {
      * Creates and sends a transaction
      */
     async send() {
-      if (this.isInvalid()) {
-        this.$toast.create(10, this.isInvalid(), this.delay.normal);
-      } else if (this.wallet.sdk === 'ERC20') {
-        await this.sendERC20();
-      } else {
-        await this.sendETH();
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        if (this.isInvalid()) {
+          this.$toast.create(10, this.isInvalid(), this.delay.normal);
+        } else if (this.wallet.sdk === 'ERC20') {
+          await this.sendERC20();
+        } else {
+          await this.sendETH();
+        }
       }
     },
 

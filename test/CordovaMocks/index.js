@@ -7,7 +7,10 @@ import QRScanner from './qrscanner';
 
 export default {
   initMocks() {
-    const navigator = { contacts };
+    const navigator = {
+      contacts,
+      onLine: true,
+    };
     const cordova = {
       plugins: {
         permissions,

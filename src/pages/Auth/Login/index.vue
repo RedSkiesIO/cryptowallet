@@ -167,7 +167,6 @@ export default {
           .where('account_id', accountId)
           .where('enabled', true)
           .get();
-
         if (wallets.length === 0) {
           resolve();
         }
