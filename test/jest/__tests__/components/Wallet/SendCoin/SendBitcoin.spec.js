@@ -276,13 +276,15 @@ describe('SendBitcoin component', () => {
 
       it('invalidates amount if user tries to input more than available funds', async (done) => {
         const inputInCoin = wrapper.find('.amount-in-coin input');
-        wrapper.find('.amount-in-coin').trigger('focus');
-        inputInCoin.element.value = 99999;
-        inputInCoin.trigger('input');
         setTimeout(() => {
-          expect(wrapper.find('.error-label-amount').text()).toBe(wrapper.vm.$t('notEnoughFunds'));
-          done();
-        }, 25);
+          wrapper.find('.amount-in-coin').trigger('focus');
+          inputInCoin.element.value = 99999;
+          inputInCoin.trigger('input');
+          setTimeout(() => {
+            expect(wrapper.find('.error-label-amount').text()).toBe(wrapper.vm.$t('notEnoughFunds'));
+            done();
+          }, 25);
+        }, 501);
       });
 
       it('validates the number of decimal places in the amount', (done) => {
@@ -386,21 +388,23 @@ describe('SendBitcoin component', () => {
     });
 
     it('does not update the fee if amount inputs are invalid', async (done) => {
-      const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 9999;
-      inputInCoin.trigger('input');
-
       setTimeout(() => {
-        expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
-        wrapper.vm.feeSetting = 2;
-        wrapper.vm.feeChange(2);
+        const inputInCoin = wrapper.find('.amount-in-coin input');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = 9999;
+        inputInCoin.trigger('input');
 
         setTimeout(() => {
-          expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
-          done();
-        }, 750);
-      }, 25);
+          expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
+          wrapper.vm.feeSetting = 2;
+          wrapper.vm.feeChange(2);
+
+          setTimeout(() => {
+            expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
+            done();
+          }, 750);
+        }, 25);
+      }, 500);
     });
   });
 
@@ -442,17 +446,19 @@ describe('SendBitcoin component', () => {
       wrapper.vm.address = '2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE';
 
       const inputInCoin = wrapper.find('.amount-in-coin input');
-      wrapper.find('.amount-in-coin').trigger('focus');
-      inputInCoin.element.value = 9999;
-      inputInCoin.trigger('input');
-
       setTimeout(() => {
-        wrapper.find('.send-btn').trigger('click');
+        wrapper.find('.amount-in-coin').trigger('focus');
+        inputInCoin.element.value = 9999;
+        inputInCoin.trigger('input');
+
         setTimeout(() => {
-          expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('notEnoughFunds'), 500);
-          done();
+          wrapper.find('.send-btn').trigger('click');
+          setTimeout(() => {
+            expect(wrapper.vm.$toast.create).toHaveBeenCalledWith(10, wrapper.vm.$t('notEnoughFunds'), 500);
+            done();
+          }, 25);
         }, 25);
-      }, 25);
+      }, 500);
     });
 
     it('it dispatches correct actions with correct payloads if passed all the checks', async (done) => {
