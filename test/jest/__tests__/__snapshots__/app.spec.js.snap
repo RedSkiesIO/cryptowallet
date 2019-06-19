@@ -4,57 +4,42 @@ exports[`app.vue renders and matches snapshot 1`] = `
 <div
   class="shrinked"
 >
-  <div
-    class="app-loading background done"
-  >
-    <div
-      class="loading-footer"
-    >
-      <img
-        class="logo-loading"
-        src="~/assets/logo-white-horizontal.png"
-      />
-    </div>
-     
-    <spinner-stub />
-  </div>
+  <loadingscreen-stub />
    
   <div
     class=""
     id="q-app"
   >
+    <router-view-stub
+      name="default"
+    />
+     
+    <selectaccountmodal-stub />
+     
+    <newaccountmodal-stub />
+     
+    <getstartedmodal-stub />
+     
+    <termsmodal-stub />
+     
     <div>
-      <router-view-stub
-        name="default"
-      />
+      <offlinenotice-stub />
        
-      <selectaccountmodal-stub />
+      <walletsmodal-stub />
        
-      <newaccountmodal-stub />
+      <pricechartmodal-stub />
        
-      <getstartedmodal-stub />
+      <sendcoinmodal-stub />
        
-      <termsmodal-stub />
+      <receivecoinmodal-stub />
        
-      <div>
-        <offlinenotice-stub />
-         
-        <walletsmodal-stub />
-         
-        <pricechartmodal-stub />
-         
-        <sendcoinmodal-stub />
-         
-        <receivecoinmodal-stub />
-         
-        <confirmsendmodal-stub />
-         
-        <sendsuccessmodal-stub />
-         
-        <sendfailuremodal-stub />
-         
-        <adderc20modal-stub />
-      </div>
+      <confirmsendmodal-stub />
+       
+      <sendsuccessmodal-stub />
+       
+      <sendfailuremodal-stub />
+       
+      <adderc20modal-stub />
     </div>
   </div>
    

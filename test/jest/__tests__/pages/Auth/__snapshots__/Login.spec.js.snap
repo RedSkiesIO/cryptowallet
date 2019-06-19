@@ -1,21 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Login.vue renders and matches snapshot 1`] = `
-<div
-  class="center-content-wrapper"
->
-  <div>
-    <h1
-      class="account-name-h1 setup"
-    >
+<div>
+  <div
+    class="center-content-wrapper"
+  >
+    <div>
+      <h1
+        class="account-name-h1 setup"
+      >
+        
+        Stephen
       
-      Stephen
-    
-    </h1>
-     
-    <pinpad-stub
-      mode="auth"
-    />
+      </h1>
+       
+      <pinpad-stub
+        mode="auth"
+      />
+    </div>
   </div>
 </div>
 `;
