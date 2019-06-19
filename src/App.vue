@@ -1,40 +1,27 @@
 <template>
   <div :class="{ shrinked : settings.layout !== 'dark' }">
-    <div
-      :class="{done : !settings.loading}"
-      class="app-loading background"
-    >
-      <div class="loading-footer">
-        <img
-          class="logo-loading"
-          src="~/assets/logo-white-horizontal.png"
-        >
-      </div>
-      <Spinner />
-    </div>
+    <LoadingScreen :show="settings.loading" />
 
     <div
       id="q-app"
       :class="{ hidden: scanning }"
     >
-      <div v-if="!settings.loading">
-        <router-view />
-        <SelectAccountModal />
-        <NewAccountModal />
-        <GetStartedModal />
-        <TermsModal />
+      <router-view />
+      <SelectAccountModal />
+      <NewAccountModal />
+      <GetStartedModal />
+      <TermsModal />
 
-        <div v-if="settings.authenticatedAccount">
-          <OfflineNotice />
-          <WalletsModal />
-          <PriceChartModal />
-          <SendCoinModal />
-          <ReceiveCoinModal />
-          <ConfirmSendModal />
-          <SendSuccessModal />
-          <SendFailureModal />
-          <AddErc20Modal />
-        </div>
+      <div v-if="settings.authenticatedAccount">
+        <OfflineNotice />
+        <WalletsModal />
+        <PriceChartModal />
+        <SendCoinModal />
+        <ReceiveCoinModal />
+        <ConfirmSendModal />
+        <SendSuccessModal />
+        <SendFailureModal />
+        <AddErc20Modal />
       </div>
     </div>
     <Scanner v-if="scanning" />
@@ -43,8 +30,8 @@
 
 <script>
 import { mapState } from 'vuex';
+import LoadingScreen from '@/components/LoadingScreen';
 import Coin from '@/store/wallet/entities/coin';
-import Spinner from '@/components/Spinner';
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
 import PriceChartModal from '@/components/Modals/PriceCharts';
@@ -63,7 +50,7 @@ import OfflineNotice from '@/components/OfflineNotice';
 export default {
   name: 'App',
   components: {
-    Spinner,
+    LoadingScreen,
     Scanner,
     WalletsModal,
     PriceChartModal,
