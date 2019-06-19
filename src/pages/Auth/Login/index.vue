@@ -109,12 +109,14 @@ export default {
             }
             this.$router.push({ path: '/wallet' });
             this.$store.dispatch('settings/setLayout', 'light');
+            await new Promise((r) => { return setTimeout(r, this.delay.long); });
+            this.$store.dispatch('settings/setLoading', false);
           } else {
             this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
             this.$refs.PinPad.resetState();
             this.resetPin();
+            this.$store.dispatch('settings/setLoading', false);
           }
-          this.$store.dispatch('settings/setLoading', false);
         } catch (err) {
           this.errorHandler(err);
         }
