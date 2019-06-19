@@ -171,35 +171,6 @@ body > div {
   color: white;
 }
 
-.app-loading {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0!important;
-  height: 100%!important;
-  z-index: 999999;
-  transition: opacity 0.2s ease-in-out;
-  transition-delay: 500ms;
-}
-
-@keyframes LOADING {
-  0%   { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-.app-loading.done {
-  animation: LOADING 150ms forwards;
-  animation-timing-function: ease-out;
-  animation-delay: 250ms;
-  pointer-events: none;
-}
-
-.app-loading.background {
-  border-bottom: none!important;
-}
-
 .background {
   background-color: #1e3c57;
   width: 100%;
@@ -236,6 +207,8 @@ body > div {
 
 .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem)!important;
+  height: calc(100vh - 2.5rem - constant(safe-area-inset-top))!important;
+  height: calc(100vh - 2.5rem - env(safe-area-inset-top))!important;
 }
 
 .light-modal .header-section {
@@ -272,6 +245,8 @@ body > div {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 2.5rem);
+  height: calc(100vh - 2.5rem - constant(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - env(safe-area-inset-top));
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
@@ -309,31 +284,9 @@ body > div {
   font-family: Montserrat-Regular;
 }
 
-.loading-footer {
-  position: absolute;
-  width: 10rem;
-  height: 5rem;
-  bottom: 0;
-  opacity: 0.2;
-  margin: 0 auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
-.loading-footer.emphasised {
-  opacity: 1;
-}
-
 .developed-by {
   text-align: center;
   width: 50%;
-}
-
-.logo-loading {
-  width: 8rem;
-  height: auto;
-  margin: 0 auto;
 }
 
 .developed-by {
