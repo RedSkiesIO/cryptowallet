@@ -207,8 +207,8 @@ body > div {
 
 .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem)!important;
-  height: calc(100vh - 2.5rem - constant(safe-area-inset-top))!important;
-  height: calc(100vh - 2.5rem - env(safe-area-inset-top))!important;
+  height: calc(100vh - 2.5rem - (constant(safe-area-inset-top) *2))!important;
+  height: calc(100vh - 2.5rem - (env(safe-area-inset-top) *2))!important;
 }
 
 .light-modal .header-section {
@@ -245,8 +245,8 @@ body > div {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 2.5rem);
-  height: calc(100vh - 2.5rem - constant(safe-area-inset-top));
-  height: calc(100vh - 2.5rem - env(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - (constant(safe-area-inset-top) *2));
+  height: calc(100vh - 2.5rem - (env(safe-area-inset-top) *2));
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
