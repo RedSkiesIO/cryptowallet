@@ -62,7 +62,5 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
       </div>
     </div>
   </q-dialog-stub>
-   
-  <!---->
 </div>
 `;

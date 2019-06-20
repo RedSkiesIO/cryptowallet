@@ -97,10 +97,10 @@ export default {
       * @param {*} pin
      */
     inputPin(pin) {
-      if (navigator && navigator.vibrate) {
-        const onInputVibrate = 25;
-        navigator.vibrate(onInputVibrate);
-      }
+      // if (navigator && navigator.vibrate) {
+      //   const onInputVibrate = 25;
+      //   navigator.vibrate(onInputVibrate);
+      // }
 
       this.input.push(Math.random());
 

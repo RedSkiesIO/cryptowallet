@@ -136,7 +136,7 @@ describe('Login.vue', () => {
     }, 1000);
   });
 
-  it('displays a wrong pin toast if pin doesn\'t match', () => {
+  it('displays a wrong pin toast if pin doesn\'t match', (done) => {
     const mockResetPin = jest.fn();
     wrapper.setMethods({ resetPin: mockResetPin });
 
@@ -147,9 +147,12 @@ describe('Login.vue', () => {
 
     wrapper.vm.pin = [0, 0, 0, 0, 0, 1];
     wrapper.vm.attemptUnlock();
-    expect(wrapper.vm.$toast.create).toHaveBeenCalled();
-    expect(mockResetState).toHaveBeenCalled();
-    expect(mockResetPin).toHaveBeenCalled();
+    setTimeout(() => {
+      expect(wrapper.vm.$toast.create).toHaveBeenCalled();
+      expect(mockResetState).toHaveBeenCalled();
+      expect(mockResetPin).toHaveBeenCalled();
+      done();
+    }, 500);
   });
 
   it('catches errors', (done) => {

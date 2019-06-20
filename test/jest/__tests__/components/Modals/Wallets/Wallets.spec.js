@@ -189,11 +189,9 @@ describe('Modals/Wallets.vue', () => {
       Wallet.$insert({ data: [bitcoinWallet] });
       wrapper.vm.addWalletModalOpened = true;
       wrapper.vm.close();
-      expect(wrapper.contains('spinner-stub')).toBe(true);
-      expect(wrapper.vm.loading).toBe(true);
+      expect(storeMocks.actions.setLoading.mock.calls[0][1]).toBe(true);
       setTimeout(() => {
-        expect(wrapper.contains('spinner-stub')).toBe(false);
-        expect(wrapper.vm.loading).toBe(false);
+        expect(storeMocks.actions.setLoading.mock.calls[1][1]).toBe(false);
         done();
       }, 0);
     });

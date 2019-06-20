@@ -134,6 +134,12 @@ button.q-btn[disabled] {
 .q-pull-to-refresh-wrapper .layout-wrapper {
   padding-top: 0;
   height: calc(100vh - 2.5rem);
+  @supports (height: constant(safe-area-inset-top)) {
+    height: calc((100vh - 2.5rem) - constant(safe-area-inset-top));
+  }
+  @supports (height: env(safe-area-inset-top)) {
+    height: calc((100vh - 2.5rem) - env(safe-area-inset-top));
+  }
 }
 
 .layout-wrapper > div,

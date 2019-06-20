@@ -314,6 +314,8 @@ export default {
 
 .layout-shape .layout {
   height: calc(100vh - 5rem - 2.5rem);
+  height: calc(100vh - 2.5rem - 5rem - constant(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - 5rem - env(safe-area-inset-top));
 }
 
 .layout-shape.white {
