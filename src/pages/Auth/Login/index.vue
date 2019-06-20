@@ -1,18 +1,22 @@
 <template>
-  <div class="center-content-wrapper">
-    <div v-if="account">
-      <h1 class="account-name-h1 setup">
-        {{ account.name }}
-      </h1>
-      <PinPad
-        ref="PinPad"
-        mode="auth"
-      />
+  <div>
+    <!-- <LoadingScreen :show="loading" /> -->
+    <div class="center-content-wrapper">
+      <div v-if="account">
+        <h1 class="account-name-h1 setup">
+          {{ account.name }}
+        </h1>
+        <PinPad
+          ref="PinPad"
+          mode="auth"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// import LoadingScreen from '@/components/LoadingScreen';
 import AES from 'crypto-js/aes';
 import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
@@ -23,11 +27,13 @@ export default {
 
   components: {
     PinPad,
+    // LoadingScreen,
   },
 
   data() {
     return {
       pin: [],
+      loading: true,
     };
   },
 
@@ -85,20 +91,17 @@ export default {
       const minPinLength = 6;
       if (this.pin.length >= minPinLength) {
         try {
+          this.$store.dispatch('settings/setLoading', true);
+          await new Promise((r) => { return setTimeout(r, 0); });
           if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.account.pinHash) === true) {
-            this.$store.dispatch('settings/setLoading', true);
             this.$store.dispatch('settings/setAuthenticatedAccount', this.account.id);
-            this.$i18n.locale = this.account.locale;
-
             const currency = this.$store.state.settings.supportedCurrencies.find((item) => {
               return item.code === this.account.currency;
             });
-
+            this.$i18n.locale = this.account.locale;
             this.$store.dispatch('settings/setCurrency', currency);
-
             await this.decryptData(this.account.id, this.pin.join(''));
             await this.initializeWallets(this.account.id);
-
             Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
             const connect = await this.backEndService.connect();
             if (connect) {
@@ -106,14 +109,13 @@ export default {
             }
             this.$router.push({ path: '/wallet' });
             this.$store.dispatch('settings/setLayout', 'light');
-
-            setTimeout(() => {
-              this.$store.dispatch('settings/setLoading', false);
-            }, this.delay.long);
+            await new Promise((r) => { return setTimeout(r, this.delay.long); });
+            this.$store.dispatch('settings/setLoading', false);
           } else {
             this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
             this.$refs.PinPad.resetState();
             this.resetPin();
+            this.$store.dispatch('settings/setLoading', false);
           }
         } catch (err) {
           this.errorHandler(err);

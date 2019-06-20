@@ -328,12 +328,14 @@ export default {
     },
   },
 
-  async mounted() {
-    try {
-      await this.getMaxedTx();
-    } catch (err) {
-      this.errorHandler(err);
-    }
+  mounted() {
+    setTimeout(async () => {
+      try {
+        await this.getMaxedTx();
+      } catch (err) {
+        this.errorHandler(err);
+      }
+    }, this.delay.normal);
 
     if (this.scannedAddress) {
       this.address = this.scannedAddress;
