@@ -44,13 +44,6 @@
         </div>
       </div>
     </q-dialog>
-
-    <div
-      v-if="loading"
-      class="app-loading background modal"
-    >
-      <Spinner />
-    </div>
   </div>
 </template>
 
@@ -61,14 +54,12 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
-import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'AddWallet',
   components: {
     WalletsList,
-    Spinner,
   },
   data() {
     return {
@@ -296,7 +287,7 @@ export default {
 
       if (wallets.length > 0) {
         try {
-          this.loading = true;
+          this.$store.dispatch('settings/setLoading', true);
           const promises = [];
           const erc20Promises = [];
           wallets.forEach((wallet) => {
@@ -328,8 +319,8 @@ export default {
           await Promise.all(promises.map((promise) => { return promise(); }));
           await Promise.all(erc20Promises.map((erc20) => { return erc20(); }));
         } finally {
-          this.loading = false;
           this.addWalletModalOpened = false;
+          this.$store.dispatch('settings/setLoading', false);
         }
       } else {
         this.addWalletModalOpened = false;
