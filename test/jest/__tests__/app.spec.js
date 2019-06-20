@@ -5,6 +5,7 @@ import Account from '@/store/wallet/entities/account';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
+import SupportedCoins from '@/store/settings/state/supportedCoins.js';
 
 describe('app.vue', () => {
   let wrapper;
@@ -93,7 +94,7 @@ describe('app.vue', () => {
   it('it stores the supported coins in the database if the do not exist on loading', (done) => {
     wrapper.vm.settings.loading = true;
     setTimeout(() => {
-      expect(Coin.all().length).toBe(5);
+      expect(Coin.all().length).toBe(SupportedCoins.length);
       done();
     }, 0);
   });
