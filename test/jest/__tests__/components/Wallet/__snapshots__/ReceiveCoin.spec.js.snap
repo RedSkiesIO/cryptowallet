@@ -125,6 +125,14 @@ exports[`ReceiveCoin component renders and matches snapshot 1`] = `
       >
         <!---->
       </div>
+       
+      <div
+        class="new-address row justify-center"
+      >
+        
+        When you receive Bitcoin a new address will be generated
+      
+      </div>
     </div>
   </div>
 </div>

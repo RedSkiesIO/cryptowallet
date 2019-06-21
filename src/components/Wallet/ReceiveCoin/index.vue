@@ -55,6 +55,46 @@
             :src="qrCodeDataURL"
           >
         </div>
+        <div
+          v-if="wallet.sdk==='Bitcoin'"
+          class="new-address row justify-center"
+        >
+          <p>
+            {{ $t('newAddress1') }} {{ wallet.name }} {{ $t('newAddress2') }}
+            <q-icon
+              name="help_outline"
+              size="1.1rem"
+              class="help-icon"
+              @click="hdWalletDialogOpened = true"
+            />
+          </p>
+        </div>
+        <q-dialog
+          v-model="hdWalletDialogOpened"
+        >
+          <q-card
+            style="width: 300px"
+            class="dialog"
+          >
+            <q-card-section>
+              <h2>
+                {{ $t('hdWallet') }}
+              </h2>
+              <p>
+                {{ $t('hdWalletExplainer') }}
+              </p>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn
+                v-close-dialog
+                flat
+                :label="$t('ok')"
+                color="blueish"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </div>
     </div>
   </div>
@@ -73,6 +113,7 @@ export default {
   data() {
     return {
       qrCodeDataURL: null,
+      hdWalletDialogOpened: false,
     };
   },
   computed: {
@@ -156,5 +197,19 @@ export default {
 
 .share-btn {
   margin-left: 0.5rem;
+}
+
+.new-address {
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.help-icon {
+  background: white;
+  z-index: 2;
+  position: relative;
+  top: -0.1rem;
+  margin-left: 0.1rem;
+  color: #e49ebe;
 }
 </style>
