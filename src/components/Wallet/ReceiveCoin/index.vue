@@ -102,8 +102,8 @@ export default {
     },
     async qrCode() {
       const options = {
-        width: 250,
-        height: 250,
+        width: 300,
+        height: 300,
       };
       if (typeof this.address === 'string') {
         await QRCode.toDataURL(this.address, options, (err, url) => {
