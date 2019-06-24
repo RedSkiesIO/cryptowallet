@@ -1,6 +1,56 @@
 <template>
-  <div class="account-item">
-    <div
+  <div>
+    <div class="account-item">
+      <q-slide-item
+        class="wallet selectWallet"
+        right-color="red"
+        @right="onRight"
+      >
+        <template v-slot:right>
+          <div
+            class="delete-cancel"
+          >
+            <q-icon
+              name="close"
+              @click="reset"
+            />
+          </div>
+        </template>
+
+        <template
+          v-if="coin.imported && !isEnabled"
+          v-slot:right
+        >
+          <q-icon
+            name="close"
+            class="delete-cancel"
+            @click="cancelDelete"
+          />
+          <q-icon
+            name="delete"
+            @click="confirmDelete"
+          />
+        </template>
+
+        <q-item dark>
+          <q-item-section avatar>
+            <div class="icon">
+              <img :src="coinLogo">
+            </div>
+          </q-item-section>
+          <q-item-section>
+            {{ wallet.displayName }}
+          </q-item-section>
+          <q-item-section
+            side
+          >
+            <q-toggle
+              v-model="isEnabled"
+            />
+          </q-item-section>
+        </q-item>
+      </q-slide-item>
+    <!-- <div
       class="wallet selectWallet"
       @click="clickHandler(wallet.id)"
     >
@@ -19,7 +69,42 @@
           />
         </div>
       </div>
+    </div> -->
     </div>
+    <q-dialog
+      v-model="confirm"
+      persistent
+    >
+      <q-card
+        style="width: 300px"
+        class="dialog"
+      >
+        <q-card-section>
+          <h2>{{ $t('confirm') }}</h2>
+          <p>
+            {{ $t('deleteTokenConfirm') }}
+          </p>
+          <p>
+            {{ $t('deleteToken1') }} {{ wallet.name }} {{ $t('deleteToken2') }}
+          </p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            :label="$t('cancelConfirm')"
+            color="blueish"
+          />
+          <q-btn
+            flat
+            :label="$t('acceptConfirm')"
+            color="blueish"
+            @click="deleteWallet"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -52,8 +137,10 @@ export default {
 
   data() {
     return {
+      reset: null,
       initializingModalOpened: false,
       walletsState: [],
+      confirm: false,
     };
   },
 
@@ -63,7 +150,6 @@ export default {
     }),
 
     isEnabled: {
-
       get() {
         return this.isWalletEnabled();
       },
@@ -79,7 +165,9 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
-
+    coin() {
+      return Coin.find([this.wallet.name]);
+    },
     coinLogo() {
       if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
@@ -87,8 +175,25 @@ export default {
       return './statics/cc-icons/color/generic.svg';
     },
   },
-
+  beforeDestroy() {
+    clearTimeout(this.timer);
+  },
   methods: {
+    onRight({ reset }) {
+      this.reset = reset;
+      // this.finalize(reset);
+    },
+    finalize(reset) {
+      this.timer = setTimeout(() => {
+        reset();
+      // eslint-disable-next-line no-magic-numbers
+      }, 1000);
+    },
+    cancelDelete() {
+      if (this.reset) {
+        this.reset();
+      }
+    },
     clickHandler(id) {
       switch (this.clickItemAction) {
         case 'selectWallet':
@@ -238,6 +343,34 @@ export default {
         });
       });
     },
+
+    confirmDelete() {
+      this.confirm = true;
+      this.cancelDelete();
+    },
+
+    deleteWallet() {
+      const wallets = Wallet.query().where('name', this.wallet.name).get();
+      wallets.forEach((wallet) => {
+        Wallet.$delete(wallet.id);
+
+        const transactions = Tx.query().where('wallet_id', wallet.id).get();
+        transactions.forEach((tx) => {
+          Tx.$delete(tx.id);
+        });
+        const utxos = Utxo.query().where('wallet_id', wallet.id).get();
+        utxos.forEach((tx) => {
+          Utxo.$delete(tx.id);
+        });
+
+        const addresses = Address.query().where('wallet_id', wallet.id).get();
+        addresses.forEach((address) => {
+          Address.$delete(address.id);
+        });
+      });
+      Coin.$delete(this.wallet.name);
+      this.confirm = false;
+    },
   },
 };
 </script>
@@ -273,5 +406,8 @@ export default {
   align-items: center;
   justify-content: space-around;
   font-size: 1em;
+}
+.delete-cancel {
+  margin-right: 10px;
 }
 </style>

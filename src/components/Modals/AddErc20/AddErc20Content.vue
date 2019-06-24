@@ -341,6 +341,7 @@ export default {
           parentName: 'Ethereum',
           contractAddress: this.form.tokenContract,
           decimals: this.form.tokenDecimals,
+          imported: true,
         };
         Coin.$insert({
           data,
