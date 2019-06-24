@@ -183,29 +183,29 @@ export default {
       this.reset = reset;
       // this.finalize(reset);
     },
-    finalize(reset) {
-      this.timer = setTimeout(() => {
-        reset();
-      // eslint-disable-next-line no-magic-numbers
-      }, 1000);
-    },
+    // finalize(reset) {
+    //   this.timer = setTimeout(() => {
+    //     reset();
+    //   // eslint-disable-next-line no-magic-numbers
+    //   }, 1000);
+    // },
     cancelDelete() {
       if (this.reset) {
         this.reset();
       }
     },
-    clickHandler(id) {
-      switch (this.clickItemAction) {
-        case 'selectWallet':
-          this.$router.push({ path: `/wallet/single/${id}` });
-          break;
-        case 'addWallet':
-          break;
-        default:
-          return false;
-      }
-      return false;
-    },
+    // clickHandler(id) {
+    //   switch (this.clickItemAction) {
+    //     case 'selectWallet':
+    //       this.$router.push({ path: `/wallet/single/${id}` });
+    //       break;
+    //     case 'addWallet':
+    //       break;
+    //     default:
+    //       return false;
+    //   }
+    //   return false;
+    // },
 
     isWalletEnabled(id) {
       const result = Wallet.query(id)
