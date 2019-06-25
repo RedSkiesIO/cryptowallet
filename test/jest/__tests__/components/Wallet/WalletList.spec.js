@@ -10,10 +10,6 @@ describe('WalletsList.vue', () => {
   let wrapper;
   let router;
 
-  const propsData = {
-    clickItemAction: 'addWallet',
-  };
-
   function wrapperInit(options) {
     return shallowMount(WalletList, options);
   }
@@ -23,7 +19,7 @@ describe('WalletsList.vue', () => {
     router = createRouter(storeMocks.store);
     router.push({ path: '/wallet/' });
     wrapper = wrapperInit({
-      i18n, router, localVue, store: storeMocks.store, propsData,
+      i18n, router, localVue, store: storeMocks.store,
     });
   }
   beforeEach(() => { return storeInit(); });

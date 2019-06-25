@@ -191,6 +191,9 @@ export default {
   tokenAlreadyEnabled: 'This token has already been enabled',
   ethSymbol: 'ETH',
   sendTxFailure: 'Failed to broadcast the transaction',
+  deleteTokenConfirm: 'Are you sure you want to delete this token?',
+  deleteToken1: 'This will remove all',
+  deleteToken2: 'wallets stored on this device.',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',

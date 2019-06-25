@@ -21,6 +21,7 @@ export default class Coin extends Model {
       parentSdk: this.attr(''),
       contractAddress: this.attr(''),
       decimals: this.attr(''),
+      imported: this.attr(false),
     };
   }
 }
