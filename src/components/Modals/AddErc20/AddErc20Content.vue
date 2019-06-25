@@ -217,6 +217,7 @@ export default {
     if (this.scannedAddress) {
       this.form.tokenContract = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
+      this.checkField('contract');
     }
   },
   methods: {
@@ -341,6 +342,7 @@ export default {
           parentName: 'Ethereum',
           contractAddress: this.form.tokenContract,
           decimals: this.form.tokenDecimals,
+          imported: true,
         };
         Coin.$insert({
           data,
