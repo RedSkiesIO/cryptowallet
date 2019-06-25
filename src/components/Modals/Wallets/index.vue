@@ -39,7 +39,6 @@
         <div class="modal-layout-wrapper no-padding">
           <WalletsList
             :wallets="supportedCoins"
-            click-item-action="addWallet"
           />
         </div>
       </div>
