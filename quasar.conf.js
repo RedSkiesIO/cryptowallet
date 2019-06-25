@@ -60,6 +60,8 @@ module.exports = (ctx) => {
         'QIcon',
         'QList',
         'QItem',
+        'QItemSection',
+        'QItemLabel',
         'QPageSticky',
         'QScrollArea',
         'QFooter',
@@ -89,6 +91,8 @@ module.exports = (ctx) => {
         'QCard',
         'QCardSection',
         'QCardActions',
+        'QSlideItem',
+        'QAvatar',
       ],
       directives: ['Ripple', 'CloseDialog', 'ClosePopup'],
       // Quasar plugins

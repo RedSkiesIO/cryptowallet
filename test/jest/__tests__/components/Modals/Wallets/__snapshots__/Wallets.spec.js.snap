@@ -56,7 +56,6 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
         class="modal-layout-wrapper no-padding"
       >
         <walletslist-stub
-          clickitemaction="addWallet"
           wallets=""
         />
       </div>

@@ -8,7 +8,6 @@
         v-for="wallet in wallets"
         :key="wallet.displayName"
         :wallet="wallet"
-        :click-item-action="clickItemAction"
       />
     </q-scroll-area>
   </section>
@@ -22,12 +21,6 @@ export default {
   name: 'WalletsList',
   components: {
     WalletItem,
-  },
-  props: {
-    clickItemAction: {
-      type: String,
-      required: true,
-    },
   },
   computed: {
     wallets() {
