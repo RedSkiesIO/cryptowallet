@@ -232,16 +232,16 @@ describe('WalletItem.vue', () => {
     });
     Tx.$insert({ data: [{ id: 1, wallet_id: 5 }] });
     Utxo.$insert({ data: [{ id: 1, wallet_id: 5 }] });
-    Address.$insert({ data: [{ id: 1, wallet_id: 5 }] });
+    Address.$insert({ data: [{ id: 1, wallet_id: 1 }] });
     const toggle = wrapper.find('input');
     toggle.trigger('click');
     setTimeout(() => {
       const wallets = Wallet.all();
-      expect(wallets[0].enabled).toBe(false);
       expect(wallets[2].enabled).toBe(false);
+      expect(wallets[0].enabled).toBe(false);
+      expect(Address.all()).toEqual([]);
       expect(Tx.all()).toEqual([]);
       expect(Utxo.all()).toEqual([]);
-      expect(Address.all()).toEqual([]);
       done();
     }, 0);
   });
@@ -261,9 +261,6 @@ describe('WalletItem.vue', () => {
       decimals: 18,
     };
     storeInit();
-    Tx.$insert({ data: [{ id: 1, wallet_id: 1 }] });
-    Utxo.$insert({ data: [{ id: 1, wallet_id: 1 }] });
-    Address.$insert({ data: [{ id: 1, wallet_id: 1 }] });
     const reset = jest.fn();
     wrapper.vm.onRight({ reset });
     wrapper.vm.confirmDelete();
@@ -271,9 +268,7 @@ describe('WalletItem.vue', () => {
     setTimeout(() => {
       expect(reset).toHaveBeenCalled();
       expect(Wallet.all().length).toBe(2);
-      expect(Tx.all()).toEqual([]);
-      expect(Utxo.all()).toEqual([]);
-      expect(Address.all()).toEqual([]);
+      expect(Coin.all().length).toBe(3);
       done();
     }, 0);
   });
