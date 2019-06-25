@@ -1,13 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WalletItem.vue renders and matches snapshot 1`] = `
-<div>
+<div
+  clickitemaction="addWallet"
+>
   <div
     class="account-item"
   >
     <div
       class="q-slide-item q-item-type overflow-hidden wallet selectWallet"
     >
+      <div
+        class="q-slide-item__right absolute-full row no-wrap items-center justify-end bg-red"
+      >
+        <div>
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon delete-cancel"
+          >
+            close
+          </i>
+           
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon"
+          >
+            delete
+          </i>
+        </div>
+      </div>
       <div
         class="q-slide-item__content"
       >

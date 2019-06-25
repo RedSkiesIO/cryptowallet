@@ -86,6 +86,7 @@ describe('WalletItem.vue', () => {
       },
       {
         name: 'Catalyst',
+        imported: true,
       },
       {
         name: '0xProtocol',
@@ -245,27 +246,35 @@ describe('WalletItem.vue', () => {
     }, 0);
   });
 
-  // it('navigates to correct route when clicked on', () => {
-  //   wrapper.find('.selectWallet').trigger('click');
-  //   expect(store.state.route.path).toBe('/');
-
-  //   wrapper.setProps({ clickItemAction: '' });
-  //   wrapper.find('.selectWallet').trigger('click');
-  //   expect(store.state.route.path).toBe('/');
-
-  //   wrapper.setProps({
-  //     wallet: {
-  //       id: 1,
-  //       name: 'Catalyst',
-  //       displayName: 'Catalyst',
-  //       parentName: 'Ethereum',
-  //       symbol: 'CAT',
-  //       network: 'ETHEREUM_ROPSTEN',
-  //       sdk: 'ERC20',
-  //     },
-  //     clickItemAction: 'selectWallet',
-  //   });
-  //   wrapper.find('.selectWallet').trigger('click');
-  //   expect(store.state.route.path).toBe('/wallet/single/1');
-  // });
+  it('can delete an imported token', (done) => {
+    // eslint-disable-next-line no-console
+    console.error = jest.fn();
+    propsData.wallet = {
+      id: 1,
+      name: 'Catalyst',
+      displayName: 'Catalyst',
+      parentName: 'Ethereum',
+      symbol: 'CAT',
+      network: 'ETHEREUM',
+      sdk: 'ERC20',
+      contractAddress: '000000',
+      decimals: 18,
+    };
+    storeInit();
+    Tx.$insert({ data: [{ id: 1, wallet_id: 1 }] });
+    Utxo.$insert({ data: [{ id: 1, wallet_id: 1 }] });
+    Address.$insert({ data: [{ id: 1, wallet_id: 1 }] });
+    const reset = jest.fn();
+    wrapper.vm.onRight({ reset });
+    wrapper.vm.confirmDelete();
+    wrapper.vm.deleteWallet();
+    setTimeout(() => {
+      expect(reset).toHaveBeenCalled();
+      expect(Wallet.all().length).toBe(2);
+      expect(Tx.all()).toEqual([]);
+      expect(Utxo.all()).toEqual([]);
+      expect(Address.all()).toEqual([]);
+      done();
+    }, 0);
+  });
 });

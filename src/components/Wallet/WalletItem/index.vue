@@ -50,26 +50,6 @@
           </q-item-section>
         </q-item>
       </q-slide-item>
-    <!-- <div
-      class="wallet selectWallet"
-      @click="clickHandler(wallet.id)"
-    >
-      <div class="details">
-        <div class="icon">
-          <img :src="coinLogo">
-        </div>
-        <div class="name">
-          {{ wallet.displayName }}
-        </div>
-      </div>
-      <div>
-        <div v-if="clickItemAction === 'addWallet'">
-          <q-toggle
-            v-model="isEnabled"
-          />
-        </div>
-      </div>
-    </div> -->
     </div>
     <q-dialog
       v-model="confirm"
@@ -128,11 +108,6 @@ export default {
       type: Object,
       required: true,
     },
-
-    clickItemAction: {
-      type: String,
-      required: true,
-    },
   },
 
   data() {
@@ -148,12 +123,10 @@ export default {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
-
     isEnabled: {
       get() {
         return this.isWalletEnabled();
       },
-
       set(val) {
         if (val) {
           this.enableWallet();
@@ -161,7 +134,6 @@ export default {
         if (!val) { this.disableWallet(); }
       },
     },
-
     supportedCoins() {
       return Coin.all();
     },
@@ -175,37 +147,17 @@ export default {
       return './statics/cc-icons/color/generic.svg';
     },
   },
-  beforeDestroy() {
-    clearTimeout(this.timer);
-  },
+
   methods: {
     onRight({ reset }) {
       this.reset = reset;
-      // this.finalize(reset);
     },
-    // finalize(reset) {
-    //   this.timer = setTimeout(() => {
-    //     reset();
-    //   // eslint-disable-next-line no-magic-numbers
-    //   }, 1000);
-    // },
+
     cancelDelete() {
       if (this.reset) {
         this.reset();
       }
     },
-    // clickHandler(id) {
-    //   switch (this.clickItemAction) {
-    //     case 'selectWallet':
-    //       this.$router.push({ path: `/wallet/single/${id}` });
-    //       break;
-    //     case 'addWallet':
-    //       break;
-    //     default:
-    //       return false;
-    //   }
-    //   return false;
-    // },
 
     isWalletEnabled(id) {
       const result = Wallet.query(id)
