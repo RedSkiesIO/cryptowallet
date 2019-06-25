@@ -25,23 +25,9 @@ function updateTxs(txs, wallet) {
       .where('pending', true)
       .get();
 
-    const changeAddrs = Address.query()
-      .where('wallet_id', wallet.id)
-      .where('chain', 'internal')
-      .get();
-
     pendingUtxos.forEach((utxo) => {
       if (sentTxs.includes(utxo.spentHash)) {
         Utxo.$delete(utxo.id);
-        const usedChange = changeAddrs.find((addr) => {
-          return addr.address === utxo.address;
-        });
-        if (usedChange) {
-          Address.$update({
-            where: (record) => { return record.id === usedChange.id; },
-            data: { used: true },
-          });
-        }
       }
     });
   }
@@ -117,7 +103,6 @@ function storeTxs(txs, wallet, coinSDK) {
 async function refreshBitcoin(coinSDK, wallet) {
   const addresses = Address.query()
     .where('wallet_id', wallet.id)
-    .where('used', false)
     .get()
     .map((item) => { return item.address; });
 

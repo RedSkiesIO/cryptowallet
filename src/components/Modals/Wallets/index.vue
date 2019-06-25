@@ -159,7 +159,7 @@ export default {
       await Address.$insert({ data: newAddress });
       await this.storeTransactions(txHistory.txs, wallet.id);
       await this.storeAddresses(externalAccountDiscovery.active, wallet.id, 'external');
-      await this.storeAddresses(internalAccountDiscovery.active, wallet.id, 'internal');
+      await this.storeAddresses(internalAccountDiscovery.used, wallet.id, 'internal');
     },
 
     async enableEthereum(coinSDK, initializedWallet, wallet) {
