@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 
-describe('modals/SendSuccess', () => {
+describe('OfflineNotice', () => {
   let wrapper;
   let router;
   let storeMocks;

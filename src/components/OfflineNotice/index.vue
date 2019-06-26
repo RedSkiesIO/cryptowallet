@@ -29,18 +29,23 @@ export default {
       this.online = this.network.isOnline();
       if (!this.online) {
         this.online = false;
-        this.showOfflineNotice();
+        if (!this.dismiss) {
+          this.showOfflineNotice();
+        }
       }
 
       this.network
         .on('offline', () => {
           this.online = false;
-          this.showOfflineNotice();
+          if (!this.dismiss) {
+            this.showOfflineNotice();
+          }
         })
         .on('online', () => {
           this.online = true;
           if (this.dismiss) {
             this.dismiss();
+            this.dismiss = null;
           }
         });
 

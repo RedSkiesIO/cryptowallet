@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modals/SendSuccess renders and matches snapshot 1`] = `
+exports[`OfflineNotice renders and matches snapshot 1`] = `
 <div
   class="bg-offline"
 />
