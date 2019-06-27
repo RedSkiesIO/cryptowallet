@@ -134,7 +134,7 @@ describe('CloudListItem.vue', () => {
     }, 0);
   });
 
-  it('the receive button routes to /wallet/send', (done) => {
+  it('the send button routes to /wallet/send', (done) => {
     storeInit();
     wrapper.findAll('button').at(0).trigger('click');
     setTimeout(() => {

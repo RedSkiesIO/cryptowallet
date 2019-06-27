@@ -51,11 +51,16 @@ export default {
   },
   methods: {
     validate() {
-      const seedLength = 12;
+      const twelve = 12;
+      const fifteen = 15;
+      const eighteen = 18;
+      const twentyone = 21;
+      const twentyfour = 24;
+      const seedLengths = [twelve, fifteen, eighteen, twentyone, twentyfour];
       const lowercase = this.seedPhrase.toLowerCase();
       const seedPhrase = lowercase.trim().split(' ');
 
-      if (seedPhrase.length !== seedLength) {
+      if (!seedLengths.includes(seedPhrase.length)) {
         this.$toast.create(10, this.$t('notEnoughWords'), this.delay.normal);
         return false;
       }
