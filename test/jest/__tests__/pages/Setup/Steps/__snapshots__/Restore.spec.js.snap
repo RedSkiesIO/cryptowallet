@@ -12,7 +12,7 @@ exports[` Restore.vue renders and matches snapshot 1`] = `
         class="setup"
       >
         
-        Enter Backup Phrase
+        Enter Your Recovery Phrase
       
       </h1>
        
@@ -20,7 +20,7 @@ exports[` Restore.vue renders and matches snapshot 1`] = `
         class="setup"
       >
         
-        Type in your 12-word Backup Phrase in the correct order to restore your CryptoWallet
+        Type in your recovery phrase (usually 12 words)
       
       </p>
     </div>

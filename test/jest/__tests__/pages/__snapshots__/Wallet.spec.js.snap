@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Wallet.vue renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="layout"
+  >
+    <div
+      class="list"
+    >
+      <cloudlist-stub />
+    </div>
+     
+    <q-dialog-stub
+      persistent="true"
+      position="standard"
+      transitionhide="scale"
+      transitionshow="scale"
+    >
+      <q-card-stub
+        class="dialog"
+        style="width: 300px;"
+      >
+        <q-card-section-stub>
+          <h2>
+            Confirm
+          </h2>
+           
+          <p>
+            
+            Do you really want to exit CryptoWallet?
+          
+          </p>
+        </q-card-section-stub>
+         
+        <q-card-actions-stub
+          align="right"
+        >
+          <q-btn-stub
+            align="center"
+            color="blueish"
+            flat="true"
+            label="no"
+            ripple="true"
+          />
+           
+          <q-btn-stub
+            align="center"
+            color="blueish"
+            flat="true"
+            label="yes"
+            ripple="true"
+          />
+        </q-card-actions-stub>
+      </q-card-stub>
+    </q-dialog-stub>
+  </div>
+</div>
+`;
