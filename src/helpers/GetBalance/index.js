@@ -1,6 +1,5 @@
 import Utxo from '@/store/wallet/entities/utxo';
 import Tx from '@/store/wallet/entities/tx';
-import Wallet from '@/store/wallet/entities/wallet';
 
 const Bitcoin = {
   getConfirmed(walletId, accountId) {
@@ -90,18 +89,6 @@ const Ethereum = {
 
   getAvailable(wallet, accountId) {
     let balance = wallet.confirmedBalance;
-
-    if (wallet.sdk === 'ERC20') {
-      const parentWallet = Wallet.query()
-        .where('account_id', accountId)
-        .where('name', wallet.parentName)
-        .get();
-
-      if (parentWallet[0].confirmedBalance === 0) {
-        balance = 0;
-        return balance;
-      }
-    }
 
     const txs = Tx.query()
       .where('account_id', accountId)
