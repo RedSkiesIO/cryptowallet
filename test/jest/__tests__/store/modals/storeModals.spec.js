@@ -74,5 +74,30 @@ describe('store setup module', () => {
       mutations.SET_RECEIVECOIN_MODAL_OPENED(state, true);
       expect(state.receiveCoinModalOpened).toBe(true);
     });
+
+    it('set add wallet modal', () => {
+      mutations.SET_ADDWALLET_MODAL_OPENED(state, true);
+      expect(state.addWalletModalOpened).toBe(true);
+    });
+
+    it('set select currency modal', () => {
+      mutations.SET_SELECTCURRENCY_MODAL_OPENED(state, true);
+      expect(state.selectCurrencyModalOpened).toBe(true);
+    });
+
+    it('set new select language modal', () => {
+      mutations.SET_SELECTLANGUAGE_MODAL_OPENED(state, true);
+      expect(state.selectLanguageModalOpened).toBe(true);
+    });
+
+    it('set delete account modal', () => {
+      mutations.SET_DELETEACCOUNT_MODAL_OPENED(state, true);
+      expect(state.deleteAccountModalOpened).toBe(true);
+    });
+
+    it('set new pin coin modal', () => {
+      mutations.SET_NEWPIN_MODAL_OPENED(state, true);
+      expect(state.newPinModalOpened).toBe(true);
+    });
   });
 });
