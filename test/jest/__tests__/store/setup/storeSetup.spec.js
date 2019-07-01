@@ -71,6 +71,11 @@ describe('store setup module', () => {
       expect(state.accountIpNode).toBe('192.168.0.0.1');
     });
 
+    it('set account created', () => {
+      mutations.SET_ACCOUNT_CREATED(state);
+      expect(state.accountCreated).toBe(true);
+    });
+
     it('set pin', () => {
       state.pinArray = undefined;
       const mockPin = { value: 0 };

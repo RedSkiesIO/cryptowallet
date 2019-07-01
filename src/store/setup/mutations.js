@@ -87,7 +87,7 @@ export function SET_ACCOUNT_IP_NODE(state, payload) {
  * State mutation for account created
  */
 export function SET_ACCOUNT_CREATED(state) {
-  state.accountCreated = [];
+  state.accountCreated = true;
 }
 
 /**
