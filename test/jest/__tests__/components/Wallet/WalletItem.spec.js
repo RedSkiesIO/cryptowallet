@@ -261,6 +261,9 @@ describe('WalletItem.vue', () => {
       decimals: 18,
     };
     storeInit();
+    Tx.$insert({ data: [{ id: 1, wallet_id: 1 }] });
+    Utxo.$insert({ data: [{ id: 1, wallet_id: 1 }] });
+    Address.$insert({ data: [{ id: 1, wallet_id: 1 }] });
     const reset = jest.fn();
     wrapper.vm.onRight({ reset });
     wrapper.vm.confirmDelete();
