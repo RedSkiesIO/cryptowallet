@@ -26,6 +26,25 @@
             class="header-settings-button-wrapper"
           >
             <q-btn
+              v-if="search"
+              icon="close"
+              color="secondary"
+              size="lg"
+              class="icon-btn icon-btn-right"
+              flat
+              @click.prevent="closeSearch"
+            />
+            <q-btn
+              v-if="!search"
+              icon="search"
+              color="secondary"
+              size="lg"
+              class="icon-btn icon-btn-right"
+              flat
+              @click.prevent="openSearch"
+            />
+            <q-btn
+              v-if="!search"
               icon="add"
               color="secondary"
               size="lg"
@@ -37,7 +56,11 @@
         </div>
 
         <div class="modal-layout-wrapper no-padding">
+          <WalletsFilter
+            v-if="search"
+          />
           <WalletsList
+            v-if="!search"
             :wallets="supportedCoins"
           />
         </div>
@@ -49,6 +72,7 @@
 <script>
 import { mapState } from 'vuex';
 import WalletsList from '@/components/Wallet/WalletsList';
+import WalletsFilter from '@/components/Wallet/WalletsFilter';
 import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
@@ -59,11 +83,13 @@ export default {
   name: 'AddWallet',
   components: {
     WalletsList,
+    WalletsFilter,
   },
   data() {
     return {
       loading: false,
       msToS: 1000,
+      search: false,
     };
   },
   computed: {
@@ -85,6 +111,14 @@ export default {
   methods: {
     openAddWalletModal() {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
+    },
+
+    openSearch() {
+      this.search = true;
+    },
+
+    closeSearch() {
+      this.search = false;
     },
 
     createDate(timestamp) {
