@@ -52,7 +52,7 @@ const erc20WalletData = JSON.parse('{"$id":4,"id":4,"account_id":1,"name":"Catal
 
 const addressData = JSON.parse('{"$id":1,"id":1,"wallet_id":5,"account_id":1,"address":"2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX7","index":0,"chain":"internal","used":false}');
 
-const utxoData = JSON.parse('{"$id":1,"id":1,"account_id":1,"wallet_id":5,"pending":true,"address":"2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX8","amount":0.0027175,"scriptPubKey":"a9142df2990ee914d0a0c0dc8ed92abe91642d7a415b87","txid":"9e792178e63be3d05b7f03f822c060909bd9fa5c451ce4ab11c1827108c5fb6d","value":271750,"vout":0}');
+const utxoData = JSON.parse('{"$id":1,"id":1,"account_id":1,"wallet_id":5,"pending":true,"address":"2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX8","amount":0.0027175,"scriptPubKey":"a9142df2990ee914d0a0c0dc8ed92abe91642d7a415b87","txid":"9e792178e63be3d05b7f03f822c060909bd9fa5c451ce4ab11c1827108c5fb6d","value":271750,"vout":0, "spentHash":"789"}');
 
 describe('RefreshWallet', () => {
   function storeInit() {
@@ -113,20 +113,19 @@ describe('RefreshWallet', () => {
   });
 
   it('can refresh an ethereum wallet with transaction history', async () => {
-    mockCoinSDK.getTransactionHistory.mockReturnValue({
-      txs: [{
-        hash: '123', wallet_id: 3, confirmations: 8, sent: true,
-      },
-      {
-        hash: '456', wallet_id: 3, confirmations: 1, sent: false,
-      }],
-    });
+    const txArrayLength = 120;
+    const txs = [];
+    for (let i = 0; i < txArrayLength; i += 1) {
+      const sent = i % 2 === 0;
+      txs.push({
+        hash: i.toString(), wallet_id: 3, confirmations: 5, sent,
+      });
+    }
+    mockCoinSDK.getTransactionHistory.mockReturnValue({ txs });
     mockCoinSDK.getBalance.mockReturnValue('15');
-    Tx.insert({ data: mockTxs });
     await RefreshWallet(mockCoinSDK, Wallet.all()[0], 1);
-    expect(Tx.all()[0].confirmations).toBe(8);
-    expect(Tx.all()[4].hash).toBe('456');
     expect(Wallet.all()[0].confirmedBalance).toBe(15);
+    expect(Tx.all().length).toBe(100);
   });
 
   it('can refresh an ERC20 wallet with transaction history', async () => {
