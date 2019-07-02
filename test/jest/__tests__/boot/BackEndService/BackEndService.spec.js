@@ -32,6 +32,7 @@ describe('boot/BackEndService', () => {
   let router;
   let storeMocks;
   let backEndService;
+  let setOnline = true;
 
   const wallets = [{ symbol: 'BTC' }, { symbol: 'LTC' }, { symbol: 'ETH' }, { symbol: 'DASH' }, { symbol: 'CAT' }].map((coin) => {
     coin.account_id = 1;
@@ -67,7 +68,10 @@ describe('boot/BackEndService', () => {
     backEndService = new wrapperMock.vm.$root.BackEndService(wrapperMock.vm, accountData.id, pin.join(''));
   }
 
-  beforeEach(() => { storeInit({}, defaultProps); jest.clearAllMocks(); });
+  beforeEach(() => {
+    Object.defineProperty(window.navigator, 'onLine', { value: setOnline, configurable: true });
+    storeInit(true, {}, defaultProps); jest.clearAllMocks();
+  });
 
   it('exports a function', async () => {
     expect(typeof BackEndService).toBe('function');
@@ -169,8 +173,17 @@ describe('boot/BackEndService', () => {
       setTimeout(() => {
         expect(createMock).toHaveBeenCalledWith(10, wrapperMock.vm.$t('failedToConnect'), 500);
         expect(createMock).toHaveBeenCalledTimes(3);
+        setOnline = false;
         done();
       }, 500);
+    });
+
+    it('returns false if there is no internet connection', async (done) => {
+      backEndService.refreshAuth = jest.fn().mockReturnValue(201);
+      const result = await backEndService.connect();
+      expect(result).toBe(false);
+      setOnline = true;
+      done();
     });
   });
 
@@ -364,6 +377,37 @@ describe('boot/BackEndService', () => {
         done();
       }, 1500);
     });
+
+    it('returns false if not found', () => {
+      const errorMock = new Error();
+      errorMock.response = {
+        status: 422,
+      };
+      mockAxios.get = jest.fn().mockImplementation(() => {
+        throw errorMock;
+      });
+
+      const exampleURL = 'http://example.com';
+      return backEndService.try(exampleURL).then((result) => {
+        expect(result).toEqual(false);
+        setOnline = false;
+      });
+    });
+
+    it('rejects if the device is not connected to the internet', async (done) => {
+      mockAxios.get = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+
+      backEndService.maxTryAttempts = 3;
+      backEndService.longDelay = 50;
+
+      const exampleURL = 'http://example.com';
+      backEndService.try(exampleURL).catch((e) => {
+        expect(e.message).toEqual('You are not connected to the internet');
+        done();
+      });
+    });
   });
 
   describe('getPriceFeed() method', () => {
@@ -468,9 +512,8 @@ describe('boot/BackEndService', () => {
     it('stores the price data if data does not exist', async (done) => {
       const coin = 'BTC';
       const mockPriceData = ['such', 'data', 'many', 'bytes'];
-      await backEndService.storePriceData(coin, mockPriceData);
-
-      expect(LatestPrice.all()[0].data).toBe(mockPriceData);
+      await backEndService.storePriceData(coin, mockPriceData, 'USD');
+      expect(LatestPrice.all()[5].data).toBe(mockPriceData);
       done();
     });
 
@@ -542,8 +585,6 @@ describe('boot/BackEndService', () => {
 
       backEndService.storePriceData = jest.fn();
       await backEndService.loadPriceFeed();
-      // expect(backEndService.getPriceFeed).toHaveBeenCalled();
-
       expect(backEndService.storePriceData).toHaveBeenCalledTimes(wallets.length * 3);
       done();
     });

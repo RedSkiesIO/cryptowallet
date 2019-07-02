@@ -34,5 +34,10 @@ describe('store setup module', () => {
       mutations.SET_SCANNED_ADDRESS(state, '2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd');
       expect(state.scannedAddress).toBe('2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd');
     });
+
+    it('set qr mode', () => {
+      mutations.SET_QR_MODE(state, 'addErc20');
+      expect(state.qrMode).toBe('addErc20');
+    });
   });
 });

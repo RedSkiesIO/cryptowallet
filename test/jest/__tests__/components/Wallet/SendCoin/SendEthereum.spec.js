@@ -387,6 +387,8 @@ describe('SendEthereum component', () => {
 
     it('displays the fee in ETH for ERC20 tokens', (done) => {
       storeInit({}, defaultProps, 4);
+      wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDE';
+      wrapper.vm.inCoin = 5;
       const fees = {
         low: 11281690855,
         medium: 11281690855,
@@ -411,6 +413,19 @@ describe('SendEthereum component', () => {
 
         setTimeout(() => {
           expect(wrapper.vm.estimatedFee).toBe('0.000237 ETH (£0.90)');
+          done();
+        }, 750);
+      }, 25);
+    });
+
+    it('displays that the fee is n/a if device is offline', async (done) => {
+      global.navigator = { onLine: false };
+      setTimeout(() => {
+        wrapper.vm.feeSetting = 2;
+        wrapper.vm.feeChange(2);
+
+        setTimeout(() => {
+          expect(wrapper.vm.estimatedFee).toBe('N/A');
           done();
         }, 750);
       }, 25);
