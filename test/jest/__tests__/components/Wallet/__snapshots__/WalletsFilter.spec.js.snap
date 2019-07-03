@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletsFilter.vue renders and matches snapshot 1`] = `
+<div
+  class="filter-wallets"
+>
+  <div
+    class="q-field row no-wrap items-start q-select q-field--auto-height q-select--with-input q-field--borderless q-field--dense"
+    placeholder="Search Tokens"
+  >
+    <div
+      class="q-field__inner relative-position col self-stretch column justify-center"
+    >
+      <div
+        class="q-field__control relative-position row no-wrap"
+        tabindex="-1"
+      >
+        <div
+          class="q-field__prepend q-field__marginal row no-wrap items-center"
+        >
+          <i
+            aria-hidden="true"
+            class="material-icons q-icon text-white"
+            style="margin-left: 1rem;"
+          >
+            search
+          </i>
+        </div>
+        <div
+          class="q-field__control-container col relative-position row no-wrap q-anchor--skip"
+        >
+          <div
+            class="q-field__native row items-center"
+          >
+            <input
+              class="q-select__input col"
+              placeholder="Search Tokens"
+              tabindex="0"
+            />
+          </div>
+        </div>
+        <div
+          class="q-field__append q-field__marginal row no-wrap items-center q-anchor--skip"
+        />
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>
+`;
