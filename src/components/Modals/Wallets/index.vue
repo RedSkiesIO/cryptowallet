@@ -318,8 +318,9 @@ export default {
         .where('imported', false)
         .get();
 
-      if (wallets.length > 0) {
-        try {
+
+      try {
+        if (wallets.length > 0) {
           this.$store.dispatch('settings/setLoading', true);
           const promises = [];
           const erc20Promises = [];
@@ -351,13 +352,16 @@ export default {
 
           await Promise.all(promises.map((promise) => { return promise(); }));
           await Promise.all(erc20Promises.map((erc20) => { return erc20(); }));
-        } finally {
-          this.addWalletModalOpened = false;
-          this.$store.dispatch('settings/setLoading', false);
         }
-      } else {
+      } finally {
         this.addWalletModalOpened = false;
+        this.search = false;
+        this.$store.dispatch('settings/setLoading', false);
       }
+      // } else {
+      //   this.addWalletModalOpened = false;
+      //   this.search = false;
+      // }
     },
   },
 };

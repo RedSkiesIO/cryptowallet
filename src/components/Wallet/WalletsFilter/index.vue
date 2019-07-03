@@ -66,15 +66,32 @@ export default {
         return coin.name;
       });
     },
+    walletSymbols() {
+      return Coin.all().map((coin) => {
+        return coin.symbol;
+      });
+    },
   },
 
   methods: {
     filterFn(val, update) {
+      const getUnique = (arr, comp) => {
+        const unique = arr
+          .map((e) => { return e[comp]; })
+          .map((e, i, final) => { return final.indexOf(e) === i && i; })
+          .filter((e) => { return arr[e]; }).map((e) => { return arr[e]; });
+        return unique;
+      };
+
       update(() => {
         const needle = val.toLowerCase();
-        this.options = this.wallets.filter((wallet) => {
+        const filterByName = this.wallets.filter((wallet) => {
           return wallet.name.toLowerCase().indexOf(needle) > -1;
         });
+        const filterBySymbol = this.wallets.filter((wallet) => {
+          return wallet.symbol.toLowerCase().indexOf(needle) > -1;
+        });
+        this.options = getUnique([...filterByName, ...filterBySymbol], '$id');
       });
     },
   },
