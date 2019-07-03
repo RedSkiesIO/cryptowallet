@@ -358,10 +358,6 @@ export default {
         this.search = false;
         this.$store.dispatch('settings/setLoading', false);
       }
-      // } else {
-      //   this.addWalletModalOpened = false;
-      //   this.search = false;
-      // }
     },
   },
 };

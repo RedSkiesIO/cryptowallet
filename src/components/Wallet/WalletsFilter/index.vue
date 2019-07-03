@@ -61,16 +61,6 @@ export default {
     wallets() {
       return Coin.all();
     },
-    walletNames() {
-      return Coin.all().map((coin) => {
-        return coin.name;
-      });
-    },
-    walletSymbols() {
-      return Coin.all().map((coin) => {
-        return coin.symbol;
-      });
-    },
   },
 
   methods: {

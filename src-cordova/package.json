@@ -49,8 +49,8 @@
             "cordova-plugin-navigationbar-color": {}
         },
         "platforms": [
-            "android",
-            "ios"
+            "ios",
+            "android"
         ]
     },
     "devDependencies": {}

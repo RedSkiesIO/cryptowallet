@@ -91,6 +91,6 @@
         <preference name="StatusBarBackgroundColor" value="##1e3c57" />
     </plugin>
     <plugin name="cordova-plugin-navigationbar-color" spec="0.0.9" />
-    <engine name="android" spec="^7.1.4" />
     <engine name="ios" spec="^4.5.5" />
+    <engine name="android" spec="^7.1.4" />
 </widget>
