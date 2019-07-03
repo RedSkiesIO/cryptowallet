@@ -32,7 +32,7 @@
               size="lg"
               class="icon-btn icon-btn-right"
               flat
-              @click.prevent="closeSearch"
+              @click.prevent="toggleSearch(false)"
             />
             <q-btn
               v-if="!search"
@@ -41,7 +41,7 @@
               size="lg"
               class="icon-btn icon-btn-right"
               flat
-              @click.prevent="openSearch"
+              @click.prevent="toggleSearch(true)"
             />
             <q-btn
               v-if="!search"
@@ -113,12 +113,8 @@ export default {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
     },
 
-    openSearch() {
-      this.search = true;
-    },
-
-    closeSearch() {
-      this.search = false;
+    toggleSearch(val) {
+      this.search = val;
     },
 
     createDate(timestamp) {

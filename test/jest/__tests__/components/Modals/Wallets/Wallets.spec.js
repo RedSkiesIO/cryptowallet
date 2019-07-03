@@ -149,6 +149,13 @@ describe('Modals/Wallets.vue', () => {
     expect(wrapper.contains('walletsList-stub')).toBe(true);
   });
 
+  it('renders the wallets filter', () => {
+    storeInit();
+    wrapper.vm.toggleSearch(true);
+    expect(wrapper.contains('walletsList-stub')).toBe(false);
+    expect(wrapper.contains('walletsFilter-stub')).toBe(true);
+  });
+
   it('closes the modal if no wallets need to be enabled', () => {
     storeInit();
     wrapper.vm.addWalletModalOpened = true;
