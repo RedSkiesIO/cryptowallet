@@ -194,6 +194,8 @@ export default {
   deleteTokenConfirm: 'Are you sure you want to delete this token?',
   deleteToken1: 'This will remove all',
   deleteToken2: 'wallets stored on this device.',
+  noWalletsFound: 'No results',
+  searchTokens: 'Search Tokens',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',
