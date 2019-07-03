@@ -8,7 +8,7 @@
       hide-selected
       dense
       hide-dropdown-icon
-      placeholder="Search Tokens"
+      :placeholder="$t('searchTokens')"
       input-debounce="0"
       :options="options"
       @filter="filterFn"
@@ -33,7 +33,7 @@
             class="text-grey"
             style="padding: 0 1rem"
           >
-            No results
+            {{ $t('noWalletsFound') }}
           </q-item-section>
         </q-item>
       </template>
