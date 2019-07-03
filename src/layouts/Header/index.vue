@@ -245,7 +245,7 @@ export default {
   min-height: auto;
   height: 100%;
   position: relative;
-  width: 4em;
+  width: 2em;
   padding: 0;
 }
 
