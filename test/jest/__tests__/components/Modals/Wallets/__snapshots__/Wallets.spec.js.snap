@@ -40,6 +40,18 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
         <div
           class="header-settings-button-wrapper"
         >
+          <!---->
+           
+          <q-btn-stub
+            align="center"
+            class="icon-btn icon-btn-right"
+            color="secondary"
+            flat="true"
+            icon="search"
+            ripple="true"
+            size="lg"
+          />
+           
           <q-btn-stub
             align="center"
             class="icon-btn icon-btn-right"
@@ -55,6 +67,8 @@ exports[`Modals/Wallets.vue renders and matches snapshot 1`] = `
       <div
         class="modal-layout-wrapper no-padding"
       >
+        <!---->
+         
         <walletslist-stub
           wallets=""
         />
