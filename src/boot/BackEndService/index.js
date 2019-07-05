@@ -37,7 +37,7 @@ class BackEndService {
     this.setRefreshToken(this.account.refresh_token);
     this.delay = 500;
     this.longDelay = 2500;
-    this.maxConnectAttempts = 25;
+    this.maxConnectAttempts = 3;
     this.maxTryAttempts = 3;
     this.createdCode = 201;
     this.successCode = 200;
@@ -72,7 +72,7 @@ class BackEndService {
 
       if (attempts >= attemptLimit) {
         this.vm.errorHandler(new Error(this.vm.$t('failedToConnect')), false);
-        return false;
+        return resolve(false);
       }
 
       if (!network) {
@@ -119,6 +119,7 @@ class BackEndService {
    */
   async auth() {
     const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`);
+
     if (response.data) {
       this.accessToken = response.data.accessToken;
       this.setRefreshToken(response.data.refreshToken);

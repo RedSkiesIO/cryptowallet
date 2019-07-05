@@ -9,6 +9,7 @@ import { Notify } from 'quasar';
 export default ({ Vue, store }) => {
   Vue.use(Rollbar, {
     accessToken: '54bc0469e13f406b97ef0ccdb0e62e48',
+    autoInstrument: { dom: false },
     captureUncaught: true,
     captureUnhandledRejections: true,
     enabled: true,
@@ -44,7 +45,7 @@ export default ({ Vue, store }) => {
       });
     }
 
-    Vue.rollbar.error(err.message);
+    Vue.rollbar.error(err);
 
     if (showToast) {
       const delay = 3000;
