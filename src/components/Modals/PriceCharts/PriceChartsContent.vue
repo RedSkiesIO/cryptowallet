@@ -61,7 +61,8 @@
         </div>
         <div class="row price">
           <div class="col-6">
-            {{ selectedCurrency.symbol }}{{ latestPrice.data.PRICE.toFixed(2) }}
+            {{ selectedCurrency.symbol }}
+            {{ latestPrice.data.PRICE.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') }}
           </div>
           <!-- <div
             v-if="latestPrice.data.VOLUME24HOURTO !== 0"

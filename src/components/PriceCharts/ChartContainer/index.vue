@@ -2,19 +2,25 @@
   <div class="chart-container">
     <div class="row justify-center">
       <q-btn
+        flat
         class="chart-button"
+        :disable="disable===0"
         color="secondary"
         label="24H"
         @click="onClick(0)"
       />
       <q-btn
+        flat
         class="chart-button"
+        :disable="disable===1"
         color="secondary"
         label="1W"
         @click="onClick(1)"
       />
       <q-btn
+        flat
         class="chart-button"
+        :disable="disable===2"
         color="secondary"
         label="1M"
         @click="onClick(2)"
@@ -45,6 +51,7 @@ export default {
   data() {
     return {
       newChart: '',
+      disable: 0,
     };
   },
   computed: {
@@ -126,6 +133,7 @@ export default {
     },
 
     onClick(index) {
+      this.disable = index;
       const chart = this.newChart;
       [0, 1, 2].forEach((i) => {
         if (i !== index) {
@@ -147,6 +155,10 @@ export default {
     margin-bottom: 15px;
     margin-top: 10px;
     min-height: 1.75em;
+    opacity: 0.6;
+}
+.chart-button button.q-btn.disabled, button.q-btn[disabled]{
+  opacity: 1 !important;
 }
 .chart-container{
     margin: 0;
