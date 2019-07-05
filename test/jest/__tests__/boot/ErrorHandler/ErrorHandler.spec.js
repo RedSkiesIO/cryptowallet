@@ -51,7 +51,7 @@ describe('boot/ErrorHandler', () => {
     Notify.create = jest.fn();
     wrapperMock.vm.errorHandler(new Error('Some Error'));
     expect(localVue.rollbar.configure).toHaveBeenCalledWith({ payload: { account: { name: 'Stephen' } } });
-    expect(localVue.rollbar.error).toHaveBeenCalledWith('Some Error');
+    expect(localVue.rollbar.error).toHaveBeenCalledWith(Error('Some Error'));
     expect(console.error).toHaveBeenCalled();
   });
 

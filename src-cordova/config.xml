@@ -19,6 +19,7 @@
             <application android:allowBackup="false" />
             <application android:fullBackupContent="false" />
             <application android:icon="@mipmap/cryptowallet" android:roundIcon="@mipmap/cryptowallet_round" />
+            <application android:usesCleartextTraffic="true" />
         </edit-config>
         <resource-file src="res/icon/cryptowallet-web.png" target="app/src/main/cryptowallet-web.png" />
         <resource-file src="res/icon/android/values/ic_launcher_background.xml" target="app/src/main/res/values/ic_launcher_background.xml" />
