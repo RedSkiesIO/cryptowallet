@@ -126,13 +126,15 @@ exports[`modals/PriceCharts renders and matches snapshot 1`] = `
           class="col-6"
         >
           
-          4.73%
+          2.34%
         
         </div>
       </div>
     </div>
      
-    <pricechart-stub />
+    <pricechart-stub
+      datasets="[object Object],[object Object],[object Object]"
+    />
      
     <div
       class="row justify-center"

@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import PriceCharts from '@/components/Modals/PriceCharts/PriceChartsContent.vue';
 import { mount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
@@ -70,8 +71,8 @@ describe('modals/PriceCharts', () => {
       setTimeout(() => {
         expect(wrapper.contains('pricechart-stub')).toEqual(false);
         done();
-      }, 0);
-    }, 0);
+      }, 501);
+    }, 501);
   });
 
   describe('loadData()', () => {
@@ -103,7 +104,7 @@ describe('modals/PriceCharts', () => {
 
     it('changes the colour of the price change value if negative', (done) => {
       expect(wrapper.vm.percentColor).toBe('#00FF00');
-      Latest.update({ data: JSON.parse('{"$id":"BTC_GBP","coin":"BTC","currency":"GBP","updated":1554305869988,"data":{"VOLUME24HOURTO":10147125.523436274,"PRICE":3818.12,"CHANGEPCT24HOUR":-4.734003741558176}}') });
+      Prices.update({ data: JSON.parse('{"$id":"BTC_GBP_day","coin":"BTC","currency":"GBP","period":"day","updated":1555516399799,"data":[{"t":1555426800000,"y":5907.54},{"t":1555430400000,"y":3907.63},{"t":1555434000000,"y":3987.8},{"t":1555437600000,"y":3981.87},{"t":1555441200000,"y":3990.52},{"t":1555444800000,"y":3978.55},{"t":1555448400000,"y":3985.98},{"t":1555452000000,"y":3997},{"t":1555455600000,"y":3992.39},{"t":1555459200000,"y":4023.61},{"t":1555462800000,"y":4010.39},{"t":1555466400000,"y":4004.59},{"t":1555470000000,"y":4007.47},{"t":1555473600000,"y":4010.36},{"t":1555477200000,"y":4000.12},{"t":1555480800000,"y":3994.68},{"t":1555484400000,"y":4000.15},{"t":1555488000000,"y":4001.41},{"t":1555491600000,"y":3993.82},{"t":1555495200000,"y":4017.2},{"t":1555498800000,"y":4028.62},{"t":1555502400000,"y":3996.31},{"t":1555506000000,"y":3997.83},{"t":1555509600000,"y":4004.72},{"t":1555513200000,"y":3998.87}]}') });
       setTimeout(() => {
         expect(wrapper.vm.percentColor).toBe('#de4662');
         done();
@@ -123,6 +124,11 @@ describe('modals/PriceCharts', () => {
           }, 10);
         }, 10);
       }, 10);
+    });
+  });
+  describe('updatePercent()', () => {
+    it('sets percentChange to a dataset index', () => {
+      wrapper.vm.updatePercent(1);
     });
   });
 });

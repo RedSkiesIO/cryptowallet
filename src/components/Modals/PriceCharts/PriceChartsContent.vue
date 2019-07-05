@@ -71,16 +71,19 @@
           </div> -->
         </div>
         <div
+          v-if="chartData"
           :style="{ color: percentColor}"
           class="row"
         >
           <div class="col-6">
-            {{ latestPrice.data.CHANGEPCT24HOUR.toFixed(2) }}%
+            {{ percentChange.toFixed(2) }}%
           </div>
         </div>
       </div>
       <PriceChart
-        v-if="(chartDataExists || showChart)"
+        v-if="(chartData || showChart)"
+        :datasets="chartData"
+        @update="updatePercent"
       />
       <div class="row justify-center">
         {{ $t('lastUpdated') }}: {{ new Date(latestPrice.updated).toLocaleString('default') }}
@@ -95,6 +98,7 @@ import PriceChart from '@/components/PriceCharts/ChartContainer';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
 import IconList from '@/statics/cc-icons/icons-list.json';
+import Prices from '@/store/prices';
 
 export default {
   name: 'PriceCharts',
@@ -106,13 +110,13 @@ export default {
     return {
       loading: false,
       showChart: false,
+      chartIndex: 0,
     };
   },
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       delay: (state) => { return state.settings.delay; },
-
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -133,9 +137,29 @@ export default {
       }
       return prices;
     },
+    chartData() {
+      const day = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
+      const week = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_week`]);
+      const month = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_month`]);
+      if (!day || !week || !month) {
+        return null;
+      }
+      return [
+        day,
+        week,
+        month,
+      ];
+    },
+    percentChange: {
+      get() {
+        return this.priceChange(this.chartIndex);
+      },
+      set(index) {
+        this.chartIndex = index;
+      },
+    },
     percentColor() {
-      const priceChange = this.latestPrice.data.CHANGEPCT24HOUR;
-      if (priceChange > 0) {
+      if (this.percentChange > 0) {
         return '#00FF00';
       }
       return '#de4662';
@@ -146,17 +170,6 @@ export default {
       }
       return './statics/cc-icons/color/generic.svg';
     },
-    chartDataExists() {
-      const day = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_day`);
-      const week = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_week`);
-      const month = this.$store.getters['entities/prices/find'](`${this.coinSymbol}_${this.selectedCurrency.code}_month`);
-      if (!day || !week || !month) {
-        return false;
-      }
-
-      return true;
-    },
-
   },
   async mounted() {
     const updateTime = 120000;
@@ -168,6 +181,16 @@ export default {
     }
   },
   methods: {
+    updatePercent(index) {
+      this.percentChange = index;
+    },
+    priceChange(index) {
+      if (!this.chartData) { return null; }
+      const { data } = this.chartData[index];
+      const percent = 100;
+      const change = (data[data.length - 1].y - data[0].y) / data[0].y * percent;
+      return change;
+    },
     async loadData() {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
       if (online) {
@@ -179,6 +202,7 @@ export default {
         } catch (err) {
           this.errorHandler(err);
         }
+        this.percentChange = 0;
 
         this.loading = false;
         this.showChart = true;
