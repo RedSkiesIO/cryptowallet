@@ -19,6 +19,8 @@
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:allowBackup="false" />
             <application android:fullBackupContent="false" />
+            <application android:icon="@mipmap/cryptowallet" android:roundIcon="@mipmap/cryptowallet_round" />
+            <application android:usesCleartextTraffic="true" />
         </edit-config>
         <icon background="@color/background" density="ldpi" foreground="res/icon/android/ldpi-foreground.png" src="res/icon/android/ldpi.png" />
         <icon background="@color/background" density="mdpi" foreground="res/icon/android/mdpi-foreground.png" src="res/icon/android/mdpi.png" />

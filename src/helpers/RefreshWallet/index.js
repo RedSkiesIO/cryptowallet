@@ -161,7 +161,7 @@ async function refreshEthereum(coinSDK, wallet) {
     0,
   );
 
-  if (!txHistory) {
+  if (!txHistory || txHistory.txs.length === 0) {
     return false;
   }
 
@@ -182,8 +182,7 @@ async function refreshEthereum(coinSDK, wallet) {
 
 async function refreshERC20(coinSDK, wallet) {
   const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
-
-  if (!txHistory) {
+  if (!txHistory || txHistory.length === 0) {
     return false;
   }
 
