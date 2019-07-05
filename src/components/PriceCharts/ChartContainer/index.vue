@@ -5,7 +5,7 @@
         flat
         class="chart-button"
         :disable="disable===0"
-        color="secondary"
+        color="white"
         label="24H"
         @click="onClick(0)"
       />
@@ -13,7 +13,7 @@
         flat
         class="chart-button"
         :disable="disable===1"
-        color="secondary"
+        color="white"
         label="1W"
         @click="onClick(1)"
       />
@@ -21,7 +21,7 @@
         flat
         class="chart-button"
         :disable="disable===2"
-        color="secondary"
+        color="white"
         label="1M"
         @click="onClick(2)"
       />
@@ -156,10 +156,9 @@ export default {
     margin-top: 10px;
     min-height: 1.75em;
     opacity: 0.6;
+    color: white;
 }
-.chart-button button.q-btn.disabled, button.q-btn[disabled]{
-  opacity: 1 !important;
-}
+
 .chart-container{
     margin: 0;
 }

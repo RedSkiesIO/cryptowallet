@@ -113,7 +113,8 @@ exports[`modals/PriceCharts renders and matches snapshot 1`] = `
           class="col-6"
         >
           
-          £3818.12
+          £
+          3,818.12
         
         </div>
       </div>
