@@ -153,6 +153,7 @@ describe('SendEthereum component', () => {
       it('does nothing if scanned qrcode contains invalid address', async (done) => {
         QRScanner.mockBehaviour = 1;
         wrapper.find('.qr-code-wrapper').trigger('click');
+        wrapper.vm.$toast.create = jest.fn();
 
         setTimeout(() => {
           expect(storeMocks.actions.setScannedAddress.mock.calls.length).toBe(0);
