@@ -782,23 +782,30 @@ export default {
     scan() {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
-
+      const invalidAddress = this.$t('bitcoinAddressInvalid');
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              this.errorHandler(err);
-            } else {
-              const coinSDK = this.coinSDKS[this.wallet.sdk];
-              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+          const scanQR = () => {
+            return QRScanner.scan((err, text) => {
+              if (err) {
+                this.errorHandler(err);
+              } else {
+                const coinSDK = this.coinSDKS[this.wallet.sdk];
+                const isValid = coinSDK.validateAddress(text, this.wallet.network);
 
-              if (isValid) {
-                this.$store.dispatch('qrcode/setScannedAddress', text);
-                this.$store.dispatch('qrcode/cancelScanning');
-                this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                if (isValid) {
+                  this.$store.dispatch('qrcode/setScannedAddress', text);
+                  this.$store.dispatch('qrcode/cancelScanning');
+                  this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                } else {
+                  this.$toast.create(10, invalidAddress, this.delay.normal);
+                  const waitForToast = 5000;
+                  setTimeout(() => { return scanQR(); }, waitForToast);
+                }
               }
-            }
-          });
+            });
+          };
+          scanQR();
         }, this.delay.normal);
       }
     },
