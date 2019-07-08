@@ -219,6 +219,7 @@ export default {
   confirm: 'Confirm',
   seedConfirmation: 'Have you stored your seed?',
   enterAccountName: 'Please enter an account name',
+  invalidAccountName: 'An account name can only contain letters and numbers with no spaces',
   invalidSeedPhrase: 'Invalid seed phrase',
   termsBox1: 'I understand that my funds are held securely on this device and not by CryptoWallet',
   termsBox2: 'I understand that if I lose this device or uninstall the app my digital assets can only be recovered using my 12 word recovery seed ',
