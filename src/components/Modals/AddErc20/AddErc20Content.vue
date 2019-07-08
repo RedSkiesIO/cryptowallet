@@ -232,13 +232,13 @@ export default {
 
     validateAddress(address) {
       const coinSDK = this.coinSDKS.Ethereum;
-      return coinSDK.validateAddress(address, this.tokenNetwork);
+      return coinSDK.validateAddress(address, this.form.tokenNetwork);
     },
 
     async validateContract(contract) {
       const coinSDK = this.coinSDKS.ERC20;
       try {
-        const info = await coinSDK.getTokenData(contract, this.tokenNetwork);
+        const info = await coinSDK.getTokenData(contract, this.form.tokenNetwork);
         if (info) {
           this.form.tokenName = info.name;
           this.form.tokenSymbol = info.symbol;
