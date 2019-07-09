@@ -95,6 +95,7 @@
                   outlined
                   dense
                   color="primary"
+                  :suffix="wallet.symbol"
                   @input="qrCodeWithAddress"
                 />
               </q-card-section>
