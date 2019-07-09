@@ -75,6 +75,33 @@
           >
         </div>
         <div
+          class="set-amount row justify-center"
+        >
+          <q-expansion-item
+            v-model="setAmount"
+            label="Set Amount"
+            popup
+            @input="toggleSetAmount"
+          >
+            <q-card>
+              <q-card-section>
+                <span class="h3-line" />
+
+                <q-input
+                  v-model="amount"
+                  type="number"
+                  placeholder="0"
+                  class="sm-input amount-in-coin"
+                  outlined
+                  dense
+                  color="primary"
+                  @input="qrCodeWithAddress"
+                />
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </div>
+        <div
           v-if="wallet.sdk==='Bitcoin'"
           class="new-address row justify-center"
         >
@@ -133,6 +160,8 @@ export default {
     return {
       qrCodeDataURL: null,
       hdWalletDialogOpened: false,
+      amount: null,
+      setAmount: false,
     };
   },
   computed: {
@@ -142,6 +171,9 @@ export default {
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
+    },
+    walletName() {
+      return this.wallet.name.replace(/\s/g, '').toLowerCase();
     },
     address() {
       if (!this.wallet.externalAddress) { return null; }
@@ -160,13 +192,27 @@ export default {
         this.errorHandler(err);
       }
     },
-    async qrCode() {
+    toggleSetAmount(val) {
+      if (!val) {
+        this.amount = null;
+        this.qrCode();
+      }
+    },
+    qrCodeWithAddress() {
+      if (this.amount > 0) {
+        const newAddress = `${this.walletName}:${this.address}?amount=${this.amount}`;
+        this.qrCode(newAddress);
+      } else {
+        this.qrCode();
+      }
+    },
+    async qrCode(qrAddress = this.address) {
       const options = {
-        width: 300,
-        height: 300,
+        width: 250,
+        height: 250,
       };
       if (typeof this.address === 'string') {
-        await QRCode.toDataURL(this.address, options, (err, url) => {
+        await QRCode.toDataURL(qrAddress, options, (err, url) => {
           if (err) {
             this.errorHandler(err);
           } else {
@@ -242,5 +288,9 @@ export default {
   min-height: 1.5rem;
   text-transform: none;
   font-family: Montserrat-SemiBold!important;
+}
+
+.set-amount .q-expansion-item--popup > .q-expansion-item__container {
+  border: none;
 }
 </style>

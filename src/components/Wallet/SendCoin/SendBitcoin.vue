@@ -266,6 +266,7 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
       scannedAddress: (state) => { return state.qrcode.scannedAddress; },
+      scannedAmount: (state) => { return state.qrcode.scannedAmount; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -332,6 +333,10 @@ export default {
     setTimeout(async () => {
       try {
         await this.getMaxedTx();
+        if (this.scannedAmount) {
+          this.inCoin = this.scannedAmount;
+          this.$store.dispatch('qrcode/setScannedAmount', null);
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -789,13 +794,29 @@ export default {
             if (err) {
               this.errorHandler(err);
             } else {
-              const coinSDK = this.coinSDKS[this.wallet.sdk];
-              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+              let amount;
+              try {
+                const query = new URL(text);
+                const walletName = this.wallet.name.replace(/\s/g, '').toLowerCase();
+                if (query.protocol.slice(0, -1) === walletName) {
+                  text = query.pathname;
+                  const queryParams = new URLSearchParams(query.search);
+                  if (queryParams.has('amount')) {
+                    amount = queryParams.get('amount');
+                  }
+                }
+              } finally {
+                const coinSDK = this.coinSDKS[this.wallet.sdk];
+                const isValid = coinSDK.validateAddress(text, this.wallet.network);
 
-              if (isValid) {
-                this.$store.dispatch('qrcode/setScannedAddress', text);
-                this.$store.dispatch('qrcode/cancelScanning');
-                this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                if (isValid) {
+                  this.$store.dispatch('qrcode/setScannedAddress', text);
+                  if (amount) {
+                    this.$store.dispatch('qrcode/setScannedAmount', amount);
+                  }
+                  this.$store.dispatch('qrcode/cancelScanning');
+                  this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                }
               }
             }
           });
