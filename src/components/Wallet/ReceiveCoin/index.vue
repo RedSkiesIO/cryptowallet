@@ -33,19 +33,11 @@
       <div class="receive-coin-box">
         <CoinHeader :wallet="wallet" />
 
-        <div class="send-modal-heading">
+        <!-- <div class="send-modal-heading">
           <h3>{{ $t('yourAddress') }}</h3>
           <span class="h3-line" />
-        </div>
-        <div class="address break">
-          {{ address }}
-          <q-btn
-            :label="$t('copy')"
-            size="sm"
-            class="receive-copy-btn"
-            @click="copyToClipboard"
-          />
-        </div>
+        </div> -->
+
 
         <!-- <q-btn
           :label="$t('copy')"
@@ -74,6 +66,29 @@
             :src="qrCodeDataURL"
           >
         </div>
+        <div class="address break row justify-center">
+          {{ address }}
+          <q-btn
+            :label="$t('copy')"
+            size="sm"
+            class="receive-copy-btn"
+            @click="copyToClipboard"
+          />
+        </div>
+        <!-- <div class="amount-div-wrapper">
+          <q-input
+            v-model="inCoin"
+            type="number"
+            placeholder="0"
+            class="sm-input amount-in-coin"
+            outlined
+            dense
+            color="primary"
+          />
+          <div class="side-content">
+            BTC
+          </div>
+        </div> -->
         <div
           v-if="wallet.sdk==='Bitcoin'"
           class="new-address row justify-center"
