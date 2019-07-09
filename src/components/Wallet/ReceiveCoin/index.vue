@@ -13,6 +13,18 @@
       <h1 class="header-h1">
         {{ $t('receive') }}
       </h1>
+      <div
+        class="header-settings-button-wrapper"
+      >
+        <q-btn
+          icon="share"
+          color="secondary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="share()"
+        />
+      </div>
     </div>
     <div
       v-if="wallet"
@@ -27,22 +39,29 @@
         </div>
         <div class="address break">
           {{ address }}
+          <q-btn
+            :label="$t('copy')"
+            size="sm"
+            class="receive-copy-btn"
+            @click="copyToClipboard"
+          />
         </div>
 
-        <q-btn
+        <!-- <q-btn
           :label="$t('copy')"
           color="blueish"
           size="sm"
           @click="copyToClipboard"
-        />
+        /> -->
 
-        <q-btn
+
+        <!-- <q-btn
           :label="$t('share')"
           class="share-btn"
           color="blueish"
           size="sm"
           @click="share()"
-        />
+        /> -->
 
         <div class="send-modal-heading">
           <h3>{{ $t('scanQR') }}</h3>
@@ -211,5 +230,17 @@ export default {
   top: -0.1rem;
   margin-left: 0.1rem;
   color: #e49ebe;
+}
+
+.receive-copy-btn {
+  border: 1px solid #d4d4d4;
+  background: whitesmoke;
+  padding: 0;
+  margin: 0 1px;
+  width: 3rem;
+  height: 0;
+  min-height: 1.5rem;
+  text-transform: none;
+  font-family: Montserrat-SemiBold!important;
 }
 </style>
