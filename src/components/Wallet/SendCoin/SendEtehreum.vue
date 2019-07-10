@@ -314,9 +314,9 @@ export default {
 
     updateInCoinFocus(val) {
       if (!val) {
-        // if (this.inCoin > 0 && this.countDecimals(this.inCoin) > this.decimals) {
-        //   this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
-        // }
+        if (this.inCoin > 0 && this.countDecimals(this.inCoin) > this.decimals) {
+          this.inCoin = this.formatAmount(this.inCoin, this.coinDenomination);
+        }
         this.validateInput('inCoin');
       }
       this.inCoinFocus = val;

@@ -81,6 +81,9 @@
                   :suffix="wallet.symbol"
                   @input="qrCodeWithAddress"
                 />
+                <span class="error-label error-label-amount">
+                  {{ amountError }}
+                </span>
               </q-card-section>
             </q-card>
           </q-expansion-item>
@@ -134,6 +137,7 @@
 import { mapState } from 'vuex';
 import QRCode from 'qrcode';
 import CoinHeader from '@/components/Wallet/CoinHeader';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'Receive',
@@ -145,6 +149,7 @@ export default {
       qrCodeDataURL: null,
       hdWalletDialogOpened: false,
       amount: null,
+      amountError: '',
       setAmount: false,
     };
   },
@@ -162,6 +167,9 @@ export default {
     address() {
       if (!this.wallet.externalAddress) { return null; }
       return this.wallet.externalAddress;
+    },
+    decimals() {
+      return Coin.find(this.wallet.name).decimals;
     },
   },
   mounted() {
@@ -182,10 +190,22 @@ export default {
         this.qrCode();
       }
     },
+    countDecimals(value) {
+      if (value.toString().split('.')[1]) {
+        return value.toString().split('.')[1].length;
+      }
+      return 0;
+    },
     qrCodeWithAddress() {
       if (this.amount > 0) {
-        const newAddress = `${this.walletName}:${this.address}?amount=${this.amount}`;
-        this.qrCode(newAddress);
+        if (this.countDecimals(this.amount) <= this.decimals) {
+          this.amountError = '';
+          const newAddress = `${this.walletName}:${this.address}?amount=${this.amount}`;
+          this.qrCode(newAddress);
+        } else {
+          this.amountError = 'Too many decimal places';
+          this.qrCode();
+        }
       } else {
         this.qrCode();
       }

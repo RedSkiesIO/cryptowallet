@@ -8,6 +8,7 @@ export default [
     network: 'BITCOIN_TESTNET',
     denomination: '0.00000000',
     minConfirmations: 6,
+    decimals: 8,
   },
   {
     displayName: 'Ethereum',
@@ -18,6 +19,7 @@ export default [
     network: 'ETHEREUM_ROPSTEN',
     denomination: '0.00000000',
     minConfirmations: 11,
+    decimals: 18,
   },
   {
     displayName: 'Catalyst',
@@ -41,6 +43,7 @@ export default [
     network: 'LITECOIN_TESTNET',
     denomination: '0.00000000',
     minConfirmations: 6,
+    decimals: 8,
   },
   {
     displayName: 'Dash',
@@ -51,6 +54,7 @@ export default [
     network: 'DASH_TESTNET',
     denomination: '0.00000000',
     minConfirmations: 6,
+    decimals: 8,
   },
   {
     displayName: 'BNB',
