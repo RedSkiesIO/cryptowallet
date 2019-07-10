@@ -62,7 +62,7 @@
         >
           <q-expansion-item
             v-model="setAmount"
-            label="Set Amount"
+            :label="$t('setAmount')"
             popup
             @input="toggleSetAmount"
           >
@@ -203,7 +203,7 @@ export default {
           const newAddress = `${this.walletName}:${this.address}?amount=${this.amount}`;
           this.qrCode(newAddress);
         } else {
-          this.amountError = 'Too many decimal places';
+          this.amountError = this.$t('amountError');
           this.qrCode();
         }
       } else {
