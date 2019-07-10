@@ -46,23 +46,6 @@
             @click="copyToClipboard"
           />
         </div>
-
-        <!-- <q-btn
-          :label="$t('copy')"
-          color="blueish"
-          size="sm"
-          @click="copyToClipboard"
-        /> -->
-
-
-        <!-- <q-btn
-          :label="$t('share')"
-          class="share-btn"
-          color="blueish"
-          size="sm"
-          @click="share()"
-        /> -->
-
         <div class="send-modal-heading">
           <h3>{{ $t('scanQR') }}</h3>
           <span class="h3-line" />

@@ -99,6 +99,9 @@ describe('AddERC20 component', () => {
         QRScanner.mockBehaviour = 3;
         wrapper.find('.qr-code-wrapper').trigger('click');
 
+        coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(true);
+        coinSDKSMock.ERC20.getTokenData = jest.fn().mockReturnValue({ name: 'Dai', symbol: 'DAI', decimals: '18' });
+
         setTimeout(() => {
           expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
           expect(storeMocks.actions.setScannedAddress.mock.calls[0][1]).toBe('0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
@@ -210,7 +213,7 @@ describe('AddERC20 component', () => {
           nameInput.trigger('input');
           setTimeout(() => {
             expect(wrapper.contains('.name-input.q-field--error')).toBe(true);
-            expect(wrapper.find('.error-label-name').text()).toBe(wrapper.vm.$t('invalidTokenName'));
+            expect(wrapper.find('.error-label-name').text()).toBe(wrapper.vm.$t('emptyTokenName'));
 
             nameInput.element.value = 'Dai';
             nameInput.trigger('input');

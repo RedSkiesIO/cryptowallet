@@ -321,7 +321,7 @@ export default {
         this.inCoin = '';
         return false;
       }
-      if (!this.inCoinFocus && !this.maxed) {
+      if (this.inCurrencyFocus && !this.maxed) {
         this.inCoin = this.currencyToCoin(val);
       }
       this.updateFee(this.feeSetting, this);
@@ -787,25 +787,27 @@ export default {
     scan() {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
-
+      const invalidAddress = this.$t('bitcoinAddressInvalid');
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              this.errorHandler(err);
-            } else {
-              let amount;
-              try {
-                const query = new URL(text);
-                const walletName = this.wallet.name.replace(/\s/g, '').toLowerCase();
-                if (query.protocol.slice(0, -1) === walletName) {
-                  text = query.pathname;
-                  const queryParams = new URLSearchParams(query.search);
-                  if (queryParams.has('amount')) {
-                    amount = queryParams.get('amount');
+          const scanQR = () => {
+            return QRScanner.scan((err, text) => {
+              if (err) {
+                this.errorHandler(err);
+              } else {
+                let amount;
+                if (text.includes(':')) {
+                  const query = new URL(text);
+                  const walletName = this.wallet.name.replace(/\s/g, '').toLowerCase();
+                  if (query.protocol.slice(0, -1) === walletName) {
+                    text = query.pathname;
+                    const queryParams = new URLSearchParams(query.search);
+                    if (queryParams.has('amount')) {
+                      amount = queryParams.get('amount');
+                    }
                   }
                 }
-              } finally {
+
                 const coinSDK = this.coinSDKS[this.wallet.sdk];
                 const isValid = coinSDK.validateAddress(text, this.wallet.network);
 
@@ -816,10 +818,15 @@ export default {
                   }
                   this.$store.dispatch('qrcode/cancelScanning');
                   this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                } else {
+                  this.$toast.create(10, invalidAddress, this.delay.normal);
+                  const waitForToast = 5000;
+                  setTimeout(() => { return scanQR(); }, waitForToast);
                 }
               }
-            }
-          });
+            });
+          };
+          scanQR();
         }, this.delay.normal);
       }
     },
