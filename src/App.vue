@@ -116,6 +116,8 @@ export default {
             this.$store.dispatch('modals/setAddWalletModalOpened', true);
             this.$store.dispatch('modals/setAddErc20ModalOpened', true);
             this.$store.dispatch('qrcode/setQRMode', null);
+          } else if (this.qrMode === 'restore') {
+            this.$store.dispatch('qrcode/setQRMode', null);
           } else {
             this.$store.dispatch('modals/setSendCoinModalOpened', true);
           }
