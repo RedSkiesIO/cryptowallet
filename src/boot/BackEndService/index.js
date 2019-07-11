@@ -245,7 +245,14 @@ class BackEndService {
     if (!fee || (currentTime - fee.timestamp) > updateTime) {
       const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
       result.data.timestamp = currentTime;
-      Fees.$insert({ data: result.data });
+      if (fee) {
+        Fees.$update({
+          where: (record) => { return record.code === coin; },
+          data: result.data,
+        });
+      } else {
+        Fees.$insert({ data: result.data });
+      }
       return result.data;
     }
     return fee;
