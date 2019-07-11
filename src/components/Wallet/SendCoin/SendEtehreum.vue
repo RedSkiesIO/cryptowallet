@@ -451,7 +451,7 @@ export default {
         }
 
         const response = await this.backEndService.getTransactionFee(coinSymbol);
-        const { data } = response.data;
+        const { data } = response;
         const fees = {
           low: data.low,
           medium: data.medium,
