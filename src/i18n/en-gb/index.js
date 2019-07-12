@@ -164,7 +164,7 @@ export default {
   helpFeesEtheruem: 'Explanation what are Ethereum fees and how to use them goes here.',
   ok: 'OK',
   confirmed: 'Confirmed',
-  txHash: 'TX Hash',
+  txHash: 'Hash',
   unconfirmed: 'Unconfirmed',
   pending: 'Pending',
   emptyTransactionHistory: 'Transaction history is empty.',

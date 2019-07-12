@@ -12,10 +12,11 @@
         :offset="50"
         @load="loadMore"
       >
-        <q-timeline
+        <!-- <q-timeline
           responsive
           color="blueish"
-        >
+        > -->
+        <q-list>
           <SingleTransaction
             v-for="transaction in filteredPaginated"
             :key="transaction.ts"
@@ -30,7 +31,8 @@
               {{ $t('emptyTransactionHistory') }}
             </q-banner>
           </div>
-        </q-timeline>
+        </q-list>
+        <!-- </q-timeline> -->
         <q-spinner-dots
           slot="message"
           :size="40"
