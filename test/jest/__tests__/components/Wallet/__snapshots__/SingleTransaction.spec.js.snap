@@ -54,9 +54,7 @@ exports[`SingleTransaction.vue renders and matches snapshot 1`] = `
     transitionshow="scale"
   >
     <q-card-stub>
-      <q-card-section-stub
-        class="transaction-details"
-      >
+      <q-card-section-stub>
         <div
           class="transaction-heading"
         >

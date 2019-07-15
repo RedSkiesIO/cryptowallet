@@ -38,9 +38,7 @@
       v-model="details"
     >
       <q-card>
-        <q-card-section
-          class="transaction-details"
-        >
+        <q-card-section>
           <div class="transaction-heading">
             <div class="row justify-center">
               <q-avatar
@@ -443,10 +441,6 @@ export default {
 .q-timeline {
   padding: 0.5rem;
 }
-
-/* .transaction-details {
-  padding-top: 0;
-} */
 
 .single-transaction-content {
   font-size: 0.8rem;
