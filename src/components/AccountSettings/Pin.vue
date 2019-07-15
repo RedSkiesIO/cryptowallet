@@ -124,7 +124,7 @@ export default {
         this.resetPin();
         this.mode = 'new-pin';
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
+        this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
       }
     },
     /**
@@ -200,7 +200,7 @@ export default {
     async updateAccount() {
       if (this.$CWCrypto.bcryptCompareString(this.pin.join(''), this.newPinHash)) {
         await this.encryptPersistentData();
-        this.$toast.create(0, this.$t('pinChanged'), this.delay.short);
+        this.$toast.create(0, this.$t('pinChanged'), this.delay.normal);
         this.$refs.PinPad.resetState();
         this.resetPin();
         this.closeModal();
