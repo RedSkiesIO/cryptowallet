@@ -98,7 +98,7 @@ class ToasterFactory {
         this.vm.$emit('SUCCESS', new Toaster(new Toast(msg, timeout, 'positive', 'thumb_up', position)));
         break;
       case 418:
-        this.vm.$emit('TEAPOT', new Toaster(new Toast("I'm a techno teapot.", 808, 'info', 'info', 'bottom')));
+        this.vm.$emit('TEAPOT', new Toaster(new Toast("I'm a techno teapot.", timeout, 'info', 'info', 'bottom')));
         break;
       default:
         this.vm.$emit('1', new Toaster(new Toast()));
