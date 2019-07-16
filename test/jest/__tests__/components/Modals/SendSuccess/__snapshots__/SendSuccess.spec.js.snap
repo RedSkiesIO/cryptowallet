@@ -75,7 +75,7 @@ exports[`modals/SendSuccess renders and matches snapshot 1`] = `
             class="col-3"
           >
             
-            TX Hash:
+            Hash:
           
           </div>
            
