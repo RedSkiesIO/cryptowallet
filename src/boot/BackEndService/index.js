@@ -2,6 +2,7 @@ import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
+import Fees from '@/store/fees';
 import Wallet from '@/store/wallet/entities/wallet';
 
 class BackEndService {
@@ -237,13 +238,24 @@ class BackEndService {
    * @return {Object}
    */
   async getTransactionFee(coin) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
-    // const fee = {
-    //   code: result.code,
-    //   timestamp: result.timestamp,
-    //   data: result.data,
-    // }
-    return result;
+    const fee = Fees.find([coin]);
+    const currentTime = new Date().getTime();
+    const updateTime = 600000;
+
+    if (!fee || (currentTime - fee.timestamp) > updateTime) {
+      const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
+      result.data.timestamp = currentTime;
+      if (fee) {
+        Fees.$update({
+          where: (record) => { return record.code === coin; },
+          data: result.data,
+        });
+      } else {
+        Fees.$insert({ data: result.data });
+      }
+      return result.data;
+    }
+    return fee;
   }
 
   /**

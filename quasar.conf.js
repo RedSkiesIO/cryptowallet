@@ -22,6 +22,7 @@ module.exports = (ctx) => {
     extras: [
       'roboto-font',
       'material-icons',
+      'fontawesome-v5'
     ],
     supportIE: false,
     build: {
