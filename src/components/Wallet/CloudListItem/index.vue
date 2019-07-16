@@ -106,16 +106,22 @@ export default {
       const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
 
       if (price) {
-        if ((currentTime - price.updated) < hour) {
+        const updated = price.updated - (price.updated % hour);
+
+        if ((currentTime - updated) < hour) {
           this.chartData = price.data.map((item) => { return item.y; });
         } else {
           let dataset;
           const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
+          const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
+          const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
           if (result) {
             dataset = result.data;
           }
           if (dataset) {
             this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
+            this.backEndService.storeChartData(this.wallet.symbol, 'week', weekData.data);
+            this.backEndService.storeChartData(this.wallet.symbol, 'month', monthData.data);
             this.chartData = dataset.map((item) => { return item.y; });
           } else {
             this.chartData = price.data.map((item) => { return item.y; });

@@ -143,7 +143,7 @@ function storeTxs(txs, wallet, coinSDK) {
   }
 }
 
-async function refreshBitcoin(coinSDK, wallet) {
+async function refreshBitcoin(coinSDK, wallet, fullRefresh) {
   const addresses = Address.query()
     .where('wallet_id', wallet.id)
     .get()
@@ -153,7 +153,7 @@ async function refreshBitcoin(coinSDK, wallet) {
 
   const balanceChanged = await updateBalance(coinSDK, wallet, addressesRaw);
 
-  if (balanceChanged) {
+  if (balanceChanged || fullRefresh) {
     const txAmount = Tx.query().where('wallet_id', wallet.id).get().length;
     const apiReturnLimit = 50;
     const newAmount = 5;
@@ -176,9 +176,9 @@ async function refreshBitcoin(coinSDK, wallet) {
   return true;
 }
 
-async function refreshEthereum(coinSDK, wallet) {
+async function refreshEthereum(coinSDK, wallet, fullRefresh) {
   const balanceChanged = await updateBalance(coinSDK, wallet);
-  if (balanceChanged) {
+  if (balanceChanged || fullRefresh) {
     const { network } = wallet;
 
     const txHistory = await coinSDK.getTransactionHistory(
@@ -197,9 +197,9 @@ async function refreshEthereum(coinSDK, wallet) {
   return true;
 }
 
-async function refreshERC20(coinSDK, wallet) {
+async function refreshERC20(coinSDK, wallet, fullRefresh) {
   const balanceChanged = await updateBalance(coinSDK, wallet);
-  if (balanceChanged) {
+  if (balanceChanged || fullRefresh) {
     const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
     if (!txHistory || txHistory.length === 0) {
       return false;
@@ -210,17 +210,17 @@ async function refreshERC20(coinSDK, wallet) {
   return true;
 }
 
-async function refreshWallet(coinSDK, wallet, accountId) {
+async function refreshWallet(coinSDK, wallet, accountId, fullRefresh = true) {
   if (wallet.sdk === 'Bitcoin') {
-    await refreshBitcoin(coinSDK, wallet, accountId);
+    await refreshBitcoin(coinSDK, wallet, fullRefresh, accountId);
   }
 
   if (wallet.sdk === 'Ethereum') {
-    await refreshEthereum(coinSDK, wallet, accountId);
+    await refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
   }
 
   if (wallet.sdk === 'ERC20') {
-    await refreshERC20(coinSDK, wallet, accountId);
+    await refreshERC20(coinSDK, wallet, fullRefresh, accountId);
   }
 
   return false;

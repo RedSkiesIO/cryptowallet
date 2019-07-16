@@ -16,6 +16,12 @@ export default {
     Transactions,
   },
 
+  data() {
+    return {
+      checkForUpdates: null,
+    };
+  },
+
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
@@ -28,7 +34,21 @@ export default {
     },
   },
 
+  // beforeRouteLeave(to, from, next) {
+  //   if (this.checkForUpdates) {
+  //     clearInterval(this.checkForUpdates);
+  //   }
+  //   next();
+  // },
+
   mounted() {
+    // this.checkForUpdates = setInterval(() => {
+    //   return refreshWallet(this.coinSDKS[this.wallet.sdk],
+    //     this.wallet, this.authenticatedAccount,
+    //     false);
+    // // eslint-disable-next-line no-magic-numbers
+    // }, 10000);
+
     this.$root.$on('updateWalletSingle', async (done) => {
       try {
         await this.backEndService.loadCoinPriceData(this.wallet.symbol);

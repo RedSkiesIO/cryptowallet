@@ -419,8 +419,9 @@ class BackEndService {
     const latestDay = Prices.find([`${coin}_${selectedCurrency.code}_day`]);
     const updateTime = 3600000;
     const currentTime = new Date().getTime();
+    const updated = latestDay.updated - (latestDay.updated % updateTime);
 
-    if (!latestDay || currentTime - latestDay.updated > updateTime) {
+    if (!latestDay || currentTime - updated > updateTime) {
       const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day');
       const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week');
       const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month');
