@@ -138,7 +138,7 @@ export default {
         this.resetPin();
         this.confirmDeleteOpen = true;
       } else {
-        this.$toast.create(10, this.$t('wrongPin'), this.delay, 'top');
+        this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
         this.$refs.PinPad.resetState();
         this.resetPin();
       }
