@@ -7,6 +7,49 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
 }
 
+async function updateBalance(coinSDK, wallet, addresses) {
+  const balance = wallet.confirmedBalance;
+  let newBalance = 0;
+
+  if (wallet.sdk === 'Bitcoin') {
+    const storedUtxos = Utxo.query()
+      .where('wallet_id', wallet.id)
+      .get()
+      .map((utxo) => { return utxo.txid; });
+    const utxos = await coinSDK.getUTXOs(addresses, wallet.network);
+    const newUtxos = utxos.filter((utxo) => {
+      newBalance += utxo.amount;
+      utxo.account_id = wallet.account_id;
+      utxo.wallet_id = wallet.id;
+      return !storedUtxos.includes(utxo.txid);
+    });
+
+    if (newUtxos.length > 0) {
+      Utxo.$insert({ data: newUtxos });
+    }
+  }
+
+  if (wallet.sdk === 'Ethereum') {
+    newBalance = await coinSDK.getBalance(
+      [wallet.externalAddress],
+      wallet.network,
+    );
+  }
+
+  if (wallet.sdk === 'ERC20') {
+    newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
+  }
+
+  if (newBalance !== balance) {
+    Wallet.$update({
+      where: (record) => { return record.id === wallet.id; },
+      data: { confirmedBalance: parseFloat(newBalance) },
+    });
+    return true;
+  }
+  return false;
+}
+
 function updateTxs(txs, wallet) {
   const sentTxs = txs.map((tx) => {
     Tx.$update({
@@ -107,94 +150,63 @@ async function refreshBitcoin(coinSDK, wallet) {
     .map((item) => { return item.address; });
 
   const addressesRaw = addresses.filter(onlyUnique);
-  const txAmount = Tx.query().where('wallet_id', wallet.id).get().length;
-  const apiReturnLimit = 50;
-  const newAmount = 5;
-  const moreTxsThanLimit = apiReturnLimit <= txAmount;
-  const from = moreTxsThanLimit ? (Math.max(0, (txAmount - apiReturnLimit)) + newAmount) : 0;
-  const to = moreTxsThanLimit ? (from + apiReturnLimit) : apiReturnLimit;
-  const txHistory = await coinSDK.getTransactionHistory(
-    addressesRaw,
-    wallet.network,
-    from,
-    to,
-  );
 
-  if (!txHistory) {
-    return false;
+  const balanceChanged = await updateBalance(coinSDK, wallet, addressesRaw);
+
+  if (balanceChanged) {
+    const txAmount = Tx.query().where('wallet_id', wallet.id).get().length;
+    const apiReturnLimit = 50;
+    const newAmount = 5;
+    const moreTxsThanLimit = apiReturnLimit <= txAmount;
+    const from = moreTxsThanLimit ? (Math.max(0, (txAmount - apiReturnLimit)) + newAmount) : 0;
+    const to = moreTxsThanLimit ? (from + apiReturnLimit) : apiReturnLimit;
+    const txHistory = await coinSDK.getTransactionHistory(
+      addressesRaw,
+      wallet.network,
+      from,
+      to,
+    );
+
+    if (!txHistory) {
+      return false;
+    }
+
+    storeTxs(txHistory.txs, wallet, coinSDK);
   }
-
-  storeTxs(txHistory.txs, wallet, coinSDK);
-
-  let newBalance = 0;
-
-  const storedUtxos = Utxo.query()
-    .where('wallet_id', wallet.id)
-    .get()
-    .map((utxo) => { return utxo.txid; });
-  const utxos = await coinSDK.getUTXOs(addressesRaw, wallet.network);
-  const newUtxos = utxos.filter((utxo) => {
-    newBalance += utxo.amount;
-    utxo.account_id = wallet.account_id;
-    utxo.wallet_id = wallet.id;
-    return !storedUtxos.includes(utxo.txid);
-  });
-
-  if (newUtxos.length > 0) {
-    Utxo.$insert({ data: newUtxos });
-  }
-
-  Wallet.$update({
-    where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance) },
-  });
-
   return true;
 }
 
 async function refreshEthereum(coinSDK, wallet) {
-  const { network } = wallet;
+  const balanceChanged = await updateBalance(coinSDK, wallet);
+  if (balanceChanged) {
+    const { network } = wallet;
 
-  const txHistory = await coinSDK.getTransactionHistory(
-    [wallet.externalAddress],
-    network,
-    0,
-  );
+    const txHistory = await coinSDK.getTransactionHistory(
+      [wallet.externalAddress],
+      network,
+      0,
+    );
 
-  if (!txHistory || txHistory.txs.length === 0) {
-    return false;
+    if (!txHistory || txHistory.txs.length === 0) {
+      return false;
+    }
+
+    storeTxs(txHistory.txs, wallet, coinSDK);
   }
-
-  storeTxs(txHistory.txs, wallet, coinSDK);
-
-  const newBalance = await coinSDK.getBalance(
-    [wallet.externalAddress],
-    wallet.network,
-  );
-
-  Wallet.$update({
-    where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance) },
-  });
 
   return true;
 }
 
 async function refreshERC20(coinSDK, wallet) {
-  const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
-  if (!txHistory || txHistory.length === 0) {
-    return false;
+  const balanceChanged = await updateBalance(coinSDK, wallet);
+  if (balanceChanged) {
+    const txHistory = await coinSDK.getTransactionHistory(wallet.erc20Wallet, 0);
+    if (!txHistory || txHistory.length === 0) {
+      return false;
+    }
+
+    storeTxs(txHistory, wallet, coinSDK);
   }
-
-  storeTxs(txHistory, wallet, coinSDK);
-
-  const newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
-
-  Wallet.$update({
-    where: (record) => { return record.id === wallet.id; },
-    data: { confirmedBalance: parseFloat(newBalance) },
-  });
-
   return true;
 }
 
