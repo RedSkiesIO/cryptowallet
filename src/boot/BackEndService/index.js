@@ -238,6 +238,11 @@ class BackEndService {
    */
   async getTransactionFee(coin) {
     const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
+    // const fee = {
+    //   code: result.code,
+    //   timestamp: result.timestamp,
+    //   data: result.data,
+    // }
     return result;
   }
 

@@ -187,6 +187,10 @@ export default {
         },
         tokenName: {
           required,
+          alphaNumWithSpaces: (value) => {
+            const re = /^[a-zA-Z0-9 ]*$/;
+            return re.test(value);
+          },
         },
         tokenSymbol: {
           required,
@@ -278,7 +282,9 @@ export default {
       if (field === 'name') {
         this.$v.form.tokenName.$touch();
 
-        if (this.$v.form.tokenName.$error) {
+        if (!this.$v.form.tokenName.required) {
+          this.nameError = this.$t('emptyTokenName');
+        } else if (!this.$v.form.tokenName.alphaNumWithSpaces) {
           this.nameError = this.$t('invalidTokenName');
         } else {
           this.nameError = ' ';
@@ -397,17 +403,26 @@ export default {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setAddWalletModalOpened', false);
       this.$store.dispatch('modals/setAddErc20ModalOpened', false);
-
+      const invalidAddress = this.$t('invalidContractAddress');
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              this.errorHandler(err);
-            }
-
-            this.$store.dispatch('qrcode/setScannedAddress', text);
-            this.$store.dispatch('qrcode/cancelScanning');
-          });
+          const scanQR = () => {
+            return QRScanner.scan(async (err, text) => {
+              if (err) {
+                this.errorHandler(err);
+              }
+              const validAddress = this.validateAddress(text);
+              if (validAddress && await this.validateContract(text)) {
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                this.$store.dispatch('qrcode/cancelScanning');
+              } else {
+                this.$toast.create(10, invalidAddress, this.delay.normal);
+                const waitForToast = 5000;
+                setTimeout(() => { return scanQR(); }, waitForToast);
+              }
+            });
+          };
+          scanQR();
         }, this.delay.normal);
       }
     },
