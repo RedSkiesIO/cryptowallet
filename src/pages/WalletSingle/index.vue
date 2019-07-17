@@ -19,6 +19,9 @@ export default {
   data() {
     return {
       checkForUpdates: null,
+      interval: 15000,
+      timeout: 300000,
+      startTime: null,
     };
   },
 
@@ -34,21 +37,26 @@ export default {
     },
   },
 
-  // beforeRouteLeave(to, from, next) {
-  //   if (this.checkForUpdates) {
-  //     clearInterval(this.checkForUpdates);
-  //   }
-  //   next();
-  // },
+  async activated() {
+    this.startTime = new Date().getTime();
+    this.checkForUpdates = setInterval(() => {
+      const time = new Date().getTime();
+      if (time - this.startTime > this.timeout) {
+        clearInterval(this.checkForUpdates);
+      }
+      return this.refresher(() => {}, false);
+    }, this.interval);
+
+    this.$nextTick(async () => {
+      await this.refresher(() => {});
+    });
+  },
+
+  deactivated() {
+    clearInterval(this.checkForUpdates);
+  },
 
   mounted() {
-    // this.checkForUpdates = setInterval(() => {
-    //   return refreshWallet(this.coinSDKS[this.wallet.sdk],
-    //     this.wallet, this.authenticatedAccount,
-    //     false);
-    // // eslint-disable-next-line no-magic-numbers
-    // }, 10000);
-
     this.$root.$on('updateWalletSingle', async (done) => {
       try {
         await this.backEndService.loadCoinPriceData(this.wallet.symbol);
@@ -64,12 +72,15 @@ export default {
     /**
      * Performs a wallet update
      */
-    async refresher(done) {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount);
-      setTimeout(() => {
-        done();
-      }, this.delay.normal);
+    async refresher(done, fullRefresh = true) {
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        const coinSDK = this.coinSDKS[this.wallet.sdk];
+        await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount, fullRefresh);
+        setTimeout(() => {
+          done();
+        }, this.delay.normal);
+      } else { done(); }
     },
   },
 };
