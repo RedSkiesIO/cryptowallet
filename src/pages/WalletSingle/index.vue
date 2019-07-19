@@ -47,9 +47,9 @@ export default {
       return this.refresher(() => {}, false);
     }, this.interval);
 
-    this.$nextTick(async () => {
+    setTimeout(async () => {
       await this.refresher(() => {});
-    });
+    }, this.delay.short);
   },
 
   deactivated() {

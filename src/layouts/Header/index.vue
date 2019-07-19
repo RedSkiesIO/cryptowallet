@@ -1,33 +1,32 @@
 <template>
   <div>
     <div
-      v-if="coinHeading"
       class="transaction-notification"
     >
       <q-dialog
         v-model="showTxNotification"
         seamless
         position="bottom"
-        content-class="transaction-notification"
+        :content-class="getClass"
       >
         <div
-          v-if="newTransactionModal"
+          v-if="newTxModalData"
           class="row justify-between"
         >
           <div class="col-2">
             <img
-              :src="newTransactionModal.logo"
+              :src="newTxModalData.logo"
               class="coin-logo"
             >
           </div>
           <div class="label col-6">
-            You've received {{ newTransactionModal.value }} {{ newTransactionModal.symbol }}!
+            {{ $t('newTxInro') }} {{ newTxModalData.value }} {{ newTxModalData.symbol }}!
           </div>
           <div class="button-grp col-4">
             <q-btn
-              v-if="!coinHeading"
               flat
-              label="View"
+              :label="$t('view')"
+              @click="viewTx(newTxModalData.id, newTxModalData.wallet_id)"
             />
             <q-btn
               v-close-popup
@@ -125,20 +124,24 @@
 <script>
 import { mapState } from 'vuex';
 import IconList from '@/statics/cc-icons/icons-list.json';
+import { setTimeout } from 'timers';
 
 export default {
   name: 'Header',
   data() {
     return {
       isBackButtonEnabled: false,
-      newTransactionModal: null,
+      newTxModalData: null,
       showTxNotification: false,
+      enableTxNotification: true,
     };
   },
 
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
+      delay: (state) => { return state.settings.delay; },
+      modals: (state) => { return state.modals; },
     }),
 
     wallet() {
@@ -185,6 +188,14 @@ export default {
       return false;
     },
 
+    getClass() {
+      if (this.$route.name === 'walletSingle' || this.$route.name === 'wallet'
+      || this.$route.name === 'settings') {
+        return 'transaction-notification bottom-space';
+      }
+      return 'transaction-notification bottom';
+    },
+
     hideHeader() {
       if (this.$route.path === '/setup/0') {
         return true;
@@ -219,9 +230,17 @@ export default {
       }
     },
     txsLength(newValue, oldValue) {
-      const newTransactions = this.txs.slice(oldValue);
-      this.showNotification(newTransactions);
+      if (this.enableTxNotification && (newValue > oldValue)) {
+        const newTransactions = this.txs.slice(oldValue);
+        this.showNotification(newTransactions);
+      }
     },
+  },
+
+  mounted() {
+    this.$root.$on('enableTxNotifications', (value) => {
+      this.enableTxNotification = value;
+    });
   },
 
   methods: {
@@ -241,7 +260,7 @@ export default {
       this.$router.push({ path: `/wallet/single/prices/${this.wallet.id}` });
     },
 
-    showNotification(txs) {
+    async showNotification(txs) {
       const tx = txs.shift();
       const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
       let logo;
@@ -250,12 +269,39 @@ export default {
       } else {
         logo = './statics/cc-icons/color/generic.svg';
       }
-      this.newTransactionModal = {
+      this.newTxModalData = {
         logo,
         value: tx.value,
         symbol: wallet.symbol,
+        id: tx.hash,
+        wallet_id: tx.wallet_id,
       };
       this.showTxNotification = true;
+      const wait = 10000;
+      await new Promise((resolve) => { return setTimeout(resolve, wait); });
+      this.showTxNotification = false;
+      this.newTxModalData = null;
+      if (txs.length > 0) {
+        this.showNotification(txs);
+      }
+    },
+
+    viewTx(id, walletId) {
+      Object.keys(this.modals).forEach((modal) => {
+        if (this.modals[modal] === true) {
+          const capitalized = modal.charAt(0).toUpperCase() + modal.slice(1);
+          this.$store.dispatch(`modals/set${capitalized}`, false);
+        }
+      });
+      setTimeout(() => {
+        const route = this.$route.name;
+        if (route !== 'walletSingle') {
+          this.$router.push({ path: `/wallet/single/${walletId}` });
+        }
+        setTimeout(() => {
+          this.$store.dispatch('modals/setNewTxData', id);
+        }, this.delay.short);
+      }, this.delay.short);
     },
   },
 };
@@ -363,8 +409,20 @@ export default {
   width: fit-content !important;
 }
 
-.transaction-notification  {
+.bottom-space {
   z-index: 1999;
+}
+
+.bottom-space .q-dialog__inner {
+  bottom: 80px;
+}
+
+.bottom {
+  z-index: 9999;
+}
+
+.bottom .q-dialog__inner {
+  bottom: 0;
 }
 
 .transaction-notification .coin-logo {

@@ -15,4 +15,5 @@ export default {
   selectLanguageModalOpened: false,
   deleteAccountModalOpened: false,
   newPinModalOpened: false,
+  newTxData: null,
 };

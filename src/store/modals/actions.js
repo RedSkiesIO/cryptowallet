@@ -80,3 +80,7 @@ export function setDeleteAccountModalOpened(context, payload) {
 export function setNewPinModalOpened(context, payload) {
   context.commit('SET_NEWPIN_MODAL_OPENED', payload);
 }
+
+export function setNewTxData(context, payload) {
+  context.commit('SET_NEW_TX_DATA', payload);
+}

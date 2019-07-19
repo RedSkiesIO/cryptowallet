@@ -51,10 +51,12 @@ describe('Header.vue', () => {
 
   it('calls a goBack method on the "Go Back" button click', (done) => {
     router.push({ path: '/fake/' });
-    wrapper.find('button').trigger('click');
     setTimeout(() => {
-      expect(router.history.current.path).toBe('/');
-      done();
+      wrapper.find('button').trigger('click');
+      setTimeout(() => {
+        expect(router.history.current.path).toBe('/');
+        done();
+      }, 500);
     }, 500);
   });
 
