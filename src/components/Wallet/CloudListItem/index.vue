@@ -113,16 +113,17 @@ export default {
         } else {
           let dataset;
           const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
-          const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
-          const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
           if (result) {
             dataset = result.data;
           }
           if (dataset) {
+            this.chartData = dataset.map((item) => { return item.y; });
             this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
+
+            const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
+            const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
             this.backEndService.storeChartData(this.wallet.symbol, 'week', weekData.data);
             this.backEndService.storeChartData(this.wallet.symbol, 'month', monthData.data);
-            this.chartData = dataset.map((item) => { return item.y; });
           } else {
             this.chartData = price.data.map((item) => { return item.y; });
           }

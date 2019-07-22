@@ -22,6 +22,7 @@ export default {
       interval: 15000,
       timeout: 300000,
       startTime: null,
+      balanceChanged: false,
     };
   },
 
@@ -38,13 +39,15 @@ export default {
   },
 
   async activated() {
+    let fullRefresh = false;
     this.startTime = new Date().getTime();
     this.checkForUpdates = setInterval(() => {
       const time = new Date().getTime();
       if (time - this.startTime > this.timeout) {
         clearInterval(this.checkForUpdates);
       }
-      return this.refresher(() => {}, false);
+      if (this.balanceChanged && this.wallet.sdk !== 'Bitcoin') { fullRefresh = true; }
+      return this.refresher(() => {}, fullRefresh);
     }, this.interval);
 
     setTimeout(async () => {
@@ -53,6 +56,7 @@ export default {
   },
 
   deactivated() {
+    this.balanceChanged = false;
     clearInterval(this.checkForUpdates);
   },
 
@@ -76,7 +80,9 @@ export default {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
       if (online) {
         const coinSDK = this.coinSDKS[this.wallet.sdk];
-        await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount, fullRefresh);
+        this.balanceChanged = await refreshWallet(
+          coinSDK, this.wallet, this.authenticatedAccount, fullRefresh,
+        );
         setTimeout(() => {
           done();
         }, this.delay.normal);

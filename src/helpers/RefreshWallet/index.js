@@ -173,7 +173,7 @@ async function refreshBitcoin(coinSDK, wallet, fullRefresh) {
 
     storeTxs(txHistory.txs, wallet, coinSDK);
   }
-  return true;
+  return balanceChanged;
 }
 
 async function refreshEthereum(coinSDK, wallet, fullRefresh) {
@@ -194,7 +194,7 @@ async function refreshEthereum(coinSDK, wallet, fullRefresh) {
     storeTxs(txHistory.txs, wallet, coinSDK);
   }
 
-  return true;
+  return balanceChanged;
 }
 
 async function refreshERC20(coinSDK, wallet, fullRefresh) {
@@ -207,20 +207,20 @@ async function refreshERC20(coinSDK, wallet, fullRefresh) {
 
     storeTxs(txHistory, wallet, coinSDK);
   }
-  return true;
+  return balanceChanged;
 }
 
 async function refreshWallet(coinSDK, wallet, accountId, fullRefresh = true) {
   if (wallet.sdk === 'Bitcoin') {
-    await refreshBitcoin(coinSDK, wallet, fullRefresh, accountId);
+    return refreshBitcoin(coinSDK, wallet, fullRefresh, accountId);
   }
 
   if (wallet.sdk === 'Ethereum') {
-    await refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
+    return refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
   }
 
   if (wallet.sdk === 'ERC20') {
-    await refreshERC20(coinSDK, wallet, fullRefresh, accountId);
+    return refreshERC20(coinSDK, wallet, fullRefresh, accountId);
   }
 
   return false;
