@@ -17,6 +17,7 @@ const actions = {
   setSelectLanguageModalOpened: jest.fn(),
   setDeleteAccountModalOpened: jest.fn(),
   setNewPinModalOpened: jest.fn(),
+  setNewTxData: jest.fn(),
 };
 
 const getters = {};

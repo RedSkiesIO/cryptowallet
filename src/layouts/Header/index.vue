@@ -20,7 +20,7 @@
             >
           </div>
           <div class="label col-6">
-            {{ $t('newTxInro') }} {{ newTxModalData.value }} {{ newTxModalData.symbol }}!
+            {{ $t('newTxIntro') }} {{ newTxModalData.value }} {{ newTxModalData.symbol }}!
           </div>
           <div class="button-grp col-4">
             <q-btn
@@ -32,6 +32,7 @@
               v-close-popup
               flat
               icon="close"
+              @click="closeNotification"
             />
           </div>
         </div>
@@ -124,7 +125,7 @@
 <script>
 import { mapState } from 'vuex';
 import IconList from '@/statics/cc-icons/icons-list.json';
-import { setTimeout } from 'timers';
+
 
 export default {
   name: 'Header',
@@ -260,7 +261,7 @@ export default {
       this.$router.push({ path: `/wallet/single/prices/${this.wallet.id}` });
     },
 
-    async showNotification(txs) {
+    showNotification(txs) {
       const tx = txs.shift();
       const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
       let logo;
@@ -278,12 +279,18 @@ export default {
       };
       this.showTxNotification = true;
       const wait = 10000;
-      await new Promise((resolve) => { return setTimeout(resolve, wait); });
+      setTimeout(() => {
+        this.showTxNotification = false;
+        this.newTxModalData = null;
+        if (txs.length > 0) {
+          this.showNotification(txs);
+        }
+      }, wait);
+    },
+
+    closeNotification() {
       this.showTxNotification = false;
       this.newTxModalData = null;
-      if (txs.length > 0) {
-        this.showNotification(txs);
-      }
     },
 
     viewTx(id, walletId) {
@@ -300,6 +307,7 @@ export default {
         }
         setTimeout(() => {
           this.$store.dispatch('modals/setNewTxData', id);
+          this.closeNotification();
         }, this.delay.short);
       }, this.delay.short);
     },
