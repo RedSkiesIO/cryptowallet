@@ -263,29 +263,31 @@ export default {
 
     showNotification(txs) {
       const tx = txs.shift();
-      const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
-      let logo;
-      if (IconList.find((icon) => { return icon.symbol === wallet.symbol.toUpperCase(); })) {
-        logo = `./statics/cc-icons/color/${wallet.symbol.toLowerCase()}.svg`;
-      } else {
-        logo = './statics/cc-icons/color/generic.svg';
-      }
-      this.newTxModalData = {
-        logo,
-        value: tx.value,
-        symbol: wallet.symbol,
-        id: tx.hash,
-        wallet_id: tx.wallet_id,
-      };
-      this.showTxNotification = true;
-      const wait = 10000;
-      setTimeout(() => {
-        this.showTxNotification = false;
-        this.newTxModalData = null;
-        if (txs.length > 0) {
-          this.showNotification(txs);
+      if (!tx.sent) {
+        const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
+        let logo;
+        if (IconList.find((icon) => { return icon.symbol === wallet.symbol.toUpperCase(); })) {
+          logo = `./statics/cc-icons/color/${wallet.symbol.toLowerCase()}.svg`;
+        } else {
+          logo = './statics/cc-icons/color/generic.svg';
         }
-      }, wait);
+        this.newTxModalData = {
+          logo,
+          value: tx.value,
+          symbol: wallet.symbol,
+          id: tx.hash,
+          wallet_id: tx.wallet_id,
+        };
+        this.showTxNotification = true;
+        const wait = 10000;
+        setTimeout(() => {
+          this.showTxNotification = false;
+          this.newTxModalData = null;
+          if (txs.length > 0) {
+            this.showNotification(txs);
+          }
+        }, wait);
+      }
     },
 
     closeNotification() {

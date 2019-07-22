@@ -141,11 +141,13 @@ describe('Header.vue', () => {
           wallet_id: 3,
           value: 5,
           hash: '123',
+          sent: false,
         },
         {
           wallet_id: 4,
           value: 10,
           hash: '456',
+          sent: false,
         },
       ];
       Tx.$insert({ data: txs });

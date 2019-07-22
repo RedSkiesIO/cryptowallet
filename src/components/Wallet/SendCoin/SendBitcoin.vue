@@ -646,7 +646,7 @@ export default {
     },
 
     unconfirmedBalance() {
-      return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;
+      return getBalance(this.wallet, this.authenticatedAccount).confirmed;
     },
 
     availableBalanceInCoin() {
