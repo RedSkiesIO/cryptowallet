@@ -27,6 +27,16 @@ async function updateBalance(coinSDK, wallet, addresses) {
     if (newUtxos.length > 0) {
       Utxo.$insert({ data: newUtxos });
     }
+
+    const oldUtxos = storedUtxos.filter((utxo) => {
+      return !utxos.map((ut) => { return ut.txid; }).includes(utxo);
+    });
+    oldUtxos.forEach((id) => {
+      const utxo = Utxo.query()
+        .where('txid', id)
+        .get();
+      Utxo.$delete(utxo[0].id);
+    });
   }
 
   if (wallet.sdk === 'Ethereum') {
@@ -51,7 +61,7 @@ async function updateBalance(coinSDK, wallet, addresses) {
 }
 
 function updateTxs(txs, wallet) {
-  const sentTxs = txs.map((tx) => {
+  txs.forEach((tx) => {
     Tx.$update({
       where: (record) => {
         return record.hash === tx.hash
@@ -59,21 +69,7 @@ function updateTxs(txs, wallet) {
       },
       data: tx,
     });
-    return tx.sent ? tx.hash : [];
   });
-
-  if (wallet.sdk === 'Bitcoin') {
-    const pendingUtxos = Utxo.query()
-      .where('wallet_id', wallet.id)
-      .where('pending', true)
-      .get();
-
-    pendingUtxos.forEach((utxo) => {
-      if (sentTxs.includes(utxo.spentHash)) {
-        Utxo.$delete(utxo.id);
-      }
-    });
-  }
 }
 
 function insertTxs(txs, wallet, coinSDK) {

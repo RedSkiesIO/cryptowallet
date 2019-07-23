@@ -84,6 +84,7 @@ export default {
       authenticatedAccount: (state) => {
         return state.settings.authenticatedAccount;
       },
+      delay: (state) => { return state.settings.delay; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -119,7 +120,7 @@ export default {
           if (dataset) {
             this.chartData = dataset.map((item) => { return item.y; });
             this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
-
+            await new Promise((resolve) => { return setTimeout(resolve, this.delay.normal); });
             const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
             const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
             this.backEndService.storeChartData(this.wallet.symbol, 'week', weekData.data);

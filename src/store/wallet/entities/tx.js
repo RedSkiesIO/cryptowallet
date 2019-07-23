@@ -15,6 +15,8 @@ export default class Tx extends Model {
       blockHeight: this.attr(''),
       change: this.attr(''),
       confirmed: this.attr(''),
+      inputs: this.attr(''),
+      outputs: this.attr(''),
       confirmations: this.attr(''),
       receivedTime: this.attr(''),
       confirmedTime: this.attr(''),
