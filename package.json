@@ -31,6 +31,7 @@
     "bip39": "^2.5.0",
     "bulma": "^0.7.1",
     "chart.js": "^2.7.3",
+    "comlink": "^4.0.2",
     "cordova": "^8.1.2",
     "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
@@ -98,6 +99,7 @@
     "sass-loader": "^7.0.1",
     "strip-ansi": "^3.0.1",
     "vue-jest": "^3.0.3",
+    "worker-loader": "^2.0.0",
     "yorkie": "^2.0.0"
   },
   "lint-staged": {
