@@ -74,8 +74,9 @@ import CoinHeader from '@/components/Wallet/CoinHeader';
 import {
   AmountFormatter,
   getBalance,
-  refreshWallet,
+  // refreshWallet,
 } from '@/helpers';
+
 
 export default {
   name: 'AuthedLayout',
@@ -91,6 +92,7 @@ export default {
       isPullTempDisabled: false,
       transitionName: 'slide-left',
       isBalanceVisible: true,
+      worker: null,
     };
   },
 
@@ -218,12 +220,15 @@ export default {
           setTimeout(async () => {
             try {
               await this.backEndService.loadPriceFeed();
+              const t0 = performance.now();
               await this.updateBalances(done);
+              const t1 = performance.now();
+              console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
             } catch (err) {
               this.errorHandler(err);
               done();
             }
-          }, this.delay.long);
+          }, 0);
         } else {
           setTimeout(() => {
             this.$root.$emit('updateWalletSingle', done);
@@ -233,18 +238,8 @@ export default {
     },
 
     async updateBalances(done) {
-      const promises = [];
-
-      this.wallets.forEach((wallet) => {
-        promises.push(new Promise(async (resolve, reject) => {
-          try {
-            const coinSDK = this.coinSDKS[wallet.sdk];
-            await refreshWallet(coinSDK, wallet, this.authenticatedAccount);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        }));
+      const promises = this.wallets.map((wallet) => {
+        return this.$walletWorker.refreshWallet(wallet);
       });
 
       try {

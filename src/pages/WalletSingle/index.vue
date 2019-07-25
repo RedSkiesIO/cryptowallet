@@ -8,7 +8,6 @@
 import Transactions from '@/components/Wallet/Transactions';
 import { mapState } from 'vuex';
 // import { refreshWallet } from '@/helpers';
-import checkBalance from '@/workers/ethWorker';
 
 export default {
   name: 'WalletSingle',
@@ -58,6 +57,7 @@ export default {
   },
 
   deactivated() {
+    this.worker = null;
     this.balanceChanged = false;
     clearInterval(this.checkForUpdates);
   },
@@ -81,11 +81,7 @@ export default {
     async refresher(done, fullRefresh = true) {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
       if (online) {
-        // const coinSDK = this.coinSDKS[this.wallet.sdk];
-        // this.balanceChanged = await refreshWallet(
-        //   coinSDK, this.wallet, this.authenticatedAccount, fullRefresh,
-        // );
-        this.balanceChanged = await checkBalance(
+        this.balanceChanged = await this.$walletWorker.refreshWallet(
           this.wallet, fullRefresh,
         );
         setTimeout(() => {
