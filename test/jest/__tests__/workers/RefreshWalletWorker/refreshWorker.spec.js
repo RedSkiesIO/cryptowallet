@@ -26,7 +26,7 @@ const erc20WalletData = JSON.parse('{"$id":4,"id":4,"account_id":1,"name":"Catal
 
 const utxoData = JSON.parse('{"$id":1,"id":1,"account_id":1,"wallet_id":5,"pending":true,"address":"2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX8","amount":0.0027175,"scriptPubKey":"a9142df2990ee914d0a0c0dc8ed92abe91642d7a415b87","txid":"9e792178e63be3d05b7f03f822c060909bd9fa5c451ce4ab11c1827108c5fb6d","value":271750,"vout":0, "spentHash":"789"}');
 
-describe('RefreshWallet', () => {
+describe('RefreshWalletWorker', () => {
   const mockCallbacks = {
     getAddresses: jest.fn().mockReturnValue(['2MwSB1utt5aMRp8tY92wNjBpb96UfpDKHX7']),
     updateWallet: jest.fn(),
