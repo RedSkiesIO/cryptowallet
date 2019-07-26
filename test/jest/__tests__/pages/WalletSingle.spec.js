@@ -2,9 +2,8 @@ import WalletSingle from '@/pages/WalletSingle';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import RefreshWallet from '@/helpers/RefreshWallet';
 
-jest.mock('@/helpers/RefreshWallet');
+jest.mock('@/workers/RefreshWallet');
 
 describe('WalletSingle.vue', () => {
   let wrapper;
@@ -61,12 +60,14 @@ describe('WalletSingle.vue', () => {
   });
 
   it('calls the refreshWallet plugin on a updateWalletSingle event', async (done) => {
+    const refreshWallet = jest.fn();
+    wrapper.vm.$walletWorker = { refreshWallet };
     const doneMock = jest.fn();
     wrapper.vm.$nextTick(() => {
       wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
       setTimeout(() => {
         expect(backEndService.loadCoinPriceData).toHaveBeenCalled();
-        expect(RefreshWallet).toHaveBeenCalled();
+        expect(refreshWallet).toHaveBeenCalled();
         done();
       }, delay);
     });

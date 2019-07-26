@@ -131,7 +131,7 @@ async function refreshBitcoin(coinSDK, wallet, cb, fullRefresh) {
       to,
     );
 
-    if (!txHistory) {
+    if (!txHistory || !txHistory.txs || txHistory.txs.length === 0) {
       return false;
     }
 
@@ -193,3 +193,4 @@ async function refreshWallet(wallet, cb, fullRefresh = true) {
 }
 
 Comlink.expose(refreshWallet);
+export default refreshWallet;

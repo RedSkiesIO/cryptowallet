@@ -74,7 +74,6 @@ import CoinHeader from '@/components/Wallet/CoinHeader';
 import {
   AmountFormatter,
   getBalance,
-  // refreshWallet,
 } from '@/helpers';
 
 
@@ -220,10 +219,7 @@ export default {
           setTimeout(async () => {
             try {
               await this.backEndService.loadPriceFeed();
-              const t0 = performance.now();
               await this.updateBalances(done);
-              const t1 = performance.now();
-              console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
             } catch (err) {
               this.errorHandler(err);
               done();

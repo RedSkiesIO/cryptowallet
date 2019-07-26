@@ -51,7 +51,6 @@ export default {
     }, this.interval);
 
     setTimeout(async () => {
-      // console.log(await checkBalance(this.wallet));
       await this.refresher(() => {});
     }, this.delay.short);
   },
