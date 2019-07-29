@@ -40,9 +40,10 @@ export default {
 
   async activated() {
     let fullRefresh = false;
-    this.startTime = new Date().getTime();
+
+    this.startTime = Date.now();
     this.checkForUpdates = setInterval(() => {
-      const time = new Date().getTime();
+      const time = Date.now();
       if (time - this.startTime > this.timeout) {
         clearInterval(this.checkForUpdates);
       }

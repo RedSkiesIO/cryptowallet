@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import WalletSingle from '@/pages/WalletSingle';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
@@ -21,6 +22,12 @@ describe('WalletSingle.vue', () => {
 
   const errorHandler = jest.fn();
 
+  const mocks = {
+    backEndService,
+    coinSDKS,
+    errorHandler,
+  };
+
   const customStore = {
     getters: {
       'entities/wallet/find': () => { return () => { return { sdk: 'Bitcoin' }; }; },
@@ -43,11 +50,7 @@ describe('WalletSingle.vue', () => {
       localVue,
       propsData,
       store: storeMocks.store,
-      mocks: {
-        backEndService,
-        coinSDKS,
-        errorHandler,
-      },
+      mocks,
     });
   }
 
@@ -83,5 +86,32 @@ describe('WalletSingle.vue', () => {
       expect(wrapper.vm.errorHandler).toHaveBeenCalled();
       done();
     });
+  });
+
+  it('checks for new txs periodically', (done) => {
+    let now = 0;
+    Date.now = jest.spyOn(Date, 'now').mockImplementation(() => {
+      now += 300000;
+      return now;
+    });
+    const module = {
+      refresher: jest.fn().mockReturnValue({}),
+      timeout: 300000,
+    };
+    jest.useFakeTimers();
+
+    storeInit({});
+    const bind = wrapper.vm.$options.activated[0].bind(module);
+    bind();
+    jest.advanceTimersByTime(15000);
+
+    expect(module.refresher).toHaveBeenCalledTimes(2);
+    done();
+  });
+
+  it('stops the worker when component is deactivated', (done) => {
+    wrapper.vm.$options.deactivated[0]();
+    expect(wrapper.vm.worker).toBeFalsy();
+    done();
   });
 });
