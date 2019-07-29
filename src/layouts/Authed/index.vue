@@ -224,11 +224,11 @@ export default {
               this.errorHandler(err);
               done();
             }
-          }, 0);
+          }, this.delay.normal);
         } else {
           setTimeout(() => {
             this.$root.$emit('updateWalletSingle', done);
-          }, this.delay.long);
+          }, this.delay.normal);
         }
       } else { done(); }
     },

@@ -7,7 +7,6 @@
 <script>
 import Transactions from '@/components/Wallet/Transactions';
 import { mapState } from 'vuex';
-// import { refreshWallet } from '@/helpers';
 
 export default {
   name: 'WalletSingle',
