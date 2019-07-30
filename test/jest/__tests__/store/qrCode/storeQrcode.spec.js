@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import Store from '@/store/qrcode';
 
 const {
@@ -38,6 +39,11 @@ describe('store setup module', () => {
     it('set qr mode', () => {
       mutations.SET_QR_MODE(state, 'addErc20');
       expect(state.qrMode).toBe('addErc20');
+    });
+
+    it('set scanned amount', () => {
+      mutations.SET_SCANNED_AMOUNT(state, 5);
+      expect(state.scannedAmount).toBe(5);
     });
   });
 });

@@ -132,6 +132,18 @@ describe('AddERC20 component', () => {
         }, 1000);
       });
 
+      it('displays an error toast if address is invalid', async (done) => {
+        QRScanner.mockBehaviour = 2;
+        wrapper.vm.$toast.create = jest.fn();
+        coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(false);
+        wrapper.find('.qr-code-wrapper').trigger('click');
+
+        setTimeout(() => {
+          expect(wrapper.vm.$toast.create).toHaveBeenCalled();
+          done();
+        }, 1000);
+      });
+
       it('uses scanned QRCode address if available', async (done) => {
         const custom = {
           state: {
