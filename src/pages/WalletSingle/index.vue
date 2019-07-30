@@ -28,7 +28,6 @@ export default {
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
-      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
 

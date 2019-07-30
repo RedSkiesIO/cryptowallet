@@ -230,5 +230,25 @@ describe('SingleTransaction.vue', () => {
         done();
       }, 0);
     });
+
+    describe('openTxDialog()', () => {
+      it('opens the tx dialog', () => {
+        wrapper.vm.openTxDialog = null;
+        wrapper.vm.details = true;
+        expect(wrapper.vm.openTxDialog).toEqual(true);
+      });
+
+      it('opens the tx dialog if newTxData is set', () => {
+        const custom = {
+          state: {
+            modals: {
+              newTxData: 'd02995c1faf572c5d9ae966915aa7958c88ed2e47f8f208b68d82d863bf61010',
+            },
+          },
+        };
+        storeInit(custom);
+        expect(wrapper.vm.openTxDialog).toEqual(true);
+      });
+    });
   });
 });
