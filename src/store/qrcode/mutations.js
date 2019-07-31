@@ -20,6 +20,13 @@ export function SET_SCANNED_ADDRESS(state, payload) {
 }
 
 /*
+ * SET STATE scanned amount
+ */
+export function SET_SCANNED_AMOUNT(state, payload) {
+  state.scannedAmount = payload;
+}
+
+/*
  * SET STATE qrMode
  */
 export function SET_QR_MODE(state, payload) {

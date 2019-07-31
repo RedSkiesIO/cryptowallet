@@ -22,6 +22,14 @@ const QRScanner = {
       if (this.mockBehaviour === 3) {
         callback(null, '0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
       }
+
+      if (this.mockBehaviour === 4) {
+        callback(null, 'bitcoin:2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd?amount=5');
+      }
+
+      if (this.mockBehaviour === 5) {
+        callback(null, 'ethereum:0xcda4cddb41b60fd84252912967397df7d3c1bfde?amount=5');
+      }
     }, this.delay);
   },
 };
