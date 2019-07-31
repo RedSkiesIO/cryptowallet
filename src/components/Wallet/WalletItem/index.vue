@@ -122,6 +122,7 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      delay: (state) => { return state.settings.delay; },
     }),
     isEnabled: {
       get() {
@@ -131,7 +132,9 @@ export default {
         if (val) {
           this.enableWallet();
         }
-        if (!val) { this.disableWallet(); }
+        if (!val) {
+          this.disableWallet();
+        }
       },
     },
     supportedCoins() {

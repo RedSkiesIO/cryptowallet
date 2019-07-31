@@ -52,24 +52,28 @@
           <div class="col-6">
             1 {{ coinSymbol }} / {{ selectedCurrency.code }}
           </div>
-          <!-- <div
-            v-if="latestPrice.data.VOLUME24HOURTO !== 0"
+          <div
+            v-if="latestPrice.data.TOTALVOLUME24HTO !== 0"
             class="col-6"
           >
             {{ $t('volume24h') }} {{ selectedCurrency.code }}
-          </div> -->
+          </div>
         </div>
         <div class="row price">
           <div class="col-6">
             {{ selectedCurrency.symbol }}
             {{ latestPrice.data.PRICE.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') }}
           </div>
-          <!-- <div
-            v-if="latestPrice.data.VOLUME24HOURTO !== 0"
+          <div
+            v-if="latestPrice.data.TOTALVOLUME24HTO !== 0"
             class="col-6"
           >
-            {{ selectedCurrency.symbol }}{{ latestPrice.data.VOLUME24HOURTO.toFixed(0) }}
-          </div> -->
+            {{ selectedCurrency.symbol }}
+            {{
+              latestPrice.data.TOTALVOLUME24HTO.toFixed(0).replace(
+                /(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
+            }}
+          </div>
         </div>
         <div
           v-if="chartData"
@@ -199,7 +203,7 @@ export default {
         this.loading = true;
 
         try {
-          await this.backEndService.loadCoinPriceData(this.coinSymbol);
+          await this.backEndService.loadCoinPriceData(this.coinSymbol, 2);
         } catch (err) {
           this.errorHandler(err);
         }
