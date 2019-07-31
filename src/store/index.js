@@ -13,6 +13,8 @@ import Coin from './wallet/entities/coin';
 import KeyPair from './wallet/entities/keyPair';
 import Prices from './prices';
 import LatestPrice from './latestPrice';
+import Fees from './fees';
+
 
 // import modules.
 import settings from './settings';
@@ -34,6 +36,8 @@ database.register(Coin, {});
 database.register(KeyPair, {});
 database.register(Prices, {});
 database.register(LatestPrice, {});
+database.register(Fees, {});
+
 
 Vue.prototype.encryptedModels = [
   Account,
@@ -48,6 +52,7 @@ window.LatestPrice = LatestPrice;
 window.Prices = Prices;
 window.Account = Account;
 window.Coin = Coin;
+window.Fees = Fees;
 
 const options = {
   env: 'browser',

@@ -19,6 +19,8 @@ import Coin from '@/store/wallet/entities/coin';
 import KeyPair from '@/store/wallet/entities/keyPair';
 import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
+import Fees from '@/store/fees';
+
 
 Vue.use(Vuex);
 
@@ -34,6 +36,8 @@ database.register(Coin, {});
 database.register(KeyPair, {});
 database.register(Prices, {});
 database.register(LatestPrice, {});
+database.register(Fees, {});
+
 
 Vue.prototype.encryptedModels = [
   Account,
