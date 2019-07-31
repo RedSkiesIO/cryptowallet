@@ -87,7 +87,7 @@
 
             <q-card-actions align="right">
               <q-btn
-                v-close-dialog
+                v-close-popup
                 flat
                 :label="$t('ok')"
                 color="blueish"

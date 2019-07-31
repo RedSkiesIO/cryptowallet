@@ -27,7 +27,6 @@ export default {
 
   components: {
     PinPad,
-    // LoadingScreen,
   },
 
   data() {
