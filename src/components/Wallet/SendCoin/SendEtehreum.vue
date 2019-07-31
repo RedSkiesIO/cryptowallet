@@ -617,23 +617,30 @@ export default {
     scan() {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
-
+      const invalidAddress = this.$t('ethereumAddressInvalid');
       if (typeof QRScanner !== 'undefined') {
         setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              this.errorHandler(err);
-            } else {
-              let coinSDK = this.coinSDKS[this.wallet.sdk];
-              if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
-              const isValid = coinSDK.validateAddress(text, this.wallet.network);
-              if (isValid) {
-                this.$store.dispatch('qrcode/setScannedAddress', text);
-                this.$store.dispatch('qrcode/cancelScanning');
-                this.$store.dispatch('modals/setSendCoinModalOpened', true);
+          const scanQR = () => {
+            return QRScanner.scan((err, text) => {
+              if (err) {
+                this.errorHandler(err);
+              } else {
+                let coinSDK = this.coinSDKS[this.wallet.sdk];
+                if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
+                const isValid = coinSDK.validateAddress(text, this.wallet.network);
+                if (isValid) {
+                  this.$store.dispatch('qrcode/setScannedAddress', text);
+                  this.$store.dispatch('qrcode/cancelScanning');
+                  this.$store.dispatch('modals/setSendCoinModalOpened', true);
+                } else {
+                  this.$toast.create(10, invalidAddress, this.delay.normal);
+                  const waitForToast = 5000;
+                  setTimeout(() => { return scanQR(); }, waitForToast);
+                }
               }
-            }
-          });
+            });
+          };
+          scanQR();
         }, this.delay.normal);
       }
     },

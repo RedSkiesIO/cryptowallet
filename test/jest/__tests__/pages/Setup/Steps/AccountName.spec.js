@@ -45,7 +45,10 @@ describe('AccountName.vue', () => {
     });
   }
 
-  beforeEach(() => { storeInit(customStore); });
+  beforeEach(() => {
+    storeInit(customStore);
+    jest.clearAllMocks();
+  });
 
   it('renders and matches snapshot', () => {
     const shallowWrapper = shallowMount(AccountName, {
@@ -69,6 +72,15 @@ describe('AccountName.vue', () => {
   it('displays an error toast if no name is entered', () => {
     wrapper.vm.$toast.create = jest.fn();
     const submit = wrapper.find('button');
+    submit.trigger('click');
+    expect(wrapper.vm.$toast.create).toHaveBeenCalled();
+  });
+
+  it('displays an error toast if an invalid name is entered', () => {
+    wrapper.vm.$toast.create = jest.fn();
+    const textInput = wrapper.find('input');
+    const submit = wrapper.find('button');
+    textInput.setValue('<>@!');
     submit.trigger('click');
     expect(wrapper.vm.$toast.create).toHaveBeenCalled();
   });
