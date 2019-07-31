@@ -145,6 +145,8 @@ export default {
   scanQR: 'Scan QR Code',
   recipient: 'Recipient',
   amount: 'Amount',
+  amountError: 'Too many decimal places',
+  setAmount: 'Set Amount',
   fee: 'Fee',
   estimatedTransaction: 'Estimated transaction cost:',
   bitcoinAddressInvalidLength: 'The address must be 26-35 characters in length',
