@@ -2,6 +2,7 @@ const actions = {
   scanQRCode: jest.fn(),
   cancelScanning: jest.fn(),
   setScannedAddress: jest.fn(),
+  setScannedAmount: jest.fn(),
   toDataURL: jest.fn(),
   setQRMode: jest.fn(),
 };
@@ -11,6 +12,7 @@ const mutations = {};
 const state = {
   scanning: false,
   scannedAddress: null,
+  scannedAmount: null,
   qrMode: null,
 };
 
