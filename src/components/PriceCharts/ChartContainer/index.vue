@@ -2,20 +2,26 @@
   <div class="chart-container">
     <div class="row justify-center">
       <q-btn
+        flat
         class="chart-button"
-        color="secondary"
+        :disable="disable===0"
+        color="white"
         label="24H"
         @click="onClick(0)"
       />
       <q-btn
+        flat
         class="chart-button"
-        color="secondary"
+        :disable="disable===1"
+        color="white"
         label="1W"
         @click="onClick(1)"
       />
       <q-btn
+        flat
         class="chart-button"
-        color="secondary"
+        :disable="disable===2"
+        color="white"
         label="1M"
         @click="onClick(2)"
       />
@@ -32,42 +38,25 @@
 
 <script>
 import Chart from '@/components/PriceCharts/Chart';
-import { mapState } from 'vuex';
-import Prices from '@/store/prices';
-import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'ChartContainer',
   components: { Chart },
+  props: {
+    datasets: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       newChart: '',
+      disable: 0,
     };
   },
   computed: {
-    ...mapState({
-      id: (state) => { return state.route.params.id; },
-    }),
-    wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
-    },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
-    },
-    supportedCoins() {
-      return Coin.all();
-    },
-    coinSymbol() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
-    },
-    dayData() {
-      return Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
-    },
-    weekData() {
-      return Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_week`]);
-    },
-    monthData() {
-      return Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_month`]);
     },
     chartData() {
       return {
@@ -77,7 +66,7 @@ export default {
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
-          data: this.dayData.data,
+          data: this.datasets[0].data,
         },
         {
           label: '1W',
@@ -86,7 +75,7 @@ export default {
           pointRadius: 0,
           backgroundColor: 'black',
           hidden: true,
-          data: this.weekData.data,
+          data: this.datasets[1].data,
         },
         {
           label: '1M',
@@ -95,7 +84,7 @@ export default {
           pointRadius: 0,
           backgroundColor: 'black',
           hidden: true,
-          data: this.monthData.data,
+          data: this.datasets[2].data,
         }],
       };
     },
@@ -144,6 +133,7 @@ export default {
     },
 
     onClick(index) {
+      this.disable = index;
       const chart = this.newChart;
       [0, 1, 2].forEach((i) => {
         if (i !== index) {
@@ -152,6 +142,7 @@ export default {
       });
       chart.getDatasetMeta(index).hidden = false;
       chart.update();
+      this.$emit('update', index);
     },
   },
 };
@@ -164,7 +155,10 @@ export default {
     margin-bottom: 15px;
     margin-top: 10px;
     min-height: 1.75em;
+    opacity: 0.6;
+    color: white;
 }
+
 .chart-container{
     margin: 0;
 }
