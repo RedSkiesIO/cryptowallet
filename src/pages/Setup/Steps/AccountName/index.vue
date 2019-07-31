@@ -7,7 +7,7 @@
     </div>
     <div class="account-name-input-wrapper">
       <q-input
-        v-model="accountName"
+        v-model.trim="accountName"
         :float-label="$t('accountName')"
         outlined
         dark
@@ -27,6 +27,10 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+  required,
+  alphaNum,
+} from 'vuelidate/lib/validators';
 
 export default {
   name: 'AccountName',
@@ -35,6 +39,12 @@ export default {
       accountName: '',
     };
   },
+  validations: {
+    accountName: {
+      required,
+      alphaNum,
+    },
+  },
   computed: {
     ...mapState({
       delay: (state) => { return state.settings.delay; },
@@ -42,10 +52,16 @@ export default {
   },
   methods: {
     validate() {
-      if (this.accountName.length === 0) {
+      if (!this.$v.accountName.required) {
         this.$toast.create(10, this.$t('enterAccountName'), this.delay.normal);
         return false;
       }
+
+      if (!this.$v.accountName.alphaNum) {
+        this.$toast.create(10, this.$t('invalidAccountName'), this.delay.normal);
+        return false;
+      }
+
       const accounts = this.$store.getters['entities/account/query']().get();
       const nameAlreadyInUse = accounts.find((account) => {
         return account.name === this.accountName;
