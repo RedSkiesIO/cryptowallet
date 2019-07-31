@@ -58,7 +58,7 @@ const activeWalletsMock = {
 
 const backEndServiceMock = {
   async getTransactionFee() {
-    return JSON.parse('{"data":{"code":"ETH","timestamp":1554218701,"data":{"high":11281690855,"medium":11281690855,"low":11281690855}},"status":200,"statusText":"OK","headers":{"new_refresh_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZEhhc2giOiIwLjkwNzI4MTQzMzQ1Nzk0MzMiLCJpYXQiOjE1NTQyMTg4NDMsImV4cCI6MTU1Njg5NzI0M30.S1NMyIjT0N8_rVm8xhd5Tb2YuLiU74gRDgqN6Rwg7cY","content-type":"application/json; charset=utf-8"},"config":{"transformRequest":{},"transformResponse":{},"timeout":0,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2VJZEhhc2giOiIwLjkwNzI4MTQzMzQ1Nzk0MzMiLCJpYXQiOjE1NTQyMTc1OTMsImV4cCI6MTU1NDIyMTE5M30.CSun95n5-AIxS4r_FnIWz0Y7mumes4tN9bEW7o-OLqs"},"method":"get","url":"http://92.207.178.198:6001/fee-estimate/BTC"},"request":{"__rollbar_xhr":{"method":"GET","url":"http://92.207.178.198:6001/fee-estimate/BTC","status_code":200,"start_time_ms":1554218843339,"end_time_ms":1554218843367,"subtype":"xhr"},"__rollbar_event":{"level":"info","type":"network","timestamp_ms":1554218843366,"body":{"method":"GET","url":"http://92.207.178.198:6001/fee-estimate/BTC","status_code":200,"start_time_ms":1554218843339,"end_time_ms":1554218843367,"subtype":"xhr"},"source":"client"}}}');
+    return JSON.parse('{"$id":"ETH","code":"ETH","timestamp":1562848938287,"data":{"high":23635264754,"medium":20000000000,"low":20000000000}}');
   },
   loadPriceFeed: jest.fn(),
 };
@@ -405,9 +405,9 @@ describe('SendEthereum component', () => {
       wrapper.vm.address = '0xaE6A186f7FF18BA137Cf6D8e760B0F4821C90DDE';
       wrapper.vm.inCoin = 5;
       const fees = {
-        low: 11281690855,
-        medium: 11281690855,
-        high: 11281690855,
+        low: 20000000000,
+        medium: 20000000000,
+        high: 23635264754,
       };
       wrapper.vm.feeSetting = 0;
       wrapper.vm.feeChange(0);
@@ -427,7 +427,7 @@ describe('SendEthereum component', () => {
         wrapper.vm.feeChange(2);
 
         setTimeout(() => {
-          expect(wrapper.vm.estimatedFee).toBe('0.000237 ETH (£0.90)');
+          expect(wrapper.vm.estimatedFee).toBe('0.000496 ETH (£1.90)');
           done();
         }, 750);
       }, 25);

@@ -29,6 +29,18 @@
         @click="validate"
       />
     </div>
+    <div
+      class="qr-button-wrapper"
+    >
+      <q-btn
+        icon="fas fa-qrcode"
+        color="primary"
+        size="lg"
+        class="icon-btn"
+        flat
+        @click="scan"
+      />
+    </div>
   </div>
 </template>
 
@@ -74,6 +86,29 @@ export default {
       this.$router.push({ path: '/setup/4' });
       return true;
     },
+
+    /**
+     * Initiates the QR code scanner
+     */
+    scan() {
+      this.$store.dispatch('qrcode/setQRMode', 'restore');
+      this.$store.dispatch('qrcode/scanQRCode');
+
+      if (typeof QRScanner !== 'undefined') {
+        setTimeout(() => {
+          QRScanner.scan((err, text) => {
+            if (err) {
+              this.errorHandler(err);
+            } else {
+              this.seedPhrase = text;
+              const valid = this.validate();
+              if (!valid) { this.seedPhrase = ''; }
+              this.$store.dispatch('qrcode/cancelScanning');
+            }
+          });
+        }, this.delay.normal);
+      }
+    },
   },
 };
 
@@ -83,5 +118,11 @@ export default {
 .restore-input-wrapper {
   margin-top: 1rem;
   padding: 0 1em;
+}
+
+.qr-button-wrapper {
+  display: flex;
+  height: 100%;
+  justify-content: space-around;
 }
 </style>
