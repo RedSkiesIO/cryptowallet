@@ -46,6 +46,7 @@ describe('components/ChartContainer', () => {
       localVue,
       store: storeMocks.store,
       stubs: { Chart: true },
+      propsData: { datasets: [chartDataDay, chartDataWeek, chartDataMonth] },
     });
   }
   beforeEach(() => {
