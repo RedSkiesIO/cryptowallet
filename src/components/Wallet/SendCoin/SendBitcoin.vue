@@ -551,19 +551,15 @@ export default {
 
     async getFee() {
       const response = await this.backEndService.getTransactionFee(this.wallet.symbol);
-
-      const fees = response.data.data;
+      const fees = response.data;
       const kbToBytes = 1000;
-      Object.keys(fees).forEach((key) => {
-        fees[key] /= kbToBytes;
-      });
 
-      let fee = fees.medium;
+      let fee = fees.medium / kbToBytes;
       if (this.feeSetting === 0) {
-        fee = fees.low;
+        fee = fees.low / kbToBytes;
       }
       if (this.feeSetting === 2) {
-        fee = fees.high;
+        fee = fees.high / kbToBytes;
       }
 
       fee = Math.round(fee);

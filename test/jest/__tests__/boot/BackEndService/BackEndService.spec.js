@@ -8,6 +8,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import LatestPrice from '@/store/latestPrice';
 import axios from 'axios';
 import Prices from '@/store/prices';
+import Fees from '@/store/fees';
 
 jest.mock('axios');
 const mockAxios = axios;
@@ -492,18 +493,20 @@ describe('boot/BackEndService', () => {
   describe('getTransactionFee() method', () => {
     it('calls try() method with correct arguments and returns data', async (done) => {
       const coin = 'BTC';
-      const mockData = 'fake data';
+      const mockData = { data: { code: coin, timestamp: +Date() } };
 
       process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
       backEndService.try = jest.fn().mockImplementation(() => {
         return mockData;
       });
 
-      const result = await backEndService.getTransactionFee(coin);
+      await backEndService.getTransactionFee(coin);
       const calledURL = backEndService.try.mock.calls[0][0];
       const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
       expect(re.test(calledURL)).toBe(true);
-      expect(result).toBe(mockData);
+      expect(Fees.all().length).toBe(1);
+      const result = await backEndService.getTransactionFee(coin);
+      expect(result.code).toBe(coin);
       done();
     });
   });
