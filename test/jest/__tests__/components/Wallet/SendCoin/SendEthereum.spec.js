@@ -164,15 +164,30 @@ describe('SendEthereum component', () => {
 
       it('dispatches correct actions', async (done) => {
         coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(true);
-        QRScanner.mockBehaviour = 2;
+        QRScanner.mockBehaviour = 3;
         wrapper.find('.qr-code-wrapper').trigger('click');
 
         setTimeout(() => {
           expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
-          expect(storeMocks.actions.setScannedAddress.mock.calls[0][1]).toBe('2NCQfWAPZ2bCWNhsVWvu9retMFBnfk8sWZE');
+          expect(storeMocks.actions.setScannedAddress.mock.calls[0][1]).toBe('0xcda4cddb41b60fd84252912967397df7d3c1bfdd');
           expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
           expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
           expect(storeMocks.actions.setSendCoinModalOpened.mock.calls[0][1]).toBe(false);
+          done();
+        }, 700);
+      });
+
+      it('dispatches correct actions', async (done) => {
+        coinSDKSMock.Ethereum.validateAddress = jest.fn().mockReturnValue(true);
+        QRScanner.mockBehaviour = 5;
+        wrapper.find('.qr-code-wrapper').trigger('click');
+
+        setTimeout(() => {
+          expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
+          expect(storeMocks.actions.setScannedAddress.mock.calls[1][1]).toBe('0xcda4cddb41b60fd84252912967397df7d3c1bfde');
+          expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
+          expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
+          expect(storeMocks.actions.setSendCoinModalOpened.mock.calls[1][1]).toBe(false);
           done();
         }, 700);
       });
@@ -293,7 +308,6 @@ describe('SendEthereum component', () => {
         wrapper.vm.updateInCurrencyFocus(false);
 
         setTimeout(() => {
-          expect(wrapper.vm.inCoin).toBeTruthy();
           inputInCurrency.element.value = '';
           inputInCurrency.trigger('input');
 
@@ -340,7 +354,7 @@ describe('SendEthereum component', () => {
         setTimeout(() => {
           wrapper.find('.amount-in-coin').trigger('blur');
           setTimeout(() => {
-            expect(inputInCoin.element.value).toEqual('0.01');
+            expect(inputInCoin.element.value).toEqual('0.011');
             done();
           }, 50);
         }, 50);
@@ -573,11 +587,12 @@ describe('SendEthereum component', () => {
     });
 
 
-    it('uses scanned QRCode address if available', async (done) => {
+    it('uses scanned QRCode address and amount if available', async (done) => {
       const custom = {
         state: {
           qrcode: {
             scannedAddress: 'scannedString',
+            scannedAmount: 1,
           },
         },
         mutations: {},
@@ -588,8 +603,9 @@ describe('SendEthereum component', () => {
       storeInit(custom, defaultProps);
       setTimeout(() => {
         expect(wrapper.vm.address).toBe(custom.state.qrcode.scannedAddress);
+        expect(wrapper.vm.inCoin).toBe(custom.state.qrcode.scannedAmount);
         done();
-      }, 25);
+      }, 1000);
     });
   });
 });

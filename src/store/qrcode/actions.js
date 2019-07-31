@@ -20,6 +20,13 @@ export function setScannedAddress(context, payload) {
 }
 
 /*
+ * Action setScannedAmount
+ */
+export function setScannedAmount(context, payload) {
+  context.commit('SET_SCANNED_AMOUNT', payload);
+}
+
+/*
  * Action setQRMode
  */
 export function setQRMode(context, payload) {
