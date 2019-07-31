@@ -151,12 +151,12 @@ export default {
             network: coin.network,
             denomination: coin.denomination,
             minConfirmations: coin.minConfirmations,
+            decimals: coin.decimals,
           };
           if (coin.sdk === 'ERC20') {
             data.parentName = coin.parentName;
             data.parentSdk = coin.parentSdk;
             data.contractAddress = coin.contractAddress;
-            data.decimals = coin.decimals;
           }
           Coin.$insert({
             data,

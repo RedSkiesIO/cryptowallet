@@ -160,6 +160,22 @@ describe('SendBitcoin component', () => {
           done();
         }, 1000);
       });
+
+      it('dispatches correct actions', async (done) => {
+        coinSDKSMock.Bitcoin.validateAddress = jest.fn().mockReturnValue(true);
+        QRScanner.mockBehaviour = 4;
+        wrapper.find('.qr-code-wrapper').trigger('click');
+        wrapper.vm.$toast.create = jest.fn();
+
+        setTimeout(() => {
+          expect(storeMocks.actions.setScannedAddress).toHaveBeenCalled();
+          expect(storeMocks.actions.setScannedAddress.mock.calls[1][1]).toBe('2NGBz7mknbB1GxFSddxa47C3S6qS4FuTnyd');
+          expect(storeMocks.actions.cancelScanning).toHaveBeenCalled();
+          expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalled();
+          expect(storeMocks.actions.setSendCoinModalOpened.mock.calls[1][1]).toBe(false);
+          done();
+        }, 1000);
+      });
     });
 
     describe('address input', () => {
@@ -398,8 +414,8 @@ describe('SendBitcoin component', () => {
 
         setTimeout(() => {
           expect(wrapper.contains('.amount-in-coin.q-field--error')).toBe(true);
-          wrapper.vm.feeSetting = 2;
-          wrapper.vm.feeChange(2);
+          wrapper.vm.feeSetting = 0;
+          wrapper.vm.feeChange(0);
 
           setTimeout(() => {
             expect(wrapper.vm.estimatedFee).toBe(wrapper.vm.$t('N/A'));
@@ -521,11 +537,12 @@ describe('SendBitcoin component', () => {
       }, 50);
     });
 
-    it('uses scanned QRCode address if available', async (done) => {
+    it('uses scanned QRCode address and amount if available', async (done) => {
       const custom = {
         state: {
           qrcode: {
             scannedAddress: 'scannedString',
+            scannedAmount: 0.01,
           },
         },
         mutations: {},
@@ -536,8 +553,9 @@ describe('SendBitcoin component', () => {
       storeInit(custom, defaultProps);
       setTimeout(() => {
         expect(wrapper.vm.address).toBe(custom.state.qrcode.scannedAddress);
+        expect(wrapper.vm.inCoin).toBe(custom.state.qrcode.scannedAmount);
         done();
-      }, 25);
+      }, 501);
     });
   });
 });

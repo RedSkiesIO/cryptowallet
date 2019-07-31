@@ -13,6 +13,18 @@
       <h1 class="header-h1">
         {{ $t('receive') }}
       </h1>
+      <div
+        class="header-settings-button-wrapper"
+      >
+        <q-btn
+          icon="share"
+          color="secondary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="share()"
+        />
+      </div>
     </div>
     <div
       v-if="wallet"
@@ -27,23 +39,13 @@
         </div>
         <div class="address break">
           {{ address }}
+          <q-btn
+            :label="$t('copy')"
+            size="sm"
+            class="receive-copy-btn"
+            @click="copyToClipboard"
+          />
         </div>
-
-        <q-btn
-          :label="$t('copy')"
-          color="blueish"
-          size="sm"
-          @click="copyToClipboard"
-        />
-
-        <q-btn
-          :label="$t('share')"
-          class="share-btn"
-          color="blueish"
-          size="sm"
-          @click="share()"
-        />
-
         <div class="send-modal-heading">
           <h3>{{ $t('scanQR') }}</h3>
           <span class="h3-line" />
@@ -54,6 +56,37 @@
             v-if="qrCodeDataURL"
             :src="qrCodeDataURL"
           >
+        </div>
+        <div
+          class="set-amount row justify-center"
+        >
+          <q-expansion-item
+            v-model="setAmount"
+            :label="$t('setAmount')"
+            popup
+            @input="toggleSetAmount"
+          >
+            <q-card>
+              <q-card-section>
+                <span class="h3-line" />
+
+                <q-input
+                  v-model="amount"
+                  type="number"
+                  placeholder="0"
+                  class="sm-input amount-in-coin"
+                  outlined
+                  dense
+                  color="primary"
+                  :suffix="wallet.symbol"
+                  @input="qrCodeWithAddress"
+                />
+                <span class="error-label error-label-amount">
+                  {{ amountError }}
+                </span>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
         </div>
         <div
           v-if="wallet.sdk==='Bitcoin'"
@@ -104,6 +137,7 @@
 import { mapState } from 'vuex';
 import QRCode from 'qrcode';
 import CoinHeader from '@/components/Wallet/CoinHeader';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'Receive',
@@ -114,6 +148,9 @@ export default {
     return {
       qrCodeDataURL: null,
       hdWalletDialogOpened: false,
+      amount: null,
+      amountError: '',
+      setAmount: false,
     };
   },
   computed: {
@@ -124,9 +161,15 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    walletName() {
+      return this.wallet.name.replace(/\s/g, '').toLowerCase();
+    },
     address() {
       if (!this.wallet.externalAddress) { return null; }
       return this.wallet.externalAddress;
+    },
+    decimals() {
+      return Coin.find(this.wallet.name).decimals;
     },
   },
   mounted() {
@@ -141,13 +184,39 @@ export default {
         this.errorHandler(err);
       }
     },
-    async qrCode() {
+    toggleSetAmount(val) {
+      if (!val) {
+        this.amount = null;
+        this.qrCode();
+      }
+    },
+    countDecimals(value) {
+      if (value.toString().split('.')[1]) {
+        return value.toString().split('.')[1].length;
+      }
+      return 0;
+    },
+    qrCodeWithAddress() {
+      if (this.amount > 0) {
+        if (this.countDecimals(this.amount) <= this.decimals) {
+          this.amountError = '';
+          const newAddress = `${this.walletName}:${this.address}?amount=${this.amount}`;
+          this.qrCode(newAddress);
+        } else {
+          this.amountError = this.$t('amountError');
+          this.qrCode();
+        }
+      } else {
+        this.qrCode();
+      }
+    },
+    async qrCode(qrAddress = this.address) {
       const options = {
-        width: 300,
-        height: 300,
+        width: 250,
+        height: 250,
       };
       if (typeof this.address === 'string') {
-        await QRCode.toDataURL(this.address, options, (err, url) => {
+        await QRCode.toDataURL(qrAddress, options, (err, url) => {
           if (err) {
             this.errorHandler(err);
           } else {
@@ -211,5 +280,21 @@ export default {
   top: -0.1rem;
   margin-left: 0.1rem;
   color: #e49ebe;
+}
+
+.receive-copy-btn {
+  border: 1px solid #d4d4d4;
+  background: whitesmoke;
+  padding: 0;
+  margin: 0 1px;
+  width: 3rem;
+  height: 0;
+  min-height: 1.5rem;
+  text-transform: none;
+  font-family: Montserrat-SemiBold!important;
+}
+
+.set-amount .q-expansion-item--popup > .q-expansion-item__container {
+  border: none;
 }
 </style>
