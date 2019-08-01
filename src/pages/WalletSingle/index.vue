@@ -40,13 +40,13 @@ export default {
     let fullRefresh = false;
 
     this.startTime = Date.now();
-    this.checkForUpdates = setInterval(() => {
+    this.checkForUpdates = setInterval(async () => {
       const time = Date.now();
       if (time - this.startTime > this.timeout) {
         clearInterval(this.checkForUpdates);
       }
       if (this.balanceChanged && this.wallet.sdk !== 'Bitcoin') { fullRefresh = true; }
-      return this.refresher(() => {}, fullRefresh);
+      await this.refresher(() => {}, fullRefresh);
     }, this.interval);
 
     setTimeout(async () => {

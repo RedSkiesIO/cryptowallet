@@ -264,6 +264,15 @@ describe('SendEthereum component', () => {
         }, 0);
       });
 
+      it('amount formatter returns amount in coin for fiat price if no price data is available', (done) => {
+        storeInit({}, defaultProps, 4);
+        const result = wrapper.vm.currencyToCoin(5);
+        setTimeout(() => {
+          expect(result).toEqual(5);
+          done();
+        }, 0);
+      });
+
       it('validates the amount in coin input on blur events', (done) => {
         wrapper.find('.amount-in-coin').trigger('blur');
         setTimeout(() => {

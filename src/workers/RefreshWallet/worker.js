@@ -49,6 +49,7 @@ async function updateBalance(wallet, coinSDK, cb, addresses) {
     await cb.updateWallet(wallet.id, { newBalance });
     return true;
   }
+
   return false;
 }
 

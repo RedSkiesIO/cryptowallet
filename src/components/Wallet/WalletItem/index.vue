@@ -122,7 +122,6 @@ export default {
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
-      delay: (state) => { return state.settings.delay; },
     }),
     isEnabled: {
       get() {

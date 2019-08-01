@@ -234,11 +234,11 @@ export default {
     },
 
     async updateBalances(done) {
-      const promises = this.wallets.map((wallet) => {
-        return this.$walletWorker.refreshWallet(wallet);
-      });
-
       try {
+        const promises = this.wallets.map((wallet) => {
+          return this.$walletWorker.refreshWallet(wallet);
+        });
+
         await Promise.all(promises);
         done();
       } catch (err) {

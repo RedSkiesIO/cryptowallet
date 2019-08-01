@@ -121,5 +121,10 @@ describe('store setup module', () => {
       mutations.SET_NEWPIN_MODAL_OPENED(state, true);
       expect(state.newPinModalOpened).toBe(true);
     });
+
+    it('set new tx data', () => {
+      mutations.SET_NEW_TX_DATA(state, { txid: '123' });
+      expect(state.newTxData).toEqual({ txid: '123' });
+    });
   });
 });

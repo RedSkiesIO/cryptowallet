@@ -319,36 +319,16 @@ export default {
       try {
         if (wallets.length > 0) {
           this.$store.dispatch('settings/setLoading', true);
-          const promises = [];
-          const erc20Promises = [];
-          wallets.forEach((wallet) => {
-            if (wallet.sdk !== 'ERC20') {
-              promises.push(() => {
-                return new Promise(async (resolve) => {
-                  try {
-                    await this.enableWallet(wallet);
-                  } catch (err) {
-                    this.errorHandler(err);
-                  }
-                  resolve();
-                });
-              });
-            } else {
-              erc20Promises.push(() => {
-                return new Promise(async (resolve) => {
-                  try {
-                    await this.enableErc20Wallet(wallet);
-                  } catch (err) {
-                    this.errorHandler(err);
-                  }
-                  resolve();
-                });
-              });
-            }
-          });
 
-          await Promise.all(promises.map((promise) => { return promise(); }));
-          await Promise.all(erc20Promises.map((erc20) => { return erc20(); }));
+          await Promise.all(
+            wallets.filter((wallet) => { return wallet.sdk !== 'ERC20'; })
+              .map((wallet) => { return this.enableWallet(wallet); }),
+          );
+
+          await Promise.all(
+            wallets.filter((wallet) => { return wallet.sdk === 'ERC20'; })
+              .map((wallet) => { return this.enableErc20Wallet(wallet); }),
+          );
         }
       } finally {
         this.addWalletModalOpened = false;

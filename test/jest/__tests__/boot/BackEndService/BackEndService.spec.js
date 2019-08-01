@@ -491,6 +491,17 @@ describe('boot/BackEndService', () => {
 
   describe('getTransactionFee() method', () => {
     it('calls try() method with correct arguments and returns data', async (done) => {
+      Fees.$insert({
+        data: {
+          code: 'BTC',
+          timestamp: 1563888084308,
+          data: {
+            high: 54036,
+            low: 1500,
+            medium: 2500,
+          },
+        },
+      });
       const coin = 'BTC';
       const mockData = { data: { code: coin, timestamp: +Date() } };
 
@@ -506,6 +517,8 @@ describe('boot/BackEndService', () => {
       expect(Fees.all().length).toBe(1);
       const result = await backEndService.getTransactionFee(coin);
       expect(result.code).toBe(coin);
+      Fees.$delete('BTC');
+      await backEndService.getTransactionFee(coin);
       done();
     });
   });

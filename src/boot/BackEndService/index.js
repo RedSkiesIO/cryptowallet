@@ -282,50 +282,46 @@ class BackEndService {
    * @return {Promise}
    */
   storePriceData(coin, priceData, currency = this.vm.$store.state.settings.selectedCurrency.code) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const checkPriceExists = (symbol, data) => {
-          const price = LatestPrice.find([`${symbol}_${currency}`]);
-          if (!price) {
-            LatestPrice.$insert({
-              data: {
-                coin,
-                currency,
-                updated: +new Date(),
-                data,
-              },
-            });
-            return false;
-          }
-          return true;
-        };
-
-        const whereLatestPrice = (record, item) => {
-          return (
-            record.coin === item.coin
-            && record.currency === item.currency
-          );
-        };
-
-        if (checkPriceExists(coin, priceData)) {
-          LatestPrice.$update({
-            where: (record) => {
-              return whereLatestPrice(record, {
-                coin,
-                currency,
-              });
-            },
+    return new Promise(async (resolve) => {
+      const checkPriceExists = (symbol, data) => {
+        const price = LatestPrice.find([`${symbol}_${currency}`]);
+        if (!price) {
+          LatestPrice.$insert({
             data: {
+              coin,
+              currency,
               updated: +new Date(),
-              data: priceData,
+              data,
             },
           });
+          return false;
         }
+        return true;
+      };
 
-        resolve();
-      } catch (e) {
-        reject(e);
+      const whereLatestPrice = (record, item) => {
+        return (
+          record.coin === item.coin
+            && record.currency === item.currency
+        );
+      };
+
+      if (checkPriceExists(coin, priceData)) {
+        LatestPrice.$update({
+          where: (record) => {
+            return whereLatestPrice(record, {
+              coin,
+              currency,
+            });
+          },
+          data: {
+            updated: +new Date(),
+            data: priceData,
+          },
+        });
       }
+
+      resolve();
     });
   }
 
@@ -406,7 +402,7 @@ class BackEndService {
 
     try {
       if (coins.length > 0) {
-        const prices = await this.getPriceFeed(coins, attempts);
+        const prices = await this.getPriceFeed(coins, ['ALL'], attempts);
 
         if (prices) {
           const promises = [];

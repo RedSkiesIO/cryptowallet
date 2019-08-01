@@ -10,6 +10,7 @@ describe('WalletSingle.vue', () => {
   let wrapper;
   let storeMocks;
   let router;
+  let setOnline = true;
 
   const delay = 501;
   const coinSDKS = {
@@ -55,6 +56,8 @@ describe('WalletSingle.vue', () => {
   }
 
   beforeEach(() => {
+    Object.defineProperty(window.navigator, 'onLine', { value: setOnline, configurable: true });
+
     storeInit(customStore);
   });
 
@@ -71,6 +74,21 @@ describe('WalletSingle.vue', () => {
       setTimeout(() => {
         expect(backEndService.loadCoinPriceData).toHaveBeenCalled();
         expect(refreshWallet).toHaveBeenCalled();
+        setOnline = false;
+        done();
+      }, delay);
+    });
+  });
+
+  it('does nothing if device is offline', async (done) => {
+    jest.clearAllMocks();
+    const refreshWallet = jest.fn();
+    wrapper.vm.$walletWorker = { refreshWallet };
+    const doneMock = jest.fn();
+    wrapper.vm.$nextTick(() => {
+      wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
+      setTimeout(() => {
+        expect(refreshWallet).toHaveBeenCalledTimes(0);
         done();
       }, delay);
     });
@@ -97,6 +115,7 @@ describe('WalletSingle.vue', () => {
     const module = {
       refresher: jest.fn().mockReturnValue({}),
       timeout: 300000,
+      delay: { short: 200 },
     };
     jest.useFakeTimers();
 
@@ -105,7 +124,7 @@ describe('WalletSingle.vue', () => {
     bind();
     jest.advanceTimersByTime(15000);
 
-    expect(module.refresher).toHaveBeenCalledTimes(2);
+    expect(module.refresher).toHaveBeenCalledTimes(3);
     done();
   });
 

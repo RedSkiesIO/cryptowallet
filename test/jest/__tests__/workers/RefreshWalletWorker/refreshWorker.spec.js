@@ -68,6 +68,11 @@ describe('RefreshWalletWorker', () => {
     expect(mockERC20SDK.getTransactionHistory).toHaveBeenCalled();
   });
 
+  it('returns false if invalid wallet is passed', async () => {
+    const result = await RefreshWallet({ sdk: 'BTC' }, mockCallbacks);
+    expect(result).toEqual(false);
+  });
+
   it('can refresh a bitcoin wallet with transaction history', async () => {
     mockBitcoinSDK.getTransactionHistory.mockReturnValue({
       txs: [{
@@ -103,7 +108,7 @@ describe('RefreshWalletWorker', () => {
       });
     }
     mockEthereumSDK.getTransactionHistory.mockReturnValue({ txs });
-    mockEthereumSDK.getBalance.mockReturnValue('15');
+    mockEthereumSDK.getBalance.mockReturnValue(15);
     await RefreshWallet(Wallet.all()[0], mockCallbacks);
     expect(mockCallbacks.getTxs).toHaveBeenCalled();
     expect(mockCallbacks.updateTxs).toHaveBeenCalled();
@@ -117,10 +122,11 @@ describe('RefreshWalletWorker', () => {
     {
       hash: '456', wallet_id: 4, confirmations: 6, sent: true,
     }]);
-    mockERC20SDK.getBalance.mockReturnValue('10');
+    mockERC20SDK.getBalance.mockReturnValue(10);
+    mockCallbacks.getTxs.mockReturnValue([]);
+
     await RefreshWallet(Wallet.all()[1], mockCallbacks);
     expect(mockCallbacks.getTxs).toHaveBeenCalled();
-    expect(mockCallbacks.updateTxs).toHaveBeenCalled();
     expect(mockCallbacks.insertTxs).toHaveBeenCalled();
   });
 });

@@ -232,7 +232,13 @@ describe('AddERC20 component', () => {
             setTimeout(() => {
               expect(wrapper.contains('.name-input.q-field--error')).toBe(false);
               expect(wrapper.find('.error-label-name').text()).toBe('');
-              done();
+              nameInput.element.value = '!';
+              nameInput.trigger('input');
+              setTimeout(() => {
+                expect(wrapper.contains('.name-input.q-field--error')).toBe(true);
+                expect(wrapper.find('.error-label-name').text()).toBe(wrapper.vm.$t('invalidTokenName'));
+                done();
+              }, 100);
             }, 100);
           }, 100);
         }, 100);
