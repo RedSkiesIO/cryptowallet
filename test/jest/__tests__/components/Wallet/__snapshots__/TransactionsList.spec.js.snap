@@ -14,12 +14,7 @@ exports[`TransactionsList.vue renders and matches snapshot 1`] = `
     <q-infinite-scroll-stub
       offset="50"
     >
-      <q-timeline-stub
-        color="blueish"
-        layout="dense"
-        responsive=""
-        side="right"
-      >
+      <q-list-stub>
         <singletransaction-stub
           data="[object Object]"
         />
@@ -52,7 +47,7 @@ exports[`TransactionsList.vue renders and matches snapshot 1`] = `
         />
          
         <!---->
-      </q-timeline-stub>
+      </q-list-stub>
        
       <q-spinner-dots-stub
         size="40"
