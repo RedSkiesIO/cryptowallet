@@ -1,61 +1,171 @@
 <template>
-  <q-timeline-entry
-    :title="date"
-    side="left"
-  >
-    <q-expansion-item
-      :label="amount"
-      :class="{ 'positive-amount': !data.sent, 'negative-amount': data.sent }"
+  <div>
+    <q-item
+      v-ripple
+      clickable
+      style="padding: 1rem"
+      @click="details = true"
+    >
+      <q-item-section
+        avatar
+        top
+      >
+        <q-avatar
+          :icon="icon"
+          color="primary"
+          text-color="white"
+        />
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label lines="1">
+          {{ amount.word }} {{ amount.formatted }} {{ wallet.symbol }}
+          <span v-if="latestPrice">({{ amount.currency }})</span>
+        </q-item-label>
+        <q-item-label caption>
+          {{ date }}
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section side>
+        <q-icon
+          name="info"
+        />
+      </q-item-section>
+    </q-item>
+
+    <q-dialog
+      v-model="details"
     >
       <q-card>
         <q-card-section>
+          <div class="transaction-heading">
+            <div class="row justify-center">
+              <q-avatar
+                :icon="icon"
+                color="primary"
+                text-color="white"
+                style="margin-bottom:1rem"
+              />
+            </div>
+
+            <div class="row justify-center">
+              {{ amount.prefix }} {{ data.value }} {{ wallet.symbol }}
+            </div>
+
+            <div
+              v-if="latestPrice"
+              class="row justify-center"
+            >
+              {{ amount.prefix }} {{ amount.currency }}
+            </div>
+          </div>
+
           <div class="single-transaction-content">
-            <p>
-              <span class="tx-hash break">
-                {{ paymentDirection }}
-              </span>
-            </p>
-            <p>
-              {{ $t('txHash') }}:
-              <span class="tx-hash break">
-                {{ data.hash }}
-              </span>
-            </p>
-            <p>
-              {{ $t('status') }}:
-              <span
-                :class="{
-                  'status': true,
-                  'unconfirmed-tx': data.confirmations < minConfirmations,
-                  'confirmed-tx': data.confirmations >= minConfirmations,
-                }"
-              >
-                {{ status }}
-              </span>
-            </p>
-            <p>
-              {{ $t('confirmations') }}:
-              <span class="confirmations">
-                {{ data.confirmations }}
-              </span>
-            </p>
-            <p>
-              TX {{ $t('fee') }}:
-              <span class="tx-fee">
-                {{ feeFormated }}
-              </span>
-            </p>
-            <p>
-              {{ $t('blockHeight') }}:
-              <span class="tx-height">
-                {{ data.blockHeight }}
-              </span>
-            </p>
+            <div class="row justify-between">
+              <div class="col-2">
+                {{ paymentDirection.prefix }}
+              </div>
+              <div class="col-10">
+                <span class="tx-hash break">
+                  {{ paymentDirection.address }}
+                </span>
+
+                <q-btn
+                  icon="content_copy"
+                  size="xs"
+                  flat
+                  round
+                  dense
+                  style="margin-top=0"
+                  @click="copy(paymentDirection.address)"
+                />
+              </div>
+            </div>
+
+            <div class="row justify-between">
+              <div class="col-2">
+                {{ $t('txHash') }}:
+              </div>
+              <div class="col-10">
+                <span class="tx-hash break">
+                  {{ data.hash }}
+                  <q-btn
+                    icon="content_copy"
+                    size="xs"
+                    flat
+                    round
+                    dense
+                    style="padding-top=0"
+                    @click="copy(data.hash)"
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div class="row justify-between">
+              <div>
+                {{ $t('status') }}:
+              </div>
+              <div>
+                <span
+                  :class="{
+                    'status': true,
+                    'unconfirmed-tx': data.confirmations < minConfirmations,
+                    'confirmed-tx': data.confirmations >= minConfirmations,
+                  }"
+                >
+                  {{ status }}
+                </span>
+              </div>
+            </div>
+
+            <div class="row justify-between">
+              <div>
+                {{ $t('confirmations') }}:
+              </div>
+              <div>
+                <span class="confirmations">
+                  {{ data.confirmations }}
+                </span>
+              </div>
+            </div>
+
+            <div class="row justify-between">
+              <div>
+                {{ $t('fee') }}:
+              </div>
+              <div>
+                <span class="tx-fee">
+                  {{ feeFormated }}
+                </span>
+              </div>
+            </div>
+
+            <div class="row justify-between">
+              <div>
+                {{ $t('blockHeight') }}:
+              </div>
+              <div>
+                <span class="tx-height">
+                  {{ data.blockHeight }}
+                </span>
+              </div>
+            </div>
+            <div class="row justify-end">
+              <q-btn
+                v-close-popup
+                :label="$t('close')"
+                flat
+                round
+                dense
+              />
+            </div>
           </div>
         </q-card-section>
       </q-card>
-    </q-expansion-item>
-  </q-timeline-entry>
+    </q-dialog>
+  </div>
 </template>
 
 <script>
@@ -73,9 +183,16 @@ export default {
     },
   },
 
+  data() {
+    return {
+      details: false,
+    };
+  },
+
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
+      delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -115,12 +232,18 @@ export default {
       if (this.data.sent) {
         let { receiver } = this.data;
         if (Array.isArray(receiver)) { [receiver] = receiver; }
-        return `${this.$t('to')}: ${receiver}`;
+        return {
+          prefix: `${this.$t('to')}:`,
+          address: receiver,
+        };
       }
 
       let { sender } = this.data;
       if (Array.isArray(sender)) { [sender] = sender; }
-      return `${this.$t('from')}: ${sender}`;
+      return {
+        prefix: `${this.$t('from')}`,
+        address: sender,
+      };
     },
 
     /**
@@ -135,6 +258,11 @@ export default {
       return dateTranslater(new Date(this.data.confirmedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);
     },
 
+    icon() {
+      if (this.data.sent) { return 'send'; }
+      return 'call_received';
+    },
+
     /**
      * Converts amount value (Number) into a String
      * @return {String}
@@ -147,10 +275,17 @@ export default {
       const amountInCoin = new AmountFormatter({
         amount: inCoin,
         rate: this.latestPrice,
-        format: this.coinDenomination,
-        prependPlusOrMinus: true,
+        format: '0,0[.]00000',
+        prependPlusOrMinus: false,
         removeTrailingZeros: true,
       });
+
+      const result = {
+        formatted: amountInCoin.getFormatted(),
+        prefix: this.data.sent ? '-' : '+',
+        word: this.data.sent ? this.$t('sent') : this.$t('received'),
+      };
+
       if (this.latestPrice) {
         const amountInCurrency = new AmountFormatter({
           amount: inCoin,
@@ -164,9 +299,10 @@ export default {
           withCurrencySymbol: true,
         });
 
-        return `${amountInCoin.getFormatted()} ${this.coinSymbol} (${amountInCurrency.getFormatted()})`;
+        result.currency = amountInCurrency.getFormatted();
+        return result;
       }
-      return `${amountInCoin.getFormatted()} ${this.coinSymbol}`;
+      return result;
     },
 
     /**
@@ -239,6 +375,17 @@ export default {
       return this.$t('pending');
     },
   },
+
+  methods: {
+    copy(text) {
+      try {
+        cordova.plugins.clipboard.copy(text);
+        this.$toast.create(0, this.$t('copied'), this.delay.short);
+      } catch (err) {
+        this.errorHandler(err);
+      }
+    },
+  },
 };
 </script>
 
@@ -297,7 +444,24 @@ export default {
 
 .single-transaction-content {
   font-size: 0.8rem;
+  color:#757575;
 }
+
+.single-transaction-content .row {
+  padding: 0.75rem 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.single-transaction-content .justify-end {
+  padding: 0.5rem;
+  padding-bottom: 0;
+}
+
+.single-transaction-content .row .q-btn__content {
+  padding: 0;
+  border: none;
+}
+
 
 .q-timeline--dense--right
 .q-timeline__entry {
@@ -334,5 +498,10 @@ export default {
 
 .break {
   word-break: break-all;
+}
+
+.transaction-heading {
+  color: black;
+  padding: 1rem 0;
 }
 </style>
