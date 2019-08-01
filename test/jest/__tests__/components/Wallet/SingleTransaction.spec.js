@@ -6,7 +6,7 @@ import Coin from '@/store/wallet/entities/coin';
 import Wallet from '@/store/wallet/entities/wallet';
 import LatestPrice from '@/store/latestPrice';
 import SupportedCoins from '@/store/settings/state/supportedCoins.js';
-
+import cordovaMocks from '~/test/CordovaMocks';
 
 describe('SingleTransaction.vue', () => {
   let storeMocks;
@@ -88,11 +88,21 @@ describe('SingleTransaction.vue', () => {
     router = createRouter(storeMocks.store);
     router.push({ path: '/wallet/single/4' });
     wrapper = wrapperInit({
-      i18n, router, localVue, store: storeMocks.store, propsData,
+      i18n,
+      router,
+      localVue,
+      store: storeMocks.store,
+      propsData,
+      mocks: {
+        errorHandler: jest.fn(),
+      },
     });
   }
 
-  beforeEach(() => { return storeInit(); });
+  beforeEach(() => {
+    cordovaMocks.initMocks();
+    return storeInit();
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -111,17 +121,13 @@ describe('SingleTransaction.vue', () => {
         fee: 0.01,
       },
     });
-    expect(wrapper.vm.paymentDirection).toEqual('From: 1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
-    expect(wrapper.contains('.positive-amount')).toBe(true);
-    expect(wrapper.contains('.confirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE', prefix: 'From' });
     expect(wrapper.find('.confirmed-tx').text()).toEqual(wrapper.vm.$t('confirmed'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.01 BTC (£38.45)');
   });
 
   it('displays a sent Bitcoin transaction', () => {
-    expect(wrapper.vm.paymentDirection).toEqual('To: 1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
-    expect(wrapper.contains('.negative-amount')).toBe(true);
-    expect(wrapper.contains('.confirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE', prefix: 'To:' });
     expect(wrapper.find('.confirmed-tx').text()).toEqual(wrapper.vm.$t('confirmed'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 BTC (£384.52)');
   });
@@ -139,9 +145,7 @@ describe('SingleTransaction.vue', () => {
         fee: 0.1,
       },
     });
-    expect(wrapper.vm.paymentDirection).toEqual('From: 0x8f52d186aa4a6b169abe85d999dcbe289aa215f8');
-    expect(wrapper.contains('.positive-amount')).toBe(true);
-    expect(wrapper.contains('.unconfirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '0x8f52d186aa4a6b169abe85d999dcbe289aa215f8', prefix: 'From' });
     expect(wrapper.find('.unconfirmed-tx').text()).toEqual(wrapper.vm.$t('unconfirmed'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 ETH (£13.04)');
   });
@@ -159,9 +163,7 @@ describe('SingleTransaction.vue', () => {
         fee: 0.1,
       },
     });
-    expect(wrapper.vm.paymentDirection).toEqual('To: 0x0a1443a629847f4d487cf1cf00c5b417bb27238f');
-    expect(wrapper.contains('.negative-amount')).toBe(true);
-    expect(wrapper.contains('.unconfirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '0x0a1443a629847f4d487cf1cf00c5b417bb27238f', prefix: 'To:' });
     expect(wrapper.find('.unconfirmed-tx').text()).toEqual(wrapper.vm.$t('pending'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 ETH (£13.04)');
   });
@@ -179,9 +181,7 @@ describe('SingleTransaction.vue', () => {
         fee: 0.1,
       },
     });
-    expect(wrapper.vm.paymentDirection).toEqual('From: 0x8f52d186aa4a6b169abe85d999dcbe289aa215f8');
-    expect(wrapper.contains('.positive-amount')).toBe(true);
-    expect(wrapper.contains('.confirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '0x8f52d186aa4a6b169abe85d999dcbe289aa215f8', prefix: 'From' });
     expect(wrapper.find('.confirmed-tx').text()).toEqual(wrapper.vm.$t('confirmed'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 ETH (£13.04)');
   });
@@ -199,18 +199,36 @@ describe('SingleTransaction.vue', () => {
         fee: 0.1,
       },
     });
-    expect(wrapper.vm.paymentDirection).toEqual('To: 0xcc345035d14458b3c012977f96fa1e116760d60a');
-    expect(wrapper.contains('.negative-amount')).toBe(true);
-    expect(wrapper.contains('.unconfirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '0xcc345035d14458b3c012977f96fa1e116760d60a', prefix: 'To:' });
     expect(wrapper.find('.unconfirmed-tx').text()).toEqual(wrapper.vm.$t('pending'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 ETH (£13.04)');
   });
   it('displays a Litecoin transaction', () => {
     router.push({ path: '/wallet/single/7' });
-    expect(wrapper.vm.paymentDirection).toEqual('To: 1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
-    expect(wrapper.contains('.negative-amount')).toBe(true);
-    expect(wrapper.contains('.confirmed-tx')).toBe(true);
+    expect(wrapper.vm.paymentDirection).toEqual({ address: '1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE', prefix: 'To:' });
     expect(wrapper.find('.confirmed-tx').text()).toEqual(wrapper.vm.$t('confirmed'));
     expect(wrapper.find('.tx-fee').text()).toEqual('0.1 LTC');
+  });
+
+  describe('copy()', () => {
+    it('can copy the address when the copy button is clicked', (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      cordova.plugins.clipboard.mockBehaviour = 1;
+      wrapper.vm.copy('1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
+      setTimeout(() => {
+        expect(wrapper.vm.$toast.create).toHaveBeenCalled();
+        done();
+      }, 0);
+    });
+
+    it('can handle errors if tx cannot be copied', (done) => {
+      wrapper.vm.$toast.create = jest.fn();
+      cordova.plugins.clipboard.mockBehaviour = 2;
+      wrapper.vm.copy('1CK6KHY6MHgYvmRQ4PAafKYDrg1ejbH1cE');
+      setTimeout(() => {
+        expect(wrapper.vm.errorHandler).toHaveBeenCalled();
+        done();
+      }, 0);
+    });
   });
 });
