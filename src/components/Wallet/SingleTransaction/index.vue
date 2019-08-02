@@ -35,7 +35,7 @@
     </q-item>
 
     <q-dialog
-      v-model="details"
+      v-model="openTxDialog"
     >
       <q-card>
         <q-card-section>
@@ -193,6 +193,7 @@ export default {
     ...mapState({
       id: (state) => { return state.route.params.id; },
       delay: (state) => { return state.settings.delay; },
+      newTx: (state) => { return state.modals.newTxData; },
     }),
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -373,6 +374,25 @@ export default {
       if (this.data.confirmations >= this.minConfirmations) { return this.$t('confirmed'); }
       if (this.data.confirmations > 0) { return this.$t('unconfirmed'); }
       return this.$t('pending');
+    },
+
+    openTxDialog: {
+      get() {
+        if (this.newTx === this.data.hash) {
+          return true;
+        }
+        if (this.details) {
+          return true;
+        }
+        return false;
+      },
+      set(value) {
+        if (!value) {
+          this.$store.dispatch('modals/setNewTxData', null);
+        }
+
+        this.details = value;
+      },
     },
   },
 

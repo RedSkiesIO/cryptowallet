@@ -16,6 +16,16 @@ export default {
     Transactions,
   },
 
+  data() {
+    return {
+      checkForUpdates: null,
+      interval: 15000,
+      timeout: 300000,
+      startTime: null,
+      balanceChanged: false,
+    };
+  },
+
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
@@ -26,6 +36,28 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+  },
+
+  async activated() {
+    let fullRefresh = false;
+    this.startTime = new Date().getTime();
+    this.checkForUpdates = setInterval(() => {
+      const time = new Date().getTime();
+      if (time - this.startTime > this.timeout) {
+        clearInterval(this.checkForUpdates);
+      }
+      if (this.balanceChanged && this.wallet.sdk !== 'Bitcoin') { fullRefresh = true; }
+      return this.refresher(() => {}, fullRefresh);
+    }, this.interval);
+
+    setTimeout(async () => {
+      await this.refresher(() => {});
+    }, this.delay.short);
+  },
+
+  deactivated() {
+    this.balanceChanged = false;
+    clearInterval(this.checkForUpdates);
   },
 
   mounted() {
@@ -44,12 +76,17 @@ export default {
     /**
      * Performs a wallet update
      */
-    async refresher(done) {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
-      await refreshWallet(coinSDK, this.wallet, this.authenticatedAccount);
-      setTimeout(() => {
-        done();
-      }, this.delay.normal);
+    async refresher(done, fullRefresh = true) {
+      const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      if (online) {
+        const coinSDK = this.coinSDKS[this.wallet.sdk];
+        this.balanceChanged = await refreshWallet(
+          coinSDK, this.wallet, this.authenticatedAccount, fullRefresh,
+        );
+        setTimeout(() => {
+          done();
+        }, this.delay.normal);
+      } else { done(); }
     },
   },
 };

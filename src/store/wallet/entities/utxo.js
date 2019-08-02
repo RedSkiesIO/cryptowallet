@@ -18,7 +18,8 @@ export default class Utxo extends Model {
       txid: this.attr(''),
       value: this.attr(''),
       vout: this.attr(''),
-      spentHash: this.attr(''),
+      confirmations: this.attr(0),
+      spentValue: this.attr(0),
     };
   }
 }

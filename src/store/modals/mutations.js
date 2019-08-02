@@ -100,3 +100,7 @@ export function SET_DELETEACCOUNT_MODAL_OPENED(state, payload) {
 export function SET_NEWPIN_MODAL_OPENED(state, payload) {
   state.newPinModalOpened = payload;
 }
+
+export function SET_NEW_TX_DATA(state, payload) {
+  state.newTxData = payload;
+}

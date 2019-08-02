@@ -308,6 +308,7 @@ export default {
     },
 
     async close() {
+      this.$root.$emit('enableTxNotifications', false);
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('enabled', true)
@@ -352,6 +353,7 @@ export default {
       } finally {
         this.addWalletModalOpened = false;
         this.search = false;
+        this.$root.$emit('enableTxNotifications', true);
         this.$store.dispatch('settings/setLoading', false);
       }
     },

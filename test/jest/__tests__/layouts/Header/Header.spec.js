@@ -5,6 +5,8 @@ import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Wallet from '@/store/wallet/entities/wallet';
 import LatestPrice from '@/store/latestPrice';
+import Tx from '@/store/wallet/entities/tx';
+
 
 describe('Header.vue', () => {
   let storeMocks;
@@ -30,7 +32,9 @@ describe('Header.vue', () => {
     });
   }
 
-  beforeEach(() => { return storeInit(); });
+  beforeEach(() => {
+    return storeInit();
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -51,10 +55,12 @@ describe('Header.vue', () => {
 
   it('calls a goBack method on the "Go Back" button click', (done) => {
     router.push({ path: '/fake/' });
-    wrapper.find('button').trigger('click');
     setTimeout(() => {
-      expect(router.history.current.path).toBe('/');
-      done();
+      wrapper.find('button').trigger('click');
+      setTimeout(() => {
+        expect(router.history.current.path).toBe('/');
+        done();
+      }, 500);
     }, 500);
   });
 
@@ -124,5 +130,47 @@ describe('Header.vue', () => {
     expect(wrapper.find('h1.header-h1').text().includes(wrapper.vm.$t('settings'))).toBe(true);
     router.push({ path: '/exchange' });
     expect(wrapper.find('h1.header-h1').text().includes(wrapper.vm.$t('exchange'))).toBe(true);
+  });
+
+  describe('showNotification', () => {
+    it('displays a dialog when a new notifaction is received', async (done) => {
+      jest.useFakeTimers();
+      wrapper.vm.$root.$emit('enableTxNotifications', true);
+      const txs = [
+        {
+          wallet_id: 3,
+          value: 5,
+          hash: '123',
+          sent: false,
+        },
+        {
+          wallet_id: 4,
+          value: 10,
+          hash: '456',
+          sent: false,
+        },
+      ];
+      Tx.$insert({ data: txs });
+      expect(wrapper.vm.showTxNotification).toBe(true);
+      jest.runAllTimers();
+      expect(wrapper.vm.showTxNotification).toBe(false);
+      expect(wrapper.vm.newTxModalData).toBe(null);
+      done();
+    });
+  });
+
+  describe('viewTx', () => {
+    it('goes to the transaction details', async (done) => {
+      jest.useFakeTimers();
+      storeInit({ state: { modals: { receiveCoinModalOpened: true } } });
+      wrapper.vm.$router.push = jest.fn();
+
+      wrapper.vm.viewTx('123', 3);
+      jest.runAllTimers();
+      expect(storeMocks.actions.setReceiveCoinModalOpened).toHaveBeenCalled();
+      expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ path: '/wallet/single/3' });
+      expect(storeMocks.actions.setNewTxData).toHaveBeenCalled();
+      done();
+    });
   });
 });
