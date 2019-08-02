@@ -30,6 +30,7 @@ class BackEndService {
 
   successCode = null;
 
+
   constructor(vm, authenticatedAccount, password) {
     this.vm = vm;
     this.accountId = authenticatedAccount;
@@ -102,7 +103,7 @@ class BackEndService {
           }
         }
       } catch (err) {
-        this.vm.errorHandler(err);
+        this.vm.errorHandler(err, false);
       }
 
       setTimeout(() => {
@@ -119,7 +120,14 @@ class BackEndService {
    * @return {String}
    */
   async auth() {
-    const response = await axios.get(`${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`);
+    // const response = await axios.get(`
+    // ${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`);
+
+    const response = await axios({
+      method: 'get',
+      timeout: 2000,
+      url: `${process.env.BACKEND_SERVICE_URL}/auth/token/${Math.random().toString()}`,
+    });
 
     if (response.data) {
       this.accessToken = response.data.accessToken;
@@ -134,8 +142,16 @@ class BackEndService {
    * @return {String}
    */
   async refreshAuth() {
-    const data = { refresh_token: this.refreshToken };
-    const response = await axios.post(`${process.env.BACKEND_SERVICE_URL}/auth/refresh`, data);
+    const data = {
+      refresh_token: this.refreshToken,
+    };
+    // const response = await axios.post(`${process.env.BACKEND_SERVICE_URL}/auth/refresh`, data);
+    const response = await axios({
+      method: 'post',
+      timeout: 2000,
+      url: `${process.env.BACKEND_SERVICE_URL}/auth/refresh`,
+      data,
+    });
 
     if (response.data) {
       this.accessToken = response.data.accessToken;
@@ -173,6 +189,7 @@ class BackEndService {
 
       try {
         const config = await this.getAxiosConfig();
+        config.timeout = 2000;
         const response = await axios.get(URL, config);
         this.setRefreshToken(response.headers.new_refresh_token);
         return resolve(response);
@@ -208,8 +225,8 @@ class BackEndService {
    * @param  {Array}  currencies
    * @return {Object}
    */
-  async getPriceFeed(coins, currencies = ['ALL']) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-feed/${coins.join(',')}/${currencies.join(',')}`);
+  async getPriceFeed(coins, currencies = ['ALL'], attempts = 0) {
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-feed/${coins.join(',')}/${currencies.join(',')}`, attempts);
     return result;
   }
 
@@ -220,8 +237,8 @@ class BackEndService {
    * @param  {String} period
    * @return {Object}
    */
-  async getHistoricalData(coin, currency, period) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`);
+  async getHistoricalData(coin, currency, period, attempts = 0) {
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`, attempts);
     const msToS = 1000;
     if (!result) { return false; }
 
@@ -237,13 +254,13 @@ class BackEndService {
    * @param  {String} coin
    * @return {Object}
    */
-  async getTransactionFee(coin) {
+  async getTransactionFee(coin, attempts = 0) {
     const fee = Fees.find([coin]);
     const currentTime = new Date().getTime();
     const updateTime = 600000;
 
     if (!fee || (currentTime - fee.timestamp) > updateTime) {
-      const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`);
+      const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`, attempts);
       result.data.timestamp = currentTime;
       if (fee) {
         Fees.$update({
@@ -265,50 +282,46 @@ class BackEndService {
    * @return {Promise}
    */
   storePriceData(coin, priceData, currency = this.vm.$store.state.settings.selectedCurrency.code) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const checkPriceExists = (symbol, data) => {
-          const price = LatestPrice.find([`${symbol}_${currency}`]);
-          if (!price) {
-            LatestPrice.$insert({
-              data: {
-                coin,
-                currency,
-                updated: +new Date(),
-                data,
-              },
-            });
-            return false;
-          }
-          return true;
-        };
-
-        const whereLatestPrice = (record, item) => {
-          return (
-            record.coin === item.coin
-            && record.currency === item.currency
-          );
-        };
-
-        if (checkPriceExists(coin, priceData)) {
-          LatestPrice.$update({
-            where: (record) => {
-              return whereLatestPrice(record, {
-                coin,
-                currency,
-              });
-            },
+    return new Promise(async (resolve) => {
+      const checkPriceExists = (symbol, data) => {
+        const price = LatestPrice.find([`${symbol}_${currency}`]);
+        if (!price) {
+          LatestPrice.$insert({
             data: {
+              coin,
+              currency,
               updated: +new Date(),
-              data: priceData,
+              data,
             },
           });
+          return false;
         }
+        return true;
+      };
 
-        resolve();
-      } catch (e) {
-        reject(e);
+      const whereLatestPrice = (record, item) => {
+        return (
+          record.coin === item.coin
+            && record.currency === item.currency
+        );
+      };
+
+      if (checkPriceExists(coin, priceData)) {
+        LatestPrice.$update({
+          where: (record) => {
+            return whereLatestPrice(record, {
+              coin,
+              currency,
+            });
+          },
+          data: {
+            updated: +new Date(),
+            data: priceData,
+          },
+        });
       }
+
+      resolve();
     });
   }
 
@@ -362,7 +375,7 @@ class BackEndService {
   /**
    * Calls the API and and stores the price data
    */
-  async loadPriceFeed() {
+  async loadPriceFeed(attempts = 0) {
     const {
       selectedCurrency,
       authenticatedAccount,
@@ -389,7 +402,7 @@ class BackEndService {
 
     try {
       if (coins.length > 0) {
-        const prices = await this.getPriceFeed(coins);
+        const prices = await this.getPriceFeed(coins, ['ALL'], attempts);
 
         if (prices) {
           const promises = [];
@@ -414,16 +427,16 @@ class BackEndService {
   /**
    * Calls the API and stores the price data for a coin
    */
-  async loadCoinPriceData(coin) {
+  async loadCoinPriceData(coin, attempts = 0) {
     const { selectedCurrency } = this.vm.$store.state.settings;
     const latestDay = Prices.find([`${coin}_${selectedCurrency.code}_day`]);
     const updateTime = 3600000;
     const currentTime = new Date().getTime();
     const updated = latestDay ? latestDay.updated - (latestDay.updated % updateTime) : null;
     if (!latestDay || currentTime - updated > updateTime) {
-      const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day');
-      const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week');
-      const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month');
+      const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day', attempts);
+      const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week', attempts);
+      const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month', attempts);
 
       if (dayData && weekData && monthData) {
         this.storeChartData(coin, 'day', dayData.data);
@@ -435,6 +448,7 @@ class BackEndService {
     const latestPrice = await this.getPriceFeed(
       [coin],
       [selectedCurrency.code],
+      attempts,
     );
 
     if (latestPrice) {

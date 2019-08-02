@@ -39,13 +39,6 @@ export default class AmountFormatter {
       formatted = `${this.currency.symbol}${formatted}`;
     }
 
-    if (this.prependPlusOrMinus) {
-      if (amount < 0) {
-        return `- ${formatted}`;
-      }
-      return `+ ${formatted}`;
-    }
-
     return formatted;
   }
 

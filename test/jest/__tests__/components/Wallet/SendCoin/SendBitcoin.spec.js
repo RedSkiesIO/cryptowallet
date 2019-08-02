@@ -376,7 +376,7 @@ describe('SendBitcoin component', () => {
       }, 25);
     });
 
-    it('updates the estimatedFee on if amount and address is provided', async (done) => {
+    it('updates the estimatedFee if amount and address is provided', async (done) => {
       const input = wrapper.find('.address-input input');
       input.element.value = '123';
       input.trigger('input');
@@ -385,7 +385,8 @@ describe('SendBitcoin component', () => {
       wrapper.find('.amount-in-coin').trigger('focus');
       inputInCoin.element.value = 0.001;
       inputInCoin.trigger('input');
-
+      wrapper.vm.feeSetting = 0;
+      wrapper.vm.feeChange(0);
       setTimeout(() => {
         expect(wrapper.vm.estimatedFee).toBe('0.000023 BTC (£0.09)');
         done();

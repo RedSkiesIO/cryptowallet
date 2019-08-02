@@ -6,6 +6,8 @@ import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 
+jest.mock('@/workers/RefreshWallet');
+
 describe('Login.vue', () => {
   let wrapper;
   let BackEndService;

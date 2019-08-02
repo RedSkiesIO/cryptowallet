@@ -22,6 +22,7 @@ import encUTF8 from 'crypto-js/enc-utf8';
 import { mapState } from 'vuex';
 import PinPad from '@/components/Auth/PinPad';
 import Wallet from '@/store/wallet/entities/wallet';
+import WalletWorker from '@/workers/RefreshWallet';
 
 export default {
 
@@ -102,6 +103,8 @@ export default {
             await this.decryptData(this.account.id, this.pin.join(''));
             await this.initializeWallets(this.account.id);
             Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
+            Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();
+
             const connect = await this.backEndService.connect();
             if (connect) {
               await this.backEndService.loadPriceFeed();

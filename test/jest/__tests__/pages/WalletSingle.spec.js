@@ -1,15 +1,16 @@
+/* eslint-disable no-magic-numbers */
 import WalletSingle from '@/pages/WalletSingle';
 import { shallowMount } from '@vue/test-utils';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
-import RefreshWallet from '@/helpers/RefreshWallet';
 
-jest.mock('@/helpers/RefreshWallet');
+jest.mock('@/workers/RefreshWallet');
 
 describe('WalletSingle.vue', () => {
   let wrapper;
   let storeMocks;
   let router;
+  let setOnline = true;
 
   const delay = 501;
   const coinSDKS = {
@@ -21,6 +22,12 @@ describe('WalletSingle.vue', () => {
   };
 
   const errorHandler = jest.fn();
+
+  const mocks = {
+    backEndService,
+    coinSDKS,
+    errorHandler,
+  };
 
   const customStore = {
     getters: {
@@ -44,15 +51,13 @@ describe('WalletSingle.vue', () => {
       localVue,
       propsData,
       store: storeMocks.store,
-      mocks: {
-        backEndService,
-        coinSDKS,
-        errorHandler,
-      },
+      mocks,
     });
   }
 
   beforeEach(() => {
+    Object.defineProperty(window.navigator, 'onLine', { value: setOnline, configurable: true });
+
     storeInit(customStore);
   });
 
@@ -61,12 +66,29 @@ describe('WalletSingle.vue', () => {
   });
 
   it('calls the refreshWallet plugin on a updateWalletSingle event', async (done) => {
+    const refreshWallet = jest.fn();
+    wrapper.vm.$walletWorker = { refreshWallet };
     const doneMock = jest.fn();
     wrapper.vm.$nextTick(() => {
       wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
       setTimeout(() => {
         expect(backEndService.loadCoinPriceData).toHaveBeenCalled();
-        expect(RefreshWallet).toHaveBeenCalled();
+        expect(refreshWallet).toHaveBeenCalled();
+        setOnline = false;
+        done();
+      }, delay);
+    });
+  });
+
+  it('does nothing if device is offline', async (done) => {
+    jest.clearAllMocks();
+    const refreshWallet = jest.fn();
+    wrapper.vm.$walletWorker = { refreshWallet };
+    const doneMock = jest.fn();
+    wrapper.vm.$nextTick(() => {
+      wrapper.vm.$root.$emit('updateWalletSingle', doneMock);
+      setTimeout(() => {
+        expect(refreshWallet).toHaveBeenCalledTimes(0);
         done();
       }, delay);
     });
@@ -82,5 +104,33 @@ describe('WalletSingle.vue', () => {
       expect(wrapper.vm.errorHandler).toHaveBeenCalled();
       done();
     });
+  });
+
+  it('checks for new txs periodically', (done) => {
+    let now = 0;
+    Date.now = jest.spyOn(Date, 'now').mockImplementation(() => {
+      now += 300000;
+      return now;
+    });
+    const module = {
+      refresher: jest.fn().mockReturnValue({}),
+      timeout: 300000,
+      delay: { short: 200 },
+    };
+    jest.useFakeTimers();
+
+    storeInit({});
+    const bind = wrapper.vm.$options.activated[0].bind(module);
+    bind();
+    jest.advanceTimersByTime(15000);
+
+    expect(module.refresher).toHaveBeenCalledTimes(3);
+    done();
+  });
+
+  it('stops the worker when component is deactivated', (done) => {
+    wrapper.vm.$options.deactivated[0]();
+    expect(wrapper.vm.worker).toBeFalsy();
+    done();
   });
 });

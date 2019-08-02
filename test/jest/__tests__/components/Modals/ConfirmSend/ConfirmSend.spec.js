@@ -77,7 +77,11 @@ const coinSDKSMock = {
     }),
   },
   ERC20: {
-    broadcastTx: jest.fn(),
+    broadcastTx: jest.fn().mockImplementation(() => {
+      return {
+        result: true,
+      };
+    }),
   },
 };
 
@@ -196,6 +200,17 @@ describe('ConfirmSend component', () => {
       }, 100);
     });
 
+    it('adds a successful ERC20 transaction to the database and opens the sendSuccess modal', async (done) => {
+      jest.clearAllMocks();
+      storeInit(customStore, {}, 4);
+      wrapper.findAll('button').at(1).trigger('click');
+      setTimeout(() => {
+        expect(Tx.all()[3].wallet_id).toEqual(4);
+        expect(storeMocks.actions.setSendSuccessModalOpened).toHaveBeenCalled();
+        done();
+      }, 100);
+    });
+
     it('opens the sendFailure modal if an ethereum transaction fails', async (done) => {
       coinSDKSMock.Ethereum.broadcastTx.mockImplementationOnce(() => {
         return undefined;
@@ -208,6 +223,7 @@ describe('ConfirmSend component', () => {
     });
 
     it('adds a successful bitcoin transaction to the database and opens the sendSuccess modal', async (done) => {
+      jest.clearAllMocks();
       storeInit(customStore, {}, 5);
       wrapper.findAll('button').at(1).trigger('click');
       setTimeout(() => {
@@ -227,17 +243,6 @@ describe('ConfirmSend component', () => {
       setTimeout(() => {
         done();
       }, 100);
-    });
-  });
-
-  describe('parent modal', () => {
-    it('opens and closes the modal', () => {
-      wrapper.vm.$parent.$store = wrapper.vm.$store;
-      wrapper.vm.$parent.sendConfirmModalOpened = false;
-      expect(wrapper.vm.$parent.sendConfirmModalOpened).toBe(false);
-      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[3][1]).toBe(false);
-      wrapper.vm.$parent.sendConfirmModalOpened = true;
-      expect(storeMocks.actions.setConfirmSendModalOpened.mock.calls[4][1]).toBe(true);
     });
   });
 });
