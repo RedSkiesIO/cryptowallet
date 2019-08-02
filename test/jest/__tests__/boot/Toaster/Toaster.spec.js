@@ -45,24 +45,24 @@ describe('boot/Toaster', () => {
   });
 
   it('creates a warning toast', () => {
-    wrapperMock.vm.$toast.create(5, 'Warning Message', 400);
+    wrapperMock.vm.$toast.create(5, 'Warning Message', 500);
     expect(Notify.create).toHaveBeenCalledWith({
       color: 'warning',
       icon: 'report_problem',
       message: 'Warning Message',
       position: 'bottom',
-      timeout: 5000,
+      timeout: 500,
     });
   });
 
   it('creates an error toast', () => {
-    wrapperMock.vm.$toast.create(10, 'Error Message', 404);
+    wrapperMock.vm.$toast.create(10, 'Error Message', 500);
     expect(Notify.create).toHaveBeenCalledWith({
       color: 'negative',
       icon: 'report_problem',
       message: 'Error Message',
       position: 'bottom',
-      timeout: 5000,
+      timeout: 500,
     });
   });
 
@@ -73,29 +73,29 @@ describe('boot/Toaster', () => {
       icon: 'report_problem',
       message: 'Failure Message',
       position: 'bottom',
-      timeout: 5000,
+      timeout: 500,
     });
   });
 
   it('creates a general toast', () => {
-    wrapperMock.vm.$toast.create(420, 'General Message', 200);
+    wrapperMock.vm.$toast.create(420, 'General Message', 500);
     expect(Notify.create).toHaveBeenCalledWith({
       color: 'info',
       icon: 'info',
       message: 'General Message',
       position: 'bottom',
-      timeout: 5000,
+      timeout: 500,
     });
   });
 
   it('creates a success toast', () => {
-    wrapperMock.vm.$toast.create(0, 'Success Message', 200, 'top');
+    wrapperMock.vm.$toast.create(0, 'Success Message', 500, 'top');
     expect(Notify.create).toHaveBeenCalledWith({
       color: 'positive',
       icon: 'thumb_up',
       message: 'Success Message',
       position: 'top',
-      timeout: 5000,
+      timeout: 500,
     });
   });
 
@@ -106,7 +106,7 @@ describe('boot/Toaster', () => {
       icon: 'info',
       message: 'I\'m a techno teapot.',
       position: 'bottom',
-      timeout: 5000,
+      timeout: 1000,
     });
   });
 });
