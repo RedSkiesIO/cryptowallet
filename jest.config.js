@@ -48,6 +48,7 @@ module.exports = {
     '^~/(.*)$': '<rootDir>/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
     '.*css$': '<rootDir>/test/jest/utils/stub.css',
+    '^worker-loader!': '<rootDir>/__mocks__/workerMock.js',
   },
   transform: {
     '.*\\.vue$': 'vue-jest',

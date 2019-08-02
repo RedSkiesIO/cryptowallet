@@ -25,6 +25,7 @@ describe('app.vue', () => {
       },
       qrcode: {
         scanning: false,
+        qrMode: null,
       },
     },
     actions: {
@@ -64,7 +65,9 @@ describe('app.vue', () => {
     });
   }
 
-  beforeEach(() => { storeInit(customStore); });
+  beforeEach(() => {
+    storeInit(customStore);
+  });
 
   it('renders and matches snapshot', () => {
     expect(wrapper.element).toMatchSnapshot();
@@ -120,6 +123,36 @@ describe('app.vue', () => {
             done();
           }, 0);
         }, 0);
+      }, 0);
+    }, 0);
+  });
+
+  it('opens the add wallet modal if QR scanner is in addERC20 mode', (done) => {
+    customStore.state.qrcode.qrMode = 'addERC20';
+    global.QRScanner = QRScanner;
+    storeInit(customStore);
+    wrapper.vm.$store.dispatch('qrcode/scanQRCode');
+    setTimeout(() => {
+      wrapper.vm.$store.dispatch('qrcode/cancelScanning');
+      setTimeout(() => {
+        expect(storeMocks.actions.setAddWalletModalOpened).toHaveBeenCalled();
+        done();
+      }, 0);
+    }, 0);
+  });
+
+  it('does not open any modals if QR scanner is in restore mode', (done) => {
+    jest.clearAllMocks();
+    customStore.state.qrcode.qrMode = 'restore';
+    global.QRScanner = QRScanner;
+    storeInit(customStore);
+    wrapper.vm.$store.dispatch('qrcode/scanQRCode');
+    setTimeout(() => {
+      wrapper.vm.$store.dispatch('qrcode/cancelScanning');
+      setTimeout(() => {
+        expect(storeMocks.actions.setAddWalletModalOpened).toHaveBeenCalledTimes(0);
+        expect(storeMocks.actions.setSendCoinModalOpened).toHaveBeenCalledTimes(0);
+        done();
       }, 0);
     }, 0);
   });

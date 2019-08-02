@@ -104,7 +104,7 @@ describe('CloudListItem.vue', () => {
     setTimeout(() => {
       expect(backEndService.storeChartData).toHaveBeenCalled();
       done();
-    }, 0);
+    }, 501);
   });
 
   it('hides the chart if no price data exists', (done) => {
@@ -133,6 +133,16 @@ describe('CloudListItem.vue', () => {
       done();
     }, 0);
   });
+
+  it('does not fetch new data if data is less than an hour old', (done) => {
+    chartData.updated = Date.now();
+    storeInit();
+    setTimeout(() => {
+      expect(wrapper.vm.chartData[0]).toEqual(135.02);
+      done();
+    }, 0);
+  });
+
 
   it('the send button routes to /wallet/send', (done) => {
     storeInit();

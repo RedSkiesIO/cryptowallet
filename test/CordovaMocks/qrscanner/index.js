@@ -30,6 +30,10 @@ const QRScanner = {
       if (this.mockBehaviour === 5) {
         callback(null, 'ethereum:0xcda4cddb41b60fd84252912967397df7d3c1bfde?amount=5');
       }
+
+      if(this.mockBehaviour === 6) {
+        callback(null, 'recall judge clean fame syrup shiver wear roast possible museum dragon leader');
+      }
     }, this.delay);
   },
 };

@@ -35,10 +35,16 @@ module.exports = (ctx) => {
           loader: 'eslint-loader',
           exclude: /node_modules/,
         });
+        
         cfg.resolve.alias = {
           ...cfg.resolve.alias,
           '@': path.resolve(__dirname, './src/'),
         };
+      },
+      chainWebpack: config => {
+        config.output
+          .globalObject('this')
+        /* ... */
       },
       uglifyOptions: {
         mangle: false,

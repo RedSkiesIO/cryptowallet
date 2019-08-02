@@ -131,7 +131,9 @@ export default {
         if (val) {
           this.enableWallet();
         }
-        if (!val) { this.disableWallet(); }
+        if (!val) {
+          this.disableWallet();
+        }
       },
     },
     supportedCoins() {

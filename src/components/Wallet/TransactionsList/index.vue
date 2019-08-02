@@ -12,10 +12,6 @@
         :offset="50"
         @load="loadMore"
       >
-        <!-- <q-timeline
-          responsive
-          color="blueish"
-        > -->
         <q-list>
           <SingleTransaction
             v-for="transaction in filteredPaginated"
@@ -32,7 +28,6 @@
             </q-banner>
           </div>
         </q-list>
-        <!-- </q-timeline> -->
         <q-spinner-dots
           slot="message"
           :size="40"

@@ -197,13 +197,13 @@ describe('boot/BackEndService', () => {
           refreshToken: 'refreshTokenString',
         },
       };
-      mockAxios.get.mockResolvedValueOnce(mockResponse);
+      mockAxios.mockResolvedValueOnce(mockResponse);
       process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
 
       await backEndService.auth();
 
       setTimeout(() => {
-        const calledWithURL = mockAxios.get.mock.calls[0][0];
+        const calledWithURL = mockAxios.mock.calls[0][0].url;
         const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/token/`);
         expect(re.test(calledWithURL)).toBe(true);
 
@@ -217,7 +217,7 @@ describe('boot/BackEndService', () => {
       const mockResponse = {
         status: 200,
       };
-      mockAxios.get.mockResolvedValueOnce(mockResponse);
+      mockAxios.mockResolvedValueOnce(mockResponse);
       process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
 
       const accessTokenBefore = backEndService.accessToken;
@@ -226,7 +226,7 @@ describe('boot/BackEndService', () => {
       await backEndService.auth();
 
       setTimeout(() => {
-        const calledWithURL = mockAxios.get.mock.calls[0][0];
+        const calledWithURL = mockAxios.mock.calls[0][0].url;
         const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/token/`);
         expect(re.test(calledWithURL)).toBe(true);
 
@@ -246,15 +246,14 @@ describe('boot/BackEndService', () => {
           refreshToken: 'refreshTokenRefresh',
         },
       };
-      mockAxios.post.mockResolvedValueOnce(mockResponse);
+      mockAxios.mockResolvedValueOnce(mockResponse);
       process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
 
       const currentRefreshToken = backEndService.refreshToken;
       await backEndService.refreshAuth();
-
       setTimeout(() => {
-        const calledWithURL = mockAxios.post.mock.calls[0][0];
-        const calledWithData = mockAxios.post.mock.calls[0][1];
+        const calledWithURL = mockAxios.mock.calls[0][0].url;
+        const calledWithData = mockAxios.mock.calls[0][0].data;
 
         const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/refresh`);
         expect(re.test(calledWithURL)).toBe(true);
@@ -271,7 +270,7 @@ describe('boot/BackEndService', () => {
       const mockResponse = {
         status: 200,
       };
-      mockAxios.post.mockResolvedValueOnce(mockResponse);
+      mockAxios.mockResolvedValueOnce(mockResponse);
       process.env.BACKEND_SERVICE_URL = 'http://foo.bar';
 
       const accessTokenBefore = backEndService.accessToken;
@@ -280,7 +279,7 @@ describe('boot/BackEndService', () => {
       await backEndService.refreshAuth();
 
       setTimeout(() => {
-        const calledWithURL = mockAxios.post.mock.calls[0][0];
+        const calledWithURL = mockAxios.mock.calls[0][0].url;
         const re = new RegExp(`^${process.env.BACKEND_SERVICE_URL}/auth/refresh`);
         expect(re.test(calledWithURL)).toBe(true);
 
@@ -492,6 +491,17 @@ describe('boot/BackEndService', () => {
 
   describe('getTransactionFee() method', () => {
     it('calls try() method with correct arguments and returns data', async (done) => {
+      Fees.$insert({
+        data: {
+          code: 'BTC',
+          timestamp: 1563888084308,
+          data: {
+            high: 54036,
+            low: 1500,
+            medium: 2500,
+          },
+        },
+      });
       const coin = 'BTC';
       const mockData = { data: { code: coin, timestamp: +Date() } };
 
@@ -507,6 +517,8 @@ describe('boot/BackEndService', () => {
       expect(Fees.all().length).toBe(1);
       const result = await backEndService.getTransactionFee(coin);
       expect(result.code).toBe(coin);
+      Fees.$delete('BTC');
+      await backEndService.getTransactionFee(coin);
       done();
     });
   });
