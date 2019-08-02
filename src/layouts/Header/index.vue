@@ -1,102 +1,148 @@
 <template>
-  <section
-    v-if="!hideHeader"
-    class="header-section"
-  >
-    <div class="header-back-button-wrapper">
-      <q-btn
-        :class="{ hideBackButton: !isBackButtonEnabled }"
-        :disable="!isBackButtonEnabled"
-        icon="arrow_back"
-        color="primary"
-        size="lg"
-        class="icon-btn back-arrow-btn"
-        flat
-        @click.prevent="goBack"
-      />
-    </div>
-
-    <div v-if="coinHeading">
-      <h1 class="header-h1">
-        <img
-          :src="coinLogo"
-          class="coin-logo"
+  <div>
+    <div
+      class="transaction-notification"
+    >
+      <q-dialog
+        v-model="showTxNotification"
+        seamless
+        position="bottom"
+        :content-class="getClass"
+      >
+        <div
+          v-if="newTxModalData"
+          class="row justify-between"
         >
-        {{ wallet.displayName }}
-      </h1>
+          <div class="col-2">
+            <img
+              :src="newTxModalData.logo"
+              class="coin-logo"
+            >
+          </div>
+          <div class="label col-6">
+            {{ $t('newTxIntro') }} {{ newTxModalData.value }} {{ newTxModalData.symbol }}!
+          </div>
+          <div class="button-grp col-4">
+            <q-btn
+              flat
+              :label="$t('view')"
+              @click="viewTx(newTxModalData.id, newTxModalData.wallet_id)"
+            />
+            <q-btn
+              v-close-popup
+              flat
+              icon="close"
+              @click="closeNotification"
+            />
+          </div>
+        </div>
+      </q-dialog>
     </div>
-    <div v-else>
-      <div v-if="heading === 'CryptoWallet'">
-        <h1 class="header-h1 logo">
-          {{ heading }}
+    <section
+      v-if="!hideHeader"
+      class="header-section"
+    >
+      <div class="header-back-button-wrapper">
+        <q-btn
+          :class="{ hideBackButton: !isBackButtonEnabled }"
+          :disable="!isBackButtonEnabled"
+          icon="arrow_back"
+          color="primary"
+          size="lg"
+          class="icon-btn back-arrow-btn"
+          flat
+          @click.prevent="goBack"
+        />
+      </div>
+
+      <div v-if="coinHeading">
+        <h1 class="header-h1">
+          <img
+            :src="coinLogo"
+            class="coin-logo"
+          >
+          {{ wallet.displayName }}
         </h1>
       </div>
       <div v-else>
-        <h1 class="header-h1">
-          {{ heading }}
-        </h1>
+        <div v-if="heading === 'CryptoWallet'">
+          <h1 class="header-h1 logo">
+            {{ heading }}
+          </h1>
+        </div>
+        <div v-else>
+          <h1 class="header-h1">
+            {{ heading }}
+          </h1>
+        </div>
       </div>
-    </div>
 
-    <div
-      v-if="displayAddWallet"
-      class="header-settings-button-wrapper"
-    >
-      <q-btn
-        icon="add"
-        color="primary"
-        size="lg"
-        class="icon-btn icon-btn-right"
-        flat
-        @click.prevent="openWalletsModal"
-      />
-    </div>
+      <div
+        v-if="displayAddWallet"
+        class="header-settings-button-wrapper"
+      >
+        <q-btn
+          icon="add"
+          color="primary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="openWalletsModal"
+        />
+      </div>
 
-    <div
-      v-if="displayPriceChart"
-      class="header-settings-button-wrapper"
-    >
-      <q-btn
-        icon="timeline"
-        color="primary"
-        size="lg"
-        class="icon-btn icon-btn-right"
-        flat
-        @click.prevent="openChartModal"
-      />
-    </div>
+      <div
+        v-if="displayPriceChart"
+        class="header-settings-button-wrapper"
+      >
+        <q-btn
+          icon="timeline"
+          color="primary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="openChartModal"
+        />
+      </div>
 
-    <div
-      v-if="displayAccounts"
-      class="header-accounts-button-wrapper"
-    >
-      <q-btn
-        icon="people"
-        color="primary"
-        size="lg"
-        class="icon-btn icon-btn-right"
-        flat
-        @click.prevent="setAccountModalOpened(true)"
-      />
-    </div>
-  </section>
+      <div
+        v-if="displayAccounts"
+        class="header-accounts-button-wrapper"
+      >
+        <q-btn
+          icon="people"
+          color="primary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="setAccountModalOpened(true)"
+        />
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import IconList from '@/statics/cc-icons/icons-list.json';
 
+
 export default {
   name: 'Header',
   data() {
     return {
       isBackButtonEnabled: false,
+      newTxModalData: null,
+      showTxNotification: false,
+      enableTxNotification: true,
     };
   },
 
   computed: {
     ...mapState({
       id: (state) => { return state.route.params.id; },
+      delay: (state) => { return state.settings.delay; },
+      modals: (state) => { return state.modals; },
     }),
 
     wallet() {
@@ -143,6 +189,14 @@ export default {
       return false;
     },
 
+    getClass() {
+      if (this.$route.name === 'walletSingle' || this.$route.name === 'wallet'
+      || this.$route.name === 'settings') {
+        return 'transaction-notification bottom-space';
+      }
+      return 'transaction-notification bottom';
+    },
+
     hideHeader() {
       if (this.$route.path === '/setup/0') {
         return true;
@@ -155,6 +209,12 @@ export default {
         return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
       }
       return './statics/cc-icons/color/generic.svg';
+    },
+    txsLength() {
+      return this.$store.getters['entities/tx/all']().length;
+    },
+    txs() {
+      return this.$store.getters['entities/tx/all']();
     },
   },
 
@@ -170,6 +230,18 @@ export default {
         this.isBackButtonEnabled = false;
       }
     },
+    txsLength(newValue, oldValue) {
+      if (this.enableTxNotification && (newValue > oldValue)) {
+        const newTransactions = this.txs.slice(oldValue);
+        this.showNotification(newTransactions);
+      }
+    },
+  },
+
+  mounted() {
+    this.$root.$on('enableTxNotifications', (value) => {
+      this.enableTxNotification = value;
+    });
   },
 
   methods: {
@@ -187,6 +259,59 @@ export default {
 
     openChartModal() {
       this.$router.push({ path: `/wallet/single/prices/${this.wallet.id}` });
+    },
+
+    showNotification(txs) {
+      const tx = txs.shift();
+      if (!tx.sent) {
+        const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
+        let logo;
+        if (IconList.find((icon) => { return icon.symbol === wallet.symbol.toUpperCase(); })) {
+          logo = `./statics/cc-icons/color/${wallet.symbol.toLowerCase()}.svg`;
+        } else {
+          logo = './statics/cc-icons/color/generic.svg';
+        }
+        this.newTxModalData = {
+          logo,
+          value: tx.value,
+          symbol: wallet.symbol,
+          id: tx.hash,
+          wallet_id: tx.wallet_id,
+        };
+        this.showTxNotification = true;
+        const wait = 10000;
+        setTimeout(() => {
+          this.showTxNotification = false;
+          this.newTxModalData = null;
+          if (txs.length > 0) {
+            this.showNotification(txs);
+          }
+        }, wait);
+      }
+    },
+
+    closeNotification() {
+      this.showTxNotification = false;
+      this.newTxModalData = null;
+    },
+
+    viewTx(id, walletId) {
+      Object.keys(this.modals).forEach((modal) => {
+        if (this.modals[modal] === true) {
+          const capitalized = modal.charAt(0).toUpperCase() + modal.slice(1);
+          this.$store.dispatch(`modals/set${capitalized}`, false);
+        }
+      });
+      setTimeout(() => {
+        const route = this.$route.name;
+        if (route !== 'walletSingle') {
+          this.$router.push({ path: `/wallet/single/${walletId}` });
+        }
+        setTimeout(() => {
+          this.$store.dispatch('modals/setNewTxData', id);
+          this.closeNotification();
+        }, this.delay.short);
+      }, this.delay.short);
     },
   },
 };
@@ -271,4 +396,50 @@ export default {
 .hideBackButton {
   display: none;
 }
+
+.transaction-notification .q-dialog__inner{
+  background: #eee;
+  color: #1e3c57;
+  bottom: 80px;
+  justify-content: space-between;
+  border-top: 1px solid #1e3c57;
+
+}
+
+.transaction-notification .label {
+  padding-left: 1rem;
+  padding: 1rem 0;
+  line-height: 2.5;
+  width: fit-content !important;
+  font-size: inherit;
+}
+
+.transaction-notification .button-grp {
+  padding:1rem 0;
+  width: fit-content !important;
+}
+
+.bottom-space {
+  z-index: 1999;
+}
+
+.bottom-space .q-dialog__inner {
+  bottom: 80px;
+}
+
+.bottom {
+  z-index: 9999;
+}
+
+.bottom .q-dialog__inner {
+  bottom: 0;
+}
+
+.transaction-notification .coin-logo {
+  margin: 1rem;
+  margin-right: 0;
+  height: 2rem;
+  top: 0;
+}
+
 </style>

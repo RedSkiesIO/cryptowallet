@@ -84,6 +84,7 @@ export default {
       authenticatedAccount: (state) => {
         return state.settings.authenticatedAccount;
       },
+      delay: (state) => { return state.settings.delay; },
     }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
@@ -106,7 +107,9 @@ export default {
       const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
 
       if (price) {
-        if ((currentTime - price.updated) < hour) {
+        const updated = price.updated - (price.updated % hour);
+
+        if ((currentTime - updated) < hour) {
           this.chartData = price.data.map((item) => { return item.y; });
         } else {
           let dataset;
@@ -115,8 +118,13 @@ export default {
             dataset = result.data;
           }
           if (dataset) {
-            this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
             this.chartData = dataset.map((item) => { return item.y; });
+            this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
+            await new Promise((resolve) => { return setTimeout(resolve, this.delay.normal); });
+            const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
+            const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
+            this.backEndService.storeChartData(this.wallet.symbol, 'week', weekData.data);
+            this.backEndService.storeChartData(this.wallet.symbol, 'month', monthData.data);
           } else {
             this.chartData = price.data.map((item) => { return item.y; });
           }

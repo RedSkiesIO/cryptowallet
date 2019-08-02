@@ -27,18 +27,7 @@ const Bitcoin = {
 
     utxos.forEach((utxo) => {
       balance += utxo.amount;
-    });
-
-    const txs = Tx.query()
-      .where('account_id', accountId)
-      .where('wallet_id', walletId)
-      .get();
-
-    txs.forEach((tx) => {
-      if (tx.confirmations === 0 && tx.sent) {
-        balance -= (parseFloat(tx.value)
-        + parseFloat(tx.fee));
-      }
+      balance -= utxo.spentValue;
     });
 
     return balance;

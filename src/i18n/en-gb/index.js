@@ -199,6 +199,8 @@ export default {
   deleteToken2: 'wallets stored on this device.',
   noWalletsFound: 'No results',
   searchTokens: 'Search Tokens',
+  newTxIntro: 'You received',
+  view: 'View',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',
