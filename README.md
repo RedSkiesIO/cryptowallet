@@ -62,5 +62,22 @@ Find the path to the Gradle on your system and export it
 `npm run test:unit -- --coverage`
 
 ## Deployment
+  
 
-n/a
+## Prerequisites
+
+You will need to have Cordova installed on your machine.
+[Install guide for Android](https://cordova.apache.org/docs/en/latest/guide/platforms/android/)
+
+### Android
+
+`quasar build -m cordova -T android`
+
+`cd src-cordova`
+
+#### Development
+`cordova run android`
+Apk is located at /src-cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+#### Production
+`cordova build android`
+Apk is located at /src-cordova/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
