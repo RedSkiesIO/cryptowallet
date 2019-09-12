@@ -1,6 +1,8 @@
 trigger:
-- develop
-- master
+ branches:
+  include:
+   - develop
+   - master
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -26,5 +28,5 @@ steps:
 
 
 - script: |
-    sudo apt-get install openjdk-8-jre and sudo apt-get install openjdk-8-jdk
-  displayName: 'Install prerequisites'
+    apt-get install -y  openjdk-8-jre and apt-get install -y openjdk-8-jdk
+  displayName: 'Install JDK'
