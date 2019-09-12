@@ -19,6 +19,12 @@ steps:
 #    npm run security:audit
 #  displayName: 'Run npm dependancy security audit'
 
+#Temporary commented out to test installation
+# - script: |
+#     npm run test:unit
+#   displayName: 'Run unit test'
+
+
 - script: |
-    npm run test:unit
-  displayName: 'Run unit test'
+    sudo apt-get install openjdk-8-jre and sudo apt-get install openjdk-8-jdk
+  displayName: 'Install prerequisites'
