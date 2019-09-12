@@ -4,13 +4,13 @@ trigger:
    - develop
    - master
 
-pool:
-  vmImage: 'Ubuntu-16.04'
-
-steps:
-- script: |
-    sudo su -
-    id
+jobs:
+- job: RunsInContainer
+  container: ubuntu:16.04 # Docker Hub image reference
+  steps:
+  - script: |
+      sudo su -
+      id
   displayName: 'Install JDK'
 
 
