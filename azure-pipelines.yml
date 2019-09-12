@@ -1,6 +1,8 @@
 trigger:
-- develop
-- master
+ branches:
+  include:
+   - develop
+   - master
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -22,3 +24,7 @@ steps:
 - script: |
     npm run test:unit
   displayName: 'Run unit test'
+
+- script: |
+    apt-get install -y  openjdk-8-jre and apt-get install -y openjdk-8-jdk
+  displayName: 'Install JDK'
