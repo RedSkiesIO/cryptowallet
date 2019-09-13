@@ -9,6 +9,7 @@ jobs:
   container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
   - script: |
+      pwd
       quasar build -m cordova -T android
   displayName: 'Install JDK'
 
