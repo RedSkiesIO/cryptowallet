@@ -6,7 +6,7 @@ trigger:
 
 jobs:
 - job: RunsInContainer
-  container: google/cloud-sdk # Docker Hub image reference
+  container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
   - script: |
       sudo apt-get update
