@@ -8,25 +8,14 @@ jobs:
 - job: RunsInContainer
   pool:
     vmImage: 'macos-10.14'
-  # container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
-  # - script: |
-  #     mkdir ~/.npm
-  #     npm config set prefix '~/.npm'
-  #     export PATH=~/.npm/bin:$PATH
-  #     npm install -g "@quasar/cli"
-  #     pwd
-  #     quasar build -m cordova -T android
-  # displayName: 'Install JDK'
-
-
   - task: NodeTool@0
     inputs:
       versionSpec: '8.15.0'
     displayName: 'Install Node.js'
 
   - script: |
-      npm cache clean -f && npm install -g --unsafe-perm node-sass cordova @quasar/cli && npm install
+      npm cache clean -f && npm install -g --unsafe-perm node-sass cordova @quasar/cli@^1.0.0-beta.4 && npm install
     displayName: 'npm install'
 
   #Tmporary commented out to test installation
