@@ -6,7 +6,9 @@ trigger:
 
 jobs:
 - job: RunsInContainer
-  container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
+  pool:
+    vmImage: 'macos-10.14'
+  # container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
   # - script: |
   #     mkdir ~/.npm
