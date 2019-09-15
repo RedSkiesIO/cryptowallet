@@ -12,7 +12,7 @@ jobs:
       mkdir ~/.npm
       npm config set prefix '~/.npm'
       export PATH=~/.npm/bin:$PATH
-      npm install "@quasar/cli"
+      npm install -g "@quasar/cli"
       pwd
       quasar build -m cordova -T android
   displayName: 'Install JDK'
