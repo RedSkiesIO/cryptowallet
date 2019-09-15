@@ -8,30 +8,30 @@ jobs:
 - job: RunsInContainer
   container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
+  # - script: |
+  #     mkdir ~/.npm
+  #     npm config set prefix '~/.npm'
+  #     export PATH=~/.npm/bin:$PATH
+  #     npm install -g "@quasar/cli"
+  #     pwd
+  #     quasar build -m cordova -T android
+  # displayName: 'Install JDK'
+
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '8.15.0'
+    displayName: 'Install Node.js'
+
   - script: |
-      mkdir ~/.npm
-      npm config set prefix '~/.npm'
-      export PATH=~/.npm/bin:$PATH
-      npm install -g "@quasar/cli"
-      pwd
-      quasar build -m cordova -T android
-  displayName: 'Install JDK'
+      npm cache clean -f && npm install -g --unsafe-perm node-sass @quasar/cli && npm install
+    displayName: 'npm install'
 
+  - script: |
+     npm run security:audit
+    displayName: 'Run npm dependancy security audit'
 
-# - task: NodeTool@0
-#   inputs:
-#     versionSpec: '8.15.0'
-#   displayName: 'Install Node.js'
-#
-# - script: |
-#     npm cache clean -f && npm install -g --unsafe-perm node-sass && npm install
-#   displayName: 'npm install'
-
-#- script: |
-#    npm run security:audit
-#  displayName: 'Run npm dependancy security audit'
-
-#Temporary commented out to test installation
-# - script: |
-#     npm run test:unit
-#   displayName: 'Run unit test'
+  #Tmporary commented out to test installation
+  - script: |
+      npm run test:unit
+    displayName: 'Run unit test'
