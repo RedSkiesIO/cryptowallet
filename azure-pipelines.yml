@@ -15,7 +15,7 @@ jobs:
       npm install -g "@quasar/cli"
       pwd
       quasar build -m cordova -T android
-  displayName: 'Install JDK'
+  displayName: 'Build APK file'
 
 
 # - task: NodeTool@0
