@@ -12,6 +12,9 @@ In the directory where you want to keep the repository, run
 In the root of the directory run
 `npm install`
 
+You will need to setup the environment url that holds the url to the cryptowallet-api service
+an example is provided in .env.example
+
 ### Problems during installation
 **make: g++: Command not found**
 You have to install `g++`, to do it run in the terminal:  `sudo apt-get install g++`
