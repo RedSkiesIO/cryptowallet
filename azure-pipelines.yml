@@ -6,6 +6,7 @@ trigger:
 
 jobs:
 - job: RunsInContainer
+  #v1.1
   container: clusterbrix/public-vvjva8k8gdrc:cordova # Docker Hub image reference
   steps:
   - script: |
