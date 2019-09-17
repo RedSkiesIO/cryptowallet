@@ -18,3 +18,7 @@ steps:
 - script: |
     npm run test:unit
   displayName: 'Run unit test'
+
+- script: |
+    npm run test:e2e
+  displayName: 'Run e2e tests'
