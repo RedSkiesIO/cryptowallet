@@ -1,6 +1,5 @@
 trigger:
-- develop
-- master
+- release
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -17,4 +16,4 @@ steps:
 
 - script: |
     quasar build -m cordova -T android
-  displayName: 'Compile Cordova Android'
+  displayName: 'Compile Cordova APK'

@@ -1,9 +1,8 @@
 trigger:
-- develop
-- master
+- release
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'macos-10.14'
 
 steps:
 - task: NodeTool@0
@@ -17,4 +16,4 @@ steps:
 
 - script: |
     quasar build -m cordova -T ios
-  displayName: 'Compile Cordova Android'
+  displayName: 'Compile Cordova IPA'
