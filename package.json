@@ -16,10 +16,7 @@
     "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
     "test:unit:watch": "cross-env NODE_ENV=test jest --watch",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
-    "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
-    "test": "snyk test",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors"
   },
   "dependencies": {
     "@atlascity/vuex-orm-plugin-lokijs": "^0.0.3",
