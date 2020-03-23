@@ -1,7 +1,7 @@
 import { uid } from 'quasar';
 import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
-import CryptoWalletSDK from 'cryptowallet-js';
+import * as CryptoWalletSDK from 'cryptowallet-js';
 import bcrypt from 'bcryptjs';
 
 const accountInitializer = {
@@ -31,7 +31,9 @@ const accountInitializer = {
 
   async createWallets(setup, id, coins) {
     const password = setup.pinArray.join('');
-    const SDK = new CryptoWalletSDK();
+    const CryptoWallet = await CryptoWalletSDK.default();
+    // eslint-disable-next-line new-cap
+    const SDK = new CryptoWallet.default();
     const promises = [];
     coins.forEach((coin) => {
       const wallet = {
@@ -58,7 +60,9 @@ const accountInitializer = {
   },
 
   async createERC20Wallets(setup, id, coins) {
-    const SDK = new CryptoWalletSDK();
+    const CryptoWallet = await CryptoWalletSDK.default();
+    // eslint-disable-next-line new-cap
+    const SDK = new CryptoWallet.default();
     const promises = [];
 
     coins.forEach((coin) => {

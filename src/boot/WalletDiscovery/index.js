@@ -86,6 +86,22 @@ async function discoverEthereum(wallet, coinSDK, network) {
   };
 }
 
+async function discoverCatalyst(wallet, coinSDK, network) {
+  const accounts = await coinSDK.accountDiscovery(wallet);
+  const height = 100;
+  const txHistory = await coinSDK.getTransactionHistory([accounts[0].address], network, 0, height);
+  let balance = await coinSDK.getBalance([accounts[0].address], network);
+
+  if (!balance) {
+    balance = 0;
+  }
+  return {
+    accounts,
+    txHistory,
+    balance,
+  };
+}
+
 async function discoverErc20(wallet, coinSDK) {
   const accounts = [{
     address: wallet.address,
@@ -110,6 +126,10 @@ async function discoverWallet(wallet, coinSDK, network, sdk) {
 
   if (sdk === 'Ethereum') {
     return discoverEthereum(wallet, coinSDK, network);
+  }
+
+  if (sdk === 'Catalyst') {
+    return discoverCatalyst(wallet, coinSDK, network);
   }
 
   if (sdk === 'ERC20') {

@@ -46,6 +46,13 @@ async function updateBalance(coinSDK, wallet, addresses) {
     );
   }
 
+  if (wallet.sdk === 'Catalyst') {
+    newBalance = await coinSDK.getBalance(
+      [wallet.externalAddress],
+      wallet.network,
+    );
+  }
+
   if (wallet.sdk === 'ERC20') {
     newBalance = await coinSDK.getBalance(wallet.erc20Wallet);
   }
@@ -174,14 +181,20 @@ async function refreshBitcoin(coinSDK, wallet, fullRefresh) {
 
 async function refreshEthereum(coinSDK, wallet, fullRefresh) {
   const balanceChanged = await updateBalance(coinSDK, wallet);
+  console.log('refresh: ', fullRefresh);
+
   if (balanceChanged || fullRefresh) {
     const { network } = wallet;
-
+    const height = 100;
     const txHistory = await coinSDK.getTransactionHistory(
       [wallet.externalAddress],
       network,
       0,
+      height,
     );
+
+    console.log('history: ', txHistory);
+
 
     if (!txHistory || txHistory.txs.length === 0) {
       return false;
@@ -212,6 +225,10 @@ async function refreshWallet(coinSDK, wallet, accountId, fullRefresh = true) {
   }
 
   if (wallet.sdk === 'Ethereum') {
+    return refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
+  }
+
+  if (wallet.sdk === 'Catalyst') {
     return refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
   }
 

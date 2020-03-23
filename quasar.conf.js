@@ -40,6 +40,8 @@ module.exports = (ctx) => {
           ...cfg.resolve.alias,
           '@': path.resolve(__dirname, './src/'),
         };
+
+        cfg.output.webassemblyModuleFilename = '[hash].wasm';
       },
       chainWebpack: config => {
         config.output

@@ -7,6 +7,7 @@
 <script>
 import Transactions from '@/components/Wallet/Transactions';
 import { mapState } from 'vuex';
+import refreshWallet from '@/helpers/RefreshWallet';
 
 export default {
   name: 'WalletSingle',
@@ -63,7 +64,7 @@ export default {
   mounted() {
     this.$root.$on('updateWalletSingle', async (done) => {
       try {
-        await this.backEndService.loadCoinPriceData(this.wallet.symbol);
+        // await this.backEndService.loadCoinPriceData(this.wallet.symbol);
         await this.refresher(done);
       } catch (err) {
         this.errorHandler(err);
@@ -78,10 +79,12 @@ export default {
      */
     async refresher(done, fullRefresh = true) {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
+      console.log(online);
       if (online) {
-        this.balanceChanged = await this.$walletWorker.refreshWallet(
-          this.wallet, fullRefresh,
+        this.balanceChanged = await refreshWallet(
+          this.coinSDKS[this.wallet.sdk], this.wallet, 0, fullRefresh,
         );
+        console.log(this.balanceChanged);
         setTimeout(() => {
           done();
         }, this.delay.normal);

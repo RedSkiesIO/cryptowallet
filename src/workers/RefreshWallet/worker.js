@@ -1,7 +1,7 @@
 import * as Comlink from 'comlink';
-import CryptoWalletJs from 'cryptowallet-js';
+import * as CryptoWalletSDK from 'cryptowallet-js';
 
-const crypto = new CryptoWalletJs();
+// const crypto = new CryptoWalletJs();
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
@@ -176,6 +176,10 @@ async function refreshERC20(coinSDK, wallet, cb, fullRefresh) {
 }
 
 async function refreshWallet(wallet, cb, fullRefresh = true) {
+  const CryptoWallet = await CryptoWalletSDK.default();
+  console.log(CryptoWallet);
+  // eslint-disable-next-line new-cap
+  const crypto = new CryptoWallet.default();
   const coinSDK = crypto.SDKFactory.createSDK(wallet.sdk);
 
   if (wallet.sdk === 'Bitcoin') {
@@ -185,6 +189,11 @@ async function refreshWallet(wallet, cb, fullRefresh = true) {
   if (wallet.sdk === 'Ethereum') {
     return refreshEthereum(coinSDK, wallet, cb, fullRefresh);
   }
+
+  if (wallet.sdk === 'Catalyst') {
+    return refreshEthereum(coinSDK, wallet, cb, fullRefresh);
+  }
+
 
   if (wallet.sdk === 'ERC20') {
     return refreshERC20(coinSDK, wallet, cb, fullRefresh);

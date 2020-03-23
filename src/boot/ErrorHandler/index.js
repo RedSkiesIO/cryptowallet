@@ -62,5 +62,5 @@ export default ({ Vue, store }) => {
     }
   };
 
-  Vue.prototype.errorHandler = Vue.config.errorHandler;
+  Vue.prototype.errorHandler = () => {};
 };

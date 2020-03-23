@@ -241,6 +241,9 @@ export default {
         if (wallet.sdk === 'Ethereum') {
           await this.enableEthereum(coinSDK, initializedWallet, wallet);
         }
+        if (wallet.sdk === 'Catalyst') {
+          await this.enableEthereum(coinSDK, initializedWallet, wallet);
+        }
       } catch (err) {
         success = false;
         this.errorHandler(err);
