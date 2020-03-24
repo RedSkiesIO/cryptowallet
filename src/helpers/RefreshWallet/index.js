@@ -181,16 +181,13 @@ async function refreshBitcoin(coinSDK, wallet, fullRefresh) {
 
 async function refreshEthereum(coinSDK, wallet, fullRefresh) {
   const balanceChanged = await updateBalance(coinSDK, wallet);
-  console.log('refresh: ', fullRefresh);
 
   if (balanceChanged || fullRefresh) {
     const { network } = wallet;
-    const height = 100;
     const txHistory = await coinSDK.getTransactionHistory(
       [wallet.externalAddress],
       network,
       0,
-      height,
     );
 
     console.log('history: ', txHistory);
@@ -199,7 +196,7 @@ async function refreshEthereum(coinSDK, wallet, fullRefresh) {
     if (!txHistory || txHistory.txs.length === 0) {
       return false;
     }
-
+    console.log(txHistory.txs);
     storeTxs(txHistory.txs, wallet, coinSDK);
   }
 

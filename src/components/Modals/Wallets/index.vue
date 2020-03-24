@@ -225,7 +225,7 @@ export default {
       let success = true;
       const coinSDK = this.coinSDKS[wallet.sdk];
       try {
-        await this.backEndService.loadCoinPriceData(wallet.symbol);
+        // await this.backEndService.loadCoinPriceData(wallet.symbol);
 
         const initializedWallet = wallet.hdWallet;
 
@@ -260,7 +260,7 @@ export default {
       try {
         const coinSDK = this.coinSDKS[wallet.sdk];
         const parentSDK = this.coinSDKS[wallet.parentSdk];
-        await this.backEndService.loadCoinPriceData(wallet.symbol);
+        // await this.backEndService.loadCoinPriceData(wallet.symbol);
 
         if (!wallet.erc20Wallet) {
           const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];

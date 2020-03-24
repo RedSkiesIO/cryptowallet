@@ -218,7 +218,7 @@ export default {
         if (this.$route.name === 'wallet') {
           setTimeout(async () => {
             try {
-              await this.backEndService.loadPriceFeed();
+              // await this.backEndService.loadPriceFeed();
               await this.updateBalances(done);
             } catch (err) {
               this.errorHandler(err);

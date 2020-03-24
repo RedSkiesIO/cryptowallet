@@ -98,9 +98,11 @@ export default {
           this.$store.dispatch('setup/setAccountCreated');
           this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
 
-          Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
-          await this.backEndService.connect();
-          await this.backEndService.loadPriceFeed();
+          // Object.getPrototypeOf(this.$root).backEndService =
+          // new this.BackEndService
+          // (this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
+          // await this.backEndService.connect();
+          // await this.backEndService.loadPriceFeed();
 
           this.$store.dispatch('setup/clearSetupData');
           this.$store.dispatch('settings/setLayout', 'light');

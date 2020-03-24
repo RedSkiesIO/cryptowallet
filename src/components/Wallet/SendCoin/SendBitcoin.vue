@@ -288,7 +288,7 @@ export default {
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (!prices) {
-        this.backEndService.loadPriceFeed();
+        // this.backEndService.loadPriceFeed();
         return null;
       }
       return prices.data.PRICE;
