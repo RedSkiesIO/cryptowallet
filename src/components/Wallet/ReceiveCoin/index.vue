@@ -287,7 +287,7 @@ export default {
   background: whitesmoke;
   padding: 0;
   margin: 0 1px;
-  width: 3rem;
+  width: 4rem;
   height: 0;
   min-height: 1.5rem;
   text-transform: none;

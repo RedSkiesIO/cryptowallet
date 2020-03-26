@@ -135,6 +135,6 @@ export default {
 }
 
 .scroll-offset {
-  height: 5rem;
+  height: 17.5rem;
 }
 </style>

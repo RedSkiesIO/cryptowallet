@@ -30,6 +30,7 @@
       <q-item-section side>
         <q-icon
           name="info"
+          color="lightgrey"
         />
       </q-item-section>
     </q-item>

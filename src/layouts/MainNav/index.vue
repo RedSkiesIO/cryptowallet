@@ -33,7 +33,7 @@ export default {
   .main-nav {
     width: 100%;
     height: 5rem;
-    background: #1e3c57;
+    background: #0a2d3e;
     display: flex;
     justify-content: space-between;
     border-top: 0.3rem solid #4e677d;
@@ -66,7 +66,7 @@ export default {
   }
 
   .router-link-exact-active {
-    color: #fabc57;
+    color: #16ac9f;
     font-family: 'Montserrat-Medium';
   }
 

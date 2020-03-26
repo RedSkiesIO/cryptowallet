@@ -179,15 +179,17 @@ body > div {
 }
 
 .background {
-  background-color: #1e3c57;
+  background-color: #0a2d3e;
   width: 100%;
   height: 100%;
   position: absolute;
 }
 
 .shrinked .background {
+  background: rgb(22,172,159);
+background: linear-gradient(0deg, rgba(22,172,159,1) 0%, rgba(10,45,62,1) 100%);
   height: 22.5rem;
-  top: -15rem;
+  top: 0rem;
   border-bottom: 0.3rem solid #4e677d;
 }
 
@@ -213,9 +215,10 @@ body > div {
 }
 
 .q-dialog .modal-layout-wrapper {
-  height: calc(100vh - 2.5rem)!important;
-  height: calc(100vh - 2.5rem - constant(safe-area-inset-top))!important;
-  height: calc(100vh - 2.5rem - env(safe-area-inset-top))!important;
+  height: calc(100vh)!important;
+  height: calc(100vh - constant(safe-area-inset-top))!important;
+  height: calc(100vh - env(safe-area-inset-top))!important;
+  padding-top: 3.5rem;
 }
 
 .light-modal .header-section {
@@ -301,6 +304,10 @@ body > div {
     text-transform: uppercase;
     font-family: CooperHewitt-Semibold;
     opacity: 0;
+}
+
+.q-btn__wrapper:before {
+  box-shadow: none;
 }
 
 </style>

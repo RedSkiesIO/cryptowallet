@@ -156,8 +156,8 @@ export default {
   width: 100%;
   border-radius: 0.4em;
   padding-bottom: 0.2em;
-  background: white;
-  color: #1e3c57;
+  background: #0a2d3e;
+  color: white;
   /* border: 1px solid rgba(0, 0, 0, 0.03); */
   margin-bottom: 0.5em;
   box-shadow: inset -2px -2px 0px 2px rgba(29, 59, 86, 0.35);
@@ -174,7 +174,7 @@ export default {
 }
 
 .wallet-buttons {
-  border-top: 1px solid #f2f3f5;
+  border-top: 1px solid rgba(255,255,255,0.28);
   margin-right: 0.25rem;
   margin-top: 1rem;
 }
@@ -193,7 +193,7 @@ export default {
 
 .wallet-buttons .q-btn__content {
   font-size: 1.1em;
-  color: #1e3c57;
+  color: #16ac9f;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;

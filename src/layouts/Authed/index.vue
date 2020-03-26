@@ -36,7 +36,7 @@
           >
             <div
               v-if="showTotalBalance"
-              class="total-balance"
+              class="total-balance flex flex-center"
             >
               <div>{{ totalBalance }}</div>
             </div>
@@ -264,7 +264,7 @@ export default {
   font-size: 2rem;
   line-height: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-  height: 5rem!important;
+  height: 100%;
 }
 
 .total-balance > div {
@@ -276,7 +276,7 @@ export default {
   position: relative;
   top: 0;
   display: block!important;
-  height: 5rem!important;
+  height: 17.5rem!important;
   position: absolute;
   width: 100%;
   opacity: 1;
@@ -310,11 +310,11 @@ export default {
 }
 
 .layout-shape.white {
-  background: white!important;
+  background: #0a2d3e!important;
 }
 
 .no-balance .layout-shape {
-  background: #e4e9ef;
+  background: #19445b;
 }
 
 .background {
@@ -345,7 +345,7 @@ export default {
 }
 
 .single-wallet-top .coin-header-wrapper {
-  height: 10rem!important;
+  height: 20rem!important;
   display: flex;
   align-items: center;
   justify-content: center;

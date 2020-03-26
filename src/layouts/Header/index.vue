@@ -326,10 +326,13 @@ export default {
   height: 2.5rem + constant(safe-area-inset-top);
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
-  background: #1e3c57;
+  background: rgba(255,255,255,0);
   position: relative;
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
+  position: fixed;
+  width: 100%;
+  z-index: 99;
 }
 
 .header-h1 {
@@ -345,7 +348,7 @@ export default {
 
 .header-back-button-wrapper {
   position: absolute;
-  left: 0.5rem;
+  left: 0;
   height: 100%;
   display: flex;
   align-items: center;

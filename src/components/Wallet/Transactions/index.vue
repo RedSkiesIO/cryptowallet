@@ -24,7 +24,10 @@
       v-model="tab"
       animated
     >
-      <q-tab-panel name="all">
+      <q-tab-panel
+        dark
+        name="all"
+      >
         <TransactionsList :wallet="wallet" />
       </q-tab-panel>
 
@@ -68,6 +71,14 @@ export default {
 </script>
 
 <style>
+.q-tab-panels {
+  background: #0a2d3e
+}
+
+.q-item__label--caption {
+  color: lightgrey;
+ }
+
 .recent-payments-scroll-area {
   width: auto;
   height: 100%;
