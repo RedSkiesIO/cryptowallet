@@ -33,7 +33,7 @@
             <SendBitcoin />
           </div>
 
-          <div v-if="wallet.sdk === 'Ethereum'">
+          <div v-if="wallet.sdk === 'Ethereum' || wallet.sdk === 'Catalyst'">
             <SendEtehreum />
           </div>
 

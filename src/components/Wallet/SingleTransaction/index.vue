@@ -254,6 +254,7 @@ export default {
     date() {
       const msToS = 1000;
       if (this.data.receivedTime) {
+        console.log(this.data.receivedTime);
         return dateTranslater(new Date(this.data.receivedTime * msToS).valueOf(), 'DD MMMM YYYY HH:mm', this);
       }
       return dateTranslater(new Date(this.data.confirmedTime * msToS).valueOf(), 'DD MMMM HH:mm YYYY', this);

@@ -132,6 +132,11 @@ export default {
   },
 
   async mounted() {
+    async function loadWasm() {
+      return import('@catalyst-net-js/wasm-ed25519ph');
+    }
+
+    console.log(await loadWasm());
     window.store = this.$store;
     window.app = this;
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }

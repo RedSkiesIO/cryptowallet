@@ -9,7 +9,7 @@ import { date as dateUtil } from 'quasar';
  */
 export default function dateTranslater(timestamp, format, vm) {
   return dateUtil.formatDate(timestamp, format, {
-    dayNames: [
+    days: [
       'sunday',
       'monday',
       'tuesday',
@@ -18,7 +18,7 @@ export default function dateTranslater(timestamp, format, vm) {
       'friday',
       'saturday',
     ].map((item) => { return vm.$t(item); }),
-    monthNames: [
+    months: [
       'january',
       'february',
       'march',

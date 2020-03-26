@@ -260,7 +260,7 @@ export default {
         this.completeTransaction();
       }
 
-      if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20') {
+      if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20' || this.wallet.sdk === 'Catalyst') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {
           throw new Error(this.$t('transactionBroadcastFail'));

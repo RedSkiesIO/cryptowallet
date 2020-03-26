@@ -103,7 +103,7 @@ module.exports = (ctx) => {
         'QSlideItem',
         'QAvatar',
       ],
-      directives: ['Ripple', 'CloseDialog', 'ClosePopup'],
+      directives: ['Ripple', 'ClosePopup'],
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'BottomSheet'],
       // iconSet: 'material-icons'
