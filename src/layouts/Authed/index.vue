@@ -30,8 +30,8 @@
             />
           </div>
 
-          <!-- <div
-            v-if="wallets.length > 0"
+          <div
+            v-if="wallets.length > 0 && showTotalBalance"
             class="total-balance-wrapper"
           >
             <div
@@ -40,7 +40,7 @@
             >
               <div>{{ totalBalance }}</div>
             </div>
-          </div> -->
+          </div>
 
           <div
             :class="{ white: layoutShapeWhite }"

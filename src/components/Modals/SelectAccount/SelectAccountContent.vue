@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="modal-layout-wrapper no-padding">
+    <div class=" q-pt-lg modal-layout-wrapper">
       <div
         v-for="(account, index) in accounts"
         :key="index"

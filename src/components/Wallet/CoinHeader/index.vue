@@ -202,7 +202,7 @@ export default {
 }
 
 .simple .in-coin {
-  font-size: 1rem;
+  font-size: 2rem;
   opacity: 0.8;
 }
 

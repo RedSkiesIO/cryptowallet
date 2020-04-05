@@ -2,7 +2,7 @@
   <section class="scroll-area">
     <q-scroll-area
       v-if="wallets.length > 0"
-      class="scroll-area"
+      class="q-pt-lg scroll-area"
     >
       <WalletItem
         v-for="wallet in wallets"

@@ -760,6 +760,10 @@
         "name": "JPY"
     },
     {
+        "symbol": "KAT",
+        "name": "Catalyst"
+    },
+    {
         "symbol": "KCS",
         "name": "KuCoin Shares"
     },

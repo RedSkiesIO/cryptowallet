@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="q-pt-xl">
     <div
       class="settings-row"
       @click.prevent="openSelectLanguageModal"
@@ -161,7 +161,6 @@ export default {
   padding: 0 1rem;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid whitesmoke;
   height: 3.5rem;
   display: flex;
   align-items: center;

@@ -243,7 +243,7 @@ background: linear-gradient(0deg, rgba(22,172,159,1) 0%, rgba(10,45,62,1) 100%);
 }
 
 .dark-modal .modal-layout-wrapper {
-    background-color: #1e3c57;
+    background-color: #0a2d3e;
 }
 
 .light-modal .modal-layout-wrapper {
