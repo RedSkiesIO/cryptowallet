@@ -36,7 +36,7 @@ export default new VueRouter({
       path: '/wallet',
       component: () => { return import('@/layouts/Authed'); },
       children: [
-        { name: 'wallet', path: '', component: () => { return import('@/pages/Wallet'); } },
+        { name: 'wallet', path: '', component: () => { return import('@/pages/WalletSingle'); } },
       ],
     },
     {

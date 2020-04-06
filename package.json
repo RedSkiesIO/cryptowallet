@@ -39,6 +39,7 @@
     "qrcode": "^1.4.4",
     "quasar": "^1.9.11",
     "snyk": "^1.305.0",
+    "v-clipboard": "^2.2.2",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.0",

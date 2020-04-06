@@ -110,7 +110,12 @@ export default {
     },
 
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+      }).get()[0];
     },
 
     selectedCurrency() {
@@ -153,8 +158,7 @@ export default {
       return formattedBalance.getFormatted();
     },
     showTotalBalance() {
-      return this.$route.name === 'wallet'
-             || this.$route.name === 'sendCoin'
+      return this.$route.name === 'sendCoin'
              || this.$route.name === 'receiveCoin'
              || this.$route.name === 'coinHistory'
              || this.$route.name === 'coinPrices';
@@ -175,7 +179,8 @@ export default {
       return (this.$route.name === 'walletSingle' && this.wallet)
              || (this.$route.name === 'sendCoinSingle' && this.wallet)
              || (this.$route.name === 'receiveCoinSingle' && this.wallet)
-             || (this.$route.name === 'coinSinglePrices' && this.wallet);
+             || (this.$route.name === 'coinSinglePrices' && this.wallet)
+             || (this.$route.name === 'wallet');
     },
   },
 

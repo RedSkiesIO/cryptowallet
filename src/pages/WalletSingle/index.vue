@@ -8,6 +8,7 @@
 import Transactions from '@/components/Wallet/Transactions';
 import { mapState } from 'vuex';
 import refreshWallet from '@/helpers/RefreshWallet';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'WalletSingle',
@@ -33,7 +34,12 @@ export default {
     }),
 
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+      }).get()[0];
     },
   },
 

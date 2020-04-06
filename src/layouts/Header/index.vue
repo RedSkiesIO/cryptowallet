@@ -76,7 +76,7 @@
           </h1>
         </div>
       </div>
-
+      <!--
       <div
         v-if="displayAddWallet"
         class="header-settings-button-wrapper"
@@ -89,7 +89,7 @@
           flat
           @click.prevent="openWalletsModal"
         />
-      </div>
+      </div> -->
 
       <div
         v-if="displayPriceChart"
@@ -125,7 +125,7 @@
 <script>
 import { mapState } from 'vuex';
 import IconList from '@/statics/cc-icons/icons-list.json';
-
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'Header',
@@ -146,7 +146,12 @@ export default {
     }),
 
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+      }).get()[0];
     },
 
     selectedCurrency() {
@@ -183,7 +188,8 @@ export default {
       if (this.$route.name === 'walletSingle'
           || this.$route.name === 'sendCoinSingle'
           || this.$route.name === 'receiveCoinSingle'
-          || this.$route.name === 'coinSinglePrices') {
+          || this.$route.name === 'coinSinglePrices'
+          || this.$route.name === 'wallet') {
         return true;
       }
       return false;

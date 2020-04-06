@@ -16,7 +16,8 @@ module.exports = (ctx) => {
       'VueSelect',
       'Vuelidate',
       'BackEndService',
-      'AccountInitializer'
+      'AccountInitializer',
+      'vClipboard'
     ],
     css: ['app.styl'],
     extras: [
