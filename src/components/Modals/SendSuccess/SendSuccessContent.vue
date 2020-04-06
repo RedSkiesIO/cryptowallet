@@ -85,6 +85,8 @@
 import { mapState } from 'vuex';
 import { AmountFormatter } from '@/helpers';
 import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
+
 
 export default {
   name: 'SendSuccessContent',
@@ -95,7 +97,12 @@ export default {
       txData: (state) => { return state.modals.sendConfirmTxData; },
     }),
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
+      }).get()[0];
     },
     supportedCoins() {
       return Coin.all();

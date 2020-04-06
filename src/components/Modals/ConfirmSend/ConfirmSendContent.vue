@@ -138,7 +138,12 @@ export default {
     }),
 
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
+      }).get()[0];
     },
 
     supportedCoins() {

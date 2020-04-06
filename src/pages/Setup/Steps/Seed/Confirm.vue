@@ -22,7 +22,7 @@
         :key="`word${i}`"
         :label="`${word}`"
         :disabled="wasUsed(word)"
-        color="yellow"
+        color="primary"
         text-color="blueish"
         class="seed-btn"
         size="sm"

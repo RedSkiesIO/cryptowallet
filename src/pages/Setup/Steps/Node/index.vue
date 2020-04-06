@@ -25,7 +25,7 @@
       />
 
       <q-btn
-        color="yellow"
+        color="primary"
         text-color="blueish"
         label="Done"
         @click="done"

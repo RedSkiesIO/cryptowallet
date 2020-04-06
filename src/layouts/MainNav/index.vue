@@ -8,7 +8,7 @@
         to="/wallet"
       >
         <q-icon name="account_balance_wallet" />
-        <div>{{ $t('wallets') }}</div>
+        <div>{{ $t('wallet') }}</div>
       </router-link>
     </div>
     <div class="">

@@ -29,6 +29,7 @@ export default {
 
   computed: {
     ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       id: (state) => { return state.route.params.id; },
       delay: (state) => { return state.settings.delay; },
     }),
@@ -38,7 +39,7 @@ export default {
         return this.$store.getters['entities/wallet/find'](this.id);
       }
       return Wallet.query().where((wallet) => {
-        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
       }).get()[0];
     },
   },

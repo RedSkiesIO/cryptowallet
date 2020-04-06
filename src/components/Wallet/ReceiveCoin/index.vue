@@ -13,7 +13,7 @@
       <h1 class="header-h1">
         {{ $t('receive') }}
       </h1>
-      <div
+      <!-- <div
         class="header-settings-button-wrapper"
       >
         <q-btn
@@ -24,7 +24,7 @@
           flat
           @click.prevent="share()"
         />
-      </div>
+      </div> -->
     </div>
     <div
       v-if="wallet"

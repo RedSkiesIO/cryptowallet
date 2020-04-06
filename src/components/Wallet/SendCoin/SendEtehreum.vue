@@ -146,6 +146,7 @@ import {
 } from '@/helpers';
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'SendEthereum',
@@ -205,9 +206,13 @@ export default {
       scannedAmount: (state) => { return state.qrcode.scannedAmount; },
 
     }),
-
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
+      }).get()[0];
     },
 
     selectedCurrency() {

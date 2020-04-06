@@ -173,6 +173,8 @@
 import { mapState } from 'vuex';
 import { dateTranslater, AmountFormatter } from '@/helpers';
 import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
+
 
 export default {
   name: 'SingleTransaction',
@@ -192,12 +194,18 @@ export default {
 
   computed: {
     ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       id: (state) => { return state.route.params.id; },
       delay: (state) => { return state.settings.delay; },
       newTx: (state) => { return state.modals.newTxData; },
     }),
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
+      }).get()[0];
     },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;

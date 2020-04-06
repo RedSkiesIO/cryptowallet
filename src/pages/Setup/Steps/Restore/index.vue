@@ -23,7 +23,7 @@
     </div>
     <div class="btns-wrapper">
       <q-btn
-        color="yellow"
+        color="primary"
         text-color="blueish"
         label="Next"
         @click="validate"

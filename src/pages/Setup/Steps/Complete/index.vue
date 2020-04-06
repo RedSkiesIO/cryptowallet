@@ -25,7 +25,7 @@
       <q-btn
         :disabled="!online"
         :label="$t('activateYourWallet')"
-        color="yellow"
+        color="primary"
         text-color="blueish"
         @click="complete"
       />
@@ -36,6 +36,9 @@
 <script>
 import { mapState } from 'vuex';
 import { Network } from '@/helpers';
+import Wallet from '@/store/wallet/entities/wallet';
+import Address from '@/store/wallet/entities/address';
+import Tx from '@/store/wallet/entities/tx';
 
 export default {
   name: 'Complete',
@@ -79,6 +82,49 @@ export default {
   },
 
   methods: {
+    async storeTransactions(txs, id) {
+      if (txs.length > 0) {
+        const transactions = txs.map((tx) => {
+          tx.account_id = this.authenticatedAccount;
+          tx.wallet_id = id;
+          return tx;
+        });
+        transactions.sort((a, b) => {
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
+        });
+        await Tx.$insert({ data: transactions });
+      }
+    },
+
+    async enableCatalyst(initializedWallet, wallet) {
+      const coinSDK = this.coinSDKS[wallet.sdk];
+      const {
+        txHistory,
+        accounts,
+        balance,
+      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
+
+      Wallet.$update({
+        where: (record) => { return record.id === wallet.id; },
+        data: {
+          externalChainAddressIndex: 0,
+          internalChainAddressIndex: 0,
+          confirmedBalance: balance,
+          externalAddress: accounts[0].address,
+        },
+      });
+
+      const newAddress = {
+        account_id: this.authenticatedAccount,
+        wallet_id: wallet.id,
+        chain: 'external',
+        address: accounts[0].address,
+        index: 0,
+      };
+
+      await Address.$insert({ data: newAddress });
+      await this.storeTransactions(txHistory.txs, wallet.id);
+    },
     /**
      * complete setup and store account entity.
      */
@@ -97,6 +143,28 @@ export default {
           );
           this.$store.dispatch('setup/setAccountCreated');
           this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
+
+          const wallet = Wallet.query().where((wal) => {
+            return wal.name === 'Catalyst' && wal.account_id === account.id;
+          }).get()[0];
+
+          const initializedWallet = wallet.hdWallet;
+
+          if (!this.activeWallets[account.id]) {
+            this.activeWallets[account.id] = {};
+          }
+
+          this.activeWallets[account.id][wallet.name] = initializedWallet;
+          let success = true;
+          try {
+            await this.enableCatalyst(initializedWallet, wallet);
+          } catch (err) {
+            success = false;
+          }
+          Wallet.$update({
+            where: (record) => { return record.id === wallet.id; },
+            data: { imported: success, enabled: success },
+          });
 
           // Object.getPrototypeOf(this.$root).backEndService =
           // new this.BackEndService

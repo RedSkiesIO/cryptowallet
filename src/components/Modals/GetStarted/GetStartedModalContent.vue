@@ -39,7 +39,7 @@
             <q-btn
               v-if="slide !== 'security'"
               :label="$t('next')"
-              color="yellow"
+              color="primary"
               text-color="blueish"
               class="splash-btn"
               @click="next"
@@ -76,7 +76,7 @@
             <q-btn
               v-if="slide !== 'security'"
               :label="$t('next')"
-              color="yellow"
+              color="primary"
               text-color="blueish"
               class="splash-btn"
               @click="next"
@@ -113,7 +113,7 @@
             <q-btn
               v-if="slide !== 'security'"
               :label="$t('next')"
-              color="yellow"
+              color="primary"
               text-color="blueish"
               class="splash-btn"
               @click="next"
@@ -164,7 +164,7 @@
               v-if="slide === 'security'"
               :disabled="online"
               :label="$t('activateYourWallet')"
-              color="yellow"
+              color="primary"
               text-color="blueish"
               class="splash-btn"
               @click="done"

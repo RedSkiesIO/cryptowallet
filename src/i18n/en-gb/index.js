@@ -179,7 +179,7 @@ export default {
   receive: 'Receive',
   success: 'Success',
   successMessage: 'YOUR TRANSACTION WAS SUCCESSFULLY SENT',
-  wallet: 'Wallets',
+  wallet: 'Wallet',
   addToken: 'Add Token',
   contractAddress: 'Contract Address',
   tokenName: 'Name',
