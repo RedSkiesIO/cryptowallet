@@ -9,14 +9,14 @@
 
         <div
           v-if="simple"
-          class="quick-coin-actions"
+          class="q-pt-lg quick-coin-actions"
         >
           <q-btn-group>
             <q-btn
               :disabled="cantSend"
               icon="send"
               size="md"
-              color="primary"
+              color="white"
               label="Send"
               class="wallet-group-btn"
               flat
@@ -25,7 +25,7 @@
             <q-btn
               icon="call_received"
               size="md"
-              color="primary"
+              color="white"
               label="Receive"
               class="wallet-group-btn"
               flat

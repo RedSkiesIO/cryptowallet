@@ -26,7 +26,7 @@
           || mode === 'pin-confirm'
           || mode === 'confirm-new-pin')"
         :disabled="canProceed"
-        color="yellow"
+        color="primary"
         text-color="blueish"
         :label="$t('done')"
         @click="done"
@@ -39,7 +39,7 @@
           && mode != 'confirm-new-pin'
           && mode != 'delete'"
         :disabled="canProceed"
-        color="yellow"
+        color="primary"
         text-color="blueish"
         :label="$t('unlock')"
         @click="confirmPin"

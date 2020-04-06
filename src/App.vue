@@ -239,7 +239,7 @@ background: linear-gradient(0deg, rgba(22,172,159,1) 0%, rgba(10,45,62,1) 100%);
 }
 
 .dark-modal .header-section i {
-  color: #78d2e6;
+  color: #16ac9f;
 }
 
 .dark-modal .modal-layout-wrapper {
