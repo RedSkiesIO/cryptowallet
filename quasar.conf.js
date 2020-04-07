@@ -17,7 +17,8 @@ module.exports = (ctx) => {
       'Vuelidate',
       'BackEndService',
       'AccountInitializer',
-      'vClipboard'
+      'vClipboard',
+      'QRSCanner',
     ],
     css: ['app.styl'],
     extras: [
