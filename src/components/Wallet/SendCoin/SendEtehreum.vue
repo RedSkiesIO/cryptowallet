@@ -96,13 +96,13 @@
       <span class="error-label error-label-amount">
         {{ amountError }}
       </span>
-      <div class="send-modal-heading">
+      <!-- <div class="send-modal-heading">
         <h3>
           Fee
         </h3>
         <span class="h3-line" />
-      </div>
-      <div>
+      </div> -->
+      <!-- <div>
         <div class="fee">
           <q-slider
             v-model="feeSetting"
@@ -120,7 +120,7 @@
         <div class="estimated-fee">
           {{ $t('estimatedTransaction') }} {{ estimatedFee }}
         </div>
-      </div>
+      </div> -->
       <div class="send">
         <q-btn
           :label="$t('send')"
@@ -162,7 +162,7 @@ export default {
       sendingModalOpened: false,
       feeSetting: 1,
       fee: 0,
-      rawFee: 0,
+      rawFee: 5,
       feeData: null,
       estimatedFee: 'N/A',
       maxed: false,
@@ -288,7 +288,7 @@ export default {
   },
 
   async mounted() {
-    await this.getFee();
+    // await this.getFee();
     this.maxValueCoin = this.getMaxAmount();
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
 
