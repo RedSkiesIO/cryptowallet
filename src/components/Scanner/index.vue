@@ -1,13 +1,19 @@
 <template>
-  <div class="target-wrapper">
-    <div class="target" />
-    <div class="controls-box">
-      <q-btn
-        :label="$t('cancel')"
-        color="blueish"
-        size="md"
-        @click="cancel()"
-      />
+  <div>
+    <video
+      id="video"
+      class="camera"
+    />
+    <div class="target-wrapper">
+      <div class="target" />
+      <div class="controls-box">
+        <q-btn
+          :label="$t('cancel')"
+          color="blueish"
+          size="md"
+          @click="cancel()"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +30,13 @@ export default {
 </script>
 
 <style scoped>
+
+.camera {
+  position: absolute;
+  object-fit: fill;
+  height: 100%;
+  width: 100%;
+}
 
 .controls-box {
   position: absolute;

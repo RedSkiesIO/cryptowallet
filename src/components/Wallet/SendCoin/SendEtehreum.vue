@@ -630,43 +630,41 @@ export default {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
       const invalidAddress = this.$t('ethereumAddressInvalid');
-      if (typeof QRScanner !== 'undefined') {
-        setTimeout(() => {
-          const scanQR = () => {
-            return QRScanner.scan((err, text) => {
-              if (err) {
-                this.errorHandler(err);
-              } else {
-                let amount;
-                if (text.includes(':')) {
-                  const query = new URL(text);
-                  text = query.pathname;
-                  const queryParams = new URLSearchParams(query.search);
-                  if (queryParams.has('amount')) {
-                    amount = queryParams.get('amount');
-                  }
-                }
-                let coinSDK = this.coinSDKS[this.wallet.sdk];
-                if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
-                const isValid = coinSDK.validateAddress(text, this.wallet.network);
-                if (isValid) {
-                  this.$store.dispatch('qrcode/setScannedAddress', text);
-                  if (amount) {
-                    this.$store.dispatch('qrcode/setScannedAmount', amount);
-                  }
-                  this.$store.dispatch('qrcode/cancelScanning');
-                  this.$store.dispatch('modals/setSendCoinModalOpened', true);
-                } else {
-                  this.$toast.create(10, invalidAddress, this.delay.normal);
-                  const waitForToast = 5000;
-                  setTimeout(() => { return scanQR(); }, waitForToast);
+      const codeReader = new this.$QRScanner();
+      setTimeout(() => {
+        const scanQR = () => {
+          return codeReader
+            .decodeOnceFromVideoDevice(undefined, 'video')
+            .then((text) => {
+              let amount;
+              if (text.includes(':')) {
+                const query = new URL(text);
+                text = query.pathname;
+                const queryParams = new URLSearchParams(query.search);
+                if (queryParams.has('amount')) {
+                  amount = queryParams.get('amount');
                 }
               }
-            });
-          };
-          scanQR();
-        }, this.delay.normal);
-      }
+              let coinSDK = this.coinSDKS[this.wallet.sdk];
+              if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
+              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+              if (isValid) {
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                if (amount) {
+                  this.$store.dispatch('qrcode/setScannedAmount', amount);
+                }
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$store.dispatch('modals/setSendCoinModalOpened', true);
+              } else {
+                this.$toast.create(10, invalidAddress, this.delay.normal);
+                const waitForToast = 5000;
+                setTimeout(() => { return scanQR(); }, waitForToast);
+              }
+            })
+            .catch((err) => { return console.error(err); });
+        };
+        scanQR();
+      }, this.delay.normal);
     },
   },
 };
