@@ -3,12 +3,13 @@
     <q-header>
       <Header />
     </q-header>
-
-    <div
-      :class="{ 'no-footer': !isMainNavVisible }"
-      class="layout-wrapper background"
-    >
-      <router-view />
+    <div class="flex justify-center bg-primary">
+      <div
+        :class="{ 'no-footer': !isMainNavVisible }"
+        class="layout-wrapper background"
+      >
+        <router-view />
+      </div>
     </div>
   </q-layout>
 </template>

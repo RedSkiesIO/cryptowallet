@@ -15,40 +15,45 @@
         color="cyan"
         @refresh="refresher"
       >
-        <div class="background" />
         <div
-          class="layout-wrapper"
-          @touchmove="prevent"
+          class="flex justify-center"
+          style="width: 100%"
         >
+          <div class="background" />
           <div
-            v-if="showCoinHeader"
-            class="coin-header-wrapper"
-          >
-            <CoinHeader
-              :wallet="wallet"
-              :simple="true"
-            />
-          </div>
-
-          <div
-            v-if="wallets.length > 0 && showTotalBalance"
-            class="total-balance-wrapper"
+            class="layout-wrapper"
+            @touchmove="prevent"
           >
             <div
-              v-if="showTotalBalance"
-              class="total-balance flex flex-center"
+              v-if="showCoinHeader"
+              class="coin-header-wrapper"
             >
-              <div>{{ totalBalance }}</div>
+              <CoinHeader
+                :wallet="wallet"
+                :simple="true"
+              />
             </div>
-          </div>
 
-          <div
-            :class="{ white: layoutShapeWhite }"
-            class="layout-shape"
-          >
-            <keep-alive>
-              <router-view />
-            </keep-alive>
+            <div
+              v-if="wallets.length > 0 && showTotalBalance"
+              class="total-balance-wrapper"
+            >
+              <div
+                v-if="showTotalBalance"
+                class="total-balance flex flex-center"
+              >
+                <div>{{ totalBalance }}</div>
+              </div>
+            </div>
+
+            <div
+              :class="{ white: layoutShapeWhite }"
+              class="layout-shape"
+            >
+              <keep-alive>
+                <router-view />
+              </keep-alive>
+            </div>
           </div>
         </div>
       </q-pull-to-refresh>
@@ -315,7 +320,7 @@ export default {
 }
 
 .layout-shape.white {
-  background: #0a2d3e!important;
+  background: none!important;
 }
 
 .no-balance .layout-shape {
@@ -328,11 +333,11 @@ export default {
 
 .no-balance .background,
 .short-top .background {
-  height: 17rem;
+  height: 100%;
 }
 
 .single-wallet-top .background {
-  height: 24.5rem;
+  height: 100%;
 }
 
 /*.q-pull-to-refresh-wrapper {

@@ -50,7 +50,7 @@
 
 body #q-app
     font-family Montserrat-Regular
-    background #19445b;
+    background #0a2d3e;
 
 .modal-backdrop {
     background: rgba(0, 0, 0, 0.5);
@@ -123,6 +123,8 @@ button.q-btn[disabled] {
 
 .layout-wrapper {
   display: flex;
+  width: 100%;
+  max-width: 600px;
   flex-direction: column;
   height: 100vh;
   padding-top: 2.5rem;
@@ -158,6 +160,19 @@ button.q-btn[disabled] {
     height: 100vh;
     padding-bottom: 0;
 }
+
+  .q-footer {
+    background: #0a2d3e;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+      border-top: 0.3rem solid #4e677d;
+  }
 
 .q-header,
 .q-footer,

@@ -1,14 +1,12 @@
 <template>
   <div
-
+    class="flex justify-center"
     :class="{ shrinked : settings.layout !== 'dark' }"
   >
     <LoadingScreen :show="settings.loading" />
 
     <div
       id="q-app"
-      class="flex justify-center"
-      style="width: 100%; max-width: 550px;"
       :class="{ hidden: scanning }"
     >
       <router-view />
@@ -208,9 +206,36 @@ body > div {
 }
 
 .light-modal {
+    width: 100%;
+  .q-dialog__inner--maximized > div {
+    background: whitesmoke;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+        -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
   .modal-content {
-    background: white;
+    background: whitesmoke;
     color: black;
+  }
+}
+
+.dark-modal {
+    width: 100%;
+  .q-dialog__inner--maximized > div {
+    background: #0a2d3e;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+        -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
   }
 }
 
@@ -219,6 +244,8 @@ body > div {
   height: calc(100vh - constant(safe-area-inset-top))!important;
   height: calc(100vh - env(safe-area-inset-top))!important;
   padding-top: 3.5rem;
+  max-width: 600px;
+  width: 100%;
 }
 
 .light-modal .header-section {
@@ -235,7 +262,7 @@ body > div {
 }
 
 .dark-modal .header-section {
-  color: white;
+  color: whitesmoke;
 }
 
 .dark-modal .header-section i {
@@ -247,7 +274,7 @@ body > div {
 }
 
 .light-modal .modal-layout-wrapper {
-  background: white;
+  background: whitesmoke;
 }
 
 
@@ -259,7 +286,8 @@ body > div {
   height: calc(100vh - 2.5rem - env(safe-area-inset-top));
   position: relative;
   padding: 0.5rem;
-  overflow: scroll;
+  max-width: 600px;
+  width: 100%;
 }
 
 .modal-layout-wrapper.full {

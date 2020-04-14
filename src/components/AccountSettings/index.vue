@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pt-xl">
-    <div
+  <div class="q-pt-xl q-mt-xl">
+    <!-- <div
       class="settings-row"
       @click.prevent="openSelectLanguageModal"
     >
@@ -11,7 +11,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="white"
           class="settings-chevron"
           flat
           @click.prevent="openSelectLanguageModal"
@@ -30,13 +30,13 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="white"
           class="settings-chevron"
           flat
           @click.prevent="openSelectCurrencyModal"
         />
       </div>
-    </div>
+    </div> -->
 
     <div
       class="settings-row"
@@ -49,7 +49,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="white"
           class="settings-chevron"
           flat
           @click.prevent="openNewPinModal"
@@ -68,7 +68,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="white"
           class="settings-chevron"
           flat
           @click="logout"
@@ -87,7 +87,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="white"
           class="settings-chevron"
           flat
           @click.prevent="openDeleteAccountModal"

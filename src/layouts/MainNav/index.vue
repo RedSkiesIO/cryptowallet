@@ -32,11 +32,11 @@ export default {
 <style scoped>
   .main-nav {
     width: 100%;
+    max-width: 600px;
     height: 5rem;
     background: #0a2d3e;
     display: flex;
     justify-content: space-between;
-    border-top: 0.3rem solid #4e677d;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
   }
 
