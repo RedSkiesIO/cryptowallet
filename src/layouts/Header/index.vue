@@ -181,7 +181,7 @@ export default {
       if (this.$route.name === 'setup') { return ''; }
       if (this.$route.name === 'exchange') { return this.$t('exchange'); }
       if (this.$route.name === 'settings') { return this.$t('settings'); }
-      return 'CryptoWallet';
+      return this.$t('cryptoWallet');
     },
 
     coinHeading() {
@@ -343,7 +343,7 @@ export default {
 
 .header-h1 {
   letter-spacing: normal;
-  font-size: 1em;
+  font-size: 1.5em;
   margin-top: 0.3em;
   position: relative;
 }
@@ -396,7 +396,7 @@ export default {
 }
 
 .coin-logo {
-  height: 1.25rem;
+  height: 1.5rem;
   margin-right: 0.2rem;
   position: relative;
   top: 0.2em;

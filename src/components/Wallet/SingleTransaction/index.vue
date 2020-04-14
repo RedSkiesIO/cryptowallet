@@ -511,6 +511,10 @@ export default {
   min-height: 1rem;
 }
 
+.q-card {
+  background: whitesmoke;
+}
+
 .q-expansion-item .q-card__section {
   padding: 0;
 }

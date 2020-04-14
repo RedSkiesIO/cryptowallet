@@ -1,6 +1,6 @@
 <template>
   <div :class="{ simple: simple }">
-    <div class="wrapper">
+    <div class="wrapper q-my-lg">
       <div>
         <div class="wallet-name">
           <img :src="coinLogo">

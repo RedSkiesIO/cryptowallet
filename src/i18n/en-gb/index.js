@@ -202,7 +202,7 @@ export default {
   newTxIntro: 'You received',
   view: 'View',
   // Setup
-  cryptoWallet: 'CryptoWallet',
+  cryptoWallet: 'Testnet Wallet',
   seedSetup: 'Seed Setup',
   createRecoverySeed: ' We\'re going to create a recovery seed for you that can be used to restore your wallets.',
   goOffline: 'First we need to go offline, put your phone into airplane mode, and make sure all network connections are switched off.',

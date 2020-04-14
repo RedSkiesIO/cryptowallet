@@ -7,7 +7,7 @@
       <div class="loading-footer">
         <img
           class="logo-loading"
-          src="~/assets/logo-white-horizontal.png"
+          src="~/assets/logo-white-horizontal.svg"
         >
       </div>
       <Spinner />
