@@ -635,7 +635,8 @@ export default {
         const scanQR = () => {
           return codeReader
             .decodeOnceFromVideoDevice(undefined, 'video')
-            .then((text) => {
+            .then((result) => {
+              let { text } = result;
               let amount;
               if (text.includes(':')) {
                 const query = new URL(text);

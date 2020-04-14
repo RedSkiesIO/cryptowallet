@@ -190,13 +190,10 @@ async function refreshEthereum(coinSDK, wallet, fullRefresh) {
       0,
     );
 
-    console.log('history: ', txHistory);
-
 
     if (!txHistory || txHistory.txs.length === 0) {
       return false;
     }
-    console.log(txHistory.txs);
     storeTxs(txHistory.txs, wallet, coinSDK);
   }
 

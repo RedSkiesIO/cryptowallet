@@ -86,12 +86,10 @@ export default {
      */
     async refresher(done, fullRefresh = true) {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
-      console.log(online);
       if (online) {
         this.balanceChanged = await refreshWallet(
           this.coinSDKS[this.wallet.sdk], this.wallet, 0, fullRefresh,
         );
-        console.log(this.balanceChanged);
         setTimeout(() => {
           done();
         }, this.delay.normal);

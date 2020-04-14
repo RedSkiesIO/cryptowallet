@@ -1,9 +1,14 @@
 <template>
-  <div :class="{ shrinked : settings.layout !== 'dark' }">
+  <div
+
+    :class="{ shrinked : settings.layout !== 'dark' }"
+  >
     <LoadingScreen :show="settings.loading" />
 
     <div
       id="q-app"
+      class="flex justify-center"
+      style="width: 100%; max-width: 550px;"
       :class="{ hidden: scanning }"
     >
       <router-view />
@@ -132,11 +137,6 @@ export default {
   },
 
   async mounted() {
-    async function loadWasm() {
-      return import('@catalyst-net-js/wasm-ed25519ph');
-    }
-
-    console.log(await loadWasm());
     window.store = this.$store;
     window.app = this;
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
@@ -187,7 +187,7 @@ body > div {
 
 .shrinked .background {
   background: rgb(22,172,159);
-background: linear-gradient(0deg, rgba(22,172,159,1) 0%, rgba(10,45,62,1) 100%);
+  background: linear-gradient(0deg, rgba(22,172,159,1) 0%, rgba(10,45,62,1) 100%);
   height: 22.5rem;
   top: 0rem;
   border-bottom: 0.3rem solid #4e677d;

@@ -215,7 +215,6 @@ export default {
         if (!result) {
           throw new Error(this.$t('transactionBroadcastFail'));
         }
-
         transaction.account_id = this.authenticatedAccount;
         transaction.wallet_id = this.wallet.id;
         transaction.isChange = false;
@@ -266,11 +265,15 @@ export default {
       }
 
       if (this.wallet.sdk === 'Ethereum' || this.wallet.sdk === 'ERC20' || this.wallet.sdk === 'Catalyst') {
-        const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
+        const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
+        const keypair = coinSDK.generateKeyPair(wallet, 0);
+        const result = await coinSDK.broadcastTx(hexTx, keypair);
+        console.log(result);
         if (!result) {
           throw new Error(this.$t('transactionBroadcastFail'));
         }
 
+        transaction.hash = result.hash;
         transaction.account_id = this.authenticatedAccount;
         transaction.wallet_id = this.wallet.id;
         transaction.isChange = false;
@@ -324,6 +327,7 @@ export default {
         try {
           await this.broadcastTx();
         } catch (error) {
+          console.log(error);
           this.$store.dispatch('modals/setSendFailureModalOpened', true);
 
           setTimeout(() => {
