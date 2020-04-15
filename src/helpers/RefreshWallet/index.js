@@ -1,3 +1,4 @@
+import ERPC from '@etclabscore/ethereum-json-rpc';
 import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
@@ -65,6 +66,40 @@ async function updateBalance(coinSDK, wallet, addresses) {
     return true;
   }
   return false;
+}
+
+async function removeOldTxs(wallet) {
+  const rpc = new ERPC({
+    transport: {
+      host: '77.68.110.194',
+      port: 5005,
+      type: 'http',
+      path: 'api/eth/request',
+    },
+  });
+
+  const txs = Tx.query()
+    .where('wallet_id', wallet.id)
+    .get();
+
+
+  const deltaHeight = await rpc.eth_blockNumber();
+  const maxTime = 240;
+  const converToSeconds = 1000;
+
+  const oldTxs = txs.filter(async (tx) => {
+    if (tx.blockHeight > deltaHeight) { return true; }
+    if (tx.blockHeight === -1 && ((Date.now() / converToSeconds) - tx.confirmedTime) > maxTime) {
+      return true;
+    }
+    const receipt = await rpc.eth_getTransactionByHash(tx.hash);
+    if (!receipt) { return false; }
+    return false;
+  });
+
+  oldTxs.forEach((tx) => {
+    Tx.$delete(tx.id);
+  });
 }
 
 function updateTxs(txs, wallet) {
@@ -182,6 +217,7 @@ async function refreshBitcoin(coinSDK, wallet, fullRefresh) {
 async function refreshEthereum(coinSDK, wallet, fullRefresh) {
   const balanceChanged = await updateBalance(coinSDK, wallet);
 
+
   if (balanceChanged || fullRefresh) {
     const { network } = wallet;
     const txHistory = await coinSDK.getTransactionHistory(
@@ -190,7 +226,7 @@ async function refreshEthereum(coinSDK, wallet, fullRefresh) {
       0,
     );
 
-
+    await removeOldTxs(wallet);
     if (!txHistory || txHistory.txs.length === 0) {
       return false;
     }
