@@ -226,6 +226,13 @@ body > div {
 
 .dark-modal {
     width: 100%;
+
+    .q-carousel {
+      background: none;
+    }
+    .q-dialog__inner--maximized {
+      background: #0a2d3e;
+     }
   .q-dialog__inner--maximized > div {
     background: #0a2d3e;
     display: -webkit-box;

@@ -408,7 +408,7 @@ export default {
   methods: {
     copy(text) {
       try {
-        cordova.plugins.clipboard.copy(text);
+        this.$clipboard(text);
         this.$toast.create(0, this.$t('copied'), this.delay.short);
       } catch (err) {
         this.errorHandler(err);

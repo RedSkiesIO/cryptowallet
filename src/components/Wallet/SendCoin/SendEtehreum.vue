@@ -590,14 +590,20 @@ export default {
     /**
      * Pastes in the text from the clipboard
      */
-    paste() {
-      try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.address = text;
-        });
-      } catch (err) {
-        this.errorHandler(err);
-      }
+    // paste() {
+    //   try {
+    //     cordova.plugins.clipboard.paste((text) => {
+    //       this.address = text;
+    //     });
+    //   } catch (err) {
+    //     this.errorHandler(err);
+    //   }
+    // },
+
+    async paste() {
+      navigator.clipboard.readText().then((clipText) => {
+        this.address = clipText;
+      });
     },
 
     async max() {

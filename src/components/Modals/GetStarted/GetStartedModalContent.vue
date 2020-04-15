@@ -280,6 +280,7 @@ export default {
   position: absolute;
   z-index: 999;
   margin: 0 1rem;
+  width: 97%;
 }
 
 .banner-wrapper.offline {
