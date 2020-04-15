@@ -82,20 +82,30 @@ async function removeOldTxs(wallet) {
     .where('wallet_id', wallet.id)
     .get();
 
-
   const deltaHeight = await rpc.eth_blockNumber();
   const maxTime = 240;
   const converToSeconds = 1000;
 
-  const oldTxs = txs.filter(async (tx) => {
-    if (tx.blockHeight > deltaHeight) { return true; }
+  const oldTxs = [];
+
+  const removeOld = async (transactions) => {
+    const tx = transactions.shift();
+    if (tx.blockHeight > deltaHeight) {
+      oldTxs.push(tx);
+      return;
+    }
     if (tx.blockHeight === -1 && ((Date.now() / converToSeconds) - tx.confirmedTime) > maxTime) {
-      return true;
+      oldTxs.push(tx);
+      return;
     }
     const receipt = await rpc.eth_getTransactionByHash(tx.hash);
-    if (!receipt) { return false; }
-    return false;
-  });
+    if (!receipt) {
+      oldTxs.push(tx);
+      return;
+    }
+    if (transactions.length > 0) { await removeOld(transactions); }
+  };
+  await removeOld(txs);
 
   oldTxs.forEach((tx) => {
     Tx.$delete(tx.id);
@@ -156,7 +166,7 @@ function insertTxs(txs, wallet, coinSDK) {
   }
 }
 
-function storeTxs(txs, wallet, coinSDK) {
+async function storeTxs(txs, wallet, coinSDK) {
   if (wallet.sdk !== 'Bitcoin') {
     const newAmount = 100;
     if (txs.length > newAmount) {
@@ -164,13 +174,16 @@ function storeTxs(txs, wallet, coinSDK) {
     }
   }
 
-  const storedTxs = Tx.query().where('wallet_id', wallet.id).get().map((tx) => {
+  const storedTxs = await Tx.query().where('wallet_id', wallet.id).get().map((tx) => {
     return tx.hash;
   });
+  console.log('storedTxs: ', storedTxs);
 
   if (storedTxs.length > 0) {
     const foundTxs = txs.filter((tx) => { return storedTxs.includes(tx.hash); });
     const newTxs = txs.filter((tx) => { return !storedTxs.includes(tx.hash); });
+    console.log('foundTxs: ', foundTxs);
+    console.log('newTxs: ', newTxs);
 
     updateTxs(foundTxs, wallet);
     if (newTxs.length > 0) {
@@ -230,7 +243,7 @@ async function refreshEthereum(coinSDK, wallet, fullRefresh) {
     if (!txHistory || txHistory.txs.length === 0) {
       return false;
     }
-    storeTxs(txHistory.txs, wallet, coinSDK);
+    await storeTxs(txHistory.txs, wallet, coinSDK);
   }
 
   return balanceChanged;

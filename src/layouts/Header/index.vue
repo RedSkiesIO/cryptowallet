@@ -12,6 +12,7 @@
         <div
           v-if="newTxModalData"
           class="row justify-between"
+          style="width: 100%; max-width: 600px;"
         >
           <div class="col-2">
             <img
@@ -406,13 +407,23 @@ export default {
   display: none;
 }
 
+/* .transaction-notification {
+  max-width: 600px;
+} */
 .transaction-notification .q-dialog__inner{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
   background: #eee;
   color: #1e3c57;
   bottom: 80px;
-  justify-content: space-between;
   border-top: 1px solid #1e3c57;
-
 }
 
 .transaction-notification .label {
