@@ -32,10 +32,10 @@ export default {
 <style scoped>
 
 .camera {
-  position: absolute;
   object-fit: fill;
-  height: 100%;
+  height: 100vh;
   width: 100%;
+  max-width: 600px;
 }
 
 .controls-box {
@@ -46,8 +46,10 @@ export default {
 
 .target-wrapper {
   position: absolute;
+  top: 0;
   height: 100vh;
   width: 100vw;
+  max-width: 600px;
   display: flex;
   justify-content: center;
   align-items: center;

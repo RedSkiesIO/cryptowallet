@@ -93,21 +93,21 @@ export default {
     scan() {
       this.$store.dispatch('qrcode/setQRMode', 'restore');
       this.$store.dispatch('qrcode/scanQRCode');
+      const codeReader = new this.$QRScanner();
 
-      if (typeof QRScanner !== 'undefined') {
-        setTimeout(() => {
-          QRScanner.scan((err, text) => {
-            if (err) {
-              this.errorHandler(err);
-            } else {
-              this.seedPhrase = text;
-              const valid = this.validate();
-              if (!valid) { this.seedPhrase = ''; }
-              this.$store.dispatch('qrcode/cancelScanning');
-            }
-          });
-        }, this.delay.normal);
-      }
+      setTimeout(() => {
+        return codeReader
+          .decodeOnceFromVideoDevice(undefined, 'video')
+          .then((result) => {
+            const { text } = result;
+
+            this.seedPhrase = text;
+            const valid = this.validate();
+            if (!valid) { this.seedPhrase = ''; }
+            this.$store.dispatch('qrcode/cancelScanning');
+          })
+          .catch((err) => { return console.error(err); });
+      }, this.delay.normal);
     },
   },
 };
