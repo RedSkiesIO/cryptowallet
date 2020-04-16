@@ -96,7 +96,7 @@ export default {
       const codeReader = new this.$QRScanner();
 
       setTimeout(() => {
-        return codeReader
+        codeReader
           .decodeOnceFromVideoDevice(undefined, 'video')
           .then((result) => {
             const { text } = result;
@@ -104,9 +104,12 @@ export default {
             this.seedPhrase = text;
             const valid = this.validate();
             if (!valid) { this.seedPhrase = ''; }
+            codeReader.reset();
+
             this.$store.dispatch('qrcode/cancelScanning');
           })
           .catch((err) => { return console.error(err); });
+        codeReader.reset();
       }, this.delay.normal);
     },
   },

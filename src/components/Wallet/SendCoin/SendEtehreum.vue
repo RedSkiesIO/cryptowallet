@@ -288,20 +288,28 @@ export default {
   },
 
   async mounted() {
+    console.log('opened');
     // await this.getFee();
     this.maxValueCoin = this.getMaxAmount();
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
-
-    if (this.scannedAddress) {
+    if (this.scannedAddress && this.scannedAmount && (this.scannedAmount <= this.maxValueCoin)) {
       this.address = this.scannedAddress;
+      this.inCoin = this.scannedAmount;
+      await this.send();
       this.$store.dispatch('qrcode/setScannedAddress', null);
-    }
-    setTimeout(() => {
-      if (this.scannedAmount) {
-        this.inCoin = this.scannedAmount;
-        this.$store.dispatch('qrcode/setScannedAmount', null);
+      this.$store.dispatch('qrcode/setScannedAmount', null);
+    } else {
+      if (this.scannedAddress) {
+        this.address = this.scannedAddress;
+        this.$store.dispatch('qrcode/setScannedAddress', null);
       }
-    }, this.delay.normal);
+      setTimeout(() => {
+        if (this.scannedAmount) {
+          this.inCoin = this.scannedAmount;
+          this.$store.dispatch('qrcode/setScannedAmount', null);
+        }
+      }, this.delay.normal);
+    }
   },
 
   methods: {
@@ -636,10 +644,10 @@ export default {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
       const invalidAddress = this.$t('ethereumAddressInvalid');
-      const codeReader = new this.$QRScanner();
+      // const codeReader = new this.$QRScanner();
       setTimeout(() => {
         const scanQR = () => {
-          return codeReader
+          this.codeReader
             .decodeOnceFromVideoDevice(undefined, 'video')
             .then((result) => {
               let { text } = result;
@@ -660,6 +668,8 @@ export default {
                 if (amount) {
                   this.$store.dispatch('qrcode/setScannedAmount', amount);
                 }
+                this.codeReader.reset();
+
                 this.$store.dispatch('qrcode/cancelScanning');
                 this.$store.dispatch('modals/setSendCoinModalOpened', true);
               } else {
@@ -669,6 +679,7 @@ export default {
               }
             })
             .catch((err) => { return console.error(err); });
+          this.codeReader.reset();
         };
         scanQR();
       }, this.delay.normal);

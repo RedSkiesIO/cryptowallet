@@ -51,6 +51,8 @@ import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import SendBitcoin from '@/components/Wallet/SendCoin/SendBitcoin.vue';
 import SendEtehreum from '@/components/Wallet/SendCoin/SendEtehreum.vue';
+import Wallet from '@/store/wallet/entities/wallet';
+
 
 export default {
   name: 'SendCoin',
@@ -64,8 +66,14 @@ export default {
       id: (state) => { return state.route.params.id; },
     }),
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+      }).get()[0];
     },
+
     sendCoinModalOpened: {
       get() {
         return this.$store.state.modals.sendCoinModalOpened;

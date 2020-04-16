@@ -95,16 +95,7 @@
       <div
         v-if="displayPriceChart"
         class="header-settings-button-wrapper"
-      >
-        <q-btn
-          icon="timeline"
-          color="primary"
-          size="lg"
-          class="icon-btn icon-btn-right"
-          flat
-          @click.prevent="openChartModal"
-        />
-      </div>
+      />
 
       <div
         v-if="displayAccounts"
@@ -117,6 +108,20 @@
           class="icon-btn icon-btn-right"
           flat
           @click.prevent="setAccountModalOpened(true)"
+        />
+      </div>
+
+      <div
+        v-if="coinHeading"
+        class="header-accounts-button-wrapper"
+      >
+        <q-btn
+          icon="crop_free"
+          color="primary"
+          size="lg"
+          class="icon-btn icon-btn-right"
+          flat
+          @click.prevent="scan"
         />
       </div>
     </section>
@@ -319,6 +324,51 @@ export default {
           this.closeNotification();
         }, this.delay.short);
       }, this.delay.short);
+    },
+
+    scan() {
+      this.$store.dispatch('qrcode/setQRMode', 'restore');
+      this.$store.dispatch('qrcode/scanQRCode');
+      const invalidAddress = this.$t('ethereumAddressInvalid');
+      // const codeReader = new this.$QRScanner();
+      setTimeout(() => {
+        const scanQR = () => {
+          this.codeReader
+            .decodeOnceFromVideoDevice(undefined, 'video')
+            .then((result) => {
+              let { text } = result;
+              let amount;
+              if (text.includes(':')) {
+                const query = new URL(text);
+                text = query.pathname;
+                const queryParams = new URLSearchParams(query.search);
+                if (queryParams.has('amount')) {
+                  amount = queryParams.get('amount');
+                }
+              }
+              const coinSDK = this.coinSDKS.Catalyst;
+              const isValid = coinSDK.validateAddress(text, {});
+              if (isValid) {
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                if (amount) {
+                  this.$store.dispatch('qrcode/setScannedAmount', amount);
+                }
+
+                this.codeReader.reset();
+
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$router.push({ path: 'wallet/single/send/3' });
+              } else {
+                this.$toast.create(10, invalidAddress, this.delay.normal);
+                const waitForToast = 5000;
+                setTimeout(() => { return scanQR(); }, waitForToast);
+              }
+            })
+            .catch((err) => { return console.error(err); });
+          this.codeReader.reset();
+        };
+        scanQR();
+      }, this.delay.normal);
     },
   },
 };

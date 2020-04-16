@@ -1,5 +1,5 @@
 import { BrowserQRCodeReader } from '@zxing/library';
 
 export default ({ Vue }) => {
-  Vue.prototype.$QRScanner = BrowserQRCodeReader;
+  Vue.prototype.codeReader = new BrowserQRCodeReader();
 };

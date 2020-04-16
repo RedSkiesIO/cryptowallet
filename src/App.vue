@@ -121,9 +121,12 @@ export default {
             this.$store.dispatch('qrcode/setQRMode', null);
           } else if (this.qrMode === 'restore') {
             this.$store.dispatch('qrcode/setQRMode', null);
+          } else if (this.qrMode !== 'wallet') {
+            this.$store.dispatch('qrcode/setQRMode', null);
           } else {
             this.$store.dispatch('modals/setSendCoinModalOpened', true);
           }
+          this.codeReader.reset();
           this.$q.scanning = false;
           if (typeof QRScanner !== 'undefined') {
             QRScanner.hide(() => {});
