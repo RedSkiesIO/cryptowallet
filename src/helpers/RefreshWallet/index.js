@@ -90,6 +90,7 @@ async function removeOldTxs(wallet) {
 
   const removeOld = async (transactions) => {
     const tx = transactions.shift();
+    console.log(tx);
     if (tx.blockHeight > deltaHeight) {
       oldTxs.push(tx);
       return;
@@ -105,7 +106,9 @@ async function removeOldTxs(wallet) {
     }
     if (transactions.length > 0) { await removeOld(transactions); }
   };
-  await removeOld(txs);
+  if (txs.length > 0) {
+    await removeOld(txs);
+  }
 
   oldTxs.forEach((tx) => {
     Tx.$delete(tx.id);
@@ -177,13 +180,10 @@ async function storeTxs(txs, wallet, coinSDK) {
   const storedTxs = await Tx.query().where('wallet_id', wallet.id).get().map((tx) => {
     return tx.hash;
   });
-  console.log('storedTxs: ', storedTxs);
 
   if (storedTxs.length > 0) {
     const foundTxs = txs.filter((tx) => { return storedTxs.includes(tx.hash); });
     const newTxs = txs.filter((tx) => { return !storedTxs.includes(tx.hash); });
-    console.log('foundTxs: ', foundTxs);
-    console.log('newTxs: ', newTxs);
 
     updateTxs(foundTxs, wallet);
     if (newTxs.length > 0) {
