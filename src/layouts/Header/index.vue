@@ -414,15 +414,15 @@ export default {
 .header-settings-button-wrapper,
 .header-accounts-button-wrapper {
   position: absolute;
-  right: 0.5rem;
+  right: 0rem;
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-.header-accounts-button-wrapper {
+/* .header-accounts-button-wrapper {
   right: .8rem;
-}
+} */
 
 .icon-btn {
   margin: 0;

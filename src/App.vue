@@ -175,8 +175,12 @@ export default {
 </script>
 
 <style lang='scss'>
+body {
+  overflow: hidden;
+}
 body > div {
   color: white;
+  background: #0a2d3e
 }
 
 .background {

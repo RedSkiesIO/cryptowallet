@@ -119,7 +119,7 @@ export default {
         return this.$store.getters['entities/wallet/find'](this.id);
       }
       return Wallet.query().where((wallet) => {
-        return wallet.name === 'Catalyst' && wallet.account_id === 1;
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
       }).get()[0];
     },
 

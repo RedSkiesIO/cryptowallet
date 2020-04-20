@@ -93,10 +93,9 @@ export default {
     scan() {
       this.$store.dispatch('qrcode/setQRMode', 'restore');
       this.$store.dispatch('qrcode/scanQRCode');
-      const codeReader = new this.$QRScanner();
 
       setTimeout(() => {
-        codeReader
+        this.codeReader
           .decodeOnceFromVideoDevice(undefined, 'video')
           .then((result) => {
             const { text } = result;
@@ -104,12 +103,12 @@ export default {
             this.seedPhrase = text;
             const valid = this.validate();
             if (!valid) { this.seedPhrase = ''; }
-            codeReader.reset();
+            this.codeReader.reset();
 
             this.$store.dispatch('qrcode/cancelScanning');
           })
           .catch((err) => { return console.error(err); });
-        codeReader.reset();
+        this.codeReader.reset();
       }, this.delay.normal);
     },
   },

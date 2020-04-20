@@ -4,9 +4,14 @@
       id="video"
       class="camera"
     />
-    <div class="target-wrapper">
+    <div
+      v-if="!loading"
+      class="target-wrapper"
+    >
       <div class="target" />
-      <div class="controls-box">
+      <div
+        class="controls-box"
+      >
         <q-btn
           :label="$t('cancel')"
           color="blueish"
@@ -21,6 +26,17 @@
 <script>
 export default {
   name: 'Scanner',
+  data() {
+    return {
+      loading: true,
+    };
+  },
+  mounted() {
+    const wait = 1500;
+    setTimeout(() => {
+      this.loading = false;
+    }, wait);
+  },
   methods: {
     cancel() {
       this.$store.dispatch('qrcode/cancelScanning');

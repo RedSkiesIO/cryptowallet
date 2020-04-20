@@ -138,6 +138,8 @@ import { mapState } from 'vuex';
 import QRCode from 'qrcode';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
+
 
 export default {
   name: 'Receive',
@@ -159,7 +161,12 @@ export default {
       delay: (state) => { return state.settings.delay; },
     }),
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return Wallet.query().where((wallet) => {
+        return wallet.name === 'Catalyst' && wallet.account_id === this.authenticatedAccount;
+      }).get()[0];
     },
     walletName() {
       return this.wallet.name.replace(/\s/g, '').toLowerCase();
