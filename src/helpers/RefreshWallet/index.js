@@ -71,7 +71,7 @@ async function updateBalance(coinSDK, wallet, addresses) {
 async function removeOldTxs(wallet) {
   const rpc = new ERPC({
     transport: {
-      host: '77.68.110.194',
+      host: '77.68.110.195',
       port: 5005,
       type: 'http',
       path: 'api/eth/request',
