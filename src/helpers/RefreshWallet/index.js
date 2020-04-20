@@ -90,7 +90,6 @@ async function removeOldTxs(wallet) {
 
   const removeOld = async (transactions) => {
     const tx = transactions.shift();
-    console.log(tx);
     if (tx.blockHeight > deltaHeight) {
       oldTxs.push(tx);
       return;
