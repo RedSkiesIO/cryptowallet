@@ -41,5 +41,6 @@ module.exports = {
     'vue/component-name-in-template-casing': 0,
     'curly': [2, 'all'],
     'no-magic-numbers': ['error', {'ignore': [-1, 0, 1, 2, 10, 420], 'ignoreArrayIndexes': true }],
+    'linebreak-style': 0,
   },
 };
