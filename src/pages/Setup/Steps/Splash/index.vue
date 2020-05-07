@@ -10,6 +10,7 @@
     <div class="btns-wrapper">
       <q-btn
         :label="$t('getStarted')"
+        unelevated
         color="primary"
         text-color="blueish"
         class="splash-btn get-started-btn"
@@ -19,6 +20,7 @@
     <div class="btns-wrapper">
       <q-btn
         :label="$t('importAccount')"
+        flat
         icon="get_app"
         color="blueish"
         class="splash-btn import-account-btn"

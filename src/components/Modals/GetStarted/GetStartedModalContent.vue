@@ -2,7 +2,7 @@
   <div class="modal-layout-wrapper full no-padding">
     <q-carousel
       v-model="slide"
-      class="q-carousel-full"
+      class="q-carousel-full bg-blueish"
       transition-prev="slide-right"
       transition-next="slide-left"
       swipeable
