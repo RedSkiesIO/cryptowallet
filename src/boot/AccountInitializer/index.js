@@ -44,7 +44,7 @@ const accountInitializer = {
       };
       if (coin.sdk !== 'ERC20') {
         promises.push(new Promise(async (resolve) => {
-          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk);
+          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
           wallet.hdWallet = await coinSDK.generateHDWallet(
             Object.values(setup.seed).join(' ').trim(),
             coin.network,

@@ -176,7 +176,7 @@ async function refreshERC20(coinSDK, wallet, cb, fullRefresh) {
 }
 
 async function refreshWallet(wallet, cb, fullRefresh = true) {
-  const coinSDK = crypto.SDKFactory.createSDK(wallet.sdk);
+  const coinSDK = crypto.SDKFactory.createSDK(wallet.sdk, wallet.hdWallet.network);
 
   if (wallet.sdk === 'Bitcoin') {
     return refreshBitcoin(coinSDK, wallet, cb, fullRefresh);

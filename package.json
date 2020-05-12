@@ -32,7 +32,7 @@
     "cordova": "^8.1.2",
     "crypto": "^1.0.1",
     "crypto-js": "^3.1.9-1",
-    "cryptowallet-js": "git://github.com/atlascity/cryptowallet-js.git",
+    "cryptowallet-js": "git://github.com/atlascity/cryptowallet-js.git#86-As-a-user-I-want-to-pass-my-own-network-config-to-the-SDK-constructor",
     "etherscan-api": "^10.0.0",
     "module": "^1.2.5",
     "numeral": "^2.0.6",
