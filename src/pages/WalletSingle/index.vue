@@ -82,7 +82,6 @@ export default {
         this.balanceChanged = await this.$walletWorker.refreshWallet(
           this.wallet, fullRefresh,
         );
-        console.log(this.balanceChanged);
         setTimeout(() => {
           done();
         }, this.delay.normal);

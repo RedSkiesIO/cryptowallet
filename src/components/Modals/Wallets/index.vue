@@ -224,7 +224,6 @@ export default {
     async enableWallet(wallet) {
       let success = true;
       const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
-      console.log(wallet.network);
       try {
         await this.backEndService.loadCoinPriceData(wallet.symbol);
 

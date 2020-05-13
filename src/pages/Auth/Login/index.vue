@@ -104,7 +104,6 @@ export default {
             await this.initializeWallets(this.account.id);
             Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
             Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();
-            console.log('walletWorker: ', this.$walletWorker);
 
             const connect = await this.backEndService.connect();
             if (connect) {
