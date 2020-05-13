@@ -472,6 +472,10 @@ export default {
   border-top: 1px solid #e0e0e0;
 }
 
+ .single-transaction-content .row .q-btn__wrapper {
+    border-top: none;
+  }
+
 .single-transaction-content .justify-end {
   padding: 0.5rem;
   padding-bottom: 0;
