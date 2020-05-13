@@ -72,8 +72,8 @@ const accountInitializer = {
           network: coin.network,
         };
         promises.push(new Promise(async (resolve) => {
-          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk);
-          const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk);
+          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
+          const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
           const parentWallet = await parentSDK.generateHDWallet(
             Object.values(setup.seed).join(' ').trim(),
             coin.network,

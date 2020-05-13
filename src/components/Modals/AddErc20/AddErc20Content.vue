@@ -235,12 +235,12 @@ export default {
     },
 
     validateAddress(address) {
-      const coinSDK = this.coinSDKS.Ethereum;
+      const coinSDK = this.coinSDKS.Ethereum();
       return coinSDK.validateAddress(address, this.form.tokenNetwork);
     },
 
     async validateContract(contract) {
-      const coinSDK = this.coinSDKS.ERC20;
+      const coinSDK = this.coinSDKS.ERC20();
       try {
         const info = await coinSDK.getTokenData(contract, this.form.tokenNetwork);
         if (info) {
@@ -354,8 +354,8 @@ export default {
           data,
         });
 
-        const keypair = this.coinSDKS.Ethereum.generateKeyPair(wallet[0].hdWallet, 0);
-        const erc20 = this.coinSDKS.ERC20.generateERC20Wallet(
+        const keypair = this.coinSDKS.Ethereum().generateKeyPair(wallet[0].hdWallet, 0);
+        const erc20 = this.coinSDKS.ERC20().generateERC20Wallet(
           keypair,
           this.form.tokenName,
           this.form.tokenSymbol,

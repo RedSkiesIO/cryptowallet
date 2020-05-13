@@ -18,7 +18,7 @@
         </template>
 
         <template
-          v-if="coin.imported && !isEnabled"
+          v-if="!isEnabled"
           v-slot:right
         >
           <q-icon
@@ -226,18 +226,19 @@ export default {
               return coin.name === this.wallet.parentName;
             });
 
-            const parentSDK = this.coinSDKS[eth.sdk];
+            const parentSDK = this.coinSDKS[eth.sdk](this.wallet.network);
             const { parentName } = this.wallet;
             const parentWallet = this.activeWallets[this.authenticatedAccount][parentName];
             const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
 
-            const erc20 = await this.coinSDKS[this.wallet.sdk].generateERC20Wallet(
-              keyPair,
-              this.walletName,
-              this.wallet.symbol,
-              this.wallet.contractAddress,
-              this.wallet.decimals,
-            );
+            const erc20 = await this.coinSDKS[this.wallet.sdk](this.wallet.network)
+              .generateERC20Wallet(
+                keyPair,
+                this.walletName,
+                this.wallet.symbol,
+                this.wallet.contractAddress,
+                this.wallet.decimals,
+              );
 
             await Wallet.$update({
               where: (record) => { return record.id === newWalletId; },

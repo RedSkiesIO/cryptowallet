@@ -223,7 +223,8 @@ export default {
 
     async enableWallet(wallet) {
       let success = true;
-      const coinSDK = this.coinSDKS[wallet.sdk];
+      const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
+      console.log(wallet.network);
       try {
         await this.backEndService.loadCoinPriceData(wallet.symbol);
 
@@ -255,8 +256,8 @@ export default {
     async enableErc20Wallet(wallet) {
       let success = true;
       try {
-        const coinSDK = this.coinSDKS[wallet.sdk];
-        const parentSDK = this.coinSDKS[wallet.parentSdk];
+        const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
+        const parentSDK = this.coinSDKS[wallet.parentSdk](wallet.network);
         await this.backEndService.loadCoinPriceData(wallet.symbol);
 
         if (!wallet.erc20Wallet) {
