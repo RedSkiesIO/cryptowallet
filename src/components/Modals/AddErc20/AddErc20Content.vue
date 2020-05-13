@@ -19,6 +19,34 @@
     >
       <div class="send-coin-box">
         <div class="send-modal-heading">
+          <h3>{{ $t('selectNetwork') }}</h3>
+          <span class="h3-line" />
+        </div>
+        <div class="to">
+          <q-select
+            v-model="form.tokenNetwork"
+            dense
+            outlined
+            :options="supportedNetworks"
+          >
+            <template v-slot:option="scope">
+              <q-item
+                v-bind="scope.itemProps"
+                v-on="scope.itemEvents"
+              >
+                <q-item-section>
+                  <q-item-label color="black">
+                    <span class="text-black q-pl-sm">
+                      {{ scope.opt.label }}
+                    </span>
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+
+        <div class="send-modal-heading">
           <h3>{{ $t('contractAddress') }}</h3>
           <span class="h3-line" />
           <q-btn
@@ -159,7 +187,10 @@ export default {
         tokenSymbolMax: 11,
         tokenDecimals: '',
         tokenDecimalsMax: 36,
-        tokenNetwork: 'ETHEREUM_ROPSTEN',
+        tokenNetwork: {
+          label: 'Ethereum Ropsten',
+          value: 'ETHEREUM_ROPSTEN',
+        },
       },
       disableInputs: true,
       loadingInputs: false,
@@ -216,6 +247,17 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
+    supportedNetworks() {
+      return Coin.query()
+        .where('sdk', 'Ethereum')
+        .get()
+        .map((coin) => {
+          return {
+            label: coin.name,
+            value: coin.network,
+          };
+        });
+    },
   },
   mounted() {
     if (this.scannedAddress) {
@@ -236,13 +278,13 @@ export default {
 
     validateAddress(address) {
       const coinSDK = this.coinSDKS.Ethereum();
-      return coinSDK.validateAddress(address, this.form.tokenNetwork);
+      return coinSDK.validateAddress(address, this.form.tokenNetwork.value);
     },
 
     async validateContract(contract) {
       const coinSDK = this.coinSDKS.ERC20();
       try {
-        const info = await coinSDK.getTokenData(contract, this.form.tokenNetwork);
+        const info = await coinSDK.getTokenData(contract, this.form.tokenNetwork.value);
         if (info) {
           this.form.tokenName = info.name;
           this.form.tokenSymbol = info.symbol;
@@ -315,8 +357,10 @@ export default {
     },
 
     async enableWallet() {
-      if (!this.isEthEnabled('Ethereum')) {
-        const eth = this.supportedCoins.find((coin) => { return coin.name === 'Ethereum'; });
+      if (!this.isEthEnabled(this.form.tokenNetwork.label)) {
+        const eth = this.supportedCoins.find((coin) => {
+          return coin.name === this.form.tokenNetwork.label;
+        });
 
         const wallets = Wallet.query()
           .where('account_id', this.authenticatedAccount)
@@ -342,7 +386,7 @@ export default {
           displayName: this.form.tokenName,
           sdk: 'ERC20',
           symbol: this.form.tokenSymbol,
-          network: this.form.tokenNetwork,
+          network: this.form.tokenNetwork.value,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
           parentName: 'Ethereum',
@@ -354,14 +398,16 @@ export default {
           data,
         });
 
-        const keypair = this.coinSDKS.Ethereum().generateKeyPair(wallet[0].hdWallet, 0);
-        const erc20 = this.coinSDKS.ERC20().generateERC20Wallet(
-          keypair,
-          this.form.tokenName,
-          this.form.tokenSymbol,
-          this.form.tokenContract,
-          this.form.tokenDecimals,
-        );
+        const keypair = this.coinSDKS.Ethereum(this.form.tokenNetwork.value)
+          .generateKeyPair(wallet[0].hdWallet, 0);
+        const erc20 = this.coinSDKS.ERC20(this.form.tokenNetwork.value)
+          .generateERC20Wallet(
+            keypair,
+            this.form.tokenName,
+            this.form.tokenSymbol,
+            this.form.tokenContract,
+            this.form.tokenDecimals,
+          );
 
         const newWalletResult = await Wallet.$insert({ data });
         const newWalletId = newWalletResult.wallet[0].id;
