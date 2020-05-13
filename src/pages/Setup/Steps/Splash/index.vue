@@ -28,7 +28,7 @@
         @click="importAccount()"
       />
     </div>
-    <div class="flags">
+    <!-- <div class="flags">
       <div class="row q-input bg-blueish">
         <div class="col-2 flag-icon">
           <img
@@ -65,7 +65,7 @@
           </v-select>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div
       :class="{ emphasised: emphasised }"

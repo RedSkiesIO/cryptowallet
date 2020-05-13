@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div
+    <!-- <div
       class="settings-row"
       @click.prevent="openSelectLanguageModal"
     >
@@ -17,7 +17,7 @@
           @click.prevent="openSelectLanguageModal"
         />
       </div>
-    </div>
+    </div> -->
 
     <div
       class="settings-row"
