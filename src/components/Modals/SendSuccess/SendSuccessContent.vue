@@ -265,3 +265,9 @@ export default {
   margin-right: 0.5rem;
 }
 </style>
+<style>
+.copy-hash-btn .q-btn__wrapper {
+    min-height: 0;
+    padding: 0;
+}
+</style>
