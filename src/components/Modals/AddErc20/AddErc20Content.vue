@@ -298,8 +298,7 @@ export default {
         return false;
       }
     },
-    async checkContractOnNetworkChange(value) {
-      console.log(value);
+    async checkContractOnNetworkChange() {
       if (this.form.tokenContract) {
         await this.checkField('contract');
       }
@@ -385,9 +384,13 @@ export default {
       const isThere = Coin.find([this.form.tokenName]);
 
       if (!isThere) {
+        const coin = Coin.query()
+          .where('name', this.form.tokenNetwork.label)
+          .get()[0];
+
         const wallet = Wallet.query()
           .where('account_id', this.authenticatedAccount)
-          .where('name', 'Ethereum')
+          .where('name', this.form.tokenNetwork.label)
           .get();
 
         const data = {
@@ -398,13 +401,21 @@ export default {
           network: this.form.tokenNetwork.value,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
-          parentName: 'Ethereum',
+          parentName: this.form.tokenNetwork.label,
           contractAddress: this.form.tokenContract,
           decimals: this.form.tokenDecimals,
           imported: true,
         };
-        Coin.$insert({
+        const newCoin = await Coin.$insert({
           data,
+        });
+        const newCoinId = newCoin.coin[0].id;
+
+        await Coin.$update({
+          where: (record) => { return record.id === newCoinId; },
+          data: {
+            minConfirmations: coin.minConfirmations,
+          },
         });
 
         const keypair = this.coinSDKS.Ethereum(this.form.tokenNetwork.value)

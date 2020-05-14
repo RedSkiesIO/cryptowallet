@@ -18,7 +18,7 @@
         </template>
 
         <template
-          v-if="!isEnabled"
+          v-if="!isEnabled && wallet.imported"
           v-slot:right
         >
           <q-icon
