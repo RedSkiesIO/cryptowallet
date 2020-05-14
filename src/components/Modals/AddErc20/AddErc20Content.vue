@@ -22,12 +22,13 @@
           <h3>{{ $t('selectNetwork') }}</h3>
           <span class="h3-line" />
         </div>
-        <div class="to">
+        <div class="to q-mb-lg network-select">
           <q-select
             v-model="form.tokenNetwork"
             dense
             outlined
             :options="supportedNetworks"
+            @input="checkContractOnNetworkChange"
           >
             <template v-slot:option="scope">
               <q-item
@@ -36,7 +37,7 @@
               >
                 <q-item-section>
                   <q-item-label color="black">
-                    <span class="text-black q-pl-sm">
+                    <span class="text-black q-pl-sm ">
                       {{ scope.opt.label }}
                     </span>
                   </q-item-label>
@@ -146,15 +147,17 @@
         <span class="error-label error-label-decimals">
           {{ decimalsError }}
         </span>
-        <div class="send">
-          <q-btn
-            :disable="disableButton"
-            label="add"
-            color="blueish"
-            size="md"
-            class="add-button"
-            @click="validate"
-          />
+        <div class="add-erc20">
+          <div class="send">
+            <q-btn
+              :disable="disableButton"
+              label="add"
+              color="blueish"
+              size="md"
+              class="add-button"
+              @click="validate"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -188,8 +191,8 @@ export default {
         tokenDecimals: '',
         tokenDecimalsMax: 36,
         tokenNetwork: {
-          label: 'Ethereum Ropsten',
-          value: 'ETHEREUM_ROPSTEN',
+          label: 'Ethereum',
+          value: 'ETHEREUM',
         },
       },
       disableInputs: true,
@@ -282,7 +285,7 @@ export default {
     },
 
     async validateContract(contract) {
-      const coinSDK = this.coinSDKS.ERC20();
+      const coinSDK = this.coinSDKS.ERC20(this.form.tokenNetwork.value);
       try {
         const info = await coinSDK.getTokenData(contract, this.form.tokenNetwork.value);
         if (info) {
@@ -293,6 +296,12 @@ export default {
         return true;
       } catch (err) {
         return false;
+      }
+    },
+    async checkContractOnNetworkChange(value) {
+      console.log(value);
+      if (this.form.tokenContract) {
+        await this.checkField('contract');
       }
     },
     async checkField(field) {
@@ -485,6 +494,10 @@ export default {
 </script>
 
 <style>
+.add-erc20 .send {
+  margin-top: 0;
+  padding-top: 0;
+}
 .send-coin-box {
   margin-top: 1rem;
   width: 100%;
@@ -493,6 +506,14 @@ export default {
 .to {
   display: flex;
   justify-content: space-between;
+}
+
+.to .q-field--with-bottom {
+  padding-bottom: 10px;
+}
+
+.network-select .q-field {
+  width: 100%;
 }
 
 .send-coin-box .q-input {
