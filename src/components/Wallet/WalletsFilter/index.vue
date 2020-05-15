@@ -10,6 +10,9 @@
       hide-dropdown-icon
       :placeholder="$t('searchTokens')"
       input-debounce="0"
+      content-class="token-select"
+      content-style="background: none;"
+      behavior="menu"
       :options="options"
       @filter="filterFn"
     >
@@ -21,10 +24,15 @@
         />
       </template>
 
-      <template v-slot:option="scope">
-        <WalletItem
-          :wallet="scope.opt"
-        />
+      <template
+        v-slot:option="scope"
+        class="bg-blueish"
+      >
+        <div class="bg-blueish">
+          <WalletItem
+            :wallet="scope.opt"
+          />
+        </div>
       </template>
 
       <template v-slot:no-option>
@@ -87,3 +95,9 @@ export default {
   },
 };
 </script>
+<style>
+.q-menu {
+  background: none;
+  box-shadow: none;
+}
+</style>
