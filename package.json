@@ -1,10 +1,10 @@
 {
   "name": "cryptowallet",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CryptoWallet - By Atlas City",
   "productName": "CryptoWallet",
   "cordovaId": "com.atlascity.wallet.mobile",
-  "author": "James Kirkby <james.kirby@atlascity.io>",
+  "author": "Stephen Horsfall <stephen.horsfall@atlascity.io>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
