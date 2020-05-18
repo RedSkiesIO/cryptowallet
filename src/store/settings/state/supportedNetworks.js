@@ -81,4 +81,14 @@ export default {
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 5,
   },
+  POA_SOKOL: {
+    name: 'POA Sokol',
+    segwit: false,
+    bip: 178,
+    provider: 'https://sokol.poa.network',
+    etherscan: 'https://blockscout.com/poa/sokol/api',
+    etherscanKey: null,
+    feeApi: 'https://api.blockcypher.com/v1/eth/main',
+    chainId: 99,
+  },
 };
