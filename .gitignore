@@ -21,4 +21,5 @@ tests/unit/__coverage__/*
 app-env
 test/jest/coverage/*
 .env
+my-release-key.keystore
 

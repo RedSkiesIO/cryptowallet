@@ -1,9 +1,9 @@
 {
   "name": "cryptowallet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CryptoWallet - By Atlas City",
   "productName": "CryptoWallet",
-  "cordovaId": "com.atlascity.wallet.mobile",
+  "cordovaId": "com.atlascity.mobile.wallet",
   "author": "Stephen Horsfall <stephen.horsfall@atlascity.io>",
   "private": true,
   "scripts": {
@@ -16,7 +16,10 @@
     "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
     "test:unit:watch": "cross-env NODE_ENV=test jest --watch",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
-    "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors"
+    "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
+    "build:android": "quasar build -m android",
+    "build:android:sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore dist/cordova/android/apk/release/app-release-unsigned.apk alias_name",
+    "build:android:zipalign": "zipalign -v 4 dist/cordova/android/apk/release/app-release-unsigned.apk dist/cordova/android/apk/release/app-release.apk"
   },
   "dependencies": {
     "@atlascity/vuex-orm-plugin-lokijs": "^0.0.3",
