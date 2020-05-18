@@ -3,7 +3,6 @@
 .thumbs.db
 node_modules
 /dist
-/src/store/settings/state/supportedNetworks.js
 /src-cordova/node_modules
 /src-cordova/platforms
 /src-cordova/plugins
