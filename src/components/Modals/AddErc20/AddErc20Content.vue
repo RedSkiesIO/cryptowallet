@@ -505,6 +505,9 @@ export default {
 </script>
 
 <style>
+.q-virtual-scroll__content .q-link {
+  background: white;
+}
 .add-erc20 .send {
   margin-top: 0;
   padding-top: 0;
