@@ -364,8 +364,8 @@
         "name": "Civic"
     },
     {
-        "symbol": "DASH",
-        "name": "Dash"
+        "symbol": "DAI",
+        "name": "Dai"
     },
     {
         "symbol": "DASH",
@@ -1476,6 +1476,10 @@
         "name": "WAX"
     },
     {
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin"
+  },
+    {
         "symbol": "WGR",
         "name": "Wagerr"
     },
@@ -1514,6 +1518,11 @@
     {
         "symbol": "XCP",
         "name": "Counterparty"
+    },
+    {
+      "symbol": "XDAI",
+      "name": "xDai",
+      "png": true
     },
     {
         "symbol": "XDN",
