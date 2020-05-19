@@ -175,8 +175,8 @@ async function refreshERC20(coinSDK, wallet, cb, fullRefresh) {
   return balanceChanged;
 }
 
-async function refreshWallet(wallet, cb, fullRefresh = true) {
-  const network = wallet.erc20Wallet ? wallet.erc20Wallet.network : wallet.hdWallet.network;
+async function refreshWallet(wallet, cb, fullRefresh = true, network) {
+  // const network = wallet.erc20Wallet ? wallet.erc20Wallet.network : wallet.hdWallet.network;
 
   const coinSDK = crypto.SDKFactory.createSDK(wallet.sdk, network);
 

@@ -9,6 +9,8 @@ export default ({ Vue }) => {
     Ethereum: (network = 'ETHEREUM_ROPSTEN') => {
       return SDK.SDKFactory.createSDK('Ethereum', networks[network]);
     },
-    ERC20: (network = 'ETHEREUM_ROPSTEN') => { return SDK.SDKFactory.createSDK('ERC20', networks[network]); },
+    ERC20: (network = 'ETHEREUM_ROPSTEN') => {
+      return SDK.SDKFactory.createSDK('ERC20', networks[network]);
+    },
   };
 };
