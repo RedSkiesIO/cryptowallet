@@ -17,7 +17,7 @@
     "test:unit:watch": "cross-env NODE_ENV=test jest --watch",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
-    "build:android": "quasar build -m android",
+    "build:android": "npm version patch && quasar build -m android",
     "build:android:sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore dist/cordova/android/apk/release/app-release-unsigned.apk alias_name",
     "build:android:zipalign": "zipalign -v 4 dist/cordova/android/apk/release/app-release-unsigned.apk dist/cordova/android/apk/release/app-release.apk"
   },
