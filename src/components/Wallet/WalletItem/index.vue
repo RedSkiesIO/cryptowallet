@@ -267,6 +267,7 @@ export default {
         const erc20Wallets = Wallet.query()
           .where('account_id', this.authenticatedAccount)
           .where('sdk', 'ERC20')
+          .where('network', this.wallet.network)
           .get();
 
         erc20Wallets.forEach((wallet) => {
