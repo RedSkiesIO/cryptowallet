@@ -201,6 +201,7 @@ export default {
   searchTokens: 'Search Tokens',
   newTxIntro: 'You received',
   view: 'View',
+  selectNetwork: 'Select Network',
   // Setup
   cryptoWallet: 'CryptoWallet',
   seedSetup: 'Seed Setup',

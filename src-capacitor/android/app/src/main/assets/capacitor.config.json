@@ -1,0 +1,10 @@
+{
+  "appId": "com.atlascity.wallet.mobile",
+  "appName": "CryptoWallet",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.1.118:8080"
+  }
+}

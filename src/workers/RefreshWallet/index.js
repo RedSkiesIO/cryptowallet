@@ -5,6 +5,7 @@ import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Address from '@/store/wallet/entities/address';
 import Utxo from '@/store/wallet/entities/utxo';
+import networks from '@/store/settings/state/supportedNetworks';
 
 
 class RefreshWalletWorker {
@@ -96,8 +97,8 @@ class RefreshWalletWorker {
       insertUtxos,
       deleteUtxo,
     };
-
-    const refresh = await this.instance(wallet, Comlink.proxy(func), fullRefresh);
+    const apiObject = networks[wallet.network];
+    const refresh = await this.instance(wallet, Comlink.proxy(func), fullRefresh, apiObject);
     return refresh;
   }
 }

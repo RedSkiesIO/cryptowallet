@@ -22,6 +22,7 @@ export default class Coin extends Model {
       contractAddress: this.attr(''),
       decimals: this.attr(''),
       imported: this.attr(false),
+      testnet: this.attr(false),
     };
   }
 }

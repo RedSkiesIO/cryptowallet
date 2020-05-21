@@ -204,7 +204,7 @@ export default {
         changeAddresses,
       } = this.txData;
 
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
       if (this.wallet.sdk === 'Bitcoin') {
         const result = await coinSDK.broadcastTx(hexTx, this.wallet.network);
         if (!result) {

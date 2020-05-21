@@ -301,7 +301,7 @@ export default {
 
   methods: {
     validateAddress(address) {
-      const coinSDK = this.coinSDKS.Ethereum;
+      const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
       return coinSDK.validateAddress(address, this.wallet.network);
     },
 
@@ -446,7 +446,7 @@ export default {
           if (this.address) {
             to = this.address;
           }
-          const gasUsed = await this.coinSDKS.ERC20.estimateGas(
+          const gasUsed = await this.coinSDKS.ERC20(this.wallet.network).estimateGas(
             this.wallet.erc20Wallet,
             to,
             amount,
@@ -522,7 +522,7 @@ export default {
     },
 
     async sendETH() {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const keypair = coinSDK.generateKeyPair(wallet, 0);
 
@@ -544,10 +544,11 @@ export default {
     },
 
     async sendERC20() {
-      const coinSDK = this.coinSDKS[this.wallet.sdk];
+      const coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
       const wallet = this.activeWallets[this.authenticatedAccount][this.wallet.name];
       const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
-      const keypair = this.coinSDKS[this.wallet.parentSdk].generateKeyPair(parentWallet, 0);
+      const keypair = this.coinSDKS[this.wallet.parentSdk](this.wallet.network)
+        .generateKeyPair(parentWallet, 0);
 
       try {
         const {
@@ -641,8 +642,8 @@ export default {
                     amount = queryParams.get('amount');
                   }
                 }
-                let coinSDK = this.coinSDKS[this.wallet.sdk];
-                if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk]; }
+                let coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
+                if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk](this.wallet.network); }
                 const isValid = coinSDK.validateAddress(text, this.wallet.network);
                 if (isValid) {
                   this.$store.dispatch('qrcode/setScannedAddress', text);

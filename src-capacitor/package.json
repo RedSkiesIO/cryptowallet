@@ -1,0 +1,12 @@
+{
+  "name": "cryptowallet",
+  "version": "0.0.1",
+  "description": "CryptoWallet - By Atlas City",
+  "author": "James Kirkby <james.kirby@atlascity.io>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^2.0.2",
+    "@capacitor/cli": "^1.0.0",
+    "@capacitor/core": "^1.0.0"
+  }
+}

@@ -3,7 +3,10 @@
     <div class="wrapper">
       <div>
         <div class="wallet-name">
-          <img :src="coinLogo">
+          <img
+            width="32px"
+            :src="coinLogo"
+          >
           {{ wallet.displayName }}
         </div>
 
@@ -87,8 +90,12 @@ export default {
     }),
 
     coinLogo() {
-      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      const coinIcon = IconList.find((icon) => {
+        return icon.symbol === this.wallet.symbol.toUpperCase();
+      });
+      if (coinIcon) {
+        const fileType = coinIcon.png ? '.png' : '.svg';
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
       }
       return './statics/cc-icons/color/generic.svg';
     },

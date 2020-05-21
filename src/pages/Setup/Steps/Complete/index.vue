@@ -36,6 +36,8 @@
 <script>
 import { mapState } from 'vuex';
 import { Network } from '@/helpers';
+import WalletWorker from '@/workers/RefreshWallet';
+
 
 export default {
   name: 'Complete',
@@ -99,6 +101,8 @@ export default {
           this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
 
           Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
+          Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();
+
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
 

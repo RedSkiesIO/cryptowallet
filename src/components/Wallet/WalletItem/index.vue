@@ -18,7 +18,7 @@
         </template>
 
         <template
-          v-if="coin.imported && !isEnabled"
+          v-if="!isEnabled && wallet.imported"
           v-slot:right
         >
           <q-icon
@@ -143,8 +143,12 @@ export default {
       return Coin.find([this.wallet.name]);
     },
     coinLogo() {
-      if (IconList.find((icon) => { return icon.symbol === this.wallet.symbol.toUpperCase(); })) {
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}.svg`;
+      const coinIcon = IconList.find((icon) => {
+        return icon.symbol === this.wallet.symbol.toUpperCase();
+      });
+      if (coinIcon) {
+        const fileType = coinIcon.png ? '.png' : '.svg';
+        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
       }
       return './statics/cc-icons/color/generic.svg';
     },
@@ -226,18 +230,19 @@ export default {
               return coin.name === this.wallet.parentName;
             });
 
-            const parentSDK = this.coinSDKS[eth.sdk];
+            const parentSDK = this.coinSDKS[eth.sdk](this.wallet.network);
             const { parentName } = this.wallet;
             const parentWallet = this.activeWallets[this.authenticatedAccount][parentName];
             const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
 
-            const erc20 = await this.coinSDKS[this.wallet.sdk].generateERC20Wallet(
-              keyPair,
-              this.walletName,
-              this.wallet.symbol,
-              this.wallet.contractAddress,
-              this.wallet.decimals,
-            );
+            const erc20 = await this.coinSDKS[this.wallet.sdk](this.wallet.network)
+              .generateERC20Wallet(
+                keyPair,
+                this.walletName,
+                this.wallet.symbol,
+                this.wallet.contractAddress,
+                this.wallet.decimals,
+              );
 
             await Wallet.$update({
               where: (record) => { return record.id === newWalletId; },
@@ -262,6 +267,7 @@ export default {
         const erc20Wallets = Wallet.query()
           .where('account_id', this.authenticatedAccount)
           .where('sdk', 'ERC20')
+          .where('network', this.wallet.network)
           .get();
 
         erc20Wallets.forEach((wallet) => {
