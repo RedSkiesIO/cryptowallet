@@ -11,8 +11,12 @@ export class ENSResolver {
   }
 
   async resolver(name) {
-    const address = await this.provider.resolveName(name);
-    return address;
+    try {
+      const address = await this.provider.resolveName(name);
+      return address;
+    } catch {
+      return false;
+    }
   }
 
   async lookup(address) {

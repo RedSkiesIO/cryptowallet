@@ -13,10 +13,13 @@
       </div>
       <div class="to">
         <q-input
-          v-model="address"
-          :error="$v.address.$error"
+          v-model="addressField"
+          :error="$v.addressField.$error"
+          :error-message="addressError"
           placeholder="address"
           class="sm-input address-input"
+          bottom-slots
+          :hint="addressHint"
           outlined
           dense
           color="primary"
@@ -32,9 +35,9 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label error-label-address">
+      <!-- <span class="error-label error-label-address">
         {{ addressError }}
-      </span>
+      </span> -->
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -137,7 +140,7 @@
 <script>
 import {
   required,
-  alphaNum,
+  // alphaNum,
   between,
 } from 'vuelidate/lib/validators';
 import {
@@ -153,6 +156,7 @@ export default {
   },
   data() {
     return {
+      addressField: '',
       address: '',
       inCoin: '',
       inCurrency: '',
@@ -168,6 +172,7 @@ export default {
       maxValueCoin: Infinity,
       maxValueCurrency: Infinity,
       addressError: '',
+      addressHint: '',
       amountError: '',
       feeDialogOpened: false,
       weiMultiplier: 1000000000000000000,
@@ -177,12 +182,12 @@ export default {
 
   validations() {
     return {
-      address: {
+      addressField: {
         required,
-        alphaNum,
-        between: (value) => {
-          return value.length <= this.addressLength && value.length >= this.addressLength;
-        },
+        // alphaNum,
+        // between: (value) => {
+        //   return value.length <= this.addressLength && value.length >= this.addressLength;
+        // },
         isValidAddress: (value) => { return this.validateAddress(value); },
       },
       inCoin: {
@@ -205,6 +210,10 @@ export default {
       scannedAmount: (state) => { return state.qrcode.scannedAmount; },
 
     }),
+
+    ens() {
+      return new this.$ens(this.wallet.network);
+    },
 
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
@@ -300,9 +309,31 @@ export default {
   },
 
   methods: {
-    validateAddress(address) {
-      const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
-      return coinSDK.validateAddress(address, this.wallet.network);
+    async validateAddress(address) {
+      const ethAddrLength = 42;
+      if (address.includes('.test')) {
+        const addr = await this.ens.resolver(address);
+        if (addr) {
+          this.addressHint = addr;
+          this.address = addr;
+          return true;
+        }
+        this.addressHint = '';
+        this.address = '';
+        return false;
+      }
+      if (address.length === ethAddrLength) {
+        const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
+        const valid = coinSDK.validateAddress(address, this.wallet.network);
+        if (valid) {
+          this.address = this.addressField;
+        }
+      }
+      return false;
+    },
+
+    validateENS() {
+
     },
 
     countDecimals(value) {
@@ -336,11 +367,10 @@ export default {
     },
     async checkField(field) {
       if (field === 'address') {
-        this.$v.address.$touch();
+        this.$v.addressField.$touch();
 
-        if (!this.$v.address.between) {
-          this.addressError = this.$t('ethereumAddressInvalidLength');
-        } else if (!this.$v.address.isValidAddress) {
+        const valid = await this.validateAddress(this.addressField);
+        if (!valid) {
           this.addressError = this.$t('ethereumAddressInvalid');
         } else {
           this.addressError = '';
