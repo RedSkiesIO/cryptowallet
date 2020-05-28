@@ -10,6 +10,7 @@ export default {
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 3,
+    ens: true,
   },
   ETHEREUM_CLASSIC: {
     name: 'ETHEREUM_CLASSIC',
@@ -50,6 +51,7 @@ export default {
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 3,
+    ens: true,
   },
   ETHEREUM_KOVAN: {
     name: 'ETHEREUM_KOVAN',
@@ -60,6 +62,7 @@ export default {
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 42,
+    ens: true,
   },
   ETHEREUM_RINKEBY: {
     name: 'ETHEREUM_RINKEBY',
@@ -70,6 +73,7 @@ export default {
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 4,
+    ens: true,
   },
   ETHEREUM_GOERLI: {
     name: 'ETHEREUM_GOERLI',
@@ -80,6 +84,7 @@ export default {
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
     chainId: 5,
+    ens: true,
   },
   POA_SOKOL: {
     name: 'POA Sokol',

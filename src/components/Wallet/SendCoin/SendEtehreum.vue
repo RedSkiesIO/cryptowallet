@@ -16,7 +16,7 @@
           v-model="addressField"
           :error="$v.addressField.$error"
           :error-message="addressError"
-          placeholder="address"
+          :placeholder="addressLabel"
           class="sm-input address-input"
           bottom-slots
           :hint="addressHint"
@@ -24,7 +24,6 @@
           dense
           color="primary"
           @blur="checkField('address')"
-          @input="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -149,6 +148,7 @@ import {
 } from '@/helpers';
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
+import networks from '@/store/settings/state/supportedNetworks';
 
 export default {
   name: 'SendEthereum',
@@ -212,7 +212,17 @@ export default {
     }),
 
     ens() {
-      return new this.$ens(this.wallet.network);
+      const network = networks[this.wallet.network];
+      if (network.ens) {
+        return new this.$ens(this.wallet.network);
+      }
+      return null;
+    },
+    addressLabel() {
+      if (this.ens) {
+        return '0x address or ENS username';
+      }
+      return '0x address';
     },
 
     wallet() {
@@ -223,14 +233,14 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
 
-    supportedCoins() {
-      return Coin.all();
+    coin() {
+      return Coin.all().find((coin) => {
+        return coin.name === this.wallet.name;
+      });
     },
 
     coinSymbol() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).symbol;
+      return this.coin.symbol;
     },
 
     coinDenomination() {
@@ -239,9 +249,7 @@ export default {
         const denomination = num.toFixed(this.wallet.decimals);
         return denomination;
       }
-      const { denomination } = this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      });
+      const { denomination } = this.coin;
       return denomination;
     },
 
@@ -311,29 +319,42 @@ export default {
   methods: {
     async validateAddress(address) {
       const ethAddrLength = 42;
-      if (address.includes('.test')) {
+      if (this.ens) {
+        const validENS = await this.validateENS(address);
+        if (validENS) {
+          return true;
+        }
+      }
+
+      if (address.length === ethAddrLength) {
+        const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
+        const valid = coinSDK.validateAddress(address, this.wallet.network);
+        if (valid) {
+          if (this.ens) { await this.lookupENS(address); }
+          this.address = this.addressField;
+          return true;
+        }
+      }
+      return false;
+    },
+
+    async validateENS(address) {
+      if (address.includes('.')) {
         const addr = await this.ens.resolver(address);
         if (addr) {
           this.addressHint = addr;
           this.address = addr;
           return true;
         }
-        this.addressHint = '';
-        this.address = '';
-        return false;
       }
-      if (address.length === ethAddrLength) {
-        const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
-        const valid = coinSDK.validateAddress(address, this.wallet.network);
-        if (valid) {
-          this.address = this.addressField;
-        }
-      }
+      this.addressHint = '';
+      this.address = '';
       return false;
     },
 
-    validateENS() {
-
+    async lookupENS(address) {
+      const name = await this.ens.lookup(address);
+      this.addressHint = name;
     },
 
     countDecimals(value) {

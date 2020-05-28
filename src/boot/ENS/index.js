@@ -20,8 +20,12 @@ export class ENSResolver {
   }
 
   async lookup(address) {
-    const name = await this.provider.lookupAddress(address);
-    return name;
+    try {
+      const name = await this.provider.lookupAddress(address);
+      return name;
+    } catch {
+      return false;
+    }
   }
 }
 
