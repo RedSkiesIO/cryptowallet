@@ -158,6 +158,7 @@ export default {
     return {
       addressField: '',
       address: '',
+      ensName: '',
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
@@ -344,6 +345,7 @@ export default {
         if (addr) {
           this.addressHint = addr;
           this.address = addr;
+          this.ensName = address;
           return true;
         }
       }
@@ -355,6 +357,7 @@ export default {
     async lookupENS(address) {
       const name = await this.ens.lookup(address);
       this.addressHint = name;
+      this.ensName = name;
     },
 
     countDecimals(value) {
@@ -584,6 +587,7 @@ export default {
         } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, this.fee);
 
         this.$store.dispatch('modals/setConfirmTransactionData', {
+          ens: this.ensName,
           hexTx,
           transaction,
         });
@@ -608,6 +612,7 @@ export default {
         } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, this.fee);
 
         this.$store.dispatch('modals/setConfirmTransactionData', {
+          ens: this.ensName,
           hexTx,
           transaction,
         });
