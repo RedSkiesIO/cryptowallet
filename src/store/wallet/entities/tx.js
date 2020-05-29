@@ -1,4 +1,7 @@
 import { Model } from '@vuex-orm/core';
+import Wallet from '@/store/wallet/entities/wallet';
+import networks from '@/store/settings/state/supportedNetworks';
+import { ENSResolver } from '@/boot/ENS';
 
 /**
  * Tx Entity.
@@ -26,5 +29,18 @@ export default class Tx extends Model {
       isChange: this.attr(false),
       contractCall: this.attr(false),
     };
+  }
+
+  wallet() {
+    return Wallet.find(this.wallet_id);
+  }
+
+  async ensName(address) {
+    const network = networks[this.wallet().network];
+    if (network.ens) {
+      const ens = new ENSResolver(this.wallet().network);
+      return ens.lookup(address);
+    }
+    return null;
   }
 }

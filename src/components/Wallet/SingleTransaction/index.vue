@@ -67,6 +67,13 @@
                 {{ paymentDirection.prefix }}
               </div>
               <div class="col-10">
+                <div
+                  v-if="ens"
+                  class="text-weight-bold"
+                >
+                  {{ ens }}
+                </div>
+
                 <span class="tx-hash break">
                   {{ paymentDirection.address }}
                 </span>
@@ -186,6 +193,7 @@ export default {
   data() {
     return {
       details: false,
+      ens: null,
     };
   },
 
@@ -395,8 +403,15 @@ export default {
       },
     },
   },
+  async mounted() {
+    await this.getUsername();
+  },
 
   methods: {
+    async getUsername() {
+      const tx = this.$store.getters['entities/tx/find'](this.data.id);
+      this.ens = await tx.ensName(this.paymentDirection.address);
+    },
     copy(text) {
       try {
         cordova.plugins.clipboard.copy(text);

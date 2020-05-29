@@ -32,6 +32,13 @@
         <span class="h3-line" />
       </div>
 
+      <div
+        v-if="txData.ens"
+        class="small-text text-weight-bold break"
+      >
+        {{ txData.ens }}
+      </div>
+
       <div class="small-text break">
         {{ to }}
       </div>

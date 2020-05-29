@@ -13,15 +13,17 @@
       </div>
       <div class="to">
         <q-input
-          v-model="address"
-          :error="$v.address.$error"
-          placeholder="address"
+          v-model="addressField"
+          :error="$v.addressField.$error"
+          :error-message="addressError"
+          :placeholder="addressLabel"
           class="sm-input address-input"
+          bottom-slots
+          :hint="addressHint"
           outlined
           dense
           color="primary"
           @blur="checkField('address')"
-          @input="checkField('address')"
         />
         <div
           class="side-content qr-code-wrapper"
@@ -32,9 +34,9 @@
           <img src="~assets/QR.svg">
         </div>
       </div>
-      <span class="error-label error-label-address">
+      <!-- <span class="error-label error-label-address">
         {{ addressError }}
-      </span>
+      </span> -->
       <div class="send-modal-heading">
         <h3>{{ $t('amount') }}</h3>
         <span class="h3-line" />
@@ -137,7 +139,7 @@
 <script>
 import {
   required,
-  alphaNum,
+  // alphaNum,
   between,
 } from 'vuelidate/lib/validators';
 import {
@@ -146,6 +148,7 @@ import {
 } from '@/helpers';
 import { mapState } from 'vuex';
 import Coin from '@/store/wallet/entities/coin';
+import networks from '@/store/settings/state/supportedNetworks';
 
 export default {
   name: 'SendEthereum',
@@ -153,7 +156,9 @@ export default {
   },
   data() {
     return {
+      addressField: '',
       address: '',
+      ensName: '',
       inCoin: '',
       inCurrency: '',
       inCoinFocus: false,
@@ -168,6 +173,7 @@ export default {
       maxValueCoin: Infinity,
       maxValueCurrency: Infinity,
       addressError: '',
+      addressHint: '',
       amountError: '',
       feeDialogOpened: false,
       weiMultiplier: 1000000000000000000,
@@ -177,12 +183,12 @@ export default {
 
   validations() {
     return {
-      address: {
+      addressField: {
         required,
-        alphaNum,
-        between: (value) => {
-          return value.length <= this.addressLength && value.length >= this.addressLength;
-        },
+        // alphaNum,
+        // between: (value) => {
+        //   return value.length <= this.addressLength && value.length >= this.addressLength;
+        // },
         isValidAddress: (value) => { return this.validateAddress(value); },
       },
       inCoin: {
@@ -206,6 +212,20 @@ export default {
 
     }),
 
+    ens() {
+      const network = networks[this.wallet.network];
+      if (network.ens) {
+        return new this.$ens(this.wallet.network);
+      }
+      return null;
+    },
+    addressLabel() {
+      if (this.ens) {
+        return '0x address or ENS username';
+      }
+      return '0x address';
+    },
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -214,14 +234,14 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
 
-    supportedCoins() {
-      return Coin.all();
+    coin() {
+      return Coin.all().find((coin) => {
+        return coin.name === this.wallet.name;
+      });
     },
 
     coinSymbol() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).symbol;
+      return this.coin.symbol;
     },
 
     coinDenomination() {
@@ -230,9 +250,7 @@ export default {
         const denomination = num.toFixed(this.wallet.decimals);
         return denomination;
       }
-      const { denomination } = this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      });
+      const { denomination } = this.coin;
       return denomination;
     },
 
@@ -300,9 +318,46 @@ export default {
   },
 
   methods: {
-    validateAddress(address) {
-      const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
-      return coinSDK.validateAddress(address, this.wallet.network);
+    async validateAddress(address) {
+      const ethAddrLength = 42;
+      if (this.ens) {
+        const validENS = await this.validateENS(address);
+        if (validENS) {
+          return true;
+        }
+      }
+
+      if (address.length === ethAddrLength) {
+        const coinSDK = this.coinSDKS.Ethereum(this.wallet.network);
+        const valid = coinSDK.validateAddress(address, this.wallet.network);
+        if (valid) {
+          if (this.ens) { await this.lookupENS(address); }
+          this.address = this.addressField;
+          return true;
+        }
+      }
+      return false;
+    },
+
+    async validateENS(address) {
+      if (address.includes('.')) {
+        const addr = await this.ens.resolver(address);
+        if (addr) {
+          this.addressHint = addr;
+          this.address = addr;
+          this.ensName = address;
+          return true;
+        }
+      }
+      this.addressHint = '';
+      this.address = '';
+      return false;
+    },
+
+    async lookupENS(address) {
+      const name = await this.ens.lookup(address);
+      this.addressHint = name;
+      this.ensName = name;
     },
 
     countDecimals(value) {
@@ -336,11 +391,10 @@ export default {
     },
     async checkField(field) {
       if (field === 'address') {
-        this.$v.address.$touch();
+        this.$v.addressField.$touch();
 
-        if (!this.$v.address.between) {
-          this.addressError = this.$t('ethereumAddressInvalidLength');
-        } else if (!this.$v.address.isValidAddress) {
+        const valid = await this.validateAddress(this.addressField);
+        if (!valid) {
           this.addressError = this.$t('ethereumAddressInvalid');
         } else {
           this.addressError = '';
@@ -533,6 +587,7 @@ export default {
         } = await coinSDK.createEthTx(keypair, this.address, this.inCoin, this.fee);
 
         this.$store.dispatch('modals/setConfirmTransactionData', {
+          ens: this.ensName,
           hexTx,
           transaction,
         });
@@ -557,6 +612,7 @@ export default {
         } = await coinSDK.transfer(wallet, keypair, this.address, this.inCoin, this.fee);
 
         this.$store.dispatch('modals/setConfirmTransactionData', {
+          ens: this.ensName,
           hexTx,
           transaction,
         });
