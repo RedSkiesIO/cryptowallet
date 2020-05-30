@@ -75,6 +75,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/wallet/single/add-funds/:id',
+      component: () => { return import('@/layouts/Authed'); },
+      children: [
+        { name: 'addFundsSingle', path: '', component: () => { return import('@/pages/WalletSingle'); } },
+      ],
+    },
+    {
       path: '/wallet/receive/:id',
       component: () => { return import('@/layouts/Authed'); },
       children: [
