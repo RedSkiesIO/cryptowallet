@@ -31,6 +31,24 @@ export default {
       },
     },
   },
+  watch: {
+    $route: {
+      handler(to) {
+        if (to.name === 'addFunds' || to.name === 'addFundsSingle') {
+          this.$store.dispatch('modals/setAddFundsModalOpened', true);
+        } else if ((to.name === 'wallet' || to.name === 'walletSingle')) {
+          this.$store.dispatch('modals/setAddFundsModalOpened', false);
+        }
+      },
+    },
+    addFundsModalOpened: {
+      handler(newVal, oldVal) {
+        if (oldVal === true && newVal === false) {
+          if (this.$store.state.route.name === 'addFunds' || this.$store.state.route.name === 'addFundsSingle') { this.$router.go(-1); }
+        }
+      },
+    },
+  },
 };
 </script>
 
