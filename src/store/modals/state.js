@@ -16,4 +16,5 @@ export default {
   deleteAccountModalOpened: false,
   newPinModalOpened: false,
   newTxData: null,
+  addFundsModalOpened: false,
 };
