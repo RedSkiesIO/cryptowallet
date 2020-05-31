@@ -25,6 +25,7 @@
     "@atlascity/vuex-orm-plugin-lokijs": "^0.0.3",
     "@quasar/cli": "^1.0.7",
     "@quasar/extras": "^1.7.0",
+    "@transak/transak-sdk": "^1.0.17",
     "@vuex-orm/core": "^0.27.0",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",

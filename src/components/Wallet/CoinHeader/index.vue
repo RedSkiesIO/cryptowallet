@@ -36,6 +36,20 @@
             />
           </q-btn-group>
         </div>
+        <div
+          v-if="simple"
+          class="text-center q-mb-md quick-coin-actions"
+        >
+          <q-btn
+            icon="add"
+            size="md"
+            color="primary"
+            label="Add Funds"
+            class="wallet-group-btn"
+            flat
+            @click.stop="receive"
+          />
+        </div>
       </div>
       <div class="wallet-prices">
         <Amount

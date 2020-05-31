@@ -14,14 +14,15 @@
 
 <script>
 import { mapState } from 'vuex';
+import { transak } from '@/helpers/Transak';
 
 export default {
   name: 'AddFunds',
-  // data() {
-  //   return {
-
-  //   };
-  // },
+  data() {
+    return {
+      // transak: null,
+    };
+  },
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
@@ -35,8 +36,20 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+
+    transak() {
+      return transak(this.wallet, this.account);
+    },
+  },
+
+  methods: {
+    openTransak() {
+      this.transak.init();
+    },
   },
 };
+
+
 </script>
 
 <style>

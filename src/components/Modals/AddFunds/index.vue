@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import AddFundsContent from './TermsContent';
+import AddFundsContent from './AddFundsContent';
 
 export default {
   name: 'AddFunds',

@@ -22,6 +22,7 @@
         <SendSuccessModal />
         <SendFailureModal />
         <AddErc20Modal />
+        <AddFundsModal />
       </div>
     </div>
     <Scanner v-if="scanning" />
@@ -46,6 +47,7 @@ import SendSuccessModal from '@/components/Modals/SendSuccess';
 import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
+import AddFundsModal from '@/components/Modals/AddFunds';
 
 export default {
   name: 'App',
@@ -65,6 +67,7 @@ export default {
     SendFailureModal,
     AddErc20Modal,
     OfflineNotice,
+    AddFundsModal,
   },
 
   data() {
