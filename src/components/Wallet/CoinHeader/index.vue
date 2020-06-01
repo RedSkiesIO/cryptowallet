@@ -47,7 +47,7 @@
             label="Add Funds"
             class="wallet-group-btn"
             flat
-            @click.stop="receive"
+            @click.stop="addFunds"
           />
         </div>
       </div>
@@ -161,6 +161,9 @@ export default {
     },
     receive() {
       this.$router.push({ path: `/wallet/single/receive/${this.wallet.id}` });
+    },
+    addFunds() {
+      this.$router.push({ path: `/wallet/single/add-funds/${this.wallet.id}` });
     },
     unconfirmedBalance() {
       return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;

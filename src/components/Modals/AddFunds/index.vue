@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="addFundsModalOpened">
     <q-dialog
       v-model="addFundsModalOpened"
       persistent
@@ -8,8 +8,12 @@
       transition-hide="slide-down"
       content-class="light-modal"
     >
-      <AddFundsContent />
+      <AddFundsContent @loading="loading" />
     </q-dialog>
+    <q-inner-loading
+      color="primary"
+      :showing="visible"
+    />
   </div>
 </template>
 
@@ -20,6 +24,12 @@ export default {
   name: 'AddFunds',
   components: {
     AddFundsContent,
+  },
+  data() {
+    return {
+      // transak: null,
+      visible: false,
+    };
   },
   computed: {
     addFundsModalOpened: {
@@ -49,8 +59,17 @@ export default {
       },
     },
   },
+  methods: {
+    loading(val) {
+      this.visible = val;
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.q-inner-loading {
+  z-index: 999;
+  background: white;
+}
 </style>
