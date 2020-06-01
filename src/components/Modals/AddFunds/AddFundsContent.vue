@@ -13,18 +13,6 @@
       <h1 class="header-h1">
         {{ $t('buy') }} {{ wallet.symbol }}
       </h1>
-      <div
-        class="header-settings-button-wrapper"
-      >
-        <q-btn
-          icon="close"
-          color="primary"
-          size="lg"
-          class="icon-btn icon-btn-right absolute"
-          flat
-          @click="closeTransak"
-        />
-      </div>
     </div>
 
     <div class="modal-layout-wrapper">
@@ -102,12 +90,15 @@ export default {
     this.transak.on(this.transak.ALL_EVENTS, (data) => {
       console.log(data);
       if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
+      if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
     });
   },
 
   methods: {
     openTransak() {
       this.$emit('loading', true);
+      this.$emit('setProvider', this.transak);
+
       this.transak.init();
     },
 
@@ -122,7 +113,7 @@ export default {
     },
 
     handleWidgetClose() {
-
+      this.transak.isInitialised = false;
     },
 
     handleOrderSuccess(order) {

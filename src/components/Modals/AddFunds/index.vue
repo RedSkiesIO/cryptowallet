@@ -1,5 +1,18 @@
 <template>
   <div v-if="addFundsModalOpened">
+    <div
+      v-if="showCloseProvider"
+      class="close-provider"
+    >
+      <q-btn
+        icon="close"
+        color="blueish"
+        size="lg"
+        class="icon-btn icon-btn-right absolute"
+        flat
+        @click="closeProvider"
+      />
+    </div>
     <q-dialog
       v-model="addFundsModalOpened"
       persistent
@@ -8,8 +21,12 @@
       transition-hide="slide-down"
       content-class="light-modal"
     >
-      <AddFundsContent @loading="loading" />
+      <AddFundsContent
+        @loading="loading"
+        @setProvider="setPaymentProvider"
+      />
     </q-dialog>
+
     <q-inner-loading
       color="primary"
       :showing="visible"
@@ -29,6 +46,7 @@ export default {
     return {
       // transak: null,
       visible: false,
+      provider: null,
     };
   },
   computed: {
@@ -39,6 +57,12 @@ export default {
       set(value) {
         this.$store.dispatch('modals/setAddFundsModalOpened', value);
       },
+    },
+    showCloseProvider() {
+      if (this.provider && this.provider.isInitialised) {
+        return true;
+      }
+      return false;
     },
   },
   watch: {
@@ -63,6 +87,15 @@ export default {
     loading(val) {
       this.visible = val;
     },
+
+    setPaymentProvider(val) {
+      console.log(val);
+      this.provider = val;
+    },
+
+    closeProvider() {
+      if (this.provider) { this.provider.closeRequest(); }
+    },
   },
 };
 </script>
@@ -71,5 +104,11 @@ export default {
 .q-inner-loading {
   z-index: 999;
   background: white;
+}
+.close-provider {
+  position: absolute;
+  z-index: 999;
+  top: 2px;
+  right: 2px;
 }
 </style>
