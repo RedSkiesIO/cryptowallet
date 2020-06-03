@@ -17,6 +17,9 @@
 
     <div class="modal-layout-wrapper">
       <div class="text-center text-weight-bold q-pa-sm">
+        <SelectCountry />
+      </div>
+      <div class="text-center text-weight-bold q-pa-sm">
         Select Your Payment Method
       </div>
 
@@ -57,9 +60,13 @@
 <script>
 import { mapState } from 'vuex';
 import { transak } from '@/helpers/Transak';
+import SelectCountry from './SelectCountry';
 
 export default {
   name: 'AddFunds',
+  components: {
+    SelectCountry,
+  },
   data() {
     return {
       // transak: null,
@@ -82,7 +89,7 @@ export default {
     },
 
     transak() {
-      return transak(this.wallet, this.account);
+      return transak(this.wallet, this.account, true);
     },
   },
 
@@ -91,6 +98,7 @@ export default {
       console.log(data);
       if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
       if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
+      if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
     });
   },
 

@@ -37,7 +37,7 @@
           </q-btn-group>
         </div>
         <div
-          v-if="simple"
+          v-if="simple && canPurchase"
           class="text-center q-mb-md quick-coin-actions"
         >
           <q-btn
@@ -126,6 +126,14 @@ export default {
       return this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
       }).symbol;
+    },
+
+    canPurchase() {
+      const coin = this.supportedCoins.find((token) => {
+        return token.name === this.wallet.name;
+      });
+      if (coin.canBuy) { return true; }
+      return false;
     },
 
     latestPrice() {
