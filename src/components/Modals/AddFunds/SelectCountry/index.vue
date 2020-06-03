@@ -5,6 +5,7 @@
       :options="countries"
       label="Select your country"
       behaviour="dialog"
+      @input="(val) => $emit('selectedCountry', val)"
     >
       <template
         v-if="selectedCountry"
@@ -73,6 +74,11 @@ export default {
 
   async created() {
     this.countryList = (await axios.get('https://api.transak.com/api/v1/countries/list')).data.response;
+    this.selectedCountry = this.countries.find(({ label }) => { return label === 'United Kingdom'; });
+  },
+
+  mounted() {
+    this.$emit('selectedCountry', this.selectedCountry);
   },
 };
 </script>

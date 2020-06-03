@@ -17,41 +17,24 @@
 
     <div class="modal-layout-wrapper">
       <div class="text-center text-weight-bold q-pa-sm">
-        <SelectCountry />
+        Select Your Payment Method
       </div>
       <div class="text-center text-weight-bold q-pa-sm">
-        Select Your Payment Method
+        <SelectCountry @selectedCountry="(val) => country = val" />
       </div>
 
       <q-list
         padding
         separator
       >
-        <q-item
-          clickable
-          @click="openTransak"
-        >
-          <q-item-section avatar>
-            <img
-              class="payment-logo"
-              src="@/statics/payment-logos/transak.png"
-            >
-          </q-item-section>
-          <q-item-section class="text-weight-bold">
-            Use your Bank Account
-            <q-item-label caption>
-              Limit £10,000, Fee 0.25% - 0.5%
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-item-label caption>
-              <q-icon
-                name="keyboard_arrow_right"
-                size="sm"
-              />
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+        <AddFundsItem
+          v-if="bankTransfer"
+          :bank="true"
+        />
+        <AddFundsItem
+          v-if="cardPayments"
+          :card="true"
+        />
       </q-list>
     </div>
   </div>
@@ -60,17 +43,22 @@
 <script>
 import { mapState } from 'vuex';
 import { transak } from '@/helpers/Transak';
+// import axios from 'axios';
 import SelectCountry from './SelectCountry';
+import AddFundsItem from './AddFundsItem';
 
 export default {
   name: 'AddFunds',
   components: {
     SelectCountry,
+    AddFundsItem,
   },
   data() {
     return {
       // transak: null,
+      country: null,
       visible: false,
+      fee: null,
     };
   },
   computed: {
@@ -89,7 +77,42 @@ export default {
     },
 
     transak() {
-      return transak(this.wallet, this.account, true);
+      if (this.country) {
+        return transak(this.wallet, this.country.value, true);
+      }
+      const country = {
+        currencyCode: 'GBP',
+        alpha2: 'GB',
+      };
+      return transak(this.wallet, country, true);
+    },
+    partners() {
+      if (this.country) {
+        return this.country.value.partners;
+      }
+      return null;
+    },
+    bankTransfer() {
+      if (this.country) {
+        console.log(this.partners);
+        return this.partners
+          .some((partner) => { return (!partner.isCardPayment); });
+      }
+      return false;
+    },
+
+    cardPayments() {
+      if (this.country) {
+        return this.partners
+          .some((partner) => { return (!!partner.isCardPayment); });
+      }
+      return false;
+    },
+  },
+  watch: {
+    async country(val) {
+      console.log(val);
+      // await this.getFee();
     },
   },
 
@@ -103,6 +126,11 @@ export default {
   },
 
   methods: {
+    // async getFee() {
+    //   if
+    //   this.fee = (await axios.get(`https://api.transak.com/api/v1/currencies/price/${this.country.value.currencyCode}/${this.wallet.symbol}?fiatAmount=30000&paymentMethod=${this.country.value.currencyCode}_bank_transfer`)).data.response;
+    //   console.log(this.fee);
+    // },
     openTransak() {
       this.$emit('loading', true);
       this.$emit('setProvider', this.transak);
