@@ -13,8 +13,17 @@
       <q-item-section class="text-weight-bold">
         <span v-if="bank"> Use your Bank Account </span>
         <span v-else> Use your Credit/Debit Card </span>
-        <q-item-label caption>
-          Limit £10,000, Fee
+        <q-item-label
+          v-if="bank"
+          caption
+        >
+          Fee 0.25% - 0.5%
+        </q-item-label>
+        <q-item-label
+          v-if="card"
+          caption
+        >
+          Fee 3.9%
         </q-item-label>
       </q-item-section>
       <q-item-section side>
@@ -32,10 +41,15 @@
 <script>
 import { mapState } from 'vuex';
 import { transak } from '@/helpers/Transak';
+import Payments from '@/store/wallet/entities/payments';
 
 export default {
   name: 'AddFundsItem',
   props: {
+    country: {
+      required: true,
+      type: Object,
+    },
     card: {
       type: Boolean,
       required: false,
@@ -59,27 +73,30 @@ export default {
 
     transak() {
       if (this.country) {
-        return transak(this.wallet, this.country.value, true);
+        return transak(this.wallet, this.country.value, this.card, true);
       }
       const country = {
         currencyCode: 'GBP',
         alpha2: 'GB',
       };
-      return transak(this.wallet, country, true);
+      return transak(this.wallet, country, this.card, true);
     },
   },
 
-  created() {
-    this.transak.on(this.transak.ALL_EVENTS, (data) => {
-      console.log(data);
-      if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
-      if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
-      if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
-    });
+  beforeDestroy() {
+    this.transak.removeAllListeners();
   },
+
 
   methods: {
     openTransak() {
+      this.transak.on(this.transak.ALL_EVENTS, (data) => {
+        console.log(data);
+        if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
+        if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
+        if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderSuccess(data); }
+        if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
+      });
       this.$emit('loading', true);
       this.$emit('setProvider', this.transak);
 
@@ -97,11 +114,44 @@ export default {
     },
 
     handleWidgetClose() {
+      this.transak.close();
       this.transak.isInitialised = false;
+      this.transak.removeAllListeners();
+    },
+
+    handleOrderCreated(order) {
+      if (order && order.status) {
+        Payments.$insert({
+          data: {
+            id: order.status.id,
+            account_id: this.authenticatedAccount,
+            wallet_id: this.id,
+            address: this.wallet.externalAddress,
+            event: order.eventName,
+            status: order.status.status,
+            isBuyOrSell: order.status.isBuyOrSell,
+            currency: order.status.fiatCurrency,
+            fiatAmount: order.status.fiatAmount,
+            cryptoAmount: order.status.cryptoAmount,
+            conversionPrice: order.status.conversionPrice,
+            totalFeeInCrypto: order.status.totalFeeInCrypto,
+            totalfeeInFiat: order.status.totalfeeInFiat,
+            paymentOption: order.status.paymentOption[0],
+            fromAddress: order.status.fromWalletAddress,
+            expires: order.status.autoExpiresAt,
+          },
+        });
+      }
     },
 
     handleOrderSuccess(order) {
-      console.log(order);
+      Payments.$update({
+        where: order.status.id,
+        data: {
+          event: order.eventName,
+          status: order.status.status,
+        },
+      });
     },
 
     handleOrderFailed(order) {

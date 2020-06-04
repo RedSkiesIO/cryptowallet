@@ -1,6 +1,6 @@
 import TransakSDK from '@transak/transak-sdk';
 
-export function transak(wallet, country, testnet = true) {
+export function transak(wallet, country, card = false, testnet = true) {
   return new TransakSDK({
     apiKey: process.env.TRANSAK_API_KEY, // Your API Key
     environment: testnet ? 'STAGING' : 'PRODUCTION', // STAGING/PRODUCTION
@@ -10,6 +10,7 @@ export function transak(wallet, country, testnet = true) {
     themeColor: '#1e3c57', // App theme color
     fiatCurrency: country.currencyCode, // INR/GBP
     countryCode: country.alpha2,
+    defaultPaymentMethod: card ? 'credit_debit_card' : '',
     email: '', // Your customer's email address
     redirectURL: window.location.origin,
     hostURL: window.location.origin,

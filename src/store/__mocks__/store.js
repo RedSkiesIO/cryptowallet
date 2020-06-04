@@ -20,6 +20,7 @@ import KeyPair from '@/store/wallet/entities/keyPair';
 import Prices from '@/store/prices';
 import LatestPrice from '@/store/latestPrice';
 import Fees from '@/store/fees';
+import Payments from '@/store/wallet/entities/payments';
 
 
 Vue.use(Vuex);
@@ -37,6 +38,7 @@ database.register(KeyPair, {});
 database.register(Prices, {});
 database.register(LatestPrice, {});
 database.register(Fees, {});
+database.register(Payments, {});
 
 
 Vue.prototype.encryptedModels = [
