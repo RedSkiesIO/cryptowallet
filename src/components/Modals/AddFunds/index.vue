@@ -89,7 +89,6 @@ export default {
     },
 
     setPaymentProvider(val) {
-      console.log(val);
       this.provider = val;
     },
 

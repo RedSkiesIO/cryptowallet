@@ -71,7 +71,6 @@ export default {
     },
     partners() {
       if (this.country) {
-        console.log(this.country.value);
         return this.country.value.partners;
       }
       return null;

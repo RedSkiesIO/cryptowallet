@@ -80,7 +80,6 @@ export default {
 
   mounted() {
     setTimeout(() => {
-      console.log(this.selectedCountry);
       this.$emit('selectedCountry', this.selectedCountry);
     // eslint-disable-next-line no-magic-numbers
     }, 1000);

@@ -91,7 +91,6 @@ export default {
   methods: {
     openTransak() {
       this.transak.on(this.transak.ALL_EVENTS, (data) => {
-        console.log(data);
         if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
         if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
         if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderCreated(data); }
@@ -156,9 +155,9 @@ export default {
       });
     },
 
-    handleOrderFailed(order) {
-      console.log(order);
-    },
+    // handleOrderFailed(order) {
+    //   console.log(order);
+    // },
   },
 };
 </script>
