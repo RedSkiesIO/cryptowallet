@@ -74,7 +74,8 @@ export default {
 
   async created() {
     this.countryList = (await axios.get('https://api.transak.com/api/v1/countries/list')).data.response;
-    this.selectedCountry = this.countries.find(({ label }) => { return label === 'United Kingdom'; });
+    // this.selectedCountry =
+    // this.countries.find(({ label }) => { return label === 'United Kingdom'; });
   },
 
   mounted() {

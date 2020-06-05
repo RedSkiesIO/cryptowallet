@@ -19,27 +19,29 @@
       <div class="text-center text-weight-bold q-pa-sm">
         Select Your Payment Method
       </div>
-      <div class="text-center text-weight-bold q-pa-sm">
-        <SelectCountry @selectedCountry="(val) => country = val" />
-      </div>
+      <div>
+        <div class="text-center text-weight-bold q-pa-sm">
+          <SelectCountry @selectedCountry="(val) => country = val" />
+        </div>
 
-      <q-list
-        padding
-        separator
-      >
-        <AddFundsItem
-          v-if="bankTransfer"
-          :country="country"
-          :bank="true"
-          v-on="$listeners"
-        />
-        <AddFundsItem
-          v-if="cardPayments"
-          :country="country"
-          :card="true"
-          v-on="$listeners"
-        />
-      </q-list>
+        <q-list
+          padding
+          separator
+        >
+          <AddFundsItem
+            v-if="bankTransfer"
+            :country="country"
+            :bank="true"
+            v-on="$listeners"
+          />
+          <AddFundsItem
+            v-if="cardPayments"
+            :country="country"
+            :card="true"
+            v-on="$listeners"
+          />
+        </q-list>
+      </div>
     </div>
   </div>
 </template>
@@ -90,12 +92,6 @@ export default {
       return false;
     },
   },
-  // watch: {
-  //   async country(val) {
-  //     console.log(val);
-  //     // await this.getFee();
-  //   },
-  // },
 
   methods: {
     goBack() {
