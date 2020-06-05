@@ -94,7 +94,7 @@ export default {
         console.log(data);
         if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
         if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
-        if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderSuccess(data); }
+        if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderCreated(data); }
         if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
       });
       this.$emit('loading', true);
@@ -135,7 +135,7 @@ export default {
             cryptoAmount: order.status.cryptoAmount,
             conversionPrice: order.status.conversionPrice,
             totalFeeInCrypto: order.status.totalFeeInCrypto,
-            totalfeeInFiat: order.status.totalfeeInFiat,
+            totalfeeInFiat: order.status.totalFeeInFiat,
             paymentOption: order.status.paymentOption[0],
             fromAddress: order.status.fromWalletAddress,
             expires: order.status.autoExpiresAt,
@@ -146,7 +146,9 @@ export default {
 
     handleOrderSuccess(order) {
       Payments.$update({
-        where: order.status.id,
+        where: (record) => {
+          return record.id === order.status.id;
+        },
         data: {
           event: order.eventName,
           status: order.status.status,

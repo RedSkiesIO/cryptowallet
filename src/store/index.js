@@ -14,7 +14,7 @@ import KeyPair from './wallet/entities/keyPair';
 import Prices from './prices';
 import LatestPrice from './latestPrice';
 import Fees from './fees';
-import Payments from '@/store/wallet/entities/payments';
+import Payments from './wallet/entities/payments';
 
 
 // import modules.
@@ -56,6 +56,7 @@ window.Prices = Prices;
 window.Account = Account;
 window.Coin = Coin;
 window.Fees = Fees;
+window.Payments = Payments;
 
 const options = {
   env: 'browser',
