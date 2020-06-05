@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     v-model="newPinModalOpened"
-    persistent
     :maximized="true"
     transition-show="slide-up"
     transition-hide="slide-down"

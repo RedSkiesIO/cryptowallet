@@ -2,7 +2,6 @@
   <div>
     <q-dialog
       v-model="selectAccountModalOpened"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
