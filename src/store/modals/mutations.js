@@ -104,3 +104,9 @@ export function SET_NEWPIN_MODAL_OPENED(state, payload) {
 export function SET_NEW_TX_DATA(state, payload) {
   state.newTxData = payload;
 }
+
+export function SET_ADD_FUNDS_MODAL_OPENED(state, payload) {
+  console.log('mutation called');
+  changeStatusBarColour(payload);
+  state.addFundsModalOpened = payload;
+}

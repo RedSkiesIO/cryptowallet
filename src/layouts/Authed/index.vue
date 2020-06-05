@@ -165,6 +165,7 @@ export default {
              || this.$route.name === 'walletSingle'
              || this.$route.name === 'sendCoinSingle'
              || this.$route.name === 'receiveCoinSingle'
+             || this.$route.name === 'addFundsSingle'
              || this.$route.name === 'coinSinglePrices';
     },
     shortTop() {
@@ -327,7 +328,7 @@ export default {
 }
 
 .single-wallet-top .background {
-  height: 24.5rem;
+  height: 28.5rem;
 }
 
 /*.q-pull-to-refresh-wrapper {

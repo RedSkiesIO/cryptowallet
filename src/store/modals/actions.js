@@ -84,3 +84,7 @@ export function setNewPinModalOpened(context, payload) {
 export function setNewTxData(context, payload) {
   context.commit('SET_NEW_TX_DATA', payload);
 }
+
+export function setAddFundsModalOpened(context, payload) {
+  context.commit('SET_ADD_FUNDS_MODAL_OPENED', payload);
+}

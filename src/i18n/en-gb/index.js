@@ -148,6 +148,7 @@ export default {
   amountError: 'Too many decimal places',
   setAmount: 'Set Amount',
   fee: 'Fee',
+  buy: 'Buy',
   estimatedTransaction: 'Estimated transaction cost:',
   bitcoinAddressInvalidLength: 'The address must be 26-35 characters in length',
   bitcoinAddressInvalid: 'Invalid address',

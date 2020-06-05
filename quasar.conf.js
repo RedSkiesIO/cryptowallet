@@ -101,6 +101,7 @@ module.exports = (ctx) => {
         'QCardActions',
         'QSlideItem',
         'QAvatar',
+        'QInnerLoading',
       ],
       directives: ['Ripple', 'ClosePopup', 'ClosePopup'],
       // Quasar plugins

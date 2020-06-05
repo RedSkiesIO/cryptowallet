@@ -275,9 +275,10 @@ export default {
         } else {
           logo = './statics/cc-icons/color/generic.svg';
         }
+        const maxValueLength = 6;
         this.newTxModalData = {
           logo,
-          value: tx.value,
+          value: tx.value.toFixed(maxValueLength),
           symbol: wallet.symbol,
           id: tx.hash,
           wallet_id: tx.wallet_id,

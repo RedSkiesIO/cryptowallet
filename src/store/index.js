@@ -14,6 +14,7 @@ import KeyPair from './wallet/entities/keyPair';
 import Prices from './prices';
 import LatestPrice from './latestPrice';
 import Fees from './fees';
+import Payments from './wallet/entities/payments';
 
 
 // import modules.
@@ -37,12 +38,14 @@ database.register(KeyPair, {});
 database.register(Prices, {});
 database.register(LatestPrice, {});
 database.register(Fees, {});
+database.register(Payments, {});
 
 
 Vue.prototype.encryptedModels = [
   Account,
   Wallet,
 ];
+
 
 window.Tx = Tx;
 window.Utxo = Utxo;
@@ -53,6 +56,7 @@ window.Prices = Prices;
 window.Account = Account;
 window.Coin = Coin;
 window.Fees = Fees;
+window.Payments = Payments;
 
 const options = {
   env: 'browser',

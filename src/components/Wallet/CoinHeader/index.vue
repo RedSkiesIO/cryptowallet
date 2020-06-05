@@ -36,6 +36,20 @@
             />
           </q-btn-group>
         </div>
+        <div
+          v-if="simple && canPurchase"
+          class="text-center q-mb-md quick-coin-actions"
+        >
+          <q-btn
+            icon="add"
+            size="md"
+            color="primary"
+            label="Add Funds"
+            class="wallet-group-btn"
+            flat
+            @click.stop="addFunds"
+          />
+        </div>
       </div>
       <div class="wallet-prices">
         <Amount
@@ -114,6 +128,14 @@ export default {
       }).symbol;
     },
 
+    canPurchase() {
+      const coin = this.supportedCoins.find((token) => {
+        return token.name === this.wallet.name;
+      });
+      if (coin.canBuy) { return true; }
+      return false;
+    },
+
     latestPrice() {
       const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
       if (prices) {
@@ -147,6 +169,9 @@ export default {
     },
     receive() {
       this.$router.push({ path: `/wallet/single/receive/${this.wallet.id}` });
+    },
+    addFunds() {
+      this.$router.push({ path: `/wallet/single/add-funds/${this.wallet.id}` });
     },
     unconfirmedBalance() {
       return getBalance(this.wallet, this.authenticatedAccount).unconfirmed;

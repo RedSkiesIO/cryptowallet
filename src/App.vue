@@ -22,6 +22,7 @@
         <SendSuccessModal />
         <SendFailureModal />
         <AddErc20Modal />
+        <AddFundsModal />
       </div>
     </div>
     <Scanner v-if="scanning" />
@@ -46,6 +47,7 @@ import SendSuccessModal from '@/components/Modals/SendSuccess';
 import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
+import AddFundsModal from '@/components/Modals/AddFunds';
 
 export default {
   name: 'App',
@@ -65,6 +67,7 @@ export default {
     SendFailureModal,
     AddErc20Modal,
     OfflineNotice,
+    AddFundsModal,
   },
 
   data() {
@@ -141,18 +144,20 @@ export default {
     storeSupportedCoins() {
       this.supportedCoins.forEach((coin) => {
         const isThere = Coin.find([coin.name]);
-
+        const data = {
+          name: coin.name,
+          displayName: coin.displayName,
+          sdk: coin.sdk,
+          symbol: coin.symbol,
+          network: coin.network,
+          denomination: coin.denomination,
+          minConfirmations: coin.minConfirmations,
+          decimals: coin.decimals,
+          api: coin.api,
+          testnet: coin.testnet ? coin.testnet : false,
+          canBuy: coin.canBuy ? coin.canBuy : false,
+        };
         if (!isThere) {
-          const data = {
-            name: coin.name,
-            displayName: coin.displayName,
-            sdk: coin.sdk,
-            symbol: coin.symbol,
-            network: coin.network,
-            denomination: coin.denomination,
-            minConfirmations: coin.minConfirmations,
-            decimals: coin.decimals,
-          };
           if (coin.sdk === 'ERC20') {
             data.parentName = coin.parentName;
             data.parentSdk = coin.parentSdk;
@@ -162,6 +167,13 @@ export default {
             data,
           });
         }
+        // else {
+        //   // Coin.$update({
+        //   //   where: (record) => { return record.name === isThere.name; },
+        //   //   data,
+        //   // });
+        //   Coin.$insert(data);
+        // }
       });
     },
   },
