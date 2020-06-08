@@ -2,7 +2,6 @@
   <div>
     <q-dialog
       v-model="sendCoinModalOpened"
-      persistent
       no-route-dismiss
       :maximized="true"
       transition-show="slide-up"

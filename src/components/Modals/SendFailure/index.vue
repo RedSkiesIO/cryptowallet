@@ -3,7 +3,6 @@
     <q-dialog
       ref="dialog"
       v-model="sendFailureModalOpened"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

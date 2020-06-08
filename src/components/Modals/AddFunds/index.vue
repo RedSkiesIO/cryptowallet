@@ -15,7 +15,6 @@
     </div>
     <q-dialog
       v-model="addFundsModalOpened"
-      persistent
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"
