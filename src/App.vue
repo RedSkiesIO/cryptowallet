@@ -48,6 +48,7 @@ import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 import AddFundsModal from '@/components/Modals/AddFunds';
+import TorusSDK from '@/helpers/DirectAuth';
 
 export default {
   name: 'App',
@@ -135,6 +136,9 @@ export default {
   },
 
   async mounted() {
+    console.log('test');
+    const userDetails = await TorusSDK();
+    console.log('userDetails: ', userDetails);
     window.store = this.$store;
     window.app = this;
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
