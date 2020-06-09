@@ -18,10 +18,12 @@ async function login() {
 
     const loginDetails = await torusdirectsdk.triggerLogin({
       typeOfLogin: 'jwt',
-      verifier: 'test-jwt',
+      verifier: 'auth0-atlascity',
       clientId: 'LgplOAge5k3n17shHwn7ehfzEoiQQHhm',
       jwtParams: {
         domain: 'atlascity.eu.auth0.com',
+        // connection: 'sms',
+        login_hint: '+447843812196',
       },
     });
 
