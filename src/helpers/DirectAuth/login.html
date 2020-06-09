@@ -24,9 +24,6 @@
       transform: translateY(-50%);
       padding: 15px;
       background-color: #1e3c57;
-      box-shadow: 0px 5px 5px #ccc;
-      border-radius: 5px;
-      border-top: 1px solid #e9e9e9;
     }
 
     .login-header {
@@ -40,53 +37,117 @@
     #error-message {
       display: none;
     }
+
+    #wrapper {
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    box-sizing: border-box;
+    color: #f5f5f5;
+  }
+
+#wrapper #dialog {
+  margin: 10px auto;
+  padding: 20px 30px;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  max-width: 450px;
+}
+#wrapper #dialog h3 {
+  margin: 0 0 10px;
+  padding: 0;
+  line-height: 1.25;
+}
+#wrapper #dialog span {
+  font-size: 90%;
+}
+#wrapper #dialog #form {
+  margin: 25px auto 0;
+}
+#wrapper #dialog #form input {
+  margin: 0 5px;
+  text-align: center;
+  line-height: 60px;
+  font-size: 40px;
+  border: solid 1px #ccc;
+  box-shadow: 0 0 5px #ccc inset;
+  outline: none;
+  width: 36px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  border-radius: 3px;
+  color: black;
+}
+#wrapper #dialog #form input:focus {
+  border-color: #78d2e6;
+  box-shadow: 0 0 5px #78d2e6 inset;
+}
+#wrapper #dialog #form input::-moz-selection {
+  background: transparent;
+}
+#wrapper #dialog #form input::selection {
+  background: transparent;
+}
+#wrapper #dialog #form button {
+    margin: 30px 0 50px;
+    width: 100%;
+    padding: 6px;
+    background-color: #fabc57;
+    border: none;
+    text-transform: uppercase;
+    color: #1e3c57;
+}
+#wrapper #dialog button.close {
+  border: solid 2px;
+  border-radius: 30px;
+  line-height: 19px;
+  font-size: 120%;
+  width: 22px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+#wrapper #dialog div {
+  position: relative;
+  z-index: 1;
+}
+#wrapper #dialog img {
+  position: absolute;
+  bottom: -70px;
+  right: -63px;
+}
+
+#wrapper a {
+  color: #78d2e6;
+}
   </style>
 <body>
   <div class="login-container">
     <div class="col-xs-12 col-sm-4 col-sm-offset-4 login-box">
-      <div class="login-header">
-        <img src="https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg"/>
-        <h3>Welcome</h3>
-        <h5>PLEASE LOG IN</h5>
-      </div>
       <div id="error-message" class="alert alert-danger"></div>
-      <form onsubmit="return false;" method="post">
-        <div class="form-group">
-         <label for="name">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Enter your email">
+
+      <div id="wrapper">
+        <div id="dialog">
+          <h3>Please enter the 6-digit verification code we sent via SMS:</h3>
+          <div id="form">
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[1]"> 
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[2]"> 
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[3]"> 
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[4]"> 
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[5]"> 
+            <input type="text" maxlength="1" class="def-txt-input" name="chars[6]">
+            
+            <button id="btn-verify" class="btn btn-primary btn-embossed">Verify</button>
+          </div>
+          
+          <div>
+            Didn't receive the code?<br />
+            <a id="btn-send">Send code again</a><br />
+            <a href="#">Change phone number</a>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="name">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Enter your password">
-        </div>
-        <button
-          type="submit"
-          id="btn-login"
-          class="btn btn-primary btn-block">
-            Log In
-        </button>
-        <button
-          type="button"
-          id="btn-signup"
-          class="btn btn-default btn-block">
-            Sign Up
-        </button>
-        <hr>
-        <button
-          type="button"
-          id="btn-google"
-          class="btn btn-default btn-danger btn-block">
-            Log In with Google
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 
@@ -101,65 +162,178 @@
 
   <script src="https://cdn.auth0.com/js/auth0/9.13/auth0.min.js"></script>
   <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script>
-    window.addEventListener('load', function() {
+   
 
-      var config = JSON.parse(
-        decodeURIComponent(escape(window.atob('@@config@@')))
-      );
+  $(function() {
+  'use strict';
 
-      var params = Object.assign({
-        /* additional configuration needed for use of custom domains
-        overrides: {
-          __tenant: config.auth0Tenant,
-          __token_issuer: 'YOUR_CUSTOM_DOMAIN'
-        }, */
-        domain: config.auth0Domain,
-        clientID: config.clientID,
-        redirectUri: config.callbackURL,
-        responseType: 'token id_token'
-      }, config.internalOptions);
+  var body = $('body');
+  var $inputs = $(".def-txt-input");
+  var intRegex = /^\d+$/;
 
-      var webAuth = new auth0.WebAuth(params);
+  window.addEventListener('load', function() {
 
-      webAuth.passwordlessStart({
-        connection: 'sms',
-        send: 'code',
-        phoneNumber: config.extraParams.login_hint,
-      }, function (err,res) {
-        // handle errors or continue
-        if (err) displayError(err);
-      }
-      );
+// var config = JSON.parse(
+//   decodeURIComponent(escape(window.atob('@@config@@')))
+// );
 
-      var databaseConnection = 'Username-Password-Authentication';
+// var params = Object.assign({
+//   /* additional configuration needed for use of custom domains
+//   overrides: {
+//     __tenant: config.auth0Tenant,
+//     __token_issuer: 'YOUR_CUSTOM_DOMAIN'
+//   }, */
+//   domain: config.auth0Domain,
+//   clientID: config.clientID,
+//   redirectUri: config.callbackURL,
+//   responseType: 'token id_token'
+// }, config.internalOptions);
 
-      function login(e) {
-        e.preventDefault();
-        webAuth.passwordlessLogin({
-          connection: 'sms',
-          phoneNumber: config.extraParams.login_hint,
-          verificationCode: '389945'
-        }, function (err) {
-          // handle errors or continue
-          if (err) displayError(err);
-        }
-        );
+// var webAuth = new auth0.WebAuth(params);
 
-        var username = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-      }
+function sendCode() {
+  removeValues()
+  webAuth.passwordlessStart({
+  connection: 'sms',
+  send: 'code',
+  phoneNumber: config.extraParams.login_hint,
+  }, function (err,res) {
+  // handle errors or continue
+  if (err) displayError(err);
+  }
+  );
+}
 
-      function displayError(err) {
-        var errorMessage = document.getElementById('error-message');
-        errorMessage.innerHTML = err.description;
-        errorMessage.style.display = 'block';
-      }
+// sendCode()
 
-      document.getElementById('btn-login').addEventListener('click', login);
-      document.getElementById('btn-google').addEventListener('click', loginWithGoogle);
-      document.getElementById('btn-signup').addEventListener('click', signup);
+function login(e) {
+  hideError();
+  console.log('clicked');
+  e.preventDefault();
+  const code = getValues();
+  if (code.length == 6 && intRegex.test(code)) {
+  // webAuth.passwordlessLogin({
+  //   connection: 'sms',
+  //   phoneNumber: config.extraParams.login_hint,
+  //   verificationCode: '389945'
+  // }, function (err) {
+  //   // handle errors or continue
+  //   if (err) displayError(err);
+  // }
+  // );
+  } else {
+    const err = { description: 'invalid verification code'}
+    displayError(err);
+  }
+}
+
+function getValues() {
+  let value = "";
+  $($inputs).each(function(index) {
+        value = value.concat($inputs[index].value);
     });
+   return value;
+}
+
+function removeValues() {
+  $($inputs).each(function(index) {
+        $inputs[index].value = "";
+    });
+}
+
+function displayError(err) {
+  var errorMessage = document.getElementById('error-message');
+  errorMessage.innerHTML = err.description;
+  errorMessage.style.display = 'block';
+}
+
+function hideError() {
+  var errorMessage = document.getElementById('error-message');
+  errorMessage.style.display = 'none';
+}
+
+document.getElementById('btn-verify').addEventListener('click', login);
+document.getElementById('btn-send').addEventListener('click', sendCode);
+
+});
+
+  $inputs.on("paste", function() {
+    var $this = $(this);
+    var originalValue = $this.val();
+    
+    $this.val("");
+
+    $this.one("input.fromPaste", function(){
+        var $currentInputBox = $(this);
+        
+        var pastedValue = $currentInputBox.val();
+        
+        if (pastedValue.length == 6 && intRegex.test(pastedValue)) {
+            pasteValues(pastedValue);
+        }
+        else {
+            $this.val(originalValue);
+        }
+
+        $inputs.attr("maxlength", 1);
+    });
+    
+    $inputs.attr("maxlength", 6);
+});
+
+
+    // Parses the individual digits into the individual boxes.
+    function pasteValues(element) {
+    var values = element.split("");
+
+    $(values).each(function(index) {
+        var $inputBox = $('.def-txt-input[name="chars[' + (index + 1) + ']"]');
+        $inputBox.val(values[index])
+    });
+   };
+
+  function goToNextInput(e) {
+    var key = e.which,
+      t = $(e.target),
+      sib = t.next('input');
+
+    if (key != 9 && (key < 48 || key > 57)) {
+      e.preventDefault();
+      return false;
+    }
+
+    if (key === 9) {
+      return true;
+    }
+
+    if (!sib || !sib.length) {
+      sib = body.find('input').eq(0);
+    }
+    sib.select().focus();
+  }
+
+  function onKeyDown(e) {
+    var key = e.which;
+
+    if (key === 9 || (key >= 48 && key <= 57)) {
+      return true;
+    }
+
+    e.preventDefault();
+    return false;
+  }
+  
+  function onFocus(e) {
+    $(e.target).select();
+  }
+
+  body.on('keyup', 'input', goToNextInput);
+  body.on('keydown', 'input', onKeyDown);
+  body.on('click', 'input', onFocus);
+
+})
   </script>
 </body>
 </html>
