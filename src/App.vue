@@ -136,7 +136,6 @@ export default {
   },
 
   async mounted() {
-    console.log('test');
     const userDetails = await TorusSDK();
     console.log('userDetails: ', userDetails);
     window.store = this.$store;

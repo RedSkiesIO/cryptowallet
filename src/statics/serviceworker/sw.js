@@ -151,7 +151,7 @@ self.addEventListener("fetch", function (event) {
       var isLocalStorageAvailable = storageAvailable("localStorage");
       var isSessionStorageAvailable = storageAvailable("sessionStorage");
       // set theme
-      let theme = "light";
+      let theme = "dark";
       if (isLocalStorageAvailable) {
         var torusTheme = localStorage.getItem("torus-theme");
         if (torusTheme) {

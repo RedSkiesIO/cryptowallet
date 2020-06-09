@@ -5,8 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Sign In to CryptoWallet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></head>
   <style>
     body, html {
       height: 100%;
@@ -40,7 +39,7 @@
 
     #wrapper {
     font-family: sans-serif;
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
     box-sizing: border-box;
     color: #f5f5f5;
@@ -121,15 +120,29 @@
 #wrapper a {
   color: #78d2e6;
 }
+
+.loading {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 99;
+  background: #1e3c57;
+  display: flex;
+}
   </style>
 <body>
+  <div id="loading" class="loading justify-content-center align-items-center">
+    <div class="spinner-border text-white" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
   <div class="login-container">
     <div class="col-xs-12 col-sm-4 col-sm-offset-4 login-box">
       <div id="error-message" class="alert alert-danger"></div>
 
       <div id="wrapper">
         <div id="dialog">
-          <h3>Please enter the 6-digit verification code we sent via SMS:</h3>
+          <h4>Please enter the 6-digit verification code we sent via SMS:</h4>
           <div id="form">
             <input type="text" maxlength="1" class="def-txt-input" name="chars[1]"> 
             <input type="text" maxlength="1" class="def-txt-input" name="chars[2]"> 
@@ -162,10 +175,12 @@
 
   <script src="https://cdn.auth0.com/js/auth0/9.13/auth0.min.js"></script>
   <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script>
-   
-
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script> 
+  window.addEventListener('load', function() {
+  
   $(function() {
   'use strict';
 
@@ -173,28 +188,30 @@
   var $inputs = $(".def-txt-input");
   var intRegex = /^\d+$/;
 
-  window.addEventListener('load', function() {
 
-// var config = JSON.parse(
-//   decodeURIComponent(escape(window.atob('@@config@@')))
-// );
 
-// var params = Object.assign({
-//   /* additional configuration needed for use of custom domains
-//   overrides: {
-//     __tenant: config.auth0Tenant,
-//     __token_issuer: 'YOUR_CUSTOM_DOMAIN'
-//   }, */
-//   domain: config.auth0Domain,
-//   clientID: config.clientID,
-//   redirectUri: config.callbackURL,
-//   responseType: 'token id_token'
-// }, config.internalOptions);
 
-// var webAuth = new auth0.WebAuth(params);
+  var config = JSON.parse(
+    decodeURIComponent(escape(window.atob('@@config@@')))
+  );
+
+  var params = Object.assign({
+  /* additional configuration needed for use of custom domains
+  overrides: {
+    __tenant: config.auth0Tenant,
+    __token_issuer: 'YOUR_CUSTOM_DOMAIN'
+  }, */
+  domain: config.auth0Domain,
+  clientID: config.clientID,
+  redirectUri: config.callbackURL,
+  responseType: 'token id_token'
+}, config.internalOptions);
+
+var webAuth = new auth0.WebAuth(params);
 
 function sendCode() {
-  removeValues()
+  startLoading();
+  removeValues();
   webAuth.passwordlessStart({
   connection: 'sms',
   send: 'code',
@@ -202,31 +219,35 @@ function sendCode() {
   }, function (err,res) {
   // handle errors or continue
   if (err) displayError(err);
-  }
-  );
+  });
+  setTimeout(() => {
+    stopLoading();
+  }, 2000)
 }
 
-// sendCode()
+sendCode();
+
 
 function login(e) {
+  startLoading();
   hideError();
-  console.log('clicked');
   e.preventDefault();
   const code = getValues();
   if (code.length == 6 && intRegex.test(code)) {
-  // webAuth.passwordlessLogin({
-  //   connection: 'sms',
-  //   phoneNumber: config.extraParams.login_hint,
-  //   verificationCode: '389945'
-  // }, function (err) {
-  //   // handle errors or continue
-  //   if (err) displayError(err);
-  // }
-  // );
+  webAuth.passwordlessLogin({
+    connection: 'sms',
+    phoneNumber: config.extraParams.login_hint,
+    verificationCode: code,
+  }, function (err) {
+    // handle errors or continue
+    if (err) displayError(err);
+  }
+  );
   } else {
     const err = { description: 'invalid verification code'}
     displayError(err);
   }
+  stopLoading();
 }
 
 function getValues() {
@@ -254,10 +275,20 @@ function hideError() {
   errorMessage.style.display = 'none';
 }
 
+function startLoading() {
+  const loading = document.getElementById('loading');
+  loading.style.display = 'flex';
+}
+
+function stopLoading() {
+  const loading = document.getElementById('loading');
+  loading.style.display = 'none';
+}
+
 document.getElementById('btn-verify').addEventListener('click', login);
 document.getElementById('btn-send').addEventListener('click', sendCode);
 
-});
+
 
   $inputs.on("paste", function() {
     var $this = $(this);
@@ -334,6 +365,7 @@ document.getElementById('btn-send').addEventListener('click', sendCode);
   body.on('click', 'input', onFocus);
 
 })
+});
   </script>
 </body>
 </html>
