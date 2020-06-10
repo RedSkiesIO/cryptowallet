@@ -49,7 +49,7 @@ export default {
       this.$store.dispatch('modals/setSelectAccountModalOpened', false);
       this.$store.dispatch('modals/setNewAccountModalOpened', false);
       this.$store.dispatch('setup/setAccountType', 'new');
-      this.$router.push({ path: '/setup/2' });
+      this.$router.push({ path: '/setup/8' });
     },
     importAccount() {
       this.$store.dispatch('modals/setSelectAccountModalOpened', false);

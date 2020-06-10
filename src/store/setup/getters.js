@@ -22,6 +22,10 @@ export function getSeed(state) {
   return () => { return state.seed; };
 }
 
+export function getSeedString(state) {
+  return () => { return state.seedString; };
+}
+
 export function getShuffledSeed(state) {
   const seed = Object.keys(state.seed);
   for (let i = seed.length - 1; i > 0; i -= 1) {

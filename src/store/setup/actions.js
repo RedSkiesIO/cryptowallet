@@ -14,6 +14,10 @@ export function setSeed(context, seed) {
   context.commit('SET_SEED', seed);
 }
 
+export function setSeedString(context, seed) {
+  context.commit('SET_SEED_STRING', seed);
+}
+
 /**
  * Action to set pin hash.
  * @param {*} context

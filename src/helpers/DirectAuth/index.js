@@ -14,19 +14,21 @@ async function login() {
       proxyContractAddress: '0x4023d2a0D330bF11426B12C6144Cfb96B7fa6183', // details for test net
       network: 'ropsten', // details for test net
     });
-    await torusdirectsdk.init();
+    await torusdirectsdk.init({ skipSw: false });
 
-    const loginDetails = await torusdirectsdk.triggerLogin({
-      typeOfLogin: 'jwt',
-      verifier: 'auth0-atlascity',
-      clientId: 'LgplOAge5k3n17shHwn7ehfzEoiQQHhm',
-      jwtParams: {
-        domain: 'atlascity.eu.auth0.com',
-        login_hint: '+447843812196',
-      },
-    });
+    // const loginDetails = await torusdirectsdk.triggerLogin({
+    //   typeOfLogin: 'passwordless',
+    //   verifier: 'auth0-atlascity',
+    //   clientId: 'LgplOAge5k3n17shHwn7ehfzEoiQQHhm',
+    //   jwtParams: {
+    //     connection: 'sms',
+    //     domain: 'https://atlascity.eu.auth0.com',
+    //     login_hint: '+447843812196',
+    //   },
+    // });
 
-    return loginDetails;
+    // return loginDetails;
+    return true;
   } catch (error) {
     console.error(error, 'caught');
     return false;

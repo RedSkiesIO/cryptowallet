@@ -73,7 +73,7 @@ export default {
       }
 
       this.$store.dispatch('setup/setAccountName', this.accountName);
-      this.$store.dispatch('modals/setTermsModalOpened', true);
+      this.$router.push({ path: '/setup/7' });
       return true;
     },
   },

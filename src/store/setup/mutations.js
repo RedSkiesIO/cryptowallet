@@ -41,6 +41,10 @@ export function SET_SEED(state, seed) {
   }
 }
 
+export function SET_SEED_STRING(state, seed) {
+  state.seedString = seed;
+}
+
 /**
  * SET STATE for seet counter
  */
