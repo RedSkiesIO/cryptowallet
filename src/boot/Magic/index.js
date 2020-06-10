@@ -2,7 +2,7 @@ import { Magic } from 'magic-sdk';
 import { ethers } from 'ethers';
 import bip39 from 'bip39';
 
-const m = new Magic('pk_test_4431477E0967CCCC'); // ✨
+const m = new Magic('pk_test_2CBB20C533645D99'); // ✨
 
 m.preload().then(() => { return console.log('Magic <iframe> loaded.'); });
 
@@ -46,11 +46,10 @@ const magic = {
 
   async getMnemonic() {
     const provider = await this.getProvider();
-    const entropy = await provider.signMessage('catalyst');
+    const entropy = await provider.signMessage('cryptowallet');
     const entropyBuffer = Buffer.from(entropy);
     const maxBytes = 32;
     const mnemonic = bip39.entropyToMnemonic(entropyBuffer.slice(0, maxBytes));
-    console.log(mnemonic);
     return mnemonic;
   },
 };
