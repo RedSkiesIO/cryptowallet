@@ -44,6 +44,7 @@
               <div class="account-email-input-wrapper">
                 <q-input
                   v-model.trim="accountEmail"
+                  type="email"
                   autofocus
                   outlined
                   dark
