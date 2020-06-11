@@ -5,6 +5,7 @@ export default {
   pinConfirmArray: [],
   salt: null,
   seed: {},
+  seedString: null,
   pinHash: null,
   pinHashConfirm: null,
   spvMode: null,

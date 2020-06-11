@@ -46,7 +46,7 @@ const accountInitializer = {
         promises.push(new Promise(async (resolve) => {
           const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
           wallet.hdWallet = await coinSDK.generateHDWallet(
-            Object.values(setup.seed).join(' ').trim(),
+            setup.seedString,
             coin.network,
           );
           await Wallet.$insert({ data: wallet, password });
@@ -75,7 +75,7 @@ const accountInitializer = {
           const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
           const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
           const parentWallet = await parentSDK.generateHDWallet(
-            Object.values(setup.seed).join(' ').trim(),
+            setup.seedString,
             coin.network,
           );
           const keyPair = parentSDK.generateKeyPair(parentWallet, 0);

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="receiveCoinModalOpened">
     <q-dialog
       v-model="receiveCoinModalOpened"
       :maximized="true"

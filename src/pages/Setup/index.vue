@@ -14,12 +14,14 @@ import Seed from '@/pages/Setup/Steps/Seed';
 import SeedConfirm from '@/pages/Setup/Steps/Seed/Confirm';
 import Node from '@/pages/Setup/Steps/Node';
 import Complete from '@/pages/Setup/Steps/Complete';
+import AccountRecovery from '@/pages/Setup/Steps/AccountRecovery/index.vue';
 import { mapState } from 'vuex';
 
 export default {
   components: {
     Splash,
     AccountName,
+    AccountRecovery,
     Pin,
     PinConfirm,
     Restore,
@@ -40,6 +42,7 @@ export default {
         PinConfirm,
         AccountName,
         Complete,
+        AccountRecovery,
       ],
     };
   },

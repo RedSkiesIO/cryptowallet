@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="priceChartModalOpened">
     <q-dialog
       v-model="priceChartModalOpened"
       :maximized="true"

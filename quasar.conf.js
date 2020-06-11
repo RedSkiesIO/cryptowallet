@@ -17,7 +17,8 @@ module.exports = (ctx) => {
       'Vuelidate',
       'BackEndService',
       'AccountInitializer',
-      'ENS'
+      'ENS',
+      'Magic'
     ],
     css: ['app.styl'],
     extras: [
@@ -102,6 +103,8 @@ module.exports = (ctx) => {
         'QSlideItem',
         'QAvatar',
         'QInnerLoading',
+        'QSpinner',
+        'QCircularProgress'
       ],
       directives: ['Ripple', 'ClosePopup', 'ClosePopup'],
       // Quasar plugins

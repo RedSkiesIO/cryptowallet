@@ -89,6 +89,8 @@ export default {
   },
   methods: {
     generateSeed() {
+      const mnemonic = bip39.generateMnemonic();
+      this.seedPhrase = mnemonic.split(' ');
       this.seedPhrase = bip39.generateMnemonic().split(' ');
       this.seedPhrase = this.seedPhrase.filter((word, index) => {
         return this.seedPhrase.indexOf(word) === index;
@@ -96,6 +98,7 @@ export default {
       const expectedSeedLength = 12;
       if (this.seedPhrase.length === expectedSeedLength) {
         this.$store.dispatch('setup/setSeed', this.seedPhrase);
+        this.$store.dispatch('setup/setSeedString', mnemonic);
       } else {
         this.anotherSeed();
       }

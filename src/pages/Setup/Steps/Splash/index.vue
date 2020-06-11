@@ -139,7 +139,8 @@ export default {
     getStarted() {
       this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
       this.$store.dispatch('setup/setAccountCurrency', this.$t('supportedCurrency'));
-      this.$store.dispatch('setup/setGetStartedModalOpened', true);
+      this.$store.dispatch('setup/setAccountType', 'new');
+      this.$router.push({ path: '/setup/8' });
     },
   },
 };
