@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="sendCoinModalOpened">
     <q-dialog
       v-model="sendCoinModalOpened"
       no-route-dismiss

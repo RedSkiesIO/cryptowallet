@@ -41,19 +41,22 @@
 </template>
 
 <script>
-import axios from 'axios';
+import SupportedCountries from '@/store/settings/state/transakSupportedCountries';
 
 export default {
   name: 'SelectCountry',
 
   data() {
     return {
-      countryList: null,
       selectedCountry: null,
     };
   },
 
   computed: {
+
+    countryList() {
+      return SupportedCountries;
+    },
 
     countries() {
       if (this.countryList) {
@@ -70,12 +73,6 @@ export default {
       }
       return null;
     },
-  },
-
-  async created() {
-    this.countryList = (await axios.get('https://api.transak.com/api/v1/countries/list')).data.response;
-    // this.selectedCountry =
-    // this.countries.find(({ label }) => { return label === 'United Kingdom'; });
   },
 
   mounted() {
