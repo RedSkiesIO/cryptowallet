@@ -4,6 +4,7 @@ import bip39 from 'bip39';
 
 const m = new Magic('pk_test_2CBB20C533645D99'); // ✨
 
+// eslint-disable-next-line no-console
 m.preload().then(() => { return console.log('Magic <iframe> loaded.'); });
 
 const magic = {
