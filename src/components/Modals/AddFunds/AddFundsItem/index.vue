@@ -96,7 +96,7 @@ export default {
         if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderCreated(data); }
         if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
       });
-      this.$emit('loading', true);
+      this.$emit('loading', { on: true, logo: 'statics/payment-logos/transak.png' });
       this.$emit('setProvider', this.transak);
 
       this.transak.init();
@@ -108,7 +108,7 @@ export default {
 
     handleWidgetOpen() {
       setTimeout(() => {
-        this.$emit('loading', false);
+        this.$emit('loading', { on: false, logo: null });
       }, this.delay.long);
     },
 
@@ -162,6 +162,6 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>

@@ -104,6 +104,7 @@ module.exports = (ctx) => {
         'QAvatar',
         'QInnerLoading',
         'QSpinner',
+        'QCircularProgress'
       ],
       directives: ['Ripple', 'ClosePopup', 'ClosePopup'],
       // Quasar plugins

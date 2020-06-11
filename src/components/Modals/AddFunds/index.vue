@@ -27,9 +27,26 @@
     </q-dialog>
 
     <q-inner-loading
-      color="primary"
       :showing="visible"
-    />
+    >
+      <q-circular-progress
+        show-value
+        indeterminate
+        size="200px"
+        :thickness="0.07"
+        color="blueish"
+        track-color="grey-3"
+        class="q-ma-md"
+      >
+        <img
+          class="loading-logo"
+          :src="loadingLogo"
+        >
+      </q-circular-progress>
+      <div class="row text-center text-blueish q-pa-lg text-weight-bold">
+        You are now being transferred to our trusted partner...
+      </div>
+    </q-inner-loading>
   </div>
 </template>
 
@@ -45,6 +62,7 @@ export default {
     return {
       // transak: null,
       visible: false,
+      loadingLogo: 'null',
       provider: null,
     };
   },
@@ -84,7 +102,8 @@ export default {
   },
   methods: {
     loading(val) {
-      this.visible = val;
+      this.loadingLogo = val.logo;
+      this.visible = val.on;
     },
 
     setPaymentProvider(val) {
@@ -109,4 +128,11 @@ export default {
   top: 2px;
   right: 2px;
 }
+
+.loading-logo {
+  width: 100%;
+  padding: 30px;
+}
+
+
 </style>
