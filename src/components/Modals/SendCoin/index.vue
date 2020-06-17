@@ -2,7 +2,6 @@
   <div v-if="sendCoinModalOpened">
     <q-dialog
       v-model="sendCoinModalOpened"
-      no-route-dismiss
       :maximized="true"
       transition-show="slide-up"
       transition-hide="slide-down"

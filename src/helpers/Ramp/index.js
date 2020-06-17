@@ -3,7 +3,7 @@ import { RampInstantSDK } from '@ramp-network/ramp-instant-sdk';
 export function ramp(wallet, testnet = true) {
   const config = {
     hostAppName: 'Cent',
-    hostLogoUrl: `${window.location.origin}/statics/payment-logos/ramp.svg`,
+    hostLogoUrl: 'https://buy.ramp.network/2a657d57cb65eed92ed92e48876f497d.svg',
     swapAsset: wallet.symbol,
     userAddress: wallet.externalAddress,
     variant: 'mobile',

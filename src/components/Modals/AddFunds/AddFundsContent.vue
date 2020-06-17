@@ -82,7 +82,9 @@ export default {
       return null;
     },
     rampAvailable() {
-      if (this.country?.label === 'United Kingdom') { return true; }
+      if (this.country?.label === 'United Kingdom') {
+        return true;
+      }
       return false;
     },
 

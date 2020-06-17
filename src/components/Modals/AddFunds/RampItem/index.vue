@@ -54,7 +54,9 @@ export default {
   },
 
   beforeDestroy() {
-    this.ramp.unsubscribe('*', () => {});
+    if (this.ramp) {
+      this.ramp.unsubscribe('*', () => {});
+    }
   },
 
 
@@ -85,30 +87,29 @@ export default {
     },
 
     handleWidgetClose() {
-      console.log(this.ramp);
       this.ramp.unsubscribe('*', () => {});
     },
 
     handleOrderCreated(order) {
-      if (order && order.status) {
+      if (order && order.type) {
         Payments.$insert({
           data: {
-            id: order.status.id,
+            id: order.payload.purchase.id,
             account_id: this.authenticatedAccount,
             wallet_id: this.id,
             address: this.wallet.externalAddress,
-            event: order.eventName,
-            status: order.status.status,
-            isBuyOrSell: order.status.isBuyOrSell,
-            currency: order.status.fiatCurrency,
-            fiatAmount: order.status.fiatAmount,
-            cryptoAmount: order.status.cryptoAmount,
-            conversionPrice: order.status.conversionPrice,
-            totalFeeInCrypto: order.status.totalFeeInCrypto,
-            totalfeeInFiat: order.status.totalFeeInFiat,
-            paymentOption: order.status.paymentOption[0],
-            fromAddress: order.status.fromWalletAddress,
-            expires: order.status.autoExpiresAt,
+            event: order.type,
+            status: order.type,
+            isBuyOrSell: 'BUY',
+            currency: order.payload.fiatCurrency,
+            fiatAmount: order.payload.fiatValue,
+            cryptoAmount: order.payload.cryptoAmount,
+            conversionPrice: order.payload.assetExchangeRate,
+            // totalFeeInCrypto: order.status.totalFeeInCrypto,
+            // totalfeeInFiat: order.status.totalFeeInFiat,
+            // paymentOption: order.status.paymentOption[0],
+            fromAddress: order.payload.escrowAddress,
+            expires: order.payload.purchase.endTime,
           },
         });
       }
@@ -120,8 +121,8 @@ export default {
           return record.id === order.status.id;
         },
         data: {
-          event: order.eventName,
-          status: order.status.status,
+          event: order.type,
+          status: order.type,
         },
       });
     },
