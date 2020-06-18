@@ -22,6 +22,7 @@ export default class Account extends Model {
       node: this.attr(''),
       default: this.attr(false),
       wallets: this.hasMany(Wallet, 'account_id'),
+      showTestnets: this.attr(true),
     };
   }
 }
