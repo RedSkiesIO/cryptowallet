@@ -24,7 +24,7 @@ export default [
     decimals: 18,
     api: supportedNetworks.ETHEREUM,
     testnet: false,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'Ethereum Classic',
@@ -38,7 +38,7 @@ export default [
     decimals: 18,
     api: supportedNetworks.ETHEREUM_CLASSIC,
     testnet: false,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'XDai',
@@ -79,7 +79,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'Tether USD',
@@ -94,7 +94,7 @@ export default [
     denomination: '0.000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'USD Coin',
@@ -124,7 +124,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'Maker',
@@ -139,7 +139,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'ChainLink',
@@ -154,7 +154,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'BAT',
@@ -169,7 +169,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'ZRX',
@@ -184,7 +184,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'Reputation',
@@ -199,7 +199,7 @@ export default [
     denomination: '0.00000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'Ethereum Ropsten',

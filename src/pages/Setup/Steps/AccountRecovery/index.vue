@@ -45,7 +45,6 @@
                 <q-input
                   v-model.trim="accountEmail"
                   type="email"
-                  autofocus
                   outlined
                   dark
                   dense

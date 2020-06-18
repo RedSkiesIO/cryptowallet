@@ -136,8 +136,6 @@ export default {
   },
 
   async mounted() {
-    // const userDetails = await TorusSDK();
-    // console.log('userDetails: ', userDetails);
     window.store = this.$store;
     window.app = this;
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }

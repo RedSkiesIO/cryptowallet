@@ -40,6 +40,10 @@
             :card="true"
             v-on="$listeners"
           />
+          <RampItem
+            v-if="rampAvailable"
+            v-on="$listeners"
+          />
         </q-list>
       </div>
     </div>
@@ -50,12 +54,14 @@
 import { mapState } from 'vuex';
 import SelectCountry from './SelectCountry';
 import AddFundsItem from './AddFundsItem';
+import RampItem from './RampItem';
 
 export default {
   name: 'AddFunds',
   components: {
     SelectCountry,
     AddFundsItem,
+    RampItem,
   },
   data() {
     return {
@@ -75,6 +81,13 @@ export default {
       }
       return null;
     },
+    rampAvailable() {
+      if (this.country?.label === 'United Kingdom') {
+        return true;
+      }
+      return false;
+    },
+
     bankTransfer() {
       if (this.country) {
         return this.partners
