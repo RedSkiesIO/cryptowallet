@@ -68,8 +68,6 @@ export default {
       setTimeout(() => {
         this.ramp.show();
         this.ramp.on('*', (data) => {
-          console.log(data);
-
           if (data.type === 'WIDGET_CONFIG_DONE') { this.handleWidgetOpen(); }
           if (data.type === 'WIDGET_CLOSE') { this.handleWidgetClose(); }
         // if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderCreated(data); }

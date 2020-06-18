@@ -46,17 +46,18 @@ Vue.prototype.encryptedModels = [
   Wallet,
 ];
 
-
-window.Tx = Tx;
-window.Utxo = Utxo;
-window.Address = Address;
-window.Wallet = Wallet;
-window.LatestPrice = LatestPrice;
-window.Prices = Prices;
-window.Account = Account;
-window.Coin = Coin;
-window.Fees = Fees;
-window.Payments = Payments;
+if (process.env.DEV) {
+  window.Tx = Tx;
+  window.Utxo = Utxo;
+  window.Address = Address;
+  window.Wallet = Wallet;
+  window.LatestPrice = LatestPrice;
+  window.Prices = Prices;
+  window.Account = Account;
+  window.Coin = Coin;
+  window.Fees = Fees;
+  window.Payments = Payments;
+}
 
 const options = {
   env: 'browser',
