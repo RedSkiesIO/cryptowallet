@@ -68,6 +68,7 @@
 <script>
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
+import Coin from '@/store/wallet/entities/coin';
 import MainNav from '@/layouts/MainNav';
 import Header from '@/layouts/Header';
 import CoinHeader from '@/components/Wallet/CoinHeader';
@@ -103,14 +104,29 @@ export default {
     }),
 
     wallets() {
-      return Wallet.query()
+      const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('imported', true)
         .get();
-    },
 
+      if (!this.showTestnets) {
+        return wallets.filter(({ network }) => {
+          return !this.testnets.includes(network);
+        });
+      }
+      return wallets;
+    },
+    showTestnets() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+    },
+    testnets() {
+      const coins = Coin.query()
+        .where('testnet', true).get();
+      return coins.map(({ network }) => { return network; });
+    },
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      const wallets = this.$store.getters['entities/wallet/find'](this.id);
+      return wallets;
     },
 
     selectedCurrency() {
