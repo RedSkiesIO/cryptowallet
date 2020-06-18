@@ -56,7 +56,7 @@
         />
       </div>
     </div>
-
+    <ToggleTestnets />
     <div
       class="settings-row"
       @click="logout"
@@ -75,6 +75,7 @@
         />
       </div>
     </div>
+
 
     <div
       class="settings-row"
@@ -119,6 +120,8 @@ import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
+import ToggleTestnets from '@/components/AccountSettings/ToggleTestnets';
+
 
 export default {
   name: 'AccountSettings',
@@ -127,6 +130,7 @@ export default {
     SelectCurrency,
     Pin,
     DeleteAccount,
+    ToggleTestnets,
   },
   computed: {
     ...mapState({

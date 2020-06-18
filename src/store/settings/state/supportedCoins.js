@@ -109,7 +109,7 @@ export default [
     denomination: '0.000000',
     minConfirmations: 11,
     api: supportedNetworks.ETHERUM,
-    canBuy: true,
+    // canBuy: true,
   },
   {
     displayName: 'DAI',
