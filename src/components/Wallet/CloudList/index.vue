@@ -36,6 +36,7 @@
 import CloudListItem from '@/components/Wallet/CloudListItem';
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
+import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'CloudList',
@@ -57,11 +58,26 @@ export default {
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
+    showTestnets() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+    },
+
+    testnets() {
+      const coins = Coin.query()
+        .where('testnet', true).get();
+      return coins.map(({ network }) => { return network; });
+    },
 
     wallets() {
-      return Wallet.query()
+      const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
         .where('imported', true).get();
+      if (!this.showTestnets) {
+        return wallets.filter(({ network }) => {
+          return !this.testnets.includes(network);
+        });
+      }
+      return wallets;
     },
   },
   activated() {

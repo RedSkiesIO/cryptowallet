@@ -25,6 +25,7 @@ export default class Coin extends Model {
       imported: this.attr(false),
       testnet: this.attr(false),
       canBuy: this.attr(false),
+      show: this.attr(true),
     };
   }
 }

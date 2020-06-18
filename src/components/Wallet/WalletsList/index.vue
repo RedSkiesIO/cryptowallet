@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import WalletItem from '@/components/Wallet/WalletItem';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -23,7 +24,17 @@ export default {
     WalletItem,
   },
   computed: {
+    ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+    }),
+    showTestnets() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+    },
     wallets() {
+      if (!this.showTestnets) {
+        return Coin.query()
+          .where('testnet', false).get();
+      }
       return Coin.all();
     },
   },

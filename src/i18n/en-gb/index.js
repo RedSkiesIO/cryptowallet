@@ -133,6 +133,7 @@ export default {
   logout: 'Logout',
   deleteAccount: 'Delete Account',
   catalystNode: 'Catalyst Node',
+  toggleTestnets: 'Show Testnets',
   // Wallet
   balance: 'Balance',
   availableBalance: 'Available Balance',
