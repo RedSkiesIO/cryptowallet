@@ -10,6 +10,7 @@
       <q-toggle
         v-model="allowTestnets"
         color="blueish"
+        @input="toggleTestnets"
       />
     </div>
   </div>
@@ -49,7 +50,7 @@ export default {
 
   methods: {
     async toggleTestnets(val) {
-      Coin.$update({
+      await Coin.$update({
         where: (record) => { return record.testnet === true; },
         data: {
           show: val,
