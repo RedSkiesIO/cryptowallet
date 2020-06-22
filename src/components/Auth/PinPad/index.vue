@@ -101,7 +101,10 @@ export default {
       //   const onInputVibrate = 25;
       //   navigator.vibrate(onInputVibrate);
       // }
-
+      const vibrateTime = 100;
+      if (navigator.vibrate) {
+        window.navigator.vibrate(vibrateTime);
+      }
       this.input.push(Math.random());
 
       if (this.mode === 'pin-setup') {
