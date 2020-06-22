@@ -16,19 +16,20 @@ async function login() {
     });
     await torusdirectsdk.init({ skipSw: false });
 
-    // const loginDetails = await torusdirectsdk.triggerLogin({
-    //   typeOfLogin: 'passwordless',
-    //   verifier: 'auth0-atlascity',
-    //   clientId: 'LgplOAge5k3n17shHwn7ehfzEoiQQHhm',
-    //   jwtParams: {
-    //     connection: 'sms',
-    //     domain: 'https://atlascity.eu.auth0.com',
-    //     login_hint: '+447843812196',
-    //   },
-    // });
+    const loginDetails = await torusdirectsdk.triggerLogin({
+      typeOfLogin: 'jwt',
+      verifier: 'auth0-atlascity',
+      clientId: 'LgplOAge5k3n17shHwn7ehfzEoiQQHhm',
+      jwtParams: {
+        connection: '',
+        domain: 'https://atlascity.eu.auth0.com',
+        verifierIdField: 'name',
+        login_hint: '+447843812196',
+      },
+    });
 
-    // return loginDetails;
-    return true;
+    return loginDetails;
+    // return true;
   } catch (error) {
     console.error(error, 'caught');
     return false;

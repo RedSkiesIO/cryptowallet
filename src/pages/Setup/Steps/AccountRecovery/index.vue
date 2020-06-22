@@ -22,7 +22,7 @@
             {{ $t('basicSecurityDesc') }}
           </div>
         </div>
-        <q-list>
+        <q-list class="q-gutter-y-md">
           <q-item>
             <q-item-section
               avatar
@@ -50,6 +50,37 @@
                   dense
                   color="primary"
                   :placeholder="$t('emailPlaceholder')"
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section
+              avatar
+              top
+              class="q-pt-md"
+            >
+              <q-radio
+                v-model="recoveryType"
+                dark
+                val="sms"
+                color="primary"
+              />
+            </q-item-section>
+            <q-item-section class="recovery-option q-pa-md">
+              <q-item-label>
+                <q-icon name="fas fa-mobile-alt" />
+                {{ $t('smsRecovery') }}
+              </q-item-label>
+              <div class="account-email-input-wrapper">
+                <q-input
+                  v-model.trim="accountSms"
+                  type="phone"
+                  outlined
+                  dark
+                  dense
+                  color="primary"
+                  :placeholder="$t('smsPlaceholder')"
                 />
               </div>
             </q-item-section>
@@ -122,12 +153,14 @@ import {
   required,
   email,
 } from 'vuelidate/lib/validators';
+import directAuthLogin from '@/helpers/DirectAuth';
 
 export default {
   name: 'AccountRecovery',
   data() {
     return {
       accountEmail: '',
+      accountSms: '',
       recoveryType: 'email',
       visible: false,
     };
@@ -149,6 +182,11 @@ export default {
         this.$router.push({ path: '/setup/2' });
         return true;
       }
+
+      if (this.recoveryType === 'sms') {
+        await this.validateSMS();
+      }
+
       if (!this.$v.accountEmail.required) {
         this.$toast.create(10, this.$t('enterAccountEmail'), this.delay.normal);
         return false;
@@ -173,6 +211,11 @@ export default {
       this.visible = false;
 
       return true;
+    },
+
+    async validateSMS() {
+      const user = await directAuthLogin();
+      console.log(user);
     },
   },
 };
