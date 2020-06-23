@@ -7,6 +7,8 @@
   "supportFile": "test/cypress/support/index.js",
   "videosFolder": "test/cypress/videos",
   "video": true,
+  "viewportWidth": 414,
+  "viewportHeight": 736,
   "json.schemas": [
     {
       "fileMatch": [

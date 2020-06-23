@@ -38,8 +38,8 @@ describe('Create account using seed phrase', () => {
 
     cy.get('.q-field__native').type('Test');
     cy.get('.btns-wrapper > .q-btn').eq(0).click();
-    cy.get('.scroll-start > :nth-child(1) > .q-btn > .q-btn__wrapper').click();
-    cy.get(':nth-child(1) > .account-item > .q-slide-item > .q-slide-item__content > .q-item > :nth-child(3) > .q-toggle').click();
-    cy.get('.q-dialog__inner > :nth-child(1) > .header-section > .header-back-button-wrapper > .q-btn');
+    // cy.get('.scroll-start > :nth-child(1) > .q-btn > .q-btn__wrapper').click();
+    // cy.get(':nth-child(1) > .account-item > .q-slide-item > .q-slide-item__content > .q-item > :nth-child(3) > .q-toggle').click();
+    // cy.get('.q-dialog__inner > :nth-child(1) > .header-section > .header-back-button-wrapper > .q-btn');
   });
 });
