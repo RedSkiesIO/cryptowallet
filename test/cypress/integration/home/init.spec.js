@@ -1,13 +1,12 @@
-import * as ctx from  '../../../../quasar.conf.js'
 
 describe('Landing', () => {
   beforeEach(() => {
-    cy.visit('/')
-  })
+    cy.visit('/');
+  });
   it('.should() - assert that <title> is correct', () => {
-    cy.title().should('include', 'Quasar')
-  })
-})
+    cy.title().should('include', 'CryptoWallet');
+  });
+});
 
 // describe('Home page tests', () => {
 //   beforeEach(() => {

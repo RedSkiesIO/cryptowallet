@@ -63,6 +63,7 @@
               <q-radio
                 v-model="recoveryType"
                 dark
+                class="sms"
                 val="sms"
                 color="primary"
               />
@@ -105,6 +106,7 @@
               <q-radio
                 v-model="recoveryType"
                 dark
+                class="recoveryPhrase"
                 val="recoveryPhrase"
                 color="primary"
               />
