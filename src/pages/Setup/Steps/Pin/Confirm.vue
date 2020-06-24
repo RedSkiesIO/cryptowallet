@@ -6,7 +6,10 @@
     <h4 class="setup">
       {{ $t('confirmPin') }}
     </h4>
-    <PinPad mode="pin-confirm" />
+    <PinPad
+      ref="pinpad"
+      mode="pin-confirm"
+    />
   </div>
 </template>
 
@@ -33,6 +36,8 @@ export default {
         this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
         this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
+        this.$store.dispatch('setup/resetPinConfirm');
+        this.$refs.pinpad.clearPinArray();
       }
     },
   },
