@@ -17,7 +17,6 @@ describe('Transactions', () => {
 
 
   it('send a transaction from an evm chain', () => {
-    console.log('loaded');
     login();
     cy.get(':nth-child(3) > .wallet-buttons > .q-btn-group > :nth-child(1) > .q-btn__wrapper > .q-btn__content').click();
     cy.get('.to > .q-field > .q-field__inner > .q-field__control').type('0x4hk5y38945uy3ih45639057802304242o');
@@ -44,6 +43,12 @@ describe('Transactions', () => {
     cy.wait(500);
     cy.get('.header-back-button-wrapper > button').eq(2).click();
 
-    cy.get('.send > .q-btn > .q-btn__wrapper').click();
+    cy.get('.send > .q-btn > .q-btn__wrapper').eq(0).click();
+
+    cy.get('.modal-layout-wrapper > .send > .q-btn > .q-btn__wrapper').click();
+  });
+
+  it('receive a transaction from an evm chain', () => {
+    login();
   });
 });

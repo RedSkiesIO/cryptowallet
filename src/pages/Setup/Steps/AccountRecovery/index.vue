@@ -73,17 +73,6 @@
                 <q-icon name="fas fa-mobile-alt" />
                 {{ $t('smsRecovery') }}
               </q-item-label>
-              <div class="account-email-input-wrapper">
-                <q-input
-                  v-model.trim="accountSms"
-                  type="phone"
-                  outlined
-                  dark
-                  dense
-                  color="primary"
-                  :placeholder="$t('smsPlaceholder')"
-                />
-              </div>
             </q-item-section>
           </q-item>
         </q-list>
@@ -133,7 +122,7 @@
     </div> -->
       <div class="btns-wrapper q-mt-lg">
         <q-btn
-          color="primary"
+          color="yellow"
           text-color="blueish"
           :label="$t('next')"
           @click="validate"
