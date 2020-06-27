@@ -144,7 +144,7 @@ import {
   required,
   email,
 } from 'vuelidate/lib/validators';
-import directAuthLogin from '@/helpers/DirectAuth';
+import directAuth from '@/helpers/DirectAuth';
 
 export default {
   name: 'AccountRecovery',
@@ -176,6 +176,7 @@ export default {
 
       if (this.recoveryType === 'sms') {
         await this.validateSMS();
+        return true;
       }
 
       if (!this.$v.accountEmail.required) {
@@ -205,8 +206,17 @@ export default {
     },
 
     async validateSMS() {
-      const user = await directAuthLogin();
+      this.visible = true;
+      const user = await directAuth.login();
       console.log(user);
+      if (user) {
+        const mnemonic = directAuth.getMnemonic(user.privateKey);
+        const mnemonicArray = mnemonic.split(' ');
+        this.$store.dispatch('setup/setSeed', mnemonicArray);
+        this.$store.dispatch('setup/setSeedString', mnemonic);
+        this.$router.push({ path: '/setup/4' });
+      }
+      this.visible = false;
     },
   },
 };

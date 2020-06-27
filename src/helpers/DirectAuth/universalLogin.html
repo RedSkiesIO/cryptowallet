@@ -116,6 +116,11 @@
           ></q-btn>
         </div>
       </div>
+      <q-inner-loading
+        dark 
+        color="primary"
+        :showing="loading">
+      </q-inner-loading>
     </div>
     <!-- Add the following at the end of your body tag -->
     <script src="https://cdn.auth0.com/js/auth0/9.13/auth0.min.js"></script>
@@ -142,6 +147,7 @@
             isValid: true,
             isValidCode: true,
             showVerify: false,
+            loading: false,
           }
         },
         computed: {
@@ -186,18 +192,19 @@
           sendCode() {
             const number = this.validateNumber();
             if (number) {
-              // this.webAuth.passwordlessStart({
-              //  connection: 'sms',
-              //  send: 'code',
-              //  phoneNumber: this.number,
-              // }, function (err,res) {
-              // // handle errors or continue
-              // if (err) displayError(err);
-              // });
+              this.webAuth.passwordlessStart({
+               connection: 'sms',
+               send: 'code',
+               phoneNumber: this.number,
+              }, function (err,res) {
+              // handle errors or continue
+              if (err) this.errorMessage = 'Failed to send code. Is this a valid number?';
+              });
               this.showVerify = true;
             }
           },
           login() {
+            this.loading= true;
             const code = this.code.replace(/\s+/g, '');
             const isnum = /^\d+$/.test(code);
             console.log(this.code);
@@ -209,11 +216,12 @@
                 verificationCode: code,
               }, function (err) {
                 // handle errors or continue
-                if (err) displayError(err);
+                if (err) this.errorMessage = 'invalid code';
               });
             } else {
               this.errorMessage = 'verification code should be 6 digits'
             }
+            this.loading = false;
           }
         },
         // ...etc
