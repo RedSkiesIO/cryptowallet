@@ -1,6 +1,6 @@
 {
   "name": "cryptowallet",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "CryptoWallet - By Atlas City",
   "productName": "CryptoWallet",
   "cordovaId": "com.atlascity.mobile.wallet",
