@@ -33,8 +33,7 @@ const auth = {
   },
 
   getMnemonic(entropy) {
-    const entropyBuffer = Buffer.from(entropy);
-    return bip39.entropyToMnemonic(entropyBuffer);
+    return bip39.entropyToMnemonic(entropy);
   },
 };
 export default auth;

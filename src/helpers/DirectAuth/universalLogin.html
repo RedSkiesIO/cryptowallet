@@ -114,7 +114,14 @@
             label="Next"
             @click="next"
           ></q-btn>
+          
         </div>
+        <div
+        v-if="showVerify" 
+        class="q-pa-sm text-primary"
+        @click=reset>
+          Wrong number?
+         </div>
       </div>
       <q-inner-loading
         dark 
@@ -222,7 +229,16 @@
               this.errorMessage = 'verification code should be 6 digits'
             }
             this.loading = false;
-          }
+          },
+
+          reset() {
+            this.number = ''
+            this.code = null,
+            this.errorMessage ='',
+            this.isValid = true,
+            this.isValidCode = true,
+            this.showVerify = false;
+          },
         },
         // ...etc
         
