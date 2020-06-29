@@ -1,10 +1,10 @@
 {
-  "name": "cryptowallet",
+  "name": "cent",
   "version": "0.0.16",
-  "description": "CryptoWallet - By Atlas City",
-  "productName": "CryptoWallet",
+  "description": "Cent - By Atlas 3T",
+  "productName": "Cent",
   "cordovaId": "com.atlascity.mobile.wallet",
-  "author": "Stephen Horsfall <stephen.horsfall@atlascity.io>",
+  "author": "Stephen Horsfall <stephen.horsfall@atlas3t.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",

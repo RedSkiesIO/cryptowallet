@@ -176,7 +176,7 @@ export default {
       if (this.$route.name === 'setup') { return ''; }
       if (this.$route.name === 'exchange') { return this.$t('exchange'); }
       if (this.$route.name === 'settings') { return this.$t('settings'); }
-      return 'CryptoWallet';
+      return 'Cent';
     },
 
     coinHeading() {
