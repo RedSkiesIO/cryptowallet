@@ -41,6 +41,8 @@ describe('Account Setup', () => {
         newArray = newArray.reverse();
       })
       .then(() => {
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
         cy.wrap(newArray).each((word) => {
           cy.get('.randomSeedContainer .q-btn').contains(word).should('not.be.disabled').click();
         });
