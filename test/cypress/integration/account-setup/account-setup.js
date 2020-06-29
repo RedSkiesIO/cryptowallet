@@ -85,27 +85,33 @@ describe('Account Setup', () => {
   it('imports an account using a seed phrase', () => {
     const recoveryPhrase = 'infant enlist human promote economy merit kind worth version great cherry fiber';
     const badPhrase = 'frost come decrease record invest unusual guide office peanut rose stamp position stand';
-    cy.get('.import-account-btn').click();
+    cy.get('.import-account-btn').should('to.exist').click();
 
     cy.get('.q-field__native').type(badPhrase);
     cy.get('.btns-wrapper > .q-btn > .q-btn__wrapper').click();
+    cy.get('.q-notification__message').should('to.exist');
 
     cy.get('.q-field__native').clear();
 
     cy.get('.q-field__native').type(recoveryPhrase);
     cy.get('.btns-wrapper > .q-btn > .q-btn__wrapper').click();
+    cy.url().should('include', '/setup/4');
 
     cy.wrap(new Array(6)).each((value, index) => {
       cy.contains(index).click();
     });
-    cy.get('.bg-yellow > .q-btn__wrapper').click();
+    cy.get('.bg-yellow > .q-btn__wrapper').should('to.exist').click();
 
     cy.wrap(new Array(6)).each((value, index) => {
       cy.contains(index).click();
     });
-    cy.get('.bg-yellow > .q-btn__wrapper').click();
+    cy.get('.bg-yellow > .q-btn__wrapper').should('to.exist').click();
 
     cy.get('.q-field__control').type('Test');
     cy.get('.btns-wrapper > .q-btn > .q-btn__wrapper').click();
+
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(30000, { requestTimeout: 60000 });
+    cy.url().should('include', '/wallet');
   });
 });
