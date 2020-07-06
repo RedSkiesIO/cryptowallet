@@ -208,7 +208,6 @@ export default {
     async validateSMS() {
       this.visible = true;
       const user = await directAuth.login();
-      console.log(user);
       if (user) {
         const mnemonic = directAuth.getMnemonic(user.privateKey);
         const mnemonicArray = mnemonic.split(' ');
