@@ -94,6 +94,6 @@ export default {
     etherscan: 'https://blockscout.com/poa/sokol/api',
     etherscanKey: null,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
-    chainId: 99,
+    chainId: 77,
   },
 };

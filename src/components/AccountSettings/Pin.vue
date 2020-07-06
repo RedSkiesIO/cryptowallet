@@ -124,6 +124,8 @@ export default {
         this.mode = 'new-pin';
       } else {
         this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
+        this.$refs.PinPad.resetState();
+        this.resetPin();
       }
     },
     /**
@@ -205,6 +207,8 @@ export default {
         this.closeModal();
       } else {
         this.$toast.create(10, this.$t('wrongPin'), this.delay.normal, 'top');
+        this.$refs.PinPad.resetState();
+        this.resetPin();
       }
     },
   },

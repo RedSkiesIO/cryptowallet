@@ -1,16 +1,16 @@
 {
-  "name": "cryptowallet",
-  "version": "0.0.11",
-  "description": "CryptoWallet - By Atlas City",
-  "productName": "CryptoWallet",
+  "name": "cent",
+  "version": "0.0.16",
+  "description": "Cent - By Atlas 3T",
+  "productName": "Cent",
   "cordovaId": "com.atlascity.mobile.wallet",
-  "author": "Stephen Horsfall <stephen.horsfall@atlascity.io>",
+  "author": "Stephen Horsfall <stephen.horsfall@atlas3t.com>",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
     "lint:fix": "eslint --fix --ext .js,.vue src",
     "test:unit": "cross-env NODE_ENV=test TZ=Europe/London jest",
-    "test:e2e": "cross-env NODE_ENV=test wdio e2e.config.js",
+    "test:e2e": "cypress open",
     "test:unit:qa": "cross-env NODE_ENV=test jest --coverage",
     "test:unit:qa:codacy": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | codacy-coverage",
     "test:unit:debug": "cross-env NODE_ENV=test jest --debug",
@@ -19,14 +19,15 @@
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
     "build:android": "npm version patch && quasar build -m android",
     "build:android:sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore dist/cordova/android/apk/release/app-release-unsigned.apk alias_name",
-    "build:android:zipalign": "zipalign -v 4 dist/cordova/android/apk/release/app-release-unsigned.apk dist/cordova/android/apk/release/app-release.apk"
+    "build:android:zipalign": "zipalign -v 4 dist/cordova/android/apk/release/app-release-unsigned.apk dist/cordova/android/apk/release/app-release.apk",
+    "test:e2e:CI": "cypress run"
   },
   "dependencies": {
     "@atlascity/vuex-orm-plugin-lokijs": "^0.0.3",
     "@quasar/cli": "^1.0.7",
     "@quasar/extras": "^1.7.0",
     "@ramp-network/ramp-instant-sdk": "^1.8.1",
-    "@toruslabs/torus-direct-web-sdk": "^2.0.0",
+    "@toruslabs/torus-direct-web-sdk": "^3.0.3",
     "@transak/transak-sdk": "^1.0.17",
     "@vuex-orm/core": "^0.27.0",
     "axios": "^0.18.0",
@@ -70,6 +71,7 @@
     "@babel/core": "^7.3.3",
     "@quasar/app": "^1.8.5",
     "@quasar/quasar-app-extension-testing": "^1.0.0",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^1.0.0-beta.11",
     "@quasar/quasar-app-extension-testing-unit-jest": "^1.1.0-beta.0",
     "@types/cross-spawn": "^6.0.0",
     "@types/jest": "^23.3.2",
@@ -107,7 +109,8 @@
     "strip-ansi": "^3.0.1",
     "vue-jest": "^3.0.3",
     "worker-loader": "^2.0.0",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "eslint-plugin-cypress": "^2.10.3"
   },
   "lint-staged": {
     "*.js": [

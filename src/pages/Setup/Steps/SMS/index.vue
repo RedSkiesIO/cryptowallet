@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'SMSNumber',
+  name: 'SMSRecovery',
 
 };
 </script>
