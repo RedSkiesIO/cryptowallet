@@ -70,10 +70,13 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    isTestnet() {
+      return this.$store.getters['entities/coin/find'](this.wallet.name).testnet;
+    },
 
     transak() {
       if (this.country) {
-        return transak(this.wallet, this.country.value, this.card, true);
+        return transak(this.wallet, this.country.value, this.card, this.isTestnet);
       }
       const country = {
         currencyCode: 'GBP',
