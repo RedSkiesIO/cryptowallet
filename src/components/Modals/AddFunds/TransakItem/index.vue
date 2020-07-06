@@ -44,7 +44,7 @@ import { transak } from '@/helpers/Transak';
 import Payments from '@/store/wallet/entities/payments';
 
 export default {
-  name: 'AddFundsItem',
+  name: 'TransakItem',
   props: {
     country: {
       required: true,

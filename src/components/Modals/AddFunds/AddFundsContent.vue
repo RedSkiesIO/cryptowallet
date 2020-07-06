@@ -28,13 +28,13 @@
           padding
           separator
         >
-          <AddFundsItem
+          <TransakItem
             v-if="bankTransfer"
             :country="country"
             :bank="true"
             v-on="$listeners"
           />
-          <AddFundsItem
+          <TransakItem
             v-if="cardPayments"
             :country="country"
             :card="true"
@@ -53,14 +53,14 @@
 <script>
 import { mapState } from 'vuex';
 import SelectCountry from './SelectCountry';
-import AddFundsItem from './AddFundsItem';
+import TransakItem from './TransakItem';
 import RampItem from './RampItem';
 
 export default {
   name: 'AddFunds',
   components: {
     SelectCountry,
-    AddFundsItem,
+    TransakItem,
     RampItem,
   },
   data() {
