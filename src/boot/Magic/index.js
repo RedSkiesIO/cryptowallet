@@ -30,9 +30,9 @@ const magic = {
     }
   },
 
-  async updateEmail() {
+  async updateEmail(email) {
     try {
-      await m.user.updateEmail({ email: 'hello@example.com' });
+      await m.user.updateEmail({ email });
     } catch (err) {
       if (err instanceof RPCError) {
         switch (err.code) {
@@ -42,6 +42,9 @@ const magic = {
           // eslint-disable-next-line no-console
           default: console.error(err);
         }
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(err);
       }
     }
   },

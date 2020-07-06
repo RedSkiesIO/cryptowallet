@@ -134,6 +134,9 @@ export default {
   deleteAccount: 'Delete Account',
   catalystNode: 'Catalyst Node',
   toggleTestnets: 'Show Testnets',
+  updateEmail: 'Update Email Address',
+  setNewEmail: 'Set a new email address',
+  email: 'Email',
   // Wallet
   balance: 'Balance',
   availableBalance: 'Available Balance',
