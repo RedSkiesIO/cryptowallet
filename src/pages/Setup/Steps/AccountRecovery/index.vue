@@ -197,6 +197,7 @@ export default {
       await this.$magic.login(this.accountEmail);
       const mnemonic = await this.$magic.getMnemonic();
       const mnemonicArray = mnemonic.split(' ');
+      this.$store.dispatch('setup/setAccountEmail', this.accountEmail);
       this.$store.dispatch('setup/setSeed', mnemonicArray);
       this.$store.dispatch('setup/setSeedString', mnemonic);
       this.$router.push({ path: '/setup/4' });

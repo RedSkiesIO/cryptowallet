@@ -57,6 +57,14 @@ export function setAccountName(context, payload) {
   context.commit('SET_ACCOUNT_NAME', payload);
 }
 
+/*
+ * Action setAccountEmail
+ */
+export function setAccountEmail(context, payload) {
+  context.commit('SET_ACCOUNT_EMAIL', payload);
+}
+
+
 export function setAccountCurrency(context, payload) {
   context.commit('SET_ACCOUNT_CURRENCY', payload);
 }

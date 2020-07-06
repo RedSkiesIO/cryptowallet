@@ -17,6 +17,7 @@ export default class Account extends Model {
       salt: this.attr(''),
       pinHash: this.attr(''),
       name: this.attr(''),
+      email: this.attr(''),
       locale: this.attr(''),
       currency: this.attr(''),
       node: this.attr(''),

@@ -2,6 +2,7 @@
 /config
 /docks
 /tests
+/test
 /src/**/*.spec.js
 /src/**/*.e2e.js
 /src/assets

@@ -1,5 +1,6 @@
 export default {
   accountName: null,
+  accountEmail: null,
   accountType: null,
   pinArray: [],
   pinConfirmArray: [],

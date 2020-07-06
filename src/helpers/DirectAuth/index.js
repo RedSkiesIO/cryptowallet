@@ -27,6 +27,7 @@ const auth = {
 
       return loginDetails;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error, 'caught');
       return false;
     }

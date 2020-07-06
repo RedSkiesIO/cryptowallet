@@ -17,4 +17,5 @@ export default {
   newPinModalOpened: false,
   newTxData: null,
   addFundsModalOpened: false,
+  updateEmailModalOpened: false,
 };
