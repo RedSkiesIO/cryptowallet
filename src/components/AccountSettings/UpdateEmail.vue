@@ -39,6 +39,7 @@
               outlined
               dark
               color="primary"
+              :placeholder="$t('emailPlaceholder')"
             />
           </div>
           <div class="btns-wrapper">
@@ -51,6 +52,9 @@
           </div>
         </div>
         <div v-else>
+          <div class="text-center">
+            {{ $t('emailLogin') }} {{ email }}
+          </div>
           <div class="btns-wrapper">
             <q-btn
               color="yellow"
@@ -67,6 +71,11 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+  required,
+  email,
+} from 'vuelidate/lib/validators';
+import Account from '@/store/wallet/entities/account';
 
 export default {
   name: 'UpdateEmail',
@@ -75,6 +84,12 @@ export default {
       loggedIn: false,
       newEmail: null,
     };
+  },
+  validations: {
+    newEmail: {
+      required,
+      email,
+    },
   },
   computed: {
     ...mapState({
@@ -103,15 +118,33 @@ export default {
   },
   methods: {
     async login() {
-      await this.$magic.login(this.email);
-      this.loggedIn = true;
+      const login = await this.$magic.login(this.email);
+      if (login) {
+        this.loggedIn = true;
+      }
     },
     async changeEmail() {
+      if (!this.$v.newEmail.required) {
+        this.$toast.create(10, this.$t('enterAccountEmail'), this.delay.normal);
+        return false;
+      }
+
+      if (!this.$v.newEmail.email) {
+        this.$toast.create(10, this.$t('invalidAccountEmail'), this.delay.normal);
+        return false;
+      }
+
       const newEmail = await this.$magic.updateEmail(this.newEmail);
       if (newEmail) {
+        Account.$update({
+          where: (record) => { return record.id === this.authenticatedAccount; },
+          data: { email: this.newEmail },
+        });
         this.closeModal();
         this.$toast.create(0, this.$t('emailUpdated'), this.delay.vlong);
+        return true;
       }
+      return false;
     },
     closeModal() {
       this.updateEmailModalOpened = false;

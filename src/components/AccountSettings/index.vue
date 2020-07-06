@@ -131,7 +131,7 @@
     <DeleteAccount
       :pin-hash="account.pinHash"
     />
-    <UpdateEmail v-if="showUpdateEmail" />
+    <UpdateEmail v-if="updateEmailEnabled" />
   </div>
 </template>
 
@@ -155,17 +155,15 @@ export default {
     ToggleTestnets,
     UpdateEmail,
   },
-  data() {
-    return {
-      showUpdateEmail: false,
-    };
-  },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    updateEmailEnabled() {
+      return this.$store.state.modals.updateEmailModalOpened;
     },
   },
   methods: {
@@ -182,7 +180,6 @@ export default {
       this.$store.dispatch('modals/setNewPinModalOpened', true);
     },
     openUpdateEmailModal() {
-      this.showUpdateEmail = true;
       this.$store.dispatch('modals/setUpdateEmailModalOpened', true);
     },
     logout() {
