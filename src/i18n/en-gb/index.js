@@ -137,6 +137,7 @@ export default {
   updateEmail: 'Update Email Address',
   setNewEmail: 'Set a new email address',
   email: 'Email',
+  emailUpdated: 'Your email address has been updated',
   // Wallet
   balance: 'Balance',
   availableBalance: 'Available Balance',

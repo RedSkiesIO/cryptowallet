@@ -39,6 +39,7 @@
     </div>
 
     <div
+      v-if="account.email"
       class="settings-row"
       @click.prevent="openUpdateEmailModal"
     >
@@ -130,7 +131,7 @@
     <DeleteAccount
       :pin-hash="account.pinHash"
     />
-    <UpdateEmail />
+    <UpdateEmail v-if="showUpdateEmail" />
   </div>
 </template>
 
@@ -154,6 +155,11 @@ export default {
     ToggleTestnets,
     UpdateEmail,
   },
+  data() {
+    return {
+      showUpdateEmail: false,
+    };
+  },
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
@@ -176,6 +182,7 @@ export default {
       this.$store.dispatch('modals/setNewPinModalOpened', true);
     },
     openUpdateEmailModal() {
+      this.showUpdateEmail = true;
       this.$store.dispatch('modals/setUpdateEmailModalOpened', true);
     },
     logout() {

@@ -22,27 +22,43 @@
         </h1>
       </div>
       <div class="modal-layout-wrapper center">
-        <div>
-          <h1 class="setup">
-            {{ $t('setNewEmail') }}
-          </h1>
+        <div
+          v-if="loggedIn"
+          class="q-gutter-y-md "
+        >
+          <div>
+            <h1 class="setup">
+              {{ $t('setNewEmail') }}
+            </h1>
+          </div>
+          <div class="account-name-input-wrapper">
+            <q-input
+              v-model.trim="newEmail"
+              :float-label="$t('email')"
+              type="email"
+              outlined
+              dark
+              color="primary"
+            />
+          </div>
+          <div class="btns-wrapper">
+            <q-btn
+              color="yellow"
+              text-color="blueish"
+              label="Update"
+              @click="changeEmail"
+            />
+          </div>
         </div>
-        <div class="account-name-input-wrapper">
-          <q-input
-            v-model.trim="newEmail"
-            :float-label="$t('email')"
-            outlined
-            dark
-            color="primary"
-          />
-        </div>
-        <div class="btns-wrapper">
-          <q-btn
-            color="yellow"
-            text-color="blueish"
-            label="Update"
-            @click="validate"
-          />
+        <div v-else>
+          <div class="btns-wrapper">
+            <q-btn
+              color="yellow"
+              text-color="blueish"
+              label="Login"
+              @click="login"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -56,6 +72,7 @@ export default {
   name: 'UpdateEmail',
   data() {
     return {
+      loggedIn: false,
       newEmail: null,
     };
   },
@@ -64,6 +81,9 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
+    email() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).email;
+    },
     updateEmailModalOpened: {
       get() {
         return this.$store.state.modals.updateEmailModalOpened;
@@ -73,10 +93,25 @@ export default {
       },
     },
   },
+  async mounted() {
+    this.$store.dispatch('settings/setLoading', true);
+    const isLoggedIn = await this.$magic.isLoggedIn();
+    if (isLoggedIn) {
+      this.loggedIn = true;
+    }
+    this.$store.dispatch('settings/setLoading', false);
+  },
   methods: {
+    async login() {
+      await this.$magic.login(this.email);
+      this.loggedIn = true;
+    },
     async changeEmail() {
-      console.log('do something');
-      await this.$magic.updateEmail();
+      const newEmail = await this.$magic.updateEmail(this.newEmail);
+      if (newEmail) {
+        this.closeModal();
+        this.$toast.create(0, this.$t('emailUpdated'), this.delay.vlong);
+      }
     },
     closeModal() {
       this.updateEmailModalOpened = false;

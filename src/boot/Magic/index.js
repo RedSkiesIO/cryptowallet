@@ -12,8 +12,10 @@ const magic = {
     // log in a user by their email
     try {
       await m.auth.loginWithMagicLink({ email });
+      return true;
     } catch {
     // Handle errors if required!
+      return false;
     }
   },
 
@@ -33,6 +35,7 @@ const magic = {
   async updateEmail(email) {
     try {
       await m.user.updateEmail({ email });
+      return true;
     } catch (err) {
       if (err instanceof RPCError) {
         switch (err.code) {
@@ -46,6 +49,7 @@ const magic = {
         // eslint-disable-next-line no-console
         console.error(err);
       }
+      return false;
     }
   },
 
