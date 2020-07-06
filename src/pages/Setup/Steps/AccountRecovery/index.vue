@@ -54,7 +54,7 @@
               </div>
             </q-item-section>
           </q-item>
-          <q-item>
+          <!-- <q-item>
             <q-item-section
               avatar
               top
@@ -74,7 +74,7 @@
                 {{ $t('smsRecovery') }}
               </q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
         </q-list>
       </div>
       <div class="q-mt-xl">

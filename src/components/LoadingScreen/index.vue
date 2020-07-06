@@ -66,7 +66,7 @@ export default {
   position: absolute;
   width: 10rem;
   height: 5rem;
-  bottom: 0;
+  bottom: 20px;
   opacity: 0.2;
   margin: 0 auto;
   left: 0;
