@@ -1,4 +1,4 @@
-import { Magic } from 'magic-sdk';
+import { Magic, RPCError, RPCErrorCode } from 'magic-sdk';
 import { ethers } from 'ethers';
 import bip39 from 'bip39';
 
@@ -27,6 +27,22 @@ const magic = {
     } catch {
       return false;
       // Handle errors if required!
+    }
+  },
+
+  async updateEmail() {
+    try {
+      await m.user.updateEmail({ email: 'hello@example.com' });
+    } catch (err) {
+      if (err instanceof RPCError) {
+        switch (err.code) {
+          case RPCErrorCode.UpdateEmailFailed:
+            // Handle errors accordingly :)
+            break;
+          // eslint-disable-next-line no-console
+          default: console.error(err);
+        }
+      }
     }
   },
 
