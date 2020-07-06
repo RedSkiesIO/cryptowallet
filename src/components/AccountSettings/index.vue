@@ -39,6 +39,26 @@
     </div>
 
     <div
+      v-if="account.email"
+      class="settings-row"
+      @click.prevent="openUpdateEmailModal"
+    >
+      <div>
+        {{ $t('updateEmail') }}
+      </div>
+      <div>
+        <q-btn
+          icon="chevron_right"
+          size="lg"
+          color="blueish"
+          class="settings-chevron"
+          flat
+          @click.prevent="openUpdateEmailModal"
+        />
+      </div>
+    </div>
+
+    <div
       class="settings-row"
       @click.prevent="openNewPinModal"
     >
@@ -111,6 +131,7 @@
     <DeleteAccount
       :pin-hash="account.pinHash"
     />
+    <UpdateEmail v-if="updateEmailEnabled" />
   </div>
 </template>
 
@@ -121,6 +142,7 @@ import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
 import ToggleTestnets from '@/components/AccountSettings/ToggleTestnets';
+import UpdateEmail from '@/components/AccountSettings/UpdateEmail';
 
 
 export default {
@@ -131,6 +153,7 @@ export default {
     Pin,
     DeleteAccount,
     ToggleTestnets,
+    UpdateEmail,
   },
   computed: {
     ...mapState({
@@ -138,6 +161,9 @@ export default {
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    updateEmailEnabled() {
+      return this.$store.state.modals.updateEmailModalOpened;
     },
   },
   methods: {
@@ -152,6 +178,9 @@ export default {
     },
     openNewPinModal() {
       this.$store.dispatch('modals/setNewPinModalOpened', true);
+    },
+    openUpdateEmailModal() {
+      this.$store.dispatch('modals/setUpdateEmailModalOpened', true);
     },
     logout() {
       window.location.reload(true);

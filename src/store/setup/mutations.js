@@ -60,6 +60,13 @@ export function SET_ACCOUNT_NAME(state, payload) {
 }
 
 /**
+ * SET ACCOUNT NAME
+ */
+export function SET_ACCOUNT_EMAIL(state, payload) {
+  state.accountEmail = payload;
+}
+
+/**
  * SET ACCOUNT CURRENCY
  */
 export function SET_ACCOUNT_CURRENCY(state, payload) {

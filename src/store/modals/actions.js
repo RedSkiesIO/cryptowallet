@@ -88,3 +88,10 @@ export function setNewTxData(context, payload) {
 export function setAddFundsModalOpened(context, payload) {
   context.commit('SET_ADD_FUNDS_MODAL_OPENED', payload);
 }
+
+/**
+ * Action setUpdateEmailModalOpened
+ */
+export function setUpdateEmailModalOpened(context, payload) {
+  context.commit('SET_UPDATE_EMAIL_MODAL_OPENED', payload);
+}

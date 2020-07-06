@@ -33,6 +33,13 @@ export default new VueRouter({
       ],
     },
     {
+      path: '/settings/update-email',
+      component: () => { return import('@/layouts/Authed'); },
+      children: [
+        { name: 'update-email', path: '', component: () => { return import('@/components/AccountSettings/UpdateEmail'); } },
+      ],
+    },
+    {
       path: '/wallet',
       component: () => { return import('@/layouts/Authed'); },
       children: [
