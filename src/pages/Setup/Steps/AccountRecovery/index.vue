@@ -22,7 +22,7 @@
             {{ $t('basicSecurityDesc') }}
           </div>
         </div>
-        <q-list>
+        <q-list class="q-gutter-y-md">
           <q-item>
             <q-item-section
               avatar
@@ -54,6 +54,27 @@
               </div>
             </q-item-section>
           </q-item>
+          <!-- <q-item>
+            <q-item-section
+              avatar
+              top
+              class="q-pt-md"
+            >
+              <q-radio
+                v-model="recoveryType"
+                dark
+                class="sms"
+                val="sms"
+                color="primary"
+              />
+            </q-item-section>
+            <q-item-section class="recovery-option q-pa-md">
+              <q-item-label>
+                <q-icon name="fas fa-mobile-alt" />
+                {{ $t('smsRecovery') }}
+              </q-item-label>
+            </q-item-section>
+          </q-item> -->
         </q-list>
       </div>
       <div class="q-mt-xl">
@@ -74,6 +95,7 @@
               <q-radio
                 v-model="recoveryType"
                 dark
+                class="recoveryPhrase"
                 val="recoveryPhrase"
                 color="primary"
               />
@@ -100,7 +122,7 @@
     </div> -->
       <div class="btns-wrapper q-mt-lg">
         <q-btn
-          color="primary"
+          color="yellow"
           text-color="blueish"
           :label="$t('next')"
           @click="validate"
@@ -122,12 +144,14 @@ import {
   required,
   email,
 } from 'vuelidate/lib/validators';
+import directAuth from '@/helpers/DirectAuth';
 
 export default {
   name: 'AccountRecovery',
   data() {
     return {
       accountEmail: '',
+      accountSms: '',
       recoveryType: 'email',
       visible: false,
     };
@@ -149,6 +173,12 @@ export default {
         this.$router.push({ path: '/setup/2' });
         return true;
       }
+
+      if (this.recoveryType === 'sms') {
+        await this.validateSMS();
+        return true;
+      }
+
       if (!this.$v.accountEmail.required) {
         this.$toast.create(10, this.$t('enterAccountEmail'), this.delay.normal);
         return false;
@@ -173,6 +203,19 @@ export default {
       this.visible = false;
 
       return true;
+    },
+
+    async validateSMS() {
+      this.visible = true;
+      const user = await directAuth.login();
+      if (user) {
+        const mnemonic = directAuth.getMnemonic(user.privateKey);
+        const mnemonicArray = mnemonic.split(' ');
+        this.$store.dispatch('setup/setSeed', mnemonicArray);
+        this.$store.dispatch('setup/setSeedString', mnemonic);
+        this.$router.push({ path: '/setup/4' });
+      }
+      this.visible = false;
     },
   },
 };
