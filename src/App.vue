@@ -144,30 +144,30 @@ export default {
   methods: {
     storeSupportedCoins() {
       this.supportedCoins.forEach((coin) => {
-        const isThere = Coin.find([coin.name]);
-        const data = {
-          name: coin.name,
-          displayName: coin.displayName,
-          sdk: coin.sdk,
-          symbol: coin.symbol,
-          network: coin.network,
-          denomination: coin.denomination,
-          minConfirmations: coin.minConfirmations,
-          decimals: coin.decimals,
-          api: coin.api,
-          testnet: coin.testnet ? coin.testnet : false,
-          canBuy: coin.canBuy ? coin.canBuy : false,
-        };
-        if (!isThere) {
-          if (coin.sdk === 'ERC20') {
-            data.parentName = coin.parentName;
-            data.parentSdk = coin.parentSdk;
-            data.contractAddress = coin.contractAddress;
-          }
-          Coin.$insert({
-            data,
-          });
-        }
+        // const isThere = Coin.find([coin.name]);
+        // const data = {
+        //   name: coin.name,
+        //   displayName: coin.displayName,
+        //   sdk: coin.sdk,
+        //   symbol: coin.symbol,
+        //   network: coin.network,
+        //   denomination: coin.denomination,
+        //   minConfirmations: coin.minConfirmations,
+        //   decimals: coin.decimals,
+        //   api: coin.api,
+        //   testnet: coin.testnet ? coin.testnet : false,
+        //   transak: coin.transak ? coin.transak : false,
+        // };
+        // if (!isThere) {
+        //   if (coin.sdk === 'ERC20') {
+        //     data.parentName = coin.parentName;
+        //     data.parentSdk = coin.parentSdk;
+        //     data.contractAddress = coin.contractAddress;
+        //   }
+        Coin.$insert({
+          data: coin,
+        });
+        // }
         // else {
         //   // Coin.$update({
         //   //   where: (record) => { return record.name === isThere.name; },

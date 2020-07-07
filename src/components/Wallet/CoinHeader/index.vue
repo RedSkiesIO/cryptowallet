@@ -132,7 +132,7 @@ export default {
       const coin = this.supportedCoins.find((token) => {
         return token.name === this.wallet.name;
       });
-      if (coin.canBuy) { return true; }
+      if (coin.transak) { return true; }
       return false;
     },
 
