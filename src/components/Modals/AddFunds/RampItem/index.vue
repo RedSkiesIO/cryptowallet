@@ -51,6 +51,9 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    isTestnet() {
+      return this.$store.getters['entities/coin/find'](this.wallet.name).testnet;
+    },
   },
 
   beforeDestroy() {
@@ -62,7 +65,7 @@ export default {
 
   methods: {
     openRamp() {
-      this.ramp = ramp(this.wallet, true);
+      this.ramp = ramp(this.wallet, this.isTestnet);
       this.ramp.domNodes.overlay.style.zIndex = 998;
       this.$emit('loading', { on: true, logo: 'statics/payment-logos/ramp.svg' });
       setTimeout(() => {

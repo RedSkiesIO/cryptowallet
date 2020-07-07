@@ -24,7 +24,8 @@ export default class Coin extends Model {
       api: this.attr(''),
       imported: this.attr(false),
       testnet: this.attr(false),
-      canBuy: this.attr(false),
+      transak: this.attr(false),
+      rampNetwork: this.attr(false),
       show: this.attr(true),
     };
   }
