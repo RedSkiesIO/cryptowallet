@@ -250,8 +250,11 @@ export default {
     supportedCoins() {
       return Coin.all();
     },
+    showTestnets() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+    },
     supportedNetworks() {
-      return Coin.query()
+      const networks = Coin.query()
         .where('sdk', 'Ethereum')
         .get()
         .map((coin) => {
@@ -260,6 +263,11 @@ export default {
             value: coin.network,
           };
         });
+
+      if (!this.showTestnets) {
+        return networks.filter(({ testnet }) => { return !testnet; });
+      }
+      return networks;
     },
   },
   mounted() {
