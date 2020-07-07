@@ -87,7 +87,12 @@ export default {
   },
 
   beforeDestroy() {
-    this.transak.removeAllListeners();
+    try {
+      this.transak.removeAllListeners();
+    } catch {
+      // eslint-disable-next-line no-console
+      console.error('implement transak removeAllListeners function');
+    }
   },
 
 

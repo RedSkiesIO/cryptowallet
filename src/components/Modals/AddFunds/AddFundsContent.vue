@@ -75,6 +75,9 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    supportsRamp() {
+      return this.$store.getters['entities/coin/find'](this.wallet.name).rampNetwork;
+    },
     partners() {
       if (this.country) {
         return this.country.value.partners;
@@ -82,7 +85,7 @@ export default {
       return null;
     },
     rampAvailable() {
-      if (this.country?.label === 'United Kingdom') {
+      if (this.country?.label === 'United Kingdom' && this.supportsRamp) {
         return true;
       }
       return false;
