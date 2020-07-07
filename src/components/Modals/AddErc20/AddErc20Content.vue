@@ -256,18 +256,22 @@ export default {
     supportedNetworks() {
       const networks = Coin.query()
         .where('sdk', 'Ethereum')
-        .get()
-        .map((coin) => {
+        .get();
+
+      if (!this.showTestnets) {
+        return networks.filter(({ testnet }) => { return !testnet; }).map((coin) => {
           return {
             label: coin.name,
             value: coin.network,
           };
         });
-
-      if (!this.showTestnets) {
-        return networks.filter(({ testnet }) => { return !testnet; });
       }
-      return networks;
+      return networks.map((coin) => {
+        return {
+          label: coin.name,
+          value: coin.network,
+        };
+      });
     },
   },
   mounted() {
