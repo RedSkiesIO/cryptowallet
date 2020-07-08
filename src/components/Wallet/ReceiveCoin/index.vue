@@ -31,7 +31,10 @@
       class="bg-white text-black q-pa-md rounded-border-top"
     >
       <div class="receive-coin-box q-gutter-y-lg">
-        <div class="row justify-end">
+        <div
+          v-close-popup
+          class="row justify-end"
+        >
           Done
         </div>
         <div class="text-center text-h5 text-primary text-weight-bold">
