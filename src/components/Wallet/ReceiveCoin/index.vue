@@ -35,10 +35,10 @@
           v-close-popup
           class="row justify-end"
         >
-          Done
+          {{ $t('done') }}
         </div>
         <div class="text-center text-h5 text-primary text-weight-bold">
-          Send to your wallet
+          {{ $t('sendToWallet') }}
         </div>
         <div class="flex justify-center">
           <img
@@ -61,7 +61,7 @@
             class="q-px-lg"
             color="primary"
             size="lg"
-            label="share"
+            :label="$t('share')"
             @click.prevent="share()"
           />
         </div>
