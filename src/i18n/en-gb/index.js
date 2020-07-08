@@ -184,6 +184,7 @@ export default {
   transactionBroadcastFail: 'Transaction broadcast failure',
   send: 'Send',
   receive: 'Receive',
+  sendToWallet: 'Send to your wallet',
   success: 'Success',
   successMessage: 'YOUR TRANSACTION WAS SUCCESSFULLY SENT',
   wallet: 'Wallets',
