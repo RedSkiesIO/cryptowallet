@@ -2,10 +2,10 @@
   <div v-if="receiveCoinModalOpened">
     <q-dialog
       v-model="receiveCoinModalOpened"
-      :maximized="true"
+      position="bottom"
       transition-show="slide-up"
       transition-hide="slide-down"
-      content-class="light-modal"
+      content-class="rounded-borders light-modal"
     >
       <Receive />
     </q-dialog>
