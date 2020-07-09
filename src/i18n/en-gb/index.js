@@ -140,6 +140,7 @@ export default {
   emailUpdated: 'Your email address has been updated',
   emailLogin: 'To change your email address please login with your current email address',
   // Wallet
+  assets: 'Assets',
   balance: 'Balance',
   availableBalance: 'Available Balance',
   availableBalanceExplanation: 'Your available balance is the funds in your wallet that have been confirmed. It may be less than your total balance if you have received transactions that haven\'t been confirmed yet or if you have recently sent a transaction.',

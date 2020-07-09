@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cloud-list">
     <div v-if="wallets.length === 0">
       <q-btn
         icon="add_circle_outline"
@@ -16,8 +16,22 @@
       class="scroll-area extended cloud-scroll q-px-md q-pt-lg"
     >
       <!-- <div class="scroll-offset" /> -->
-      <div class="row text-h6 text-weight-bold">
-        Assets
+      <div class="row q-mb-sm justify-between text-h6 text-weight-bold">
+        <div>
+          {{ $t('assets') }}
+          <span class="text-grey text-weight-thin">({{ wallets.length }})</span>
+        </div>
+        <div class="q-px-xs">
+          <q-btn
+            flat
+            round
+            size="sm"
+            color="info"
+            icon="add"
+            class="bg-accent"
+            @click.prevent="openWalletsModal"
+          />
+        </div>
       </div>
       <CloudListItem
         v-for="wallet in wallets"
@@ -120,12 +134,11 @@ export default {
 </script>
 
 <style>
-.scroll-area {
+.cloud-list .scroll-area {
   position: absolute;
-  height: 100%;
-  width: 100%;
+  height: calc(100% - 15rem);  width: 100%;
   left: 0;
-  top: 20rem;
+  top: 15rem;
 }
 
 .large-cloud-btn {

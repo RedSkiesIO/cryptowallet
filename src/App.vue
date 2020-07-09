@@ -194,7 +194,7 @@ background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 10
 }
 
 .shrinked .background {
-  height: 22.5rem;
+  height: 17.5rem;
 }
 
 .new-wallet-btn-wrapper {
