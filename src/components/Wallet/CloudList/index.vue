@@ -15,7 +15,7 @@
       ref="scrollArea"
       class="scroll-area extended cloud-scroll q-px-md q-pt-lg"
     >
-      <div class="scroll-offset" />
+      <!-- <div class="scroll-offset" /> -->
       <div class="row text-h6 text-weight-bold">
         Assets
       </div>
@@ -125,7 +125,7 @@ export default {
   height: 100%;
   width: 100%;
   left: 0;
-  top: 0;
+  top: 20rem;
 }
 
 .large-cloud-btn {

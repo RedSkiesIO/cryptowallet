@@ -154,12 +154,13 @@ export default {
 .cloud-item {
   box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
 }
-
+@media(hover: hover) and (pointer: fine) {
 .cloud-item:hover {
       -webkit-transform: translateY(-4px);
     -ms-transform: translateY(-4px);
     transform: translateY(-4px);
     box-shadow: 0px 15px 20px rgba(0,0,0,0.15);
+}
 }
 
 .wallet-cloud {
