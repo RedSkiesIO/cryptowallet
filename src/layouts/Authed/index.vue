@@ -293,11 +293,12 @@ export default {
   position: relative;
   top: 0;
   display: block!important;
-  height: 5rem!important;
+  height: 20rem!important;
   position: absolute;
   width: 100%;
   opacity: 1;
   padding: 0 0.5rem;
+  margin-top: 2.5rem;
 }
 
 .no-balance .total-balance-wrapper,
@@ -321,9 +322,9 @@ export default {
 }*/
 
 .layout-shape .layout {
-  height: calc(100vh - 5rem - 2.5rem);
-  height: calc(100vh - 2.5rem - 5rem - constant(safe-area-inset-top));
-  height: calc(100vh - 2.5rem - 5rem - env(safe-area-inset-top));
+  height: calc(100vh - 4rem - constant(safe-area-inset-top));
+  height: calc(100vh - 4rem - env(safe-area-inset-top));
+  height: calc(100vh - 4rem);
 }
 
 .layout-shape.white {

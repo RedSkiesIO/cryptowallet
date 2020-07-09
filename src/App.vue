@@ -187,16 +187,14 @@ body > div {
 }
 
 .background {
-  background-color: #1e3c57;
-  width: 100%;
+background: rgb(49,255,216);
+background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 100%);  width: 100%;
   height: 100%;
   position: absolute;
 }
 
 .shrinked .background {
   height: 22.5rem;
-  top: -15rem;
-  border-bottom: 0.3rem solid #4e677d;
 }
 
 .new-wallet-btn-wrapper {

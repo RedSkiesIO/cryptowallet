@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="scroll-start"
-    @touchstart="touchStart"
-    @touchmove="touchMove"
-  >
+  <div>
     <div v-if="wallets.length === 0">
       <q-btn
         icon="add_circle_outline"
@@ -21,19 +17,18 @@
     >
       <div class="scroll-offset" />
 
-      <CloudListItem
+      <!-- <CloudListItem
         v-for="wallet in wallets"
         :key="wallet.displayName"
         :wallet="wallet"
         :currency="selectedCurrency"
-      />
-      <q-scroll-observer @scroll="scrolled" />
+      /> -->
     </q-scroll-area>
   </div>
 </template>
 
 <script>
-import CloudListItem from '@/components/Wallet/CloudListItem';
+// import CloudListItem from '@/components/Wallet/CloudListItem';
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
@@ -41,7 +36,7 @@ import Coin from '@/store/wallet/entities/coin';
 export default {
   name: 'CloudList',
   components: {
-    CloudListItem,
+    // CloudListItem,
   },
 
   data() {
@@ -151,6 +146,6 @@ export default {
 }
 
 .scroll-offset {
-  height: 5rem;
+  height: 20rem;
 }
 </style>
