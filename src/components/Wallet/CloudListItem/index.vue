@@ -1,12 +1,11 @@
 <template>
   <div
-    class="wallet-cloud"
     @click="goToWallet"
   >
-    <div class="cloud-top-row">
+    <div class="q-mb-lg q-pa-md bg-white cloud-item">
       <CoinHeader :wallet="wallet" />
     </div>
-    <div
+    <!-- <div
       v-if="chartData"
       class="trend-wrapper"
     >
@@ -17,8 +16,8 @@
         auto-draw
         smooth
       />
-    </div>
-    <div class="wallet-buttons">
+    </div> -->
+    <!-- <div class="wallet-buttons">
       <q-btn-group>
         <q-btn
           :disabled="cantSend"
@@ -49,7 +48,7 @@
           @click.stop="prices"
         />
       </q-btn-group>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -152,6 +151,17 @@ export default {
 </script>
 
 <style>
+.cloud-item {
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+}
+
+.cloud-item:hover {
+      -webkit-transform: translateY(-4px);
+    -ms-transform: translateY(-4px);
+    transform: translateY(-4px);
+    box-shadow: 0px 15px 20px rgba(0,0,0,0.15);
+}
+
 .wallet-cloud {
   width: 100%;
   border-radius: 0.4em;

@@ -13,22 +13,24 @@
     <q-scroll-area
       v-if="wallets.length > 0"
       ref="scrollArea"
-      class="scroll-area extended cloud-scroll"
+      class="scroll-area extended cloud-scroll q-px-md q-pt-lg"
     >
       <div class="scroll-offset" />
-
-      <!-- <CloudListItem
+      <div class="row text-h6 text-weight-bold">
+        Assets
+      </div>
+      <CloudListItem
         v-for="wallet in wallets"
         :key="wallet.displayName"
         :wallet="wallet"
         :currency="selectedCurrency"
-      /> -->
+      />
     </q-scroll-area>
   </div>
 </template>
 
 <script>
-// import CloudListItem from '@/components/Wallet/CloudListItem';
+import CloudListItem from '@/components/Wallet/CloudListItem';
 import { mapState } from 'vuex';
 import Wallet from '@/store/wallet/entities/wallet';
 import Coin from '@/store/wallet/entities/coin';
@@ -36,7 +38,7 @@ import Coin from '@/store/wallet/entities/coin';
 export default {
   name: 'CloudList',
   components: {
-    // CloudListItem,
+    CloudListItem,
   },
 
   data() {
