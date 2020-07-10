@@ -81,7 +81,7 @@
         class="q-mt-xs"
         style="min-width: 40px;"
       >
-        <div
+        <!-- <div
           v-if="displayAddWallet"
         >
           <q-btn
@@ -92,7 +92,7 @@
             flat
             @click.prevent="openWalletsModal"
           />
-        </div>
+        </div> -->
 
         <div
           v-if="displayPriceChart"
