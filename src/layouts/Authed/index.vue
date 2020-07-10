@@ -36,9 +36,14 @@
           >
             <div
               v-if="showTotalBalance"
-              class="total-balance"
+              class="total-balance flex flex-center column"
             >
-              <div>{{ totalBalance }}</div>
+              <div class="row">
+                {{ totalBalance }}
+              </div>
+              <div class="row text-h6">
+                {{ totalBalanceInEth }} ETH
+              </div>
             </div>
           </div>
 
@@ -133,6 +138,14 @@ export default {
       return this.$store.state.settings.selectedCurrency;
     },
 
+    ethPrice() {
+      const prices = this.$store.getters['entities/latestPrice/find'](`ETH_${this.selectedCurrency.code}`);
+      if (!prices) {
+        return null;
+      }
+      return prices.data.PRICE;
+    },
+
     totalBalance() {
       let balance = 0;
 
@@ -167,6 +180,18 @@ export default {
       });
 
       return formattedBalance.getFormatted();
+    },
+    totalBalanceInEth() {
+      const formattedAmount = new AmountFormatter({
+        amount: 109.67,
+        rate: this.ethPrice,
+        format: '0.00000000',
+        coin: 'Ethereum',
+        prependPlusOrMinus: false,
+        currency: this.selectedCurrency,
+        toCoin: true,
+      });
+      return parseFloat(formattedAmount.getFormatted());
     },
     showTotalBalance() {
       return this.$route.name === 'wallet'
@@ -278,10 +303,10 @@ export default {
   justify-content: center;
   color: white;
   font-family: 'CooperHewitt-BoldItalic';
-  font-size: 2rem;
+  font-size: 2.5rem;
   line-height: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-  height: 5rem!important;
+  height: 100%;
 }
 
 .total-balance > div {
@@ -293,7 +318,7 @@ export default {
   position: relative;
   top: 0;
   display: block!important;
-  height: 20rem!important;
+  height: 15rem!important;
   position: absolute;
   width: 100%;
   opacity: 1;
