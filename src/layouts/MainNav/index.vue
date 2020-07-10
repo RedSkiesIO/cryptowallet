@@ -29,15 +29,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="stylus" scoped>
   .main-nav {
     width: 100%;
-    height: 5rem;
-    background: #1e3c57;
+    height: 4rem;
+    background: white;
+    border-top: 1px solid lightgrey;
     display: flex;
     justify-content: space-between;
-    border-top: 0.3rem solid #4e677d;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
   }
 
   .main-nav > div {
@@ -49,7 +48,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: slategrey;
     width: 100%;
     font-family: 'Montserrat-Medium';
     height: 100%;
@@ -66,7 +65,7 @@ export default {
   }
 
   .router-link-exact-active {
-    color: #fabc57;
+    color: $primary;
     font-family: 'Montserrat-Medium';
   }
 

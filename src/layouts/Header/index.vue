@@ -81,7 +81,7 @@
         class="q-mt-xs"
         style="min-width: 40px;"
       >
-        <div
+        <!-- <div
           v-if="displayAddWallet"
         >
           <q-btn
@@ -92,7 +92,7 @@
             flat
             @click.prevent="openWalletsModal"
           />
-        </div>
+        </div> -->
 
         <div
           v-if="displayPriceChart"
@@ -344,10 +344,11 @@ export default {
   height: 2.5rem + constant(safe-area-inset-top);
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
-  background: #1e3c57;
-  position: relative;
+  position: fixed;
   padding-top: constant(safe-area-inset-top);
   padding-top: env(safe-area-inset-top);
+  z-index: 90;
+  width: 100%;
 }
 
 .header-h1 {
