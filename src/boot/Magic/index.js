@@ -1,4 +1,4 @@
-import { Magic } from 'magic-sdk';
+import { Magic, RPCError, RPCErrorCode } from 'magic-sdk';
 import { ethers } from 'ethers';
 import bip39 from 'bip39';
 
@@ -12,8 +12,10 @@ const magic = {
     // log in a user by their email
     try {
       await m.auth.loginWithMagicLink({ email });
+      return true;
     } catch {
     // Handle errors if required!
+      return false;
     }
   },
 
@@ -27,6 +29,27 @@ const magic = {
     } catch {
       return false;
       // Handle errors if required!
+    }
+  },
+
+  async updateEmail(email) {
+    try {
+      await m.user.updateEmail({ email });
+      return true;
+    } catch (err) {
+      if (err instanceof RPCError) {
+        switch (err.code) {
+          case RPCErrorCode.UpdateEmailFailed:
+            // Handle errors accordingly :)
+            break;
+          // eslint-disable-next-line no-console
+          default: console.error(err);
+        }
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+      return false;
     }
   },
 

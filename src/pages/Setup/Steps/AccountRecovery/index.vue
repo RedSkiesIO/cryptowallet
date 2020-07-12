@@ -54,7 +54,7 @@
               </div>
             </q-item-section>
           </q-item>
-          <q-item>
+          <!-- <q-item>
             <q-item-section
               avatar
               top
@@ -73,19 +73,8 @@
                 <q-icon name="fas fa-mobile-alt" />
                 {{ $t('smsRecovery') }}
               </q-item-label>
-              <div class="account-email-input-wrapper">
-                <q-input
-                  v-model.trim="accountSms"
-                  type="phone"
-                  outlined
-                  dark
-                  dense
-                  color="primary"
-                  :placeholder="$t('smsPlaceholder')"
-                />
-              </div>
             </q-item-section>
-          </q-item>
+          </q-item> -->
         </q-list>
       </div>
       <div class="q-mt-xl">
@@ -133,7 +122,7 @@
     </div> -->
       <div class="btns-wrapper q-mt-lg">
         <q-btn
-          color="primary"
+          color="yellow"
           text-color="blueish"
           :label="$t('next')"
           @click="validate"
@@ -155,7 +144,7 @@ import {
   required,
   email,
 } from 'vuelidate/lib/validators';
-import directAuthLogin from '@/helpers/DirectAuth';
+import directAuth from '@/helpers/DirectAuth';
 
 export default {
   name: 'AccountRecovery',
@@ -187,6 +176,7 @@ export default {
 
       if (this.recoveryType === 'sms') {
         await this.validateSMS();
+        return true;
       }
 
       if (!this.$v.accountEmail.required) {
@@ -207,6 +197,7 @@ export default {
       await this.$magic.login(this.accountEmail);
       const mnemonic = await this.$magic.getMnemonic();
       const mnemonicArray = mnemonic.split(' ');
+      this.$store.dispatch('setup/setAccountEmail', this.accountEmail);
       this.$store.dispatch('setup/setSeed', mnemonicArray);
       this.$store.dispatch('setup/setSeedString', mnemonic);
       this.$router.push({ path: '/setup/4' });
@@ -216,8 +207,16 @@ export default {
     },
 
     async validateSMS() {
-      const user = await directAuthLogin();
-      console.log(user);
+      this.visible = true;
+      const user = await directAuth.login();
+      if (user) {
+        const mnemonic = directAuth.getMnemonic(user.privateKey);
+        const mnemonicArray = mnemonic.split(' ');
+        this.$store.dispatch('setup/setSeed', mnemonicArray);
+        this.$store.dispatch('setup/setSeedString', mnemonic);
+        this.$router.push({ path: '/setup/4' });
+      }
+      this.visible = false;
     },
   },
 };

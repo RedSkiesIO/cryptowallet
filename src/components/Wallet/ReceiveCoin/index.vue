@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header-section">
+    <!-- <div class="header-section">
       <div class="header-back-button-wrapper">
         <q-btn
           icon="arrow_back"
@@ -25,37 +25,45 @@
           @click.prevent="share()"
         />
       </div>
-    </div>
+    </div> -->
     <div
       v-if="wallet"
-      class="modal-layout-wrapper"
+      class="bg-white text-black q-pa-md rounded-border-top"
     >
-      <div class="receive-coin-box">
-        <CoinHeader :wallet="wallet" />
-
-        <div class="send-modal-heading">
-          <h3>{{ $t('yourAddress') }}</h3>
-          <span class="h3-line" />
+      <div class="receive-coin-box q-gutter-y-lg">
+        <div
+          v-close-popup
+          class="row justify-end"
+        >
+          {{ $t('done') }}
         </div>
-        <div class="address break">
-          {{ address }}
-          <q-btn
-            :label="$t('copy')"
-            size="sm"
-            class="receive-copy-btn"
-            @click="copyToClipboard"
-          />
+        <div class="text-center text-h5 text-primary text-weight-bold">
+          {{ $t('sendToWallet') }}
         </div>
-        <div class="send-modal-heading">
-          <h3>{{ $t('scanQR') }}</h3>
-          <span class="h3-line" />
-        </div>
-
-        <div class="qr-code">
+        <div class="flex justify-center">
           <img
             v-if="qrCodeDataURL"
             :src="qrCodeDataURL"
+            class="qr-code rounded-borders"
           >
+        </div>
+
+        <div
+          class="q-px-xl text-h6 break text-center"
+          @click="copyToClipboard"
+        >
+          {{ address }}
+        </div>
+        <div class="text-center">
+          <q-btn
+            rounded
+            unelevated
+            class="q-px-lg"
+            color="primary"
+            size="lg"
+            :label="$t('share')"
+            @click.prevent="share()"
+          />
         </div>
         <div
           class="set-amount row justify-center"
@@ -136,13 +144,13 @@
 <script>
 import { mapState } from 'vuex';
 import QRCode from 'qrcode';
-import CoinHeader from '@/components/Wallet/CoinHeader';
+// import CoinHeader from '@/components/Wallet/CoinHeader';
 import Coin from '@/store/wallet/entities/coin';
 
 export default {
   name: 'Receive',
   components: {
-    CoinHeader,
+    // CoinHeader,
   },
   data() {
     return {
@@ -179,7 +187,11 @@ export default {
     copyToClipboard() {
       try {
         cordova.plugins.clipboard.copy(this.address);
-        this.$toast.create(0, this.$t('copied'), this.delay.normal);
+        // this.$toast.create(0, this.$t('copied'), this.delay.normal);
+        this.$q.notify({
+          message: this.$t('copied'),
+          color: 'positive',
+        });
       } catch (err) {
         this.errorHandler(err);
       }
@@ -212,8 +224,8 @@ export default {
     },
     async qrCode(qrAddress = this.address) {
       const options = {
-        width: 250,
-        height: 250,
+        width: 225,
+        height: 225,
       };
       if (typeof this.address === 'string') {
         await QRCode.toDataURL(qrAddress, options, (err, url) => {
@@ -262,6 +274,7 @@ export default {
   margin: 0rem;
   display: flex;
   justify-content: center;
+  border:1px solid lightgrey;
 }
 
 .share-btn {

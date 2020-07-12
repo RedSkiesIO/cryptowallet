@@ -109,3 +109,7 @@ export function SET_ADD_FUNDS_MODAL_OPENED(state, payload) {
   changeStatusBarColour(payload);
   state.addFundsModalOpened = payload;
 }
+
+export function SET_UPDATE_EMAIL_MODAL_OPENED(state, payload) {
+  state.updateEmailModalOpened = payload;
+}

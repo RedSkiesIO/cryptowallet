@@ -144,30 +144,30 @@ export default {
   methods: {
     storeSupportedCoins() {
       this.supportedCoins.forEach((coin) => {
-        const isThere = Coin.find([coin.name]);
-        const data = {
-          name: coin.name,
-          displayName: coin.displayName,
-          sdk: coin.sdk,
-          symbol: coin.symbol,
-          network: coin.network,
-          denomination: coin.denomination,
-          minConfirmations: coin.minConfirmations,
-          decimals: coin.decimals,
-          api: coin.api,
-          testnet: coin.testnet ? coin.testnet : false,
-          canBuy: coin.canBuy ? coin.canBuy : false,
-        };
-        if (!isThere) {
-          if (coin.sdk === 'ERC20') {
-            data.parentName = coin.parentName;
-            data.parentSdk = coin.parentSdk;
-            data.contractAddress = coin.contractAddress;
-          }
-          Coin.$insert({
-            data,
-          });
-        }
+        // const isThere = Coin.find([coin.name]);
+        // const data = {
+        //   name: coin.name,
+        //   displayName: coin.displayName,
+        //   sdk: coin.sdk,
+        //   symbol: coin.symbol,
+        //   network: coin.network,
+        //   denomination: coin.denomination,
+        //   minConfirmations: coin.minConfirmations,
+        //   decimals: coin.decimals,
+        //   api: coin.api,
+        //   testnet: coin.testnet ? coin.testnet : false,
+        //   transak: coin.transak ? coin.transak : false,
+        // };
+        // if (!isThere) {
+        //   if (coin.sdk === 'ERC20') {
+        //     data.parentName = coin.parentName;
+        //     data.parentSdk = coin.parentSdk;
+        //     data.contractAddress = coin.contractAddress;
+        //   }
+        Coin.$insert({
+          data: coin,
+        });
+        // }
         // else {
         //   // Coin.$update({
         //   //   where: (record) => { return record.name === isThere.name; },
@@ -187,16 +187,14 @@ body > div {
 }
 
 .background {
-  background-color: #1e3c57;
-  width: 100%;
+background: rgb(49,255,216);
+background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 100%);  width: 100%;
   height: 100%;
   position: absolute;
 }
 
 .shrinked .background {
-  height: 22.5rem;
-  top: -15rem;
-  border-bottom: 0.3rem solid #4e677d;
+  height: 17.5rem;
 }
 
 .new-wallet-btn-wrapper {

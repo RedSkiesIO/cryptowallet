@@ -1,7 +1,10 @@
 <template>
   <div class="container splash">
-    <div class="splash-logo">
-      <h1>{{ $t('cryptoWallet') }}</h1>
+    <div class="splash-logo text-center">
+      <img
+        class="logo-loading"
+        src="~/assets/cent-logo-white.svg"
+      >
       <p class="splash-slogan">
         {{ $t('splashSlogan') }}
       </p>

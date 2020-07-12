@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@1.12.8")
+  -->
+
+  <head>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova || htmlWebpackPlugin.options.ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@1.12.8/dist/quasar.min.css" rel="stylesheet" type="text/css">
+    <style>
+      body, html {
+      height: 100%;
+      background-color: #1e3c57;
+      font-family: 'Montserrat', sans-serif;
+     }
+
+     h1.setup {
+      text-align: center;
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: white;
+      line-height: 2rem;
+    }
+
+    .btns-wrapper {
+     display: flex;
+     justify-content: center;
+     justify-content: space-around;
+   }
+
+   .yellow {
+     color: black;
+   }
+
+   .q-field--error .q-field__bottom .q-field__messages {
+     color: white;
+   }
+
+   .verify-code .q-field--standard .q-field__control:before {
+     border-bottom: none;
+   }
+
+    </style>
+    <script>
+      window.quasarConfig = {
+        brand: { // this will NOT work on IE 11
+          primary: '#78d2e6',
+          secondary: '#1e3c57',
+          info: '#fabc57',
+          negative: '#DB2828',
+          // ... or all other brand colors
+        },
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="q-app">
+      <div 
+        class="flex flex-center column q-pa-lg"
+        style="height: 100vh;"
+      >
+        <div v-if="!showVerify" class="justify-center text-center text-white">
+          <h1 class="setup">
+            Verify your phone number
+          </h1>
+          Cent will send you an sms message to verify your phone number. Enter your phone number including a country code:
+        
+        <div class="q-mt-md q-mb-sm q-px-lg">
+          <q-input
+            v-model="number"
+            autofocus
+            outlined
+            dark
+            type="tel"
+            placeholder="+447123456789"
+            :error-message="errorMessage"
+            :error="!isValid"
+            @focus="isValid = true"
+          ></q-input>
+        </div>
+        </div>
+        <div v-else class="justify-center q-px-lg">
+          <h1 class="setup">
+            Enter your 6 digit verification code
+          </h1>
+        
+        <div class="verify-code q-mt-md q-mb-sm q-px-lg">
+          <q-input
+            v-model="code"
+            ref="pin"
+            autofocus
+            dark
+            type="text"
+            mask="# # # # # #"
+            fill-mask="-"
+            input-class="text-center text-h4"
+            :error-message="errorMessage"
+            :error="!isValidCode"
+            @focus="isValidCode = true"
+          ></q-input>
+        </div>
+        </div>
+        <div class="btns-wrapper">
+          <q-btn
+            unelevated
+            color="info"
+            text-color="secondary"
+            label="Next"
+            @click="next"
+          ></q-btn>
+          
+        </div>
+        <div
+        v-if="showVerify" 
+        class="q-pa-sm text-primary"
+        @click=reset>
+          Wrong number?
+         </div>
+      </div>
+      <q-inner-loading
+        dark 
+        color="primary"
+        :showing="loading">
+      </q-inner-loading>
+    </div>
+    <!-- Add the following at the end of your body tag -->
+    <script src="https://cdn.auth0.com/js/auth0/9.13/auth0.min.js"></script>
+    <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@^2.0.0/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@1.12.8/dist/quasar.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@1.12.8/dist/icon-set/fontawesome-v5.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/libphonenumber-js@1.7.53/bundle/libphonenumber-js.min.js"></script>    
+    
+    <script>
+      Quasar.iconSet.set(Quasar.iconSet.fontawesomeV5)
+
+      /*
+        Example kicking off the UI. Obviously, adapt this to your specific needs.
+        Assumes you have a <div id="q-app"></div> in your <body> above
+       */
+      new Vue({
+        el: '#q-app',
+        data: function () {
+          return {
+            number: null,
+            code: null,
+            errorMessage: '',
+            isValid: true,
+            isValidCode: true,
+            showVerify: false,
+            loading: false,
+          }
+        },
+        computed: {
+          webAuth() {
+            var config = JSON.parse(
+              decodeURIComponent(escape(window.atob('@@config@@')))
+            );
+
+            var params = Object.assign({
+              /* additional configuration needed for use of custom domains
+              overrides: {
+              __tenant: config.auth0Tenant,
+              __token_issuer: 'YOUR_CUSTOM_DOMAIN'
+              }, */
+              domain: config.auth0Domain,
+              clientID: config.clientID,
+              redirectUri: config.callbackURL,
+              responseType: 'token id_token'
+            }, config.internalOptions);
+            return new auth0.WebAuth(params);
+          }
+        },
+        
+        methods: {
+          next() {
+            if (!this.showVerify) this.sendCode();
+            else this.login(); 
+          },
+          validateNumber() {
+            try {
+              const phoneNumber = libphonenumber.parsePhoneNumber(this.number);
+              console.log(phoneNumber);
+              return phoneNumber.number
+            } catch (error) {
+              this.isValid = false;
+              if (error.message === 'INVALID_COUNTRY') { this.errorMessage = "Please include the country code eg (+44)"}
+              else { this.errorMessage = 'Please enter a valid mobile number'; }
+               console.log(error);
+               return false;
+            }
+          },
+          sendCode() {
+            const number = this.validateNumber();
+            if (number) {
+              this.webAuth.passwordlessStart({
+               connection: 'sms',
+               send: 'code',
+               phoneNumber: this.number,
+              }, function (err,res) {
+              // handle errors or continue
+              if (err) this.errorMessage = 'Failed to send code. Is this a valid number?';
+              });
+              this.showVerify = true;
+            }
+          },
+          login() {
+            this.loading= true;
+            const code = this.code.replace(/\s+/g, '');
+            const isnum = /^\d+$/.test(code);
+            console.log(this.code);
+            this.isValidCode = code.length === 6 && isnum;
+            if (this.isValidCode) {
+              this.webAuth.passwordlessLogin({
+                connection: 'sms',
+                phoneNumber: this.number,
+                verificationCode: code,
+              }, function (err) {
+                // handle errors or continue
+                if (err) this.errorMessage = 'invalid code';
+              });
+            } else {
+              this.errorMessage = 'verification code should be 6 digits'
+            }
+            this.loading = false;
+          },
+
+          reset() {
+            this.number = ''
+            this.code = null,
+            this.errorMessage ='',
+            this.isValid = true,
+            this.isValidCode = true,
+            this.showVerify = false;
+          },
+        },
+        // ...etc
+        
+      })
+    </script>
+  </body>
+</html>

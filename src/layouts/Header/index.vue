@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div classs="flex">
     <div
       class="transaction-notification"
     >
@@ -40,9 +40,9 @@
     </div>
     <section
       v-if="!hideHeader"
-      class="header-section"
+      class="main-header row justify-between q-px-sm"
     >
-      <div class="header-back-button-wrapper">
+      <div>
         <q-btn
           :class="{ hideBackButton: !isBackButtonEnabled }"
           :disable="!isBackButtonEnabled"
@@ -71,52 +71,54 @@
           </h1>
         </div>
         <div v-else>
-          <h1 class="header-h1">
-            {{ heading }}
-          </h1>
+          <img
+            class="header-logo q-mt-xs"
+            src="~/assets/cent-logo-white.svg"
+          >
         </div>
       </div>
-
       <div
-        v-if="displayAddWallet"
-        class="header-settings-button-wrapper"
+        class="q-mt-xs"
+        style="min-width: 40px;"
       >
-        <q-btn
-          icon="add"
-          color="primary"
-          size="lg"
-          class="icon-btn icon-btn-right"
-          flat
-          @click.prevent="openWalletsModal"
-        />
-      </div>
+        <!-- <div
+          v-if="displayAddWallet"
+        >
+          <q-btn
+            icon="add"
+            color="primary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click.prevent="openWalletsModal"
+          />
+        </div> -->
 
-      <div
-        v-if="displayPriceChart"
-        class="header-settings-button-wrapper"
-      >
-        <q-btn
-          icon="timeline"
-          color="primary"
-          size="lg"
-          class="icon-btn icon-btn-right"
-          flat
-          @click.prevent="openChartModal"
-        />
-      </div>
+        <div
+          v-if="displayPriceChart"
+        >
+          <q-btn
+            icon="timeline"
+            color="primary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click.prevent="openChartModal"
+          />
+        </div>
 
-      <div
-        v-if="displayAccounts"
-        class="header-accounts-button-wrapper"
-      >
-        <q-btn
-          icon="people"
-          color="primary"
-          size="lg"
-          class="icon-btn icon-btn-right"
-          flat
-          @click.prevent="setAccountModalOpened(true)"
-        />
+        <div
+          v-if="displayAccounts"
+        >
+          <q-btn
+            icon="people"
+            color="primary"
+            size="lg"
+            class="icon-btn icon-btn-right"
+            flat
+            @click.prevent="setAccountModalOpened(true)"
+          />
+        </div>
       </div>
     </section>
   </div>
@@ -176,7 +178,7 @@ export default {
       if (this.$route.name === 'setup') { return ''; }
       if (this.$route.name === 'exchange') { return this.$t('exchange'); }
       if (this.$route.name === 'settings') { return this.$t('settings'); }
-      return 'CryptoWallet';
+      return 'Cent';
     },
 
     coinHeading() {
@@ -337,6 +339,18 @@ export default {
   padding-top: env(safe-area-inset-top);
 }
 
+.main-header {
+  height: 2.5rem;
+  height: 2.5rem + constant(safe-area-inset-top);
+  height: 2.5rem + env(safe-area-inset-top);
+  font-family: 'CooperHewitt-Semibold';
+  position: fixed;
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+  z-index: 90;
+  width: 100%;
+}
+
 .header-h1 {
   letter-spacing: normal;
   font-size: 1em;
@@ -346,6 +360,10 @@ export default {
 
 .header-h1.logo {
   font-family: 'CooperHewitt-BoldItalic';
+}
+
+.header-logo {
+  width: 4rem;
 }
 
 .header-back-button-wrapper {
@@ -399,7 +417,7 @@ export default {
 }
 
 .hideBackButton {
-  display: none;
+  visibility: hidden;
 }
 
 .transaction-notification .q-dialog__inner{

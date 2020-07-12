@@ -13,6 +13,7 @@ const accountInitializer = {
     const data = {
       uid: uid(),
       name: setup.accountName,
+      email: setup.accountEmail || null,
       currency: setup.accountCurrency || accounts[0].currency,
       salt: setup.salt,
       pinHash,
@@ -58,7 +59,7 @@ const accountInitializer = {
   },
 
   async createERC20Wallets(setup, id, coins) {
-    const SDK = new CryptoWalletSDK();
+    // const SDK = new CryptoWalletSDK();
     const promises = [];
 
     coins.forEach((coin) => {
@@ -72,21 +73,21 @@ const accountInitializer = {
           network: coin.network,
         };
         promises.push(new Promise(async (resolve) => {
-          const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
-          const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
-          const parentWallet = await parentSDK.generateHDWallet(
-            setup.seedString,
-            coin.network,
-          );
-          const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
+          // const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
+          // const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
+          // const parentWallet = await parentSDK.generateHDWallet(
+          //   setup.seedString,
+          //   coin.network,
+          // );
+          // const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
 
-          wallet.erc20Wallet = await coinSDK.generateERC20Wallet(
-            keyPair,
-            coin.name,
-            coin.symbol,
-            coin.contractAddress,
-            coin.decimals,
-          );
+          // wallet.erc20Wallet = await coinSDK.generateERC20Wallet(
+          //   keyPair,
+          //   coin.name,
+          //   coin.symbol,
+          //   coin.contractAddress,
+          //   coin.decimals,
+          // );
 
           wallet.parentSdk = coin.parentSdk;
           wallet.parentName = coin.parentName;

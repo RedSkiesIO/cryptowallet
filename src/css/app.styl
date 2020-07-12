@@ -48,9 +48,15 @@
     font-family CooperHewitt-HeavyItalic
     src url(./fonts/CooperHewitt/CooperHewitt-HeavyItalic.otf)
 
-body #q-app
+body #q-app {
+  font-family: Montserrat-Regular
+  background: #f9fafc;
+}
+    
+
+.body-dark #q-app
     font-family Montserrat-Regular
-    background #e4e9ef;
+    background #000;
 
 .modal-backdrop {
     background: rgba(0, 0, 0, 0.5);
@@ -69,6 +75,15 @@ button.q-btn {
 button.q-btn.disabled,
 button.q-btn[disabled] {
     opacity: 0.3!important;
+}
+
+.rounded-borders {
+  border-radius: 20px;
+  }
+
+.rounded-border-top {
+ border-top-left-radius: 15px;
+ border-top-right-radius: 15px;
 }
 .q-header {
   z-index: 98;  
@@ -135,19 +150,18 @@ button.q-btn[disabled] {
   flex-direction: column;
   height: 100vh;
   padding-top: 2.5rem;
-  padding-bottom: 5rem;
+  padding-bottom: 4rem;
   position: relative;
   color: white;
 }
 
 .q-pull-to-refresh-wrapper .layout-wrapper {
-  padding-top: 0;
-  height: calc(100vh - 2.5rem);
+  height: 100vh;
   @supports (height: constant(safe-area-inset-top)) {
-    height: calc((100vh - 2.5rem) - constant(safe-area-inset-top));
+    height: calc(100vh - constant(safe-area-inset-top));
   }
   @supports (height: env(safe-area-inset-top)) {
-    height: calc((100vh - 2.5rem) - env(safe-area-inset-top));
+    height: calc(100vh  - env(safe-area-inset-top));
   }
 }
 

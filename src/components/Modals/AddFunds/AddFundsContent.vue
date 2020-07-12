@@ -28,13 +28,13 @@
           padding
           separator
         >
-          <AddFundsItem
+          <TransakItem
             v-if="bankTransfer"
             :country="country"
             :bank="true"
             v-on="$listeners"
           />
-          <AddFundsItem
+          <TransakItem
             v-if="cardPayments"
             :country="country"
             :card="true"
@@ -53,14 +53,14 @@
 <script>
 import { mapState } from 'vuex';
 import SelectCountry from './SelectCountry';
-import AddFundsItem from './AddFundsItem';
+import TransakItem from './TransakItem';
 import RampItem from './RampItem';
 
 export default {
   name: 'AddFunds',
   components: {
     SelectCountry,
-    AddFundsItem,
+    TransakItem,
     RampItem,
   },
   data() {
@@ -75,6 +75,9 @@ export default {
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
+    supportsRamp() {
+      return this.$store.getters['entities/coin/find'](this.wallet.name).rampNetwork;
+    },
     partners() {
       if (this.country) {
         return this.country.value.partners;
@@ -82,7 +85,7 @@ export default {
       return null;
     },
     rampAvailable() {
-      if (this.country?.label === 'United Kingdom') {
+      if (this.country?.label === 'United Kingdom' && this.supportsRamp) {
         return true;
       }
       return false;

@@ -73,9 +73,9 @@ export default {
 .layout {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 2.5rem - 5rem);
-  height: calc(100vh - 2.5rem - 5rem - constant(safe-area-inset-top));
-  height: calc(100vh - 2.5rem - 5rem - env(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - 4rem);
+  height: calc(100vh - 2.5rem - 4rem - constant(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - 4rem - env(safe-area-inset-top));
 }
 
 .list {
