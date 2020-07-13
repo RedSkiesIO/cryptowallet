@@ -8,8 +8,8 @@ function changeStatusBarColour(payload) {
   } else if (payload === false && window.cordova) {
     StatusBar.styleLightContent();
     if (cordova.platformId === 'android') {
-      StatusBar.backgroundColorByHexString('#1e3c57');
-      NavigationBar.backgroundColorByHexString('#1e3c57');
+      StatusBar.backgroundColorByHexString('#dd3dff');
+      NavigationBar.backgroundColorByHexString('#dd3dff');
     }
   }
 }
