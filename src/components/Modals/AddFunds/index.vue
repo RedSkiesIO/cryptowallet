@@ -6,7 +6,7 @@
     >
       <q-btn
         icon="close"
-        color="blueish"
+        color="info"
         size="lg"
         class="icon-btn icon-btn-right absolute"
         flat
@@ -125,7 +125,7 @@ export default {
 .close-provider {
   position: absolute;
   z-index: 999;
-  top: 2px;
+  top: 26px;
   right: 2px;
 }
 
