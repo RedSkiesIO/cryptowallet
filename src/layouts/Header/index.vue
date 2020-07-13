@@ -73,7 +73,7 @@
         <div v-else>
           <img
             class="header-logo q-mt-xs"
-            src="~/assets/cent-logo-white.svg"
+            src="~/assets/cent-logo-black.svg"
           >
         </div>
       </div>

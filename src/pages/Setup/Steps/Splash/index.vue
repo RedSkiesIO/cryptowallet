@@ -3,7 +3,7 @@
     <div class="splash-logo text-center">
       <img
         class="logo-loading"
-        src="~/assets/cent-logo-white.svg"
+        src="~/assets/cent-logo-black.svg"
       >
       <p class="splash-slogan">
         {{ $t('splashSlogan') }}

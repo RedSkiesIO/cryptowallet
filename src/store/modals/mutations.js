@@ -8,7 +8,7 @@ function changeStatusBarColour(payload) {
   } else if (payload === false && window.cordova) {
     StatusBar.styleLightContent();
     if (cordova.platformId === 'android') {
-      StatusBar.setOverlaysWebView({ overlay: true });
+      StatusBar.overlaysWebView(true);
       // StatusBar.backgroundColorByHexString('#dd3dff');
       NavigationBar.backgroundColorByHexString('#dd3dff');
     }
