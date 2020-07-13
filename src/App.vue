@@ -138,6 +138,9 @@ export default {
   async mounted() {
     window.store = this.$store;
     window.app = this;
+    if (window.cordova) {
+      StatusBar.overlaysWebView(true);
+    }
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },
 
