@@ -140,6 +140,7 @@ export default {
     window.app = this;
     if (window.cordova) {
       StatusBar.overlaysWebView(true);
+      StatusBar.styleDefault();
     }
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },

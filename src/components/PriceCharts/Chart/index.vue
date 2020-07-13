@@ -28,9 +28,9 @@ export default {
       const colour = 450;
       const newGradient = this.$refs.canvas.getContext('2d').createLinearGradient(0, 0, 0, colour);
       const transparency = 0.3;
-      newGradient.addColorStop(0, 'rgba(250, 188, 87, 0.5)');
-      newGradient.addColorStop(transparency, 'rgba(250, 188, 87, 0.25)');
-      newGradient.addColorStop(1, 'rgba(250, 188, 87, 0)');
+      newGradient.addColorStop(0, 'rgba(221, 61, 255, 0.5)');
+      newGradient.addColorStop(transparency, 'rgba(221, 61, 255, 0.25)');
+      newGradient.addColorStop(1, 'rgba(221, 61, 255, 0)');
 
       return newGradient;
     },

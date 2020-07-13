@@ -192,6 +192,8 @@ export default {
         this.$q.notify({
           message: this.$t('copied'),
           color: 'positive',
+          timeout: '1500',
+          classes: 'text-center',
         });
       } catch (err) {
         this.errorHandler(err);

@@ -4,12 +4,12 @@
       :class="{done : !show}"
       class="loading background"
     >
-      <div class="loading-footer">
+      <!-- <div class="loading-footer">
         <img
           class="logo-loading"
           src="~/assets/logo-white-horizontal.png"
         >
-      </div>
+      </div> -->
       <Spinner />
     </div>
   </div>

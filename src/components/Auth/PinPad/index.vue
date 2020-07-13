@@ -102,7 +102,7 @@ export default {
       //   const onInputVibrate = 25;
       //   navigator.vibrate(onInputVibrate);
       // }
-      const vibrateTime = 50;
+      const vibrateTime = 25;
       if (navigator.vibrate) {
         window.navigator.vibrate(vibrateTime);
       }
