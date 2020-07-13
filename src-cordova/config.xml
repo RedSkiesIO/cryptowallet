@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.atlas.mobile.wallet" version="0.0.16" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CryptoWallet</name>
-    <description>CryptoWallet - By Atlas City</description>
-    <author email="james.kirby@atlascity.io" href="https://atlascity.io">
-        Atlas City
+    <name>Cent</name>
+    <description>Cent - By Atlas 3T</description>
+    <author email="stephen.horsfall@atlas3t.com" href="https://atlas3t.com">
+        Atlas 3T
     </author>
     <content src="index.html" />
     <access origin="*" />
