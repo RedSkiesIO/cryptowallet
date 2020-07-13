@@ -19,7 +19,7 @@
               :disabled="cantSend"
               icon="send"
               size="md"
-              color="primary"
+              color="accent"
               label="Send"
               class="wallet-group-btn"
               flat
@@ -28,7 +28,7 @@
             <q-btn
               icon="call_received"
               size="md"
-              color="primary"
+              color="accent"
               label="Receive"
               class="wallet-group-btn"
               flat
@@ -43,7 +43,7 @@
           <q-btn
             icon="add"
             size="md"
-            color="primary"
+            color="accent"
             label="Add Funds"
             class="wallet-group-btn"
             flat
@@ -180,7 +180,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="styl" scoped>
 .wrapper {
   display: flex;
   justify-content: space-between;
@@ -190,7 +190,7 @@ export default {
   display: flex;
   align-items: center;
   font-size: 0.9em;
-  font-family: 'Montserrat-Medium';
+  font-family: 'Inter-Medium';
 }
 
 .simple .wallet-name {
@@ -223,6 +223,8 @@ export default {
   text-align: center;
   justify-content: center;
   align-items: center;
+  margin-bottom: 12px;
+  color: var(--q-color-accent);
 }
 
 .wallet-prices > div {

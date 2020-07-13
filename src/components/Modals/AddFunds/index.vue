@@ -34,7 +34,7 @@
         indeterminate
         size="200px"
         :thickness="0.07"
-        color="blueish"
+        color="primary"
         track-color="grey-3"
         class="q-ma-md"
       >

@@ -47,7 +47,7 @@
           :class="{ hideBackButton: !isBackButtonEnabled }"
           :disable="!isBackButtonEnabled"
           icon="arrow_back"
-          color="primary"
+          color="secondary"
           size="lg"
           class="icon-btn back-arrow-btn"
           flat
@@ -56,7 +56,7 @@
       </div>
 
       <div v-if="coinHeading">
-        <h1 class="header-h1">
+        <h1 class="text-accent header-h1">
           <img
             :src="coinLogo"
             class="coin-logo"
@@ -65,8 +65,8 @@
         </h1>
       </div>
       <div v-else>
-        <div v-if="heading === 'CryptoWallet'">
-          <h1 class="header-h1 logo">
+        <div v-if="heading === 'Settings'">
+          <h1 class="header-h1 text-accent">
             {{ heading }}
           </h1>
         </div>
@@ -99,7 +99,7 @@
         >
           <q-btn
             icon="timeline"
-            color="primary"
+            color="secondary"
             size="lg"
             class="icon-btn icon-btn-right"
             flat

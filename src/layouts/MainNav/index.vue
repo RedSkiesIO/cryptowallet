@@ -50,7 +50,7 @@ export default {
     align-items: center;
     color: slategrey;
     width: 100%;
-    font-family: 'Montserrat-Medium';
+    font-family: 'Inter-Medium';
     height: 100%;
     text-decoration: none;
   }
@@ -66,7 +66,7 @@ export default {
 
   .router-link-exact-active {
     color: $primary;
-    font-family: 'Montserrat-Medium';
+    font-family: 'Inter-Medium';
   }
 
   .svg-icon {

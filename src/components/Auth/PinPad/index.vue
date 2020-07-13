@@ -14,8 +14,9 @@
 
     <div class="btns-wrapper">
       <q-btn
+        flat
         :disabled="resetDisabled"
-        color="secondary"
+        color="black"
         label="Clear"
         @click="clearPinArray"
       />
@@ -26,7 +27,7 @@
           || mode === 'pin-confirm'
           || mode === 'confirm-new-pin')"
         :disabled="canProceed"
-        color="yellow"
+        color="secondary"
         text-color="blueish"
         :label="$t('done')"
         @click="done"
@@ -39,8 +40,8 @@
           && mode != 'confirm-new-pin'
           && mode != 'delete'"
         :disabled="canProceed"
-        color="yellow"
-        text-color="blueish"
+        color="secondary"
+        text-color="info"
         :label="$t('unlock')"
         @click="confirmPin"
       />
@@ -173,9 +174,7 @@ export default {
 .vue-keyboard-key,
 .vue-keyboard-key:hover {
   background: rgba(0,0,0,0);
-  border-radius: 100%;
-  border: 1px solid white;
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 1.5rem;
   width: 2.5em;

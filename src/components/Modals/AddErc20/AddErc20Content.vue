@@ -5,6 +5,7 @@
         <q-btn
           icon="arrow_back"
           size="lg"
+          text-color="primary"
           class="icon-btn back-arrow-btn"
           flat
           @click.prevent="goBack"
@@ -152,7 +153,8 @@
             <q-btn
               :disable="disableButton"
               label="add"
-              color="blueish"
+              color="secondary"
+              text-color="info"
               size="md"
               class="add-button"
               @click="validate"
@@ -685,7 +687,7 @@ export default {
   height: 0;
   min-height: 1.5rem;
   text-transform: none;
-  font-family: Montserrat-SemiBold!important;
+  font-family: Inter-SemiBold!important;
 }
 
 .send-heading-btn.active {

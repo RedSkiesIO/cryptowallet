@@ -59,6 +59,7 @@ export default {
 }
 
 .loading.background {
+  background: white;
   border-bottom: none!important;
 }
 

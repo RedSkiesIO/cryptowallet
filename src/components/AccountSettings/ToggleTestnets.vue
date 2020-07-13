@@ -1,7 +1,6 @@
 <template>
   <div
     class="settings-row"
-    @click.prevent=""
   >
     <div>
       {{ $t('toggleTestnets') }}
@@ -9,7 +8,7 @@
     <div>
       <q-toggle
         v-model="allowTestnets"
-        color="blueish"
+        color="primary"
         @input="toggleTestnets"
       />
     </div>

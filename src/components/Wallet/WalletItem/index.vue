@@ -32,7 +32,7 @@
           />
         </template>
 
-        <q-item dark>
+        <q-item>
           <q-item-section avatar>
             <div class="icon">
               <img :src="coinLogo">

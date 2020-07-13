@@ -93,7 +93,7 @@ export default {
 }
 
 .q-tab-label {
-  font-family: Montserrat-SemiBold;
+  font-family: Inter-SemiBold;
 }
 
 .q-tabs-head {

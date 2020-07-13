@@ -181,19 +181,20 @@ export default {
 };
 </script>
 
-<style lang='scss'>
+<style lang='styl'>
 body > div {
-  color: white;
+  color: black;
 }
 
 .background {
-background: rgb(49,255,216);
-background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 100%);  width: 100%;
   height: 100%;
+  width: 100%;
   position: absolute;
 }
 
 .shrinked .background {
+  background: rgb(49,255,216);
+  background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 100%);  width: 100%;
   height: 17.5rem;
 }
 
@@ -211,11 +212,9 @@ background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 10
   height: 2.7rem;
 }
 
-.light-modal {
-  .modal-content {
-    background: white;
+.light-modal .modal-content {
+    background: whitesmoke;
     color: black;
-  }
 }
 
 .q-dialog .modal-layout-wrapper {
@@ -228,29 +227,24 @@ background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 10
   background: whitesmoke;
 }
 
-.light-modal .header-section i {
-  color: #1e3c57;
-}
-
-.light-modal .header-section .header-h1 {
-  color: #1e3c57;
-  text-shadow: none;
-}
-
 .dark-modal .header-section {
-  color: white;
+  color: black;
+  background: whitesmoke;
 }
 
 .dark-modal .header-section i {
-  color: #78d2e6;
+  color: var(--q-color-primary);
 }
 
 .dark-modal .modal-layout-wrapper {
-    background-color: #1e3c57;
+    color: black;
+    background-color: whitesmoke;
 }
 
 .light-modal .modal-layout-wrapper {
   background: white;
+  background: whitesmoke;
+
 }
 
 
@@ -286,15 +280,15 @@ background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 10
 }
 
 .light-modal .modal-layout-wrapper {
-  color: #1e3c57;
+  color: slategray;
 }
 
 .dark-modal .modal-layout-wrapper {
-  color: white;
+  color: black;
 }
 
 .modal {
-  font-family: Montserrat-Regular;
+  font-family: Inter-Regular;
 }
 
 .developed-by {

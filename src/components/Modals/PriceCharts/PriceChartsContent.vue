@@ -224,7 +224,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang='styl'>
 
 .q-toolbar{
   background-color: #1e3c57;
@@ -246,11 +246,10 @@ export default {
 
 .price{
   font-size: x-large;
-  color: white;
 }
 
 .labels{
-  color: sandybrown;
+  color: var(--q-color-info);
 }
 
 .sending-spinner-overlay {
@@ -261,7 +260,7 @@ export default {
  display: flex;
  align-items: center;
  justify-content: center;
- background: rgba(30, 60, 87, 0.9);
+ background: rgba(255, 255, 255, 0.9);
  opacity: 0;
  transition: all ease-in-out 250ms;
 }

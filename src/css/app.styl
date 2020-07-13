@@ -1,6 +1,36 @@
 // app global css
 
 @font-face
+  font-family Inter-SemiBold
+  src url(./fonts/Inter/Inter-SemiBold.ttf)
+
+  
+@font-face
+  font-family Inter-Bold
+  src url(./fonts/Inter/Inter-Bold.ttf)
+
+  
+@font-face
+  font-family Inter-Thin
+  src url(./fonts/Inter/Inter-Thin.ttf)
+
+
+@font-face
+  font-family Inter-Light
+  src url(./fonts/Inter/Inter-Light.ttf)
+
+  
+@font-face
+  font-family Inter-Regular
+  src url(./fonts/Inter/Inter-Regular.ttf)
+
+  
+@font-face
+  font-family Inter-Medium
+  src url(./fonts/Inter/Inter-Medium.ttf)
+
+
+@font-face
     font-family Montserrat-Thin
     src url(./fonts/Montserrat/Montserrat-Thin.ttf)
 
@@ -49,13 +79,13 @@
     src url(./fonts/CooperHewitt/CooperHewitt-HeavyItalic.otf)
 
 body #q-app {
-  font-family: Montserrat-Regular
+  font-family: Inter-Regular
   background: #f9fafc;
 }
     
 
 .body-dark #q-app
-    font-family Montserrat-Regular
+    font-family Inter-Regular
     background #000;
 
 .modal-backdrop {
@@ -69,7 +99,7 @@ body #q-app {
 
 button.q-btn {
     box-shadow: none;
-    font-family: Montserrat-Bold;
+    font-family: Inter-Bold;
 }
 
 button.q-btn.disabled,
@@ -132,7 +162,7 @@ button.q-btn[disabled] {
 }
 
 .modal-header {
-  font-family: Montserrat-Medium;
+  font-family: Inter-Medium;
   color: #252525;
 }
 
@@ -152,7 +182,7 @@ button.q-btn[disabled] {
   padding-top: 2.5rem;
   padding-bottom: 4rem;
   position: relative;
-  color: white;
+  color: black;
 }
 
 .q-pull-to-refresh-wrapper .layout-wrapper {
@@ -406,9 +436,9 @@ code
   color: white!important;
 }
 
-button.bg-secondary {
-  background: rgba(255, 255, 255, 0.05)!important;
-}
+// button.bg-secondary {
+//   background: rgba(255, 255, 255, 0.05)!important;
+// }
 
 /* background: #fabc57!important;
     color: #1b3751!important; */
@@ -476,7 +506,7 @@ div.q-input {
 }
 
 .q-slide-item__content {
-  background: #1e3c57;
+  background: whitesmoke;
   width: 100%;
 }
 
@@ -505,17 +535,17 @@ div.q-input {
   webkit-box-shadow: none;
 }
 
-.filter-wallets .q-select {
+// .filter-wallets .q-select {
   
-  border-bottom: 1px solid #33597b;
-}
+//   border-bottom: 1px solid #33597b;
+// }
 
 .filter-wallets input {
-  color: #ffffff;
+  color: black;
 }
 
 .filter-wallets ::placeholder {
-  color: #e0e0e0;
+  color: grey;
 }
 
 .chart-container .q-btn.disabled{
@@ -539,8 +569,5 @@ div.q-input {
   padding-left: 2px;
 }
 
-.set-amount .q-expansion-item .q-item__label {
-  font-size: 1.414rem;
-}
 
 
