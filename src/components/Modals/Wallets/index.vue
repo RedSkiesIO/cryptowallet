@@ -284,6 +284,7 @@ export default {
             internalChainAddressIndex: 0,
             confirmedBalance: balance,
             externalAddress: wallet.erc20Wallet.address,
+            erc20Wallet: wallet.erc20Wallet,
           },
         });
 
