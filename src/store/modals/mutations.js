@@ -8,7 +8,8 @@ function changeStatusBarColour(payload) {
   } else if (payload === false && window.cordova) {
     StatusBar.styleLightContent();
     if (cordova.platformId === 'android') {
-      StatusBar.backgroundColorByHexString('#dd3dff');
+      StatusBar.setOverlaysWebView({ overlay: true });
+      // StatusBar.backgroundColorByHexString('#dd3dff');
       NavigationBar.backgroundColorByHexString('#dd3dff');
     }
   }
@@ -34,6 +35,7 @@ export function SET_SENDCONFIRM_MODAL_OPENED(state, payload) {
  * SET STATE confirm transaction data
  */
 export function SET_CONFIRM_TRANSACITON_DATA(state, payload) {
+  changeStatusBarColour(payload);
   state.sendConfirmTxData = payload;
 }
 
@@ -41,6 +43,7 @@ export function SET_CONFIRM_TRANSACITON_DATA(state, payload) {
  * SET STATE sendFailure modal opened
  */
 export function SET_SENDFAILURE_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.sendFailureModalOpened = payload;
 }
 
@@ -48,6 +51,7 @@ export function SET_SENDFAILURE_MODAL_OPENED(state, payload) {
  * Set STATE sendSuccess modal opened
  */
 export function SET_SENDSUCCESS_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.sendSuccessModalOpened = payload;
 }
 
@@ -60,14 +64,17 @@ export function SET_ADDERC20_MODAL_OPENED(state, payload) {
 }
 
 export function SET_PRICECHART_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.priceChartModalOpened = payload;
 }
 
 export function SET_SELECTACCOUNT_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.selectAccountModalOpened = payload;
 }
 
 export function SET_NEWACCOUNT_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.newAccountModalOpened = payload;
 }
 
@@ -77,27 +84,32 @@ export function SET_TERMS_MODAL_OPENED(state, payload) {
 }
 
 export function SET_RECEIVECOIN_MODAL_OPENED(state, payload) {
-  changeStatusBarColour(payload);
   state.receiveCoinModalOpened = payload;
 }
 
 export function SET_ADDWALLET_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.addWalletModalOpened = payload;
 }
 
 export function SET_SELECTCURRENCY_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.selectCurrencyModalOpened = payload;
 }
 
 export function SET_SELECTLANGUAGE_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.selectLanguageModalOpened = payload;
 }
 
 export function SET_DELETEACCOUNT_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
+
   state.deleteAccountModalOpened = payload;
 }
 
 export function SET_NEWPIN_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.newPinModalOpened = payload;
 }
 
@@ -111,5 +123,6 @@ export function SET_ADD_FUNDS_MODAL_OPENED(state, payload) {
 }
 
 export function SET_UPDATE_EMAIL_MODAL_OPENED(state, payload) {
+  changeStatusBarColour(payload);
   state.updateEmailModalOpened = payload;
 }
