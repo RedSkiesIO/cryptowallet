@@ -15,7 +15,7 @@
         :label="$t('getStarted')"
         unelevated
         color="primary"
-        text-color="blueish"
+        text-color="white"
         class="splash-btn get-started-btn"
         @click="getStarted"
       />
@@ -70,7 +70,7 @@
       </div>
     </div> -->
 
-    <div
+    <!-- <div
       :class="{ emphasised: emphasised }"
       class="loading-footer"
     >
@@ -78,7 +78,7 @@
         class="logo-loading"
         src="~/assets/logo-white-horizontal.png"
       >
-    </div>
+    </div> -->
   </div>
 </template>
 

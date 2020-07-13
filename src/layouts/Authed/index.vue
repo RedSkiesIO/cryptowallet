@@ -326,7 +326,7 @@ export default {
   width: 100%;
   opacity: 1;
   padding: 0 0.5rem;
-  margin-top: 2.5rem;
+  margin-top: calc(2.5rem + 24px);
 }
 
 .no-balance .total-balance-wrapper,

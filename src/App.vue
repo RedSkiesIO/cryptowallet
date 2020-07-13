@@ -195,8 +195,8 @@ body > div {
 .shrinked .background {
   background: rgb(49,255,216);
   background: linear-gradient(332deg, rgba(49,255,216,1) 0%, rgba(221,61,255,1) 100%);  width: 100%;
-  height: 17.5rem;
-}
+  height: calc(17.5rem + 24px);
+  }
 
 .new-wallet-btn-wrapper {
   padding: 1rem;
@@ -218,9 +218,9 @@ body > div {
 }
 
 .q-dialog .modal-layout-wrapper {
-  height: calc(100vh - 2.5rem)!important;
-  height: calc(100vh - 2.5rem - constant(safe-area-inset-top))!important;
-  height: calc(100vh - 2.5rem - env(safe-area-inset-top))!important;
+  height: calc(100vh - 2.5rem - 24px )!important;
+  height: calc(100vh - 2.5rem - 24px - constant(safe-area-inset-top))!important;
+  height: calc(100vh - 2.5rem - 24px - env(safe-area-inset-top))!important;
 }
 
 .light-modal .header-section {
