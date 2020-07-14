@@ -3,7 +3,7 @@
   "version": "0.0.33",
   "description": "Cent - By Atlas 3T",
   "productName": "Cent",
-  "cordovaId": "com.atlascity.mobile.wallet",
+  "cordovaId": "finance.cent.mobile.wallet",
   "author": "Stephen Horsfall <stephen.horsfall@atlas3t.com>",
   "private": true,
   "scripts": {
