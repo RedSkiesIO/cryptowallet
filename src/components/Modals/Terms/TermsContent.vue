@@ -82,7 +82,7 @@ export default {
 
 .checkbox-wrapper .q-checkbox__label {
   opacity: 1;
-  font-family: Montserrat-Medium;
+  font-family: Inter-Medium;
   margin-left: 0.8rem;
 }
 

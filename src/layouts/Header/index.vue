@@ -47,7 +47,7 @@
           :class="{ hideBackButton: !isBackButtonEnabled }"
           :disable="!isBackButtonEnabled"
           icon="arrow_back"
-          color="primary"
+          color="secondary"
           size="lg"
           class="icon-btn back-arrow-btn"
           flat
@@ -56,7 +56,7 @@
       </div>
 
       <div v-if="coinHeading">
-        <h1 class="header-h1">
+        <h1 class="text-accent header-h1">
           <img
             :src="coinLogo"
             class="coin-logo"
@@ -65,15 +65,16 @@
         </h1>
       </div>
       <div v-else>
-        <div v-if="heading === 'CryptoWallet'">
-          <h1 class="header-h1 logo">
+        <div v-if="heading === 'Settings'">
+          <h1 class="header-h1 text-accent">
             {{ heading }}
           </h1>
         </div>
         <div v-else>
           <img
+            v-if="!walletScreen"
             class="header-logo q-mt-xs"
-            src="~/assets/cent-logo-white.svg"
+            src="~/assets/cent-logo-black.svg"
           >
         </div>
       </div>
@@ -99,7 +100,7 @@
         >
           <q-btn
             icon="timeline"
-            color="primary"
+            color="secondary"
             size="lg"
             class="icon-btn icon-btn-right"
             flat
@@ -189,6 +190,10 @@ export default {
         return true;
       }
       return false;
+    },
+
+    walletScreen() {
+      return this.$route.name === 'wallet';
     },
 
     getClass() {
@@ -333,10 +338,9 @@ export default {
   height: 2.5rem + constant(safe-area-inset-top);
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
-  background: #1e3c57;
   position: relative;
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
+  padding-top: 24px + env(safe-area-inset-top);
+  padding-top: 24px;
 }
 
 .main-header {
@@ -345,8 +349,9 @@ export default {
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
   position: fixed;
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
+  padding-top: 24px + constant(safe-area-inset-top);
+  padding-top: 24px + env(safe-area-inset-top);
+  padding-top: 24px;
   z-index: 90;
   width: 100%;
 }

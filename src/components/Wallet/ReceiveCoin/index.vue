@@ -54,19 +54,8 @@
         >
           {{ address }}
         </div>
-        <div class="text-center">
-          <q-btn
-            rounded
-            unelevated
-            class="q-px-lg"
-            color="primary"
-            size="lg"
-            :label="$t('share')"
-            @click.prevent="share()"
-          />
-        </div>
         <div
-          class="set-amount row justify-center"
+          class="set-amount text-h6 row justify-center"
         >
           <q-expansion-item
             v-model="setAmount"
@@ -96,6 +85,18 @@
             </q-card>
           </q-expansion-item>
         </div>
+        <div class="text-center">
+          <q-btn
+            rounded
+            unelevated
+            class="q-px-lg"
+            color="primary"
+            size="md"
+            :label="$t('share')"
+            @click.prevent="share()"
+          />
+        </div>
+
         <div
           v-if="wallet.sdk==='Bitcoin'"
           class="new-address row justify-center"
@@ -191,6 +192,8 @@ export default {
         this.$q.notify({
           message: this.$t('copied'),
           color: 'positive',
+          timeout: '1500',
+          classes: 'text-center',
         });
       } catch (err) {
         this.errorHandler(err);
@@ -304,7 +307,7 @@ export default {
   height: 0;
   min-height: 1.5rem;
   text-transform: none;
-  font-family: Montserrat-SemiBold!important;
+  font-family: Inter-SemiBold!important;
 }
 
 .set-amount .q-expansion-item--popup > .q-expansion-item__container {

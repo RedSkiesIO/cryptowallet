@@ -115,7 +115,7 @@ export default {
 
 .account-item {
   display: flex;
-  color: white;
+  color: black;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;

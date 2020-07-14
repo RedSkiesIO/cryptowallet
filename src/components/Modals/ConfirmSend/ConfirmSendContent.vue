@@ -98,7 +98,8 @@
       <div class="send">
         <q-btn
           :label="$t('confirm')"
-          color="blueish"
+          color="secondary"
+          text-color="info"
           size="md"
           @click="confirm"
         />

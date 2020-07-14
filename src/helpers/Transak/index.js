@@ -7,7 +7,7 @@ export function transak(wallet, country, card = false, testnet = true) {
     cryptoCurrencyCode: wallet.symbol,
     walletAddress: wallet.externalAddress, // Your customer's wallet address
     disableWalletAddressForm: true,
-    themeColor: '#1e3c57', // App theme color
+    themeColor: '#dd3dff', // App theme color
     fiatCurrency: country.currencyCode, // INR/GBP
     countryCode: country.alpha2,
     defaultPaymentMethod: card ? 'credit_debit_card' : '',

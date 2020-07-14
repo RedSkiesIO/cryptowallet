@@ -12,7 +12,7 @@
     <div class="q-pull-to-refresh-wrapper">
       <q-pull-to-refresh
         :disable="!isPullEnabled || isPullTempDisabled"
-        color="cyan"
+        color="secondary"
         @refresh="refresher"
       >
         <div class="background" />
@@ -31,7 +31,7 @@
           </div>
 
           <div
-            v-if="wallets.length > 0"
+            v-if="wallets.length > 0 && !showCoinHeader"
             class="total-balance-wrapper"
           >
             <div
@@ -39,7 +39,7 @@
               class="total-balance flex flex-center column"
             >
               <div class="row">
-                {{ totalBalance }}
+                {{ totalBalanceFormatted }}
               </div>
               <div class="row text-h6">
                 {{ totalBalanceInEth }} ETH
@@ -169,9 +169,12 @@ export default {
           balance += parseFloat(formattedAmount.getFormatted());
         }
       });
+      return balance;
+    },
 
+    totalBalanceFormatted() {
       const formattedBalance = new AmountFormatter({
-        amount: balance,
+        amount: this.totalBalance,
         format: '0,0[.]00',
         currency: this.selectedCurrency,
         toCurrency: false,
@@ -183,7 +186,7 @@ export default {
     },
     totalBalanceInEth() {
       const formattedAmount = new AmountFormatter({
-        amount: 109.67,
+        amount: this.totalBalance,
         rate: this.ethPrice,
         format: '0.00000000',
         coin: 'Ethereum',
@@ -323,7 +326,7 @@ export default {
   width: 100%;
   opacity: 1;
   padding: 0 0.5rem;
-  margin-top: 2.5rem;
+  margin-top: calc(2.5rem + 24px);
 }
 
 .no-balance .total-balance-wrapper,
@@ -354,6 +357,7 @@ export default {
 
 .layout-shape.white {
   background: white!important;
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
 }
 
 .no-balance .layout-shape {
@@ -370,7 +374,7 @@ export default {
 }
 
 .single-wallet-top .background {
-  height: 28.5rem;
+  height: 17.5rem;
 }
 
 /*.q-pull-to-refresh-wrapper {
@@ -388,7 +392,7 @@ export default {
 }
 
 .single-wallet-top .coin-header-wrapper {
-  height: 10rem!important;
+  height: 20rem!important;
   display: flex;
   align-items: center;
   justify-content: center;

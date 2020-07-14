@@ -37,15 +37,14 @@
               :float-label="$t('email')"
               type="email"
               outlined
-              dark
               color="primary"
               :placeholder="$t('emailPlaceholder')"
             />
           </div>
           <div class="btns-wrapper">
             <q-btn
-              color="yellow"
-              text-color="blueish"
+              color="secondary"
+              text-color="info"
               label="Update"
               @click="changeEmail"
             />
@@ -57,8 +56,8 @@
           </div>
           <div class="btns-wrapper">
             <q-btn
-              color="yellow"
-              text-color="blueish"
+              color="secondary"
+              text-color="info"
               label="Login"
               @click="login"
             />

@@ -31,7 +31,6 @@
             >
               <q-radio
                 v-model="recoveryType"
-                dark
                 val="email"
                 color="primary"
               />
@@ -46,7 +45,6 @@
                   v-model.trim="accountEmail"
                   type="email"
                   outlined
-                  dark
                   dense
                   color="primary"
                   :placeholder="$t('emailPlaceholder')"
@@ -94,7 +92,6 @@
             >
               <q-radio
                 v-model="recoveryType"
-                dark
                 class="recoveryPhrase"
                 val="recoveryPhrase"
                 color="primary"
@@ -122,8 +119,8 @@
     </div> -->
       <div class="btns-wrapper q-mt-lg">
         <q-btn
-          color="yellow"
-          text-color="blueish"
+          color="secondary"
+          text-color="info"
           :label="$t('next')"
           @click="validate"
         />

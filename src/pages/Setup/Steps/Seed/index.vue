@@ -19,14 +19,15 @@
 
     <div class="btns-wrapper">
       <q-btn
-        color="secondary"
+        flat
+        color="info"
         label="Try Different Seed"
         @click="anotherSeed"
       />
 
       <q-btn
-        color="yellow"
-        text-color="blueish"
+        color="secondary"
+        text-color="info"
         label="Done"
         @click="confirmed"
       />
@@ -52,12 +53,12 @@
             v-close-popup
             flat
             :label="$t('cancelConfirm')"
-            color="blueish"
+            color="info"
           />
           <q-btn
             flat
             :label="$t('acceptConfirm')"
-            color="blueish"
+            color="info"
             @click="done"
           />
         </q-card-actions>
