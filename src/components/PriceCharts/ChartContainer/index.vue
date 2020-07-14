@@ -62,7 +62,7 @@ export default {
       return {
         datasets: [{
           label: '24H',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
@@ -70,7 +70,7 @@ export default {
         },
         {
           label: '1W',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
@@ -79,7 +79,7 @@ export default {
         },
         {
           label: '1M',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',

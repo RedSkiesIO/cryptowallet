@@ -41,7 +41,8 @@
               </span>
               <q-btn
                 :label="$t('copy')"
-                color="blueish"
+                color="secondary"
+                text-color="info"
                 size="xs"
                 class="copy-hash-btn"
                 @click="copyToClipboard"
@@ -71,7 +72,8 @@
         <div class="send">
           <q-btn
             :label="$t('close')"
-            color="blueish"
+            color="secondary"
+            text-color="info"
             size="md"
             @click="complete"
           />

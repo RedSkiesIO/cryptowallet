@@ -40,7 +40,8 @@
             <div class="send">
               <q-btn
                 :label="$t('close')"
-                color="blueish"
+                color="secondary"
+                text-color="info"
                 size="md"
                 @click="dismiss"
               />
