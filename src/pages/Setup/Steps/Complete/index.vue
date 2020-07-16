@@ -37,7 +37,9 @@
 import { mapState } from 'vuex';
 import { Network } from '@/helpers';
 import WalletWorker from '@/workers/RefreshWallet';
-
+import Wallet from '@/store/wallet/entities/wallet';
+import Address from '@/store/wallet/entities/address';
+import Tx from '@/store/wallet/entities/tx';
 
 export default {
   name: 'Complete',
@@ -106,6 +108,8 @@ export default {
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
 
+          await this.enableWallet();
+
           this.$store.dispatch('setup/clearSetupData');
           this.$store.dispatch('settings/setLayout', 'light');
           this.$router.push({ path: '/wallet' });
@@ -116,6 +120,80 @@ export default {
           this.$store.dispatch('settings/setLoading', false);
         }, this.delay.normal);
       }, this.delay.normal);
+    },
+
+    async storeTransactions(txs, id) {
+      if (txs.length > 0) {
+        const transactions = txs.map((tx) => {
+          tx.account_id = this.authenticatedAccount;
+          tx.wallet_id = id;
+          return tx;
+        });
+        transactions.sort((a, b) => {
+          return this.createDate(b.confirmedTime) - this.createDate(a.confirmedTime);
+        });
+        await Tx.$insert({ data: transactions });
+      }
+    },
+
+    async enableEthereum(coinSDK, initializedWallet, wallet) {
+      const {
+        txHistory,
+        accounts,
+        balance,
+      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
+
+      Wallet.$update({
+        where: (record) => { return record.id === wallet.id; },
+        data: {
+          externalChainAddressIndex: 0,
+          internalChainAddressIndex: 0,
+          confirmedBalance: balance,
+          externalAddress: accounts[0].address,
+        },
+      });
+
+      const newAddress = {
+        account_id: this.authenticatedAccount,
+        wallet_id: wallet.id,
+        chain: 'external',
+        address: accounts[0].address,
+        index: 0,
+      };
+
+      await Address.$insert({ data: newAddress });
+      await this.storeTransactions(txHistory.txs, wallet.id);
+    },
+
+    async enableWallet() {
+      const wallet = Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', 'Ethereum')
+        .get()[0];
+
+      let success = true;
+      const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
+      try {
+        await this.backEndService.loadCoinPriceData(wallet.symbol);
+
+        const initializedWallet = wallet.hdWallet;
+
+        if (!this.activeWallets[this.authenticatedAccount]) {
+          this.activeWallets[this.authenticatedAccount] = {};
+        }
+
+        this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
+
+        await this.enableEthereum(coinSDK, initializedWallet, wallet);
+      } catch (err) {
+        success = false;
+        this.errorHandler(err);
+      }
+
+      Wallet.$update({
+        where: (record) => { return record.id === wallet.id; },
+        data: { imported: success, enabled: success },
+      });
     },
   },
 };
