@@ -115,7 +115,8 @@ module.exports = (ctx) => {
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],
     cordova: {
-      id: 'cent.finance.mobile.wallet',
+      id: 'com.atlas.mobile.wallet',
     },
   };
 };
+ 
