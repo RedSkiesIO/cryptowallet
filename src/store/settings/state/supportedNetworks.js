@@ -9,7 +9,7 @@ export default {
     etherscan: 'http://api.etherscan.io/api',
     etherscanKey: etherscanToken,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
-    chainId: 3,
+    chainId: 1,
     ens: true,
   },
   ETHEREUM_CLASSIC: {
@@ -20,7 +20,7 @@ export default {
     etherscan: 'https://blockscout.com/etc/mainnet/api',
     etherscanKey: null,
     feeApi: 'https://api.blockcypher.com/v1/eth/main',
-    chainId: 1,
+    chainId: 61,
   },
   XDAI: {
     name: 'XDAI',

@@ -225,7 +225,7 @@ export default {
 .done-tx-details-wrapper {
   width: 100%;
   font-size: 0.7rem;
-  background: #17334c;
+  background: whitesmoke;
   margin-top: 1rem;
   border-radius: 0.5rem;
 }
