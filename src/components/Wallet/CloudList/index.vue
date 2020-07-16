@@ -147,17 +147,17 @@ export default {
   border-radius: 0.4rem;
   font-size: 3em;
   padding: 0em;
-  color: #1e3c57;
-  margin-top: 5rem;
+  color: white;
+  margin-top: 15.5rem;
 
 }
 
 .large-cloud-btn i {
-  color: #1e3c57;
+  color: white;
 }
 
 .large-cloud-btn .q-btn__content{
-  color: #1e3c57;
+  color: white
 }
 
 .scroll-offset {

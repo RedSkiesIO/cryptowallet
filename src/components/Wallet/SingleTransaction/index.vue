@@ -513,10 +513,6 @@ export default {
   margin-bottom: 0;
 }
 
-.q-expansion-item .q-item__label {
-  font-size: 0.8rem;
-}
-
 .q-expansion-item .q-item {
   min-height: 1rem;
 }

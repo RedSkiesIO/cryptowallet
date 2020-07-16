@@ -12,6 +12,7 @@
           <div class="header-back-button-wrapper">
             <q-btn
               icon="arrow_back"
+              text-color="primary"
               size="lg"
               class="icon-btn back-arrow-btn"
               @click.prevent="goBack"
@@ -259,7 +260,7 @@ export default {
   height: 0;
   min-height: 1.5rem;
   text-transform: none;
-  font-family: Montserrat-SemiBold!important;
+  font-family: Inter-SemiBold!important;
 }
 
 .send-heading-btn.active {

@@ -5,7 +5,7 @@
         flat
         class="chart-button"
         :disable="disable===0"
-        color="white"
+        color="info"
         label="24H"
         @click="onClick(0)"
       />
@@ -13,7 +13,7 @@
         flat
         class="chart-button"
         :disable="disable===1"
-        color="white"
+        color="info"
         label="1W"
         @click="onClick(1)"
       />
@@ -21,7 +21,7 @@
         flat
         class="chart-button"
         :disable="disable===2"
-        color="white"
+        color="info"
         label="1M"
         @click="onClick(2)"
       />
@@ -62,7 +62,7 @@ export default {
       return {
         datasets: [{
           label: '24H',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
@@ -70,7 +70,7 @@ export default {
         },
         {
           label: '1W',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
@@ -79,7 +79,7 @@ export default {
         },
         {
           label: '1M',
-          borderColor: '#fabc57',
+          borderColor: '#dd3dff',
           borderWidth: 3,
           pointRadius: 0,
           backgroundColor: 'black',
@@ -103,7 +103,7 @@ export default {
             type: 'time',
             ticks: {
               minRotation: '45',
-              fontColor: '#78d2e6',
+              fontColor: '#1d1d1d',
               padding: 15,
 
             },
@@ -113,9 +113,9 @@ export default {
           }],
           yAxes: [{
             position: 'left',
-            color: '#78d2e6',
+            color: '#1d1d1d',
             ticks: {
-              fontColor: '#78d2e6',
+              fontColor: '#1d1d1d',
               callback: (value) => { return `${this.selectedCurrency.symbol}${value}`; },
             },
           }],

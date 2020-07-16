@@ -1,6 +1,6 @@
 {
     "name": "com.atlascity.wallet.mobile",
-    "displayName": "CryptoWallet",
+    "displayName": "Cent",
     "version": "1.0.1",
     "description": "A sample Apache Cordova application that responds to the deviceready event.",
     "main": "index.js",

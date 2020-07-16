@@ -22,8 +22,9 @@
         :key="`word${i}`"
         :label="`${word}`"
         :disabled="wasUsed(word)"
-        color="yellow"
-        text-color="blueish"
+        outline
+        color="primary"
+        text-color="primary"
         class="seed-btn"
         size="sm"
         @click="addToSequence(word)"
@@ -32,7 +33,8 @@
     <div class="btns-wrapper">
       <q-btn
         :disabled="resetDisabled"
-        color="secondary"
+        flat
+        color="info"
         label="Reset"
         @click="reset"
       />
@@ -165,7 +167,6 @@ export default {
 
 .seed-input-preview-box {
   padding: 0.5rem;
-  background: #22405a;
   font-size: 0.8rem;
   width: 100%;
   border-radius: 0.3rem;
@@ -174,7 +175,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  font-family: 'Montserrat-Semibold';
+  font-family: 'Inter-SemiBold';
 }
 
 .seed-input-preview-box span {

@@ -112,7 +112,7 @@
             :min="0"
             :max="2"
             :step="1"
-            color="blueish"
+            color="primary"
             label-always
             snap
             markers
@@ -126,7 +126,8 @@
       <div class="send">
         <q-btn
           :label="$t('send')"
-          color="blueish"
+          color="secondary"
+          text-color="info"
           class="send-btn"
           size="md"
           @click="send"

@@ -18,7 +18,7 @@
     >
       <template v-slot:prepend>
         <q-icon
-          color="white"
+          color="black"
           name="search"
           style="margin-left: 1rem"
         />
@@ -26,9 +26,8 @@
 
       <template
         v-slot:option="scope"
-        class="bg-blueish"
       >
-        <div class="bg-blueish">
+        <div>
           <WalletItem
             :wallet="scope.opt"
           />

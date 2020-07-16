@@ -30,7 +30,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="info"
           class="settings-chevron"
           flat
           @click.prevent="openSelectCurrencyModal"
@@ -69,7 +69,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="info"
           class="settings-chevron"
           flat
           @click.prevent="openNewPinModal"
@@ -88,7 +88,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="info"
           class="settings-chevron"
           flat
           @click="logout"
@@ -108,7 +108,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="info"
           class="settings-chevron"
           flat
           @click.prevent="openDeleteAccountModal"
@@ -198,7 +198,7 @@ export default {
   height: 3.5rem;
   display: flex;
   align-items: center;
-  font-family: 'Montserrat-Medium';
+  font-family: 'Inter-Medium';
 }
 
 .settings-chevron {
