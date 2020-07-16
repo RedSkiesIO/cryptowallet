@@ -35,7 +35,6 @@
               <q-radio
                 v-model="selectedCurrency"
                 :val="key"
-                dark
               />
             </div>
           </div>

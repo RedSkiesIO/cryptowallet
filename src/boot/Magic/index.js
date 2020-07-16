@@ -2,7 +2,7 @@ import { Magic, RPCError, RPCErrorCode } from 'magic-sdk';
 import { ethers } from 'ethers';
 import bip39 from 'bip39';
 
-const m = new Magic('pk_test_2CBB20C533645D99'); // ✨
+const m = new Magic(process.env.MAGIC_TEST); // ✨
 
 // eslint-disable-next-line no-console
 m.preload().then(() => { return console.log('Magic <iframe> loaded.'); });
