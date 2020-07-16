@@ -16,15 +16,14 @@
           type="textarea"
           float-label="Backup Phrase"
           outlined
-          dark
           color="primary"
         />
       </div>
     </div>
     <div class="btns-wrapper">
       <q-btn
-        color="yellow"
-        text-color="blueish"
+        color="secondary"
+        text-color="info"
         label="Next"
         @click="validate"
       />

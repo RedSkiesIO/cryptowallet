@@ -170,6 +170,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.transak_modal {
+  padding-top: 24px;
+}
 
+.transak_close {
+  display: none;
+}
 </style>

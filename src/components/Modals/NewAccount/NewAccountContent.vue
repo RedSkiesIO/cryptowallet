@@ -21,16 +21,17 @@
           :label="$t('createAccount')"
           icon="add_box"
           color="primary"
-          text-color="blueish"
+          text-color="white"
           @click="createAccount"
         />
       </div>
       <div class="btns-wrapper">
         <q-btn
+          flat
           :label="$t('importAccount')"
           icon="get_app"
           color="primary"
-          text-color="blueish"
+          text-color="primary"
           @click="importAccount"
         />
       </div>
