@@ -95,3 +95,8 @@ export function setAddFundsModalOpened(context, payload) {
 export function setUpdateEmailModalOpened(context, payload) {
   context.commit('SET_UPDATE_EMAIL_MODAL_OPENED', payload);
 }
+
+export function setExportKeysModalOpened(context, payload) {
+  console.log(payload);
+  context.commit('SET_EXPORT_KEYS_MODAL_OPENED', payload);
+}

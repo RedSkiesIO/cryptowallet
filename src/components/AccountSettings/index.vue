@@ -76,6 +76,24 @@
         />
       </div>
     </div>
+    <div
+      class="settings-row"
+      @click.prevent="openExportKeysModal"
+    >
+      <div>
+        {{ $t('viewKeys') }}
+      </div>
+      <div>
+        <q-btn
+          icon="chevron_right"
+          size="lg"
+          color="info"
+          class="settings-chevron"
+          flat
+          @click.prevent="openExportKeysModal"
+        />
+      </div>
+    </div>
     <ToggleTestnets />
     <div
       class="settings-row"
@@ -132,6 +150,8 @@
       :pin-hash="account.pinHash"
     />
     <UpdateEmail v-if="updateEmailEnabled" />
+
+    <ExportKeys v-if="exportKeysEnabled" />
   </div>
 </template>
 
@@ -143,6 +163,7 @@ import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
 import ToggleTestnets from '@/components/AccountSettings/ToggleTestnets';
 import UpdateEmail from '@/components/AccountSettings/UpdateEmail';
+import ExportKeys from '@/components/AccountSettings/ExportKeys';
 
 
 export default {
@@ -154,6 +175,7 @@ export default {
     DeleteAccount,
     ToggleTestnets,
     UpdateEmail,
+    ExportKeys,
   },
   computed: {
     ...mapState({
@@ -164,6 +186,9 @@ export default {
     },
     updateEmailEnabled() {
       return this.$store.state.modals.updateEmailModalOpened;
+    },
+    exportKeysEnabled() {
+      return this.$store.state.modals.exportKeysModalOpened;
     },
   },
   methods: {
@@ -181,6 +206,9 @@ export default {
     },
     openUpdateEmailModal() {
       this.$store.dispatch('modals/setUpdateEmailModalOpened', true);
+    },
+    openExportKeysModal() {
+      this.$store.dispatch('modals/setExportKeysModalOpened', true);
     },
     logout() {
       window.location.reload(true);
