@@ -67,6 +67,9 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -76,7 +79,7 @@ export default {
 
     transak() {
       if (this.country) {
-        return transak(this.wallet, this.country.value, this.card, this.isTestnet);
+        return transak(this.account, this.wallet, this.country.value, this.card, this.isTestnet);
       }
       const country = {
         currencyCode: 'GBP',
@@ -172,7 +175,7 @@ export default {
 
 <style lang="scss">
 .transak_modal {
-  padding-top: 24px;
+  padding-top: 35px;
 }
 
 .transak_close {

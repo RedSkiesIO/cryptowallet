@@ -68,7 +68,7 @@ export default {
       this.ramp = ramp(this.wallet, this.isTestnet);
       this.ramp.domNodes.overlay.style.zIndex = 998;
       this.ramp.domNodes.iframe.style.height = '98vh';
-      this.ramp.domNodes.iframe.style.paddingTop = '24px';
+      this.ramp.domNodes.iframe.style.paddingTop = '35px';
       this.$emit('loading', { on: true, logo: 'statics/payment-logos/ramp.svg' });
       setTimeout(() => {
         this.ramp.show();
@@ -139,6 +139,6 @@ export default {
 
 <style lang="scss">
 .overlay {
-  padding-top: 24px;
+  padding-top: 35px;
 }
 </style>

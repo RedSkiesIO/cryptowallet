@@ -339,8 +339,8 @@ export default {
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
   position: relative;
-  padding-top: 24px + env(safe-area-inset-top);
-  padding-top: 24px;
+  padding-top: 35px + env(safe-area-inset-top);
+  padding-top: 35px;
 }
 
 .main-header {
@@ -349,9 +349,9 @@ export default {
   height: 2.5rem + env(safe-area-inset-top);
   font-family: 'CooperHewitt-Semibold';
   position: fixed;
-  padding-top: 24px + constant(safe-area-inset-top);
-  padding-top: 24px + env(safe-area-inset-top);
-  padding-top: 24px;
+  padding-top: 35px + constant(safe-area-inset-top);
+  padding-top: 35px + env(safe-area-inset-top);
+  padding-top: 35px;
   z-index: 90;
   width: 100%;
 }

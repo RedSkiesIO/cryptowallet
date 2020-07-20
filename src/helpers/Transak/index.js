@@ -1,6 +1,6 @@
 import TransakSDK from '@transak/transak-sdk';
 
-export function transak(wallet, country, card = false, testnet = true) {
+export function transak(account, wallet, country, card = false, testnet = true) {
   return new TransakSDK({
     apiKey: testnet ? process.env.TRANSAK_DEV : process.env.TRANSAK_PROD, // Your API Key
     environment: testnet ? 'STAGING' : 'PRODUCTION', // STAGING/PRODUCTION
