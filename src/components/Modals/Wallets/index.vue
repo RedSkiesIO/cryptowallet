@@ -25,24 +25,6 @@
             class="header-settings-button-wrapper"
           >
             <q-btn
-              v-if="search"
-              icon="close"
-              color="secondary"
-              size="lg"
-              class="icon-btn icon-btn-right"
-              flat
-              @click.prevent="toggleSearch(false)"
-            />
-            <q-btn
-              v-if="!search"
-              icon="search"
-              color="secondary"
-              size="lg"
-              class="icon-btn icon-btn-right"
-              flat
-              @click.prevent="toggleSearch(true)"
-            />
-            <q-btn
               v-if="!search"
               icon="add"
               color="secondary"
