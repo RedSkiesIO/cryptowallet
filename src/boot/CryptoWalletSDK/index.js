@@ -6,10 +6,10 @@ export default ({ Vue }) => {
 
   Vue.prototype.coinSDKS = {
     Bitcoin: SDK.SDKFactory.createSDK('Bitcoin'),
-    Ethereum: (network = 'ETHEREUM_ROPSTEN') => {
+    Ethereum: (network = 'ETHEREUM') => {
       return SDK.SDKFactory.createSDK('Ethereum', networks[network]);
     },
-    ERC20: (network = 'ETHEREUM_ROPSTEN') => {
+    ERC20: (network = 'ETHEREUM') => {
       return SDK.SDKFactory.createSDK('ERC20', networks[network]);
     },
   };
