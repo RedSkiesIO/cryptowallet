@@ -9,7 +9,6 @@ export function ramp(account, wallet, testnet = true) {
     userEmailAddress: account.email || '',
     variant: 'mobile',
   };
-  console.log(testnet);
   if (testnet) { config.url = 'https://ri-widget-staging.firebaseapp.com/'; }
 
   return new RampInstantSDK(config);
