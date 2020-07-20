@@ -18,4 +18,5 @@ export default {
   newTxData: null,
   addFundsModalOpened: false,
   updateEmailModalOpened: false,
+  exportKeysModalOpened: false,
 };

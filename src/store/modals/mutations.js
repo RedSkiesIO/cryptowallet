@@ -126,3 +126,7 @@ export function SET_UPDATE_EMAIL_MODAL_OPENED(state, payload) {
   changeStatusBarColour(payload);
   state.updateEmailModalOpened = payload;
 }
+
+export function SET_EXPORT_KEYS_MODAL_OPENED(state, payload) {
+  state.exportKeysModalOpened = payload;
+}
