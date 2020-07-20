@@ -48,6 +48,9 @@ export default {
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
     }),
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -65,9 +68,9 @@ export default {
 
   methods: {
     openRamp() {
-      this.ramp = ramp(this.wallet, this.isTestnet);
+      this.ramp = ramp(this.account, this.wallet, this.isTestnet);
       this.ramp.domNodes.overlay.style.zIndex = 998;
-      this.ramp.domNodes.iframe.style.height = '98vh';
+      this.ramp.domNodes.iframe.style.height = '96vh';
       this.ramp.domNodes.iframe.style.paddingTop = '35px';
       this.$emit('loading', { on: true, logo: 'statics/payment-logos/ramp.svg' });
       setTimeout(() => {

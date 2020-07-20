@@ -11,7 +11,7 @@ export function transak(account, wallet, country, card = false, testnet = true) 
     fiatCurrency: country.currencyCode, // INR/GBP
     countryCode: country.alpha2,
     defaultPaymentMethod: card ? 'credit_debit_card' : '',
-    email: '', // Your customer's email address
+    email: account.email || '', // Your customer's email address
     redirectURL: window.location.origin,
     hostURL: window.location.origin,
     widgetHeight: '100%',

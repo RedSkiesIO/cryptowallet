@@ -17,7 +17,7 @@
           v-if="bank"
           caption
         >
-          Fee 0.25% - 0.5%
+          Fee 0.5%
         </q-item-label>
         <q-item-label
           v-if="card"
