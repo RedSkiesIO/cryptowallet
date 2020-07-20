@@ -2,7 +2,6 @@
   <div class="filter-wallets">
     <q-select
       v-model="model"
-      autofocus
       borderless
       use-input
       hide-selected
@@ -15,6 +14,8 @@
       behavior="menu"
       :options="options"
       @filter="filterFn"
+      @popup-show="hideWalletList"
+      @popup-hide="showWalletList"
     >
       <template v-slot:prepend>
         <q-icon
@@ -90,6 +91,13 @@ export default {
         });
         this.options = getUnique([...filterByName, ...filterBySymbol], '$id');
       });
+    },
+
+    hideWalletList() {
+      this.$emit('active', true);
+    },
+    showWalletList() {
+      this.$emit('active', false);
     },
   },
 };

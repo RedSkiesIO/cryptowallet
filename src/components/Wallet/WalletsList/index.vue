@@ -4,17 +4,21 @@
       v-if="wallets.length > 0"
       class="scroll-area"
     >
-      <WalletItem
-        v-for="wallet in wallets"
-        :key="wallet.displayName"
-        :wallet="wallet"
-      />
+      <WalletFilter @active="hideWalletList" />
+      <div v-if="!hideList">
+        <WalletItem
+          v-for="wallet in wallets"
+          :key="wallet.displayName"
+          :wallet="wallet"
+        />
+      </div>
     </q-scroll-area>
   </section>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import WalletFilter from '@/components/Wallet/WalletsFilter';
 import WalletItem from '@/components/Wallet/WalletItem';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -22,7 +26,15 @@ export default {
   name: 'WalletsList',
   components: {
     WalletItem,
+    WalletFilter,
   },
+
+  data() {
+    return {
+      hideList: false,
+    };
+  },
+
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
@@ -36,6 +48,12 @@ export default {
           .where('testnet', false).get();
       }
       return Coin.all();
+    },
+  },
+
+  methods: {
+    hideWalletList(val) {
+      this.hideList = val;
     },
   },
 };
