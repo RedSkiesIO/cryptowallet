@@ -39,6 +39,7 @@
               outlined
               color="primary"
               :placeholder="$t('emailPlaceholder')"
+              @keydown.enter.prevent="changeEmail"
             />
           </div>
           <div class="btns-wrapper">

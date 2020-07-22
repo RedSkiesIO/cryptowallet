@@ -171,6 +171,8 @@ export default {
         Coin.$insert({
           data: coin,
         });
+
+
         // }
         // else {
         //   // Coin.$update({
@@ -180,6 +182,16 @@ export default {
         //   Coin.$insert(data);
         // }
       });
+      // const coins = Coin.all().map(({ name }) => { return name; });
+      // const supported = this.supportedCoins.map(({ name }) => { return name; });
+      // const oldCoins = coins.filter((c) => {
+      //   return supported.indexOf(c) < 0;
+      // });
+      // oldCoins.forEach((old) => {
+      //   Coin.$delete(old);
+      // });
+
+      // console.log(oldCoins);
     },
   },
 };
