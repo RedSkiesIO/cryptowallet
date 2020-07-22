@@ -326,7 +326,7 @@ export default {
   width: 100%;
   opacity: 1;
   padding: 0 0.5rem;
-  margin-top: calc(2.5rem + 24px);
+  margin-top: calc(2.5rem + 35px);
 }
 
 .no-balance .total-balance-wrapper,
@@ -358,6 +358,7 @@ export default {
 .layout-shape.white {
   background: white!important;
   box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+  margin-top: 10px;
 }
 
 .no-balance .layout-shape {
@@ -392,7 +393,7 @@ export default {
 }
 
 .single-wallet-top .coin-header-wrapper {
-  height: 20rem!important;
+  height: 18rem!important;
   display: flex;
   align-items: center;
   justify-content: center;

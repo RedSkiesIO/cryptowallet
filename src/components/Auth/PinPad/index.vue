@@ -1,9 +1,5 @@
 <template>
   <div>
-    <keyboard
-      :layouts="['123|456|789|0']"
-      @input="inputPin"
-    />
     <div class="dots-wrapper">
       <span
         v-for="item in input"
@@ -11,6 +7,10 @@
         class="dot"
       />
     </div>
+    <keyboard
+      :layouts="['123|456|789|0']"
+      @input="inputPin"
+    />
 
     <div class="btns-wrapper">
       <q-btn

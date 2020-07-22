@@ -238,7 +238,7 @@ class BackEndService {
    * @return {Object}
    */
   async getHistoricalData(coin, currency, period, attempts = 0) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`, attempts);
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin.toUpperCase()}/${currency}/${period}`, attempts);
     const msToS = 1000;
     if (!result) { return false; }
 
@@ -446,7 +446,7 @@ class BackEndService {
     }
 
     const latestPrice = await this.getPriceFeed(
-      [coin],
+      [coin.toUpperCase()],
       [selectedCurrency.code],
       attempts,
     );

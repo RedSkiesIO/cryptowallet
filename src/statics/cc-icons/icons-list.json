@@ -28,6 +28,10 @@
         "name": "Cardano"
     },
     {
+        "symbol": "ADAI",
+        "name": "Aave Interest Bearing DAI"
+    },
+    {
         "symbol": "ADD",
         "name": "ADD Token"
     },

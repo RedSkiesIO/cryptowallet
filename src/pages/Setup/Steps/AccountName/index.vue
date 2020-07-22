@@ -11,6 +11,7 @@
         :float-label="$t('accountName')"
         outlined
         color="primary"
+        @keydown.enter.prevent="validate"
       />
     </div>
     <div class="btns-wrapper">

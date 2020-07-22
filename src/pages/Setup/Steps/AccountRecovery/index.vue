@@ -48,6 +48,7 @@
                   dense
                   color="primary"
                   :placeholder="$t('emailPlaceholder')"
+                  @keydown.enter.prevent="validate"
                 />
               </div>
             </q-item-section>

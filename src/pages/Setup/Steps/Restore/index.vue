@@ -17,6 +17,7 @@
           float-label="Backup Phrase"
           outlined
           color="primary"
+          @keydown.enter.prevent="validate"
         />
       </div>
     </div>
