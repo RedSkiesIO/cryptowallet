@@ -104,12 +104,13 @@ export default {
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
 
-          await this.enableWallet();
+          const ethWallet = await this.enableWallet();
 
           await this.accountInitializer.createERC20Wallets(
             this.setup,
             account.id,
             this.supportedCoins,
+            ethWallet,
           );
 
           this.$store.dispatch('setup/clearSetupData');
@@ -143,7 +144,8 @@ export default {
         txHistory,
         accounts,
         balance,
-      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
+        tokens,
+      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk, true);
 
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
@@ -169,6 +171,7 @@ export default {
       return {
         address: accounts[0].address,
         wallet_id: wallet.id,
+        tokens,
       };
     },
 
@@ -180,6 +183,7 @@ export default {
 
       let success = true;
       const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
+      let walletAddress = {};
       try {
         await this.backEndService.loadCoinPriceData(wallet.symbol);
 
@@ -191,7 +195,7 @@ export default {
 
         this.activeWallets[this.authenticatedAccount][wallet.name] = initializedWallet;
 
-        await this.enableEthereum(coinSDK, initializedWallet, wallet);
+        walletAddress = await this.enableEthereum(coinSDK, initializedWallet, wallet);
       } catch (err) {
         success = false;
         this.errorHandler(err);
@@ -201,6 +205,7 @@ export default {
         where: (record) => { return record.id === wallet.id; },
         data: { imported: success, enabled: success },
       });
+      return walletAddress;
     },
   },
 };

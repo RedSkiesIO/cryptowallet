@@ -1,5 +1,6 @@
 import { uid } from 'quasar';
 import Account from '@/store/wallet/entities/account';
+import Coin from '@/store/wallet/entities/coin';
 import Wallet from '@/store/wallet/entities/wallet';
 import CryptoWalletSDK from 'cryptowallet-js';
 import bcrypt from 'bcryptjs';
@@ -58,45 +59,54 @@ const accountInitializer = {
     await Promise.all(promises);
   },
 
-  async createERC20Wallets(setup, id, coins) {
-    // const SDK = new CryptoWalletSDK();
+  async createERC20Wallets(setup, id, coins, ethWallet) {
+    const SDK = new CryptoWalletSDK();
     const promises = [];
+
+    const addERC20 = ((coin) => {
+      const wallet = {
+        account_id: id,
+        name: coin.name,
+        displayName: coin.displayName,
+        symbol: coin.symbol,
+        sdk: coin.sdk,
+        network: coin.network,
+      };
+      promises.push(new Promise(async (resolve) => {
+        const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
+        // const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
+        // const parentWallet = await parentSDK.generateHDWallet(
+        //   setup.seedString,
+        //   coin.network,
+        // );
+        // const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
+
+        wallet.erc20Wallet = await coinSDK.generateERC20Wallet(
+          {
+            address: ethWallet.address,
+            network: coin.network,
+            type: 'Ethereum',
+          },
+          coin.name,
+          coin.symbol,
+          coin.contractAddress,
+          coin.decimals,
+        );
+
+        wallet.parentSdk = coin.parentSdk;
+        wallet.parentName = coin.parentName;
+        wallet.contractAddress = coin.contractAddress;
+        wallet.decimals = coin.decimals;
+
+        await Wallet.$insert({ data: wallet });
+        resolve();
+      }));
+    });
+
 
     coins.forEach((coin) => {
       if (coin.sdk === 'ERC20') {
-        const wallet = {
-          account_id: id,
-          name: coin.name,
-          displayName: coin.displayName,
-          symbol: coin.symbol,
-          sdk: coin.sdk,
-          network: coin.network,
-        };
-        promises.push(new Promise(async (resolve) => {
-          // const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
-          // const parentSDK = await SDK.SDKFactory.createSDK(coin.parentSdk, coin.api);
-          // const parentWallet = await parentSDK.generateHDWallet(
-          //   setup.seedString,
-          //   coin.network,
-          // );
-          // const keyPair = parentSDK.generateKeyPair(parentWallet, 0);
-
-          // wallet.erc20Wallet = await coinSDK.generateERC20Wallet(
-          //   keyPair,
-          //   coin.name,
-          //   coin.symbol,
-          //   coin.contractAddress,
-          //   coin.decimals,
-          // );
-
-          wallet.parentSdk = coin.parentSdk;
-          wallet.parentName = coin.parentName;
-          wallet.contractAddress = coin.contractAddress;
-          wallet.decimals = coin.decimals;
-
-          await Wallet.$insert({ data: wallet });
-          resolve();
-        }));
+        addERC20(coin);
       }
     });
     await Promise.all(promises);
