@@ -94,11 +94,7 @@ export default {
           const account = await this.accountInitializer.createAccount(this.setup);
           this.$store.dispatch('settings/setSelectedAccount', this.setup.accountName);
           await this.accountInitializer.createWallets(this.setup, account.id, this.supportedCoins);
-          await this.accountInitializer.createERC20Wallets(
-            this.setup,
-            account.id,
-            this.supportedCoins,
-          );
+
           this.$store.dispatch('setup/setAccountCreated');
           this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
 
@@ -109,6 +105,12 @@ export default {
           await this.backEndService.loadPriceFeed();
 
           await this.enableWallet();
+
+          await this.accountInitializer.createERC20Wallets(
+            this.setup,
+            account.id,
+            this.supportedCoins,
+          );
 
           this.$store.dispatch('setup/clearSetupData');
           this.$store.dispatch('settings/setLayout', 'light');
@@ -163,6 +165,11 @@ export default {
 
       await Address.$insert({ data: newAddress });
       await this.storeTransactions(txHistory.txs, wallet.id);
+
+      return {
+        address: accounts[0].address,
+        wallet_id: wallet.id,
+      };
     },
 
     async enableWallet() {
