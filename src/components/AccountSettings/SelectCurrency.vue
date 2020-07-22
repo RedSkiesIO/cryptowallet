@@ -98,6 +98,9 @@ export default {
       },
     },
   },
+  beforeDestroy() {
+    this.refreshPrices();
+  },
   methods: {
     async refreshPrices() {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';

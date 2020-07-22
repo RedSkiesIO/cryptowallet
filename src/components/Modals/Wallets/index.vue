@@ -89,6 +89,9 @@ export default {
       },
     },
   },
+  async beforeDestroy() {
+    await this.close();
+  },
   methods: {
     openAddWalletModal() {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
