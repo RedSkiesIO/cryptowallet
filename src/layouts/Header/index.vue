@@ -193,7 +193,7 @@ export default {
     },
 
     walletScreen() {
-      return this.$route.name === 'wallet';
+      return this.$route.name === 'wallet' || this.$route.name === 'addFunds';
     },
 
     getClass() {
@@ -241,12 +241,12 @@ export default {
         this.isBackButtonEnabled = false;
       }
     },
-    txsLength(newValue, oldValue) {
-      if (this.enableTxNotification && (newValue > oldValue)) {
-        const newTransactions = this.txs.slice(oldValue);
-        this.showNotification(newTransactions);
-      }
-    },
+    // txsLength(newValue, oldValue) {
+    //   if (this.enableTxNotification && (newValue > oldValue)) {
+    //     const newTransactions = this.txs.slice(oldValue);
+    //     this.showNotification(newTransactions);
+    //   }
+    // },
   },
 
   mounted() {
@@ -277,7 +277,10 @@ export default {
       if (!tx.sent) {
         const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
         let logo;
-        if (IconList.find((icon) => { return icon.symbol === wallet.symbol.toUpperCase(); })) {
+        const coinLogo = IconList.find((icon) => {
+          return icon.symbol === wallet.symbol.toUpperCase();
+        });
+        if (coinLogo) {
           logo = `./statics/cc-icons/color/${wallet.symbol.toLowerCase()}.svg`;
         } else {
           logo = './statics/cc-icons/color/generic.svg';

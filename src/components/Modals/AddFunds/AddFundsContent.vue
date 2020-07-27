@@ -12,7 +12,7 @@
         />
       </div>
       <h1 class="header-h1">
-        {{ $t('buy') }} {{ wallet.symbol }}
+        {{ $t('addFunds') }}
       </h1>
     </div>
 
@@ -33,12 +33,14 @@
             v-if="bankTransfer"
             :country="country"
             :bank="true"
+            :tokens="transakTokens"
             v-on="$listeners"
           />
           <TransakItem
             v-if="cardPayments"
             :country="country"
             :card="true"
+            :tokens="transakTokens"
             v-on="$listeners"
           />
           <RampItem
@@ -53,6 +55,8 @@
 
 <script>
 import { mapState } from 'vuex';
+import axios from 'axios';
+import Coin from '@/store/wallet/entities/coin';
 import SelectCountry from './SelectCountry';
 import TransakItem from './TransakItem';
 import RampItem from './RampItem';
@@ -67,6 +71,7 @@ export default {
   data() {
     return {
       country: null,
+      transakTokens: null,
     };
   },
   computed: {
@@ -77,7 +82,10 @@ export default {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
     supportsRamp() {
-      return this.$store.getters['entities/coin/find'](this.wallet.name).rampNetwork;
+      if (this.wallet) {
+        return Coin.findToken(this.wallet.name).rampNetwork;
+      }
+      return true;
     },
     partners() {
       if (this.country) {
@@ -93,7 +101,7 @@ export default {
     },
 
     bankTransfer() {
-      if (this.country) {
+      if (this.country && this.transakTokens) {
         return this.partners
           .some((partner) => { return (!partner.isCardPayment); });
       }
@@ -101,12 +109,18 @@ export default {
     },
 
     cardPayments() {
-      if (this.country) {
+      if (this.country && this.transakTokens) {
         return this.partners
           .some((partner) => { return (!!partner.isCardPayment); });
       }
       return false;
     },
+  },
+
+  async mounted() {
+    this.transakTokens = (await axios.get('https://api.transak.com/api/v1/currencies/list')).data.response.cryptocurrencies
+      .filter((token) => { return token.network === 'erc20'; })
+      .map((token) => { return token.symbol; }).join();
   },
 
   methods: {

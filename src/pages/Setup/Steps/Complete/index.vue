@@ -36,7 +36,7 @@
 <script>
 import { mapState } from 'vuex';
 import { Network } from '@/helpers';
-import WalletWorker from '@/workers/RefreshWallet';
+// import WalletWorker from '@/workers/RefreshWallet';
 import Wallet from '@/store/wallet/entities/wallet';
 import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
@@ -99,7 +99,7 @@ export default {
           this.$store.dispatch('settings/setAuthenticatedAccount', account.id);
 
           Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.authenticatedAccount, this.setup.pinArray.join(''));
-          Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();
+          // Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();
 
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
@@ -144,8 +144,7 @@ export default {
         txHistory,
         accounts,
         balance,
-        tokens,
-      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk, true);
+      } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
       Wallet.$update({
         where: (record) => { return record.id === wallet.id; },
@@ -171,7 +170,6 @@ export default {
       return {
         address: accounts[0].address,
         wallet_id: wallet.id,
-        tokens,
       };
     },
 

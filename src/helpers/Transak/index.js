@@ -1,10 +1,11 @@
 import TransakSDK from '@transak/transak-sdk';
 
-export function transak(account, wallet, country, card = false, testnet = true) {
+export function transak(account, wallet, tokens, country, card = false, testnet = true) {
   return new TransakSDK({
     apiKey: testnet ? process.env.TRANSAK_DEV : process.env.TRANSAK_PROD, // Your API Key
     environment: testnet ? 'STAGING' : 'PRODUCTION', // STAGING/PRODUCTION
-    cryptoCurrencyCode: wallet.symbol,
+    cryptoCurrencyCode: wallet.symbol || '',
+    cryptoCurrencyList: tokens || '',
     walletAddress: wallet.externalAddress, // Your customer's wallet address
     disableWalletAddressForm: true,
     themeColor: '#dd3dff', // App theme color
@@ -17,6 +18,6 @@ export function transak(account, wallet, country, card = false, testnet = true) 
     widgetHeight: '100%',
     widgetWidth: '100%',
     hideMenu: true,
-    exchangeScreenTitle: `Buy ${wallet.symbol.toUpperCase()}`,
+    // exchangeScreenTitle: `Buy ${wallet.symbol.toUpperCase()}`,
   });
 }

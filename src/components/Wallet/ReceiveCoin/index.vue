@@ -178,7 +178,7 @@ export default {
       return this.wallet.externalAddress;
     },
     decimals() {
-      return Coin.find(this.wallet.name).decimals;
+      return Coin.findToken(this.wallet.name).decimals;
     },
   },
   mounted() {

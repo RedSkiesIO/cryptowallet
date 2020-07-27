@@ -42,6 +42,9 @@
 import { mapState } from 'vuex';
 import { transak } from '@/helpers/Transak';
 import Payments from '@/store/wallet/entities/payments';
+import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
+
 
 export default {
   name: 'TransakItem',
@@ -60,7 +63,13 @@ export default {
       required: false,
       default: false,
     },
+    tokens: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
+
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
@@ -70,16 +79,32 @@ export default {
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
+    defaultWallet() {
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', 'Ethereum')
+        .get()[0];
+    },
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return {
+        externalAddress: this.defaultWallet.externalAddress,
+      };
     },
     isTestnet() {
-      return this.$store.getters['entities/coin/find'](this.wallet.name).testnet;
+      if (this.id) {
+        return Coin.findToken(this.wallet.name).testnet;
+      }
+      return false;
     },
 
     transak() {
       if (this.country) {
-        return transak(this.account, this.wallet, this.country.value, this.card, this.isTestnet);
+        return transak(
+          this.account, this.wallet, this.tokens, this.country.value, this.card, this.isTestnet,
+        );
       }
       const country = {
         currencyCode: 'GBP',

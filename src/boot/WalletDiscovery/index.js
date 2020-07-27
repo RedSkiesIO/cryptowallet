@@ -71,31 +71,10 @@ async function discoverBitcoin(wallet, coinSDK, network) {
   };
 }
 
-async function discoverEthereum(wallet, coinSDK, network, erc20History) {
+async function discoverEthereum(wallet, coinSDK, network) {
   const accounts = await coinSDK.accountDiscovery(wallet);
   const txHistory = await coinSDK.getTransactionHistory([accounts[0].address], network, 0);
   let balance = await coinSDK.getBalance([accounts[0].address], network);
-  const tokens = [];
-
-  if (erc20History) {
-    const txs = await coinSDK.getERC20History(accounts[0].address);
-    console.log(txs);
-    const map = new Map();
-    txs.forEach((tx) => {
-      if (!map.has(tx.contractAddress)) {
-        map.set(tx.contractAddress, true);
-        tokens.push({
-          name: tx.tokenName,
-          displayName: tx.tokenName,
-          contractAddress: tx.contractAddress,
-          decimals: tx.tokenDecimal,
-          symbol: tx.tokenSymbol,
-          sdk: 'ERC20',
-          network,
-        });
-      }
-    });
-  }
 
   if (!balance) {
     balance = 0;
@@ -104,7 +83,6 @@ async function discoverEthereum(wallet, coinSDK, network, erc20History) {
     accounts,
     txHistory,
     balance,
-    tokens,
   };
 }
 

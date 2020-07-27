@@ -15,6 +15,7 @@ import Prices from './prices';
 import LatestPrice from './latestPrice';
 import Fees from './fees';
 import Payments from './wallet/entities/payments';
+import Token from './wallet/entities/token';
 
 
 // import modules.
@@ -39,7 +40,7 @@ database.register(Prices, {});
 database.register(LatestPrice, {});
 database.register(Fees, {});
 database.register(Payments, {});
-
+database.register(Token, {});
 
 Vue.prototype.encryptedModels = [
   Account,
@@ -57,6 +58,7 @@ if (process.env.DEV) {
   window.Coin = Coin;
   window.Fees = Fees;
   window.Payments = Payments;
+  window.Token = Token;
 }
 
 const options = {

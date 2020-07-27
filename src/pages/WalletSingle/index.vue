@@ -7,6 +7,7 @@
 <script>
 import Transactions from '@/components/Wallet/Transactions';
 import { mapState } from 'vuex';
+import { refreshWallet } from '@/helpers';
 
 export default {
   name: 'WalletSingle',
@@ -32,7 +33,13 @@ export default {
     }),
 
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        if (this.id.toString().substring(0, 2) === '0x') {
+          return this.$store.getters['entities/token/find'](this.id);
+        }
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return null;
     },
   },
 
@@ -79,7 +86,7 @@ export default {
     async refresher(done, fullRefresh = true) {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
       if (online) {
-        this.balanceChanged = await this.$walletWorker.refreshWallet(
+        this.balanceChanged = await refreshWallet(
           this.wallet, fullRefresh,
         );
         setTimeout(() => {

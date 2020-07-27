@@ -82,10 +82,10 @@ export default new VueRouter({
       ],
     },
     {
-      path: '/wallet/add-funds/:id',
+      path: '/wallet/add-funds/',
       component: () => { return import('@/layouts/Authed'); },
       children: [
-        { name: 'addFunds', path: '', component: () => { return import('@/pages/WalletSingle'); } },
+        { name: 'addFunds', path: '', component: () => { return import('@/pages/Wallet'); } },
       ],
     },
     {

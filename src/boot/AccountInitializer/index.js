@@ -1,6 +1,5 @@
 import { uid } from 'quasar';
 import Account from '@/store/wallet/entities/account';
-import Coin from '@/store/wallet/entities/coin';
 import Wallet from '@/store/wallet/entities/wallet';
 import CryptoWalletSDK from 'cryptowallet-js';
 import bcrypt from 'bcryptjs';
