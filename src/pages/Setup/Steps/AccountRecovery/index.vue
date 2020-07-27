@@ -42,6 +42,7 @@
               </q-item-label>
               <div class="account-email-input-wrapper">
                 <q-input
+                  ref="emailInput"
                   v-model.trim="accountEmail"
                   type="email"
                   outlined
@@ -167,6 +168,7 @@ export default {
   },
   methods: {
     async validate() {
+      this.$refs.emailInput.blur();
       if (this.recoveryType === 'recoveryPhrase') {
         this.$router.push({ path: '/setup/2' });
         return true;
