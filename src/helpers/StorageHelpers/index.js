@@ -42,7 +42,7 @@ export async function storeERC20Wallet(wallet, ERC20SDK) {
 
   if (findWallet.length > 0) {
     const found = findWallet[0];
-    if (balance > found.balance) {
+    if (balance !== found.balance) {
       await Wallet.$update({
         where: (record) => { return record.contractAddress === wallet.contractAddress; },
         data: {
