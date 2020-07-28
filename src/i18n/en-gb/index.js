@@ -212,6 +212,7 @@ export default {
   newTxIntro: 'You received',
   view: 'View',
   selectNetwork: 'Select Network',
+  addFunds: 'Add Funds',
   // Setup
   cryptoWallet: 'Cent',
   seedSetup: 'Seed Setup',

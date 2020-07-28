@@ -33,6 +33,7 @@
 import { mapState } from 'vuex';
 import LoadingScreen from '@/components/LoadingScreen';
 import Coin from '@/store/wallet/entities/coin';
+
 import Scanner from '@/components/Scanner';
 import WalletsModal from '@/components/Modals/Wallets';
 import PriceChartModal from '@/components/Modals/PriceCharts';
@@ -148,39 +149,35 @@ export default {
   methods: {
     storeSupportedCoins() {
       this.supportedCoins.forEach((coin) => {
-        // const isThere = Coin.find([coin.name]);
-        // const data = {
-        //   name: coin.name,
-        //   displayName: coin.displayName,
-        //   sdk: coin.sdk,
-        //   symbol: coin.symbol,
-        //   network: coin.network,
-        //   denomination: coin.denomination,
-        //   minConfirmations: coin.minConfirmations,
-        //   decimals: coin.decimals,
-        //   api: coin.api,
-        //   testnet: coin.testnet ? coin.testnet : false,
-        //   transak: coin.transak ? coin.transak : false,
-        // };
-        // if (!isThere) {
-        //   if (coin.sdk === 'ERC20') {
-        //     data.parentName = coin.parentName;
-        //     data.parentSdk = coin.parentSdk;
-        //     data.contractAddress = coin.contractAddress;
-        //   }
-        Coin.$insert({
-          data: coin,
-        });
-
-
-        // }
-        // else {
-        //   // Coin.$update({
-        //   //   where: (record) => { return record.name === isThere.name; },
-        //   //   data,
-        //   // });
-        //   Coin.$insert(data);
-        // }
+        const isThere = Coin.findToken(coin.name);
+        const data = {
+          name: coin.name,
+          displayName: coin.displayName,
+          sdk: coin.sdk,
+          symbol: coin.symbol,
+          network: coin.network,
+          denomination: coin.denomination,
+          minConfirmations: coin.minConfirmations,
+          decimals: coin.decimals,
+          api: coin.api,
+          testnet: coin.testnet ? coin.testnet : false,
+          transak: coin.transak ? coin.transak : false,
+        };
+        if (!isThere) {
+          if (coin.sdk === 'ERC20') {
+            data.parentName = coin.parentName;
+            data.parentSdk = coin.parentSdk;
+            data.contractAddress = coin.contractAddress;
+          }
+          Coin.$insert({
+            data: coin,
+          });
+        } else {
+          Coin.$update({
+            where: (record) => { return record.name === isThere.name; },
+            data,
+          });
+        }
       });
       // const coins = Coin.all().map(({ name }) => { return name; });
       // const supported = this.supportedCoins.map(({ name }) => { return name; });

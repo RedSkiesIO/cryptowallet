@@ -140,7 +140,7 @@ export default {
       return Coin.all();
     },
     coin() {
-      return Coin.find([this.wallet.name]);
+      return Coin.findToken(this.wallet.name);
     },
     coinLogo() {
       const coinIcon = IconList.find((icon) => {
@@ -165,13 +165,14 @@ export default {
       }
     },
 
-    isWalletEnabled(id) {
-      const result = Wallet.query(id)
+    isWalletEnabled() {
+      const result = Wallet.query()
         .where('account_id', this.authenticatedAccount)
-        .where('displayName', this.wallet.displayName)
         .where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress)
         .where('enabled', true)
         .get();
+
       return result.length > 0;
     },
 
@@ -197,9 +198,11 @@ export default {
           });
         }
 
+
         const wallets = Wallet.query()
           .where('account_id', this.authenticatedAccount)
           .where('name', this.wallet.name)
+          .where('contractAddress', this.wallet.contractAddress)
           .get();
 
         if (wallets.length > 0) {
@@ -274,11 +277,13 @@ export default {
           walletIds.push(wallet.id);
         });
       }
+
       const wallets = Wallet.query()
         .where('account_id', this.authenticatedAccount)
-        .where('displayName', this.wallet.displayName)
         .where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress)
         .get();
+
 
       walletIds.push(wallets[0].id);
 
@@ -310,7 +315,10 @@ export default {
     },
 
     deleteWallet() {
-      const wallets = Wallet.query().where('name', this.wallet.name).get();
+      const wallets = Wallet.query().where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress).get();
+
+
       wallets.forEach((wallet) => {
         Wallet.$delete(wallet.id);
 
@@ -328,7 +336,7 @@ export default {
           Address.$delete(address.id);
         });
       });
-      Coin.$delete(this.wallet.name);
+      Coin.$delete(this.wallet.id);
       this.confirm = false;
     },
   },

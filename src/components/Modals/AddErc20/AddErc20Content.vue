@@ -395,7 +395,7 @@ export default {
         });
       }
 
-      const isThere = Coin.find([this.form.tokenName]);
+      const isThere = Coin.findToken(this.form.tokenName, this.form.tokenContract);
 
       if (!isThere) {
         const coin = Coin.query()

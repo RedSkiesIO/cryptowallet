@@ -103,13 +103,13 @@ async function discoverErc20(wallet, coinSDK) {
   };
 }
 
-async function discoverWallet(wallet, coinSDK, network, sdk) {
+async function discoverWallet(wallet, coinSDK, network, sdk, erc20History = false) {
   if (sdk === 'Bitcoin') {
     return discoverBitcoin(wallet, coinSDK, network);
   }
 
   if (sdk === 'Ethereum') {
-    return discoverEthereum(wallet, coinSDK, network);
+    return discoverEthereum(wallet, coinSDK, network, erc20History);
   }
 
   if (sdk === 'ERC20') {
