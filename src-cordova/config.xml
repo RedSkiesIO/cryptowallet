@@ -85,6 +85,7 @@
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashMaintainAspectRatio" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="false"/>
     <preference name="NavigationBarBackgroundColor" value="#000000" />
     <preference name="DisallowOverscroll" value="true" />
     <feature name="SplashScreen">
