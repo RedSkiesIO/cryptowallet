@@ -37,7 +37,7 @@
           </q-btn-group>
         </div>
         <div
-          v-if="simple && canPurchase"
+          v-if="simple && transakTestnet"
           class="text-center q-mb-md quick-coin-actions"
         >
           <q-btn
@@ -126,6 +126,10 @@ export default {
       return this.supportedCoins.find((coin) => {
         return coin.name === this.wallet.name;
       }).symbol;
+    },
+
+    transakTestnet() {
+      return this.wallet.name === 'Ethereum Rinkeby';
     },
 
     canPurchase() {

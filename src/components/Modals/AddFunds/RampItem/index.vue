@@ -34,6 +34,8 @@
 import { mapState } from 'vuex';
 import { ramp } from '@/helpers/Ramp';
 import Payments from '@/store/wallet/entities/payments';
+import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
 
 export default {
   name: 'RampItem',
@@ -51,11 +53,20 @@ export default {
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
     },
+    defaultWallet() {
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', 'Ethereum')
+        .get()[0];
+    },
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return this.defaultWallet;
     },
     isTestnet() {
-      return this.$store.getters['entities/coin/find'](this.wallet.name).testnet;
+      return Coin.findToken(this.wallet.name).testnet;
     },
   },
 

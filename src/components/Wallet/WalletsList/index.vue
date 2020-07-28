@@ -8,7 +8,7 @@
       <div v-if="!hideList">
         <WalletItem
           v-for="wallet in wallets"
-          :key="wallet.displayName"
+          :key="wallet.id"
           :wallet="wallet"
         />
       </div>

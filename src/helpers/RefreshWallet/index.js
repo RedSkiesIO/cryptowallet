@@ -2,6 +2,11 @@ import Address from '@/store/wallet/entities/address';
 import Wallet from '@/store/wallet/entities/wallet';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
+import CryptoWalletJs from 'cryptowallet-js';
+import networks from '@/store/settings/state/supportedNetworks';
+
+
+const crypto = new CryptoWalletJs();
 
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index;
@@ -206,17 +211,21 @@ async function refreshERC20(coinSDK, wallet, fullRefresh) {
   return balanceChanged;
 }
 
-async function refreshWallet(coinSDK, wallet, accountId, fullRefresh = true) {
+async function refreshWallet(wallet, fullRefresh = true) {
+  const api = networks[wallet.network];
+
+  const coinSDK = crypto.SDKFactory.createSDK(wallet.sdk, api);
+
   if (wallet.sdk === 'Bitcoin') {
-    return refreshBitcoin(coinSDK, wallet, fullRefresh, accountId);
+    return refreshBitcoin(coinSDK, wallet, fullRefresh);
   }
 
   if (wallet.sdk === 'Ethereum') {
-    return refreshEthereum(coinSDK, wallet, fullRefresh, accountId);
+    return refreshEthereum(coinSDK, wallet, fullRefresh);
   }
 
   if (wallet.sdk === 'ERC20') {
-    return refreshERC20(coinSDK, wallet, fullRefresh, accountId);
+    return refreshERC20(coinSDK, wallet, fullRefresh);
   }
 
   return false;

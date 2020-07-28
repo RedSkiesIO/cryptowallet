@@ -17,6 +17,35 @@
       >
         <div class="background" />
         <div
+          v-if="wallets.length > 0 && !showCoinHeader"
+          class="total-balance-wrapper"
+        >
+          <div
+            v-if="showTotalBalance"
+            class="total-balance flex flex-center column"
+          >
+            <div class="row">
+              {{ totalBalanceFormatted }}
+            </div>
+            <div class="row text-h6">
+              {{ totalBalanceInEth }} ETH
+            </div>
+            <div class="row q-pt-lg">
+              <q-btn
+                icon="fas fa-plus-circle"
+                size="md"
+                class="q-pr-xs"
+                color="accent"
+                text-color="info"
+                label="Add Funds"
+                dense
+                rounded
+                @click.stop="addFunds"
+              />
+            </div>
+          </div>
+        </div>
+        <div
           class="layout-wrapper"
           @touchmove="prevent"
         >
@@ -30,22 +59,6 @@
             />
           </div>
 
-          <div
-            v-if="wallets.length > 0 && !showCoinHeader"
-            class="total-balance-wrapper"
-          >
-            <div
-              v-if="showTotalBalance"
-              class="total-balance flex flex-center column"
-            >
-              <div class="row">
-                {{ totalBalanceFormatted }}
-              </div>
-              <div class="row text-h6">
-                {{ totalBalanceInEth }} ETH
-              </div>
-            </div>
-          </div>
 
           <div
             :class="{ white: layoutShapeWhite }"
@@ -80,6 +93,7 @@ import CoinHeader from '@/components/Wallet/CoinHeader';
 import {
   AmountFormatter,
   getBalance,
+  refreshWallet,
 } from '@/helpers';
 
 
@@ -130,8 +144,10 @@ export default {
       return coins.map(({ network }) => { return network; });
     },
     wallet() {
-      const wallets = this.$store.getters['entities/wallet/find'](this.id);
-      return wallets;
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
+      }
+      return null;
     },
 
     selectedCurrency() {
@@ -253,6 +269,10 @@ export default {
       return false;
     },
 
+    addFunds() {
+      this.$router.push({ path: '/wallet/add-funds/' });
+    },
+
     updateisPullEnabled() {
       this.isPullEnabled = (this.$route.name === 'wallet' && this.wallets.length > 0) || this.$route.name === 'walletSingle';
     },
@@ -263,8 +283,8 @@ export default {
         if (this.$route.name === 'wallet') {
           setTimeout(async () => {
             try {
-              await this.backEndService.loadPriceFeed();
               await this.updateBalances(done);
+              await this.backEndService.loadPriceFeed();
             } catch (err) {
               this.errorHandler(err);
               done();
@@ -280,11 +300,22 @@ export default {
 
     async updateBalances(done) {
       try {
-        const promises = this.wallets.map((wallet) => {
-          return this.$walletWorker.refreshWallet(wallet);
+        const coins = this.wallets
+          .filter((wallet) => {
+            return !wallet.erc20Wallet;
+          });
+        const coinPromises = coins.map((wallet) => {
+          return refreshWallet(wallet, false);
         });
 
-        await Promise.all(promises);
+        await Promise.all(coinPromises);
+        const tokenPromises = coins.map((wallet) => {
+          return Coin.fetchAllTokens(
+            wallet.externalAddress, this.authenticatedAccount, wallet.network,
+          );
+        });
+        await Promise.all(tokenPromises);
+
         done();
       } catch (err) {
         this.errorHandler(err);
@@ -316,6 +347,10 @@ export default {
   margin-top: 0.2em;
 }
 
+.total-balance button {
+  box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
+}
+
 .total-balance-wrapper {
   transition: all ease-in-out 150ms;
   position: relative;
@@ -327,6 +362,7 @@ export default {
   opacity: 1;
   padding: 0 0.5rem;
   margin-top: calc(2.5rem + 35px);
+  z-index: 3;
 }
 
 .no-balance .total-balance-wrapper,
