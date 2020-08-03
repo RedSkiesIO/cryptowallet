@@ -15,6 +15,7 @@ export default [
   {
     displayName: 'Ethereum',
     name: 'Ethereum',
+    identifier: 'ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',
@@ -30,6 +31,7 @@ export default [
   {
     displayName: 'Ethereum Classic',
     name: 'Ethereum Classic',
+    identifier: 'ethereum-classic',
     sdk: 'Ethereum',
     coinType: 61,
     symbol: 'ETC',
@@ -57,6 +59,7 @@ export default [
   {
     displayName: 'POA',
     name: 'POA',
+    identifier: 'poa-network',
     sdk: 'Ethereum',
     coinType: 178,
     symbol: 'POA',

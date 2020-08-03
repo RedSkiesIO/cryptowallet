@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core';
+import Coin from './coin';
 
 /**
  * Wallet Entity.
@@ -32,5 +33,18 @@ export default class Wallet extends Model {
       hdWallet: this.attr(''),
       erc20Wallet: this.attr(''),
     };
+  }
+
+  get identifier() {
+    const coin = Coin.query()
+      .where('name', this.name)
+      .where('contractAddress', this.contractAddress)
+      .get()[0];
+
+    if (coin.sdk === 'ERC20') {
+      return this.contractAddress;
+    }
+
+    return coin.identifier;
   }
 }

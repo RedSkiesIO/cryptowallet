@@ -70,7 +70,7 @@
           >
             {{ selectedCurrency.symbol }}
             {{
-              latestPrice.data.TOTALVOLUME24HTO.toFixed(0).replace(
+              latestPrice.data.TOTALVOLUME24HOURTO.toFixed(0).replace(
                 /(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
             }}
           </div>
@@ -129,23 +129,32 @@ export default {
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
-    supportedCoins() {
-      return Coin.all();
+    coin() {
+      return Coin.query()
+        .where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress)
+        .get()[0];
+    },
+    coinIdentifier() {
+      if (this.coin.sdk === 'ERC20') {
+        return this.coin.contractAddress;
+      }
+      return this.coin.identifier;
     },
     coinSymbol() {
-      return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
+      return this.coin.symbol;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinIdentifier}_${this.selectedCurrency.code}`);
       if (!prices) {
         return null;
       }
       return prices;
     },
     chartData() {
-      const day = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_day`]);
-      const week = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_week`]);
-      const month = Prices.find([`${this.coinSymbol}_${this.selectedCurrency.code}_month`]);
+      const day = Prices.find([`${this.coinIdentifier}_${this.selectedCurrency.code}_day`]);
+      const week = Prices.find([`${this.coinIdentifier}_${this.selectedCurrency.code}_week`]);
+      const month = Prices.find([`${this.coinIdentifier}_${this.selectedCurrency.code}_month`]);
       if (!day || !week || !month) {
         return null;
       }
@@ -181,13 +190,13 @@ export default {
     },
   },
   async mounted() {
-    const updateTime = 120000;
-    const currentTime = new Date().getTime();
-    if ((currentTime - this.latestPrice.updated) > updateTime) {
-      setTimeout(() => {
-        this.loadData();
-      }, this.delay.normal);
-    }
+    // const updateTime = 120000;
+    // const currentTime = new Date().getTime();
+    // if ((currentTime - this.latestPrice.updated) > updateTime) {
+    // setTimeout(() => {
+    this.loadData();
+    // }, this.delay.normal);
+    // }
   },
   methods: {
     updatePercent(index) {
@@ -207,7 +216,7 @@ export default {
         this.loading = true;
 
         try {
-          await this.backEndService.loadCoinPriceData(this.coinSymbol, 2);
+          await this.backEndService.loadCoinPriceData(this.coinIdentifier, 2);
         } catch (err) {
           this.errorHandler(err);
         }

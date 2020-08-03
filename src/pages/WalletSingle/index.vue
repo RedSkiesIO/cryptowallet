@@ -70,7 +70,7 @@ export default {
   mounted() {
     this.$root.$on('updateWalletSingle', async (done) => {
       try {
-        await this.backEndService.loadCoinPriceData(this.wallet.symbol);
+        await this.backEndService.loadCoinPriceData(this.wallet.identifier);
         await this.refresher(done);
       } catch (err) {
         this.errorHandler(err);
