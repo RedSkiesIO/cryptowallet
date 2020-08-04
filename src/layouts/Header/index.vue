@@ -337,23 +337,23 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2.5rem;
-  height: 2.5rem + constant(safe-area-inset-top);
-  height: 2.5rem + env(safe-area-inset-top);
+  /* height: 2.5rem; */
+  /* height: 2.5rem + constant(safe-area-inset-top);
+  height: 2.5rem + env(safe-area-inset-top); */
   font-family: 'CooperHewitt-Semibold';
   position: relative;
-  padding-top: 35px + env(safe-area-inset-top);
+  /* padding-top: 35px + env(safe-area-inset-top); */
   padding-top: 35px;
 }
 
 .main-header {
   height: 2.5rem;
-  height: 2.5rem + constant(safe-area-inset-top);
-  height: 2.5rem + env(safe-area-inset-top);
+  /* height: 2.5rem + constant(safe-area-inset-top);
+  height: 2.5rem + env(safe-area-inset-top); */
   font-family: 'CooperHewitt-Semibold';
   position: fixed;
-  padding-top: 35px + constant(safe-area-inset-top);
-  padding-top: 35px + env(safe-area-inset-top);
+  /* padding-top: 35px + constant(safe-area-inset-top);
+  padding-top: 35px + env(safe-area-inset-top); */
   padding-top: 35px;
   z-index: 90;
   width: 100%;

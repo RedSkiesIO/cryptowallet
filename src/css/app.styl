@@ -82,6 +82,19 @@ body #q-app {
   font-family: Inter-Regular
   background: #f9fafc;
 }
+
+body.q-ios-padding .q-dialog__inner {
+margin-top: -20px;
+padding-top: 0px !important;
+/* padding-top: env(safe-area-inset-top) !important; */
+padding-bottom: env(safe-area-inset-bottom) !important;
+}
+
+body.q-ios-padding .q-dialog__inner > div {
+/* max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; */
+max-height: 100vh !important;
+margin-bottom: -20px;
+}
     
 
 .body-dark #q-app
@@ -186,12 +199,12 @@ button.q-btn[disabled] {
 
 .q-pull-to-refresh-wrapper .layout-wrapper {
   height: 100vh;
-  @supports (height: constant(safe-area-inset-top)) {
-    height: calc(100vh - constant(safe-area-inset-top));
-  }
-  @supports (height: env(safe-area-inset-top)) {
-    height: calc(100vh  - env(safe-area-inset-top));
-  }
+  // @supports (height: constant(safe-area-inset-top)) {
+  //   height: calc(100vh - constant(safe-area-inset-top));
+  // }
+  // @supports (height: env(safe-area-inset-top)) {
+  //   height: calc(100vh  - env(safe-area-inset-top));
+  // }
 }
 
 .layout-wrapper > div,
