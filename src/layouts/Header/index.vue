@@ -166,7 +166,7 @@ export default {
 
     displayPriceChart() {
       if (this.wallet && this.selectedCurrency) {
-        const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
+        const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
         if (price) {
           return this.$route.name === 'walletSingle'
                 || this.$route.name === 'sendCoinSingle';

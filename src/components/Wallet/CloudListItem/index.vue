@@ -55,7 +55,6 @@
 <script>
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
-import Prices from '@/store/prices';
 import { getBalance } from '@/helpers';
 
 export default {
@@ -99,40 +98,7 @@ export default {
       return getBalance(this.wallet, this.authenticatedAccount).available === 0;
     },
   },
-  async mounted() {
-    try {
-      const hour = 3600000;
-      const currentTime = new Date().getTime();
-      const price = Prices.find([`${this.wallet.symbol}_${this.selectedCurrency.code}_day`]);
 
-      if (price) {
-        const updated = price.updated - (price.updated % hour);
-
-        if ((currentTime - updated) < hour) {
-          this.chartData = price.data.map((item) => { return item.y; });
-        } else {
-          let dataset;
-          const result = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'day');
-          if (result) {
-            dataset = result.data;
-          }
-          if (dataset) {
-            this.chartData = dataset.map((item) => { return item.y; });
-            this.backEndService.storeChartData(this.wallet.symbol, 'day', dataset);
-            await new Promise((resolve) => { return setTimeout(resolve, this.delay.normal); });
-            const weekData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'week');
-            const monthData = await this.backEndService.getHistoricalData(this.wallet.symbol, this.selectedCurrency.code, 'month');
-            this.backEndService.storeChartData(this.wallet.symbol, 'week', weekData.data);
-            this.backEndService.storeChartData(this.wallet.symbol, 'month', monthData.data);
-          } else {
-            this.chartData = price.data.map((item) => { return item.y; });
-          }
-        }
-      }
-    } catch (err) {
-      this.errorHandler(err);
-    }
-  },
   methods: {
     send() {
       this.$router.push({ path: `/wallet/send/${this.wallet.id}` });

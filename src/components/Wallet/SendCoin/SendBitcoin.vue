@@ -286,7 +286,7 @@ export default {
         .denomination;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (!prices) {
         this.backEndService.loadPriceFeed();
         return null;

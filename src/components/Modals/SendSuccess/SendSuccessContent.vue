@@ -122,7 +122,7 @@ export default {
       return this.txData.transaction.receiver;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (prices) {
         return prices.data.PRICE;
       }

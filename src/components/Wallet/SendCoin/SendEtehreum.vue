@@ -256,7 +256,7 @@ export default {
     },
 
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (!prices) {
         return null;
       }
@@ -512,7 +512,7 @@ export default {
           );
           gasLimit = gasUsed;
           coinSymbol = 'ETH';
-          currentPrice = this.$store.getters['entities/latestPrice/find'](`${coinSymbol}_${this.selectedCurrency.code}`).data.PRICE;
+          currentPrice = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`).data.PRICE;
         }
 
         const response = await this.backEndService.getTransactionFee(coinSymbol);

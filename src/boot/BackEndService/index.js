@@ -239,13 +239,8 @@ class BackEndService {
    * @return {Object}
    */
   async getHistoricalData(coin, currency, period, attempts = 0) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin.toUpperCase()}/${currency}/${period}`, attempts);
-    const msToS = 1000;
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`, attempts);
     if (!result) { return false; }
-
-    result.data.data = result.data.data.map((x) => {
-      return { t: x.time * msToS, y: x.close };
-    });
 
     return result.data;
   }
@@ -430,21 +425,21 @@ class BackEndService {
    */
   async loadCoinPriceData(coin, attempts = 0) {
     const { selectedCurrency } = this.vm.$store.state.settings;
-    // const latestDay = Prices.find([`${coin}_${selectedCurrency.code}_day`]);
-    // const updateTime = 3600000;
-    // const currentTime = new Date().getTime();
-    // const updated = latestDay ? latestDay.updated - (latestDay.updated % updateTime) : null;
-    // if (!latestDay || currentTime - updated > updateTime) {
-    //   const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day', attempts);
-    //   const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week', attempts);
-    //   const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month', attempts);
+    const latestDay = Prices.find([`${coin}_${selectedCurrency.code}_day`]);
+    const updateTime = 3600000;
+    const currentTime = new Date().getTime();
+    const updated = latestDay ? latestDay.updated - (latestDay.updated % updateTime) : null;
+    if (!latestDay || currentTime - updated > updateTime) {
+      const dayData = await this.getHistoricalData(coin, selectedCurrency.code, 'day', attempts);
+      const weekData = await this.getHistoricalData(coin, selectedCurrency.code, 'week', attempts);
+      const monthData = await this.getHistoricalData(coin, selectedCurrency.code, 'month', attempts);
 
-    //   if (dayData && weekData && monthData) {
-    //     this.storeChartData(coin, 'day', dayData.data);
-    //     this.storeChartData(coin, 'week', weekData.data);
-    //     this.storeChartData(coin, 'month', monthData.data);
-    //   }
-    // }
+      if (dayData && weekData && monthData) {
+        this.storeChartData(coin, 'day', dayData.data);
+        this.storeChartData(coin, 'week', weekData.data);
+        this.storeChartData(coin, 'month', monthData.data);
+      }
+    }
 
     const latestPrice = await this.getPriceFeed(
       [coin],

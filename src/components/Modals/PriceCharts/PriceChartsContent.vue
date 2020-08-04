@@ -190,13 +190,13 @@ export default {
     },
   },
   async mounted() {
-    // const updateTime = 120000;
-    // const currentTime = new Date().getTime();
-    // if ((currentTime - this.latestPrice.updated) > updateTime) {
-    // setTimeout(() => {
-    this.loadData();
-    // }, this.delay.normal);
-    // }
+    const updateTime = 120000;
+    const currentTime = new Date().getTime();
+    if ((currentTime - this.latestPrice.updated) > updateTime) {
+      setTimeout(() => {
+        this.loadData();
+      }, this.delay.normal);
+    }
   },
   methods: {
     updatePercent(index) {
