@@ -5,7 +5,7 @@
       position="bottom"
       transition-show="slide-up"
       transition-hide="slide-down"
-      content-class="rounded-borders light-modal"
+      content-class="rounded-borders receive-modal"
     >
       <Receive />
     </q-dialog>

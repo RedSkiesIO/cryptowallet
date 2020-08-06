@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.cent.mobile.wallet" version="0.1.40" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.cent.mobile.wallet" version="0.1.44" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Cent</name>
     <description>Cent - By Atlas 3T</description>
     <author email="stephen.horsfall@atlas3t.com" href="https://atlas3t.com">
@@ -46,7 +46,7 @@
         <preference name="BackupWebStorage" value="none" />
         <preference name="WKWebViewOnly" value="true" />
         <feature name="CDVWKWebViewEngine">
-          <param name="ios-package" value="CDVWKWebViewEngine" />
+            <param name="ios-package" value="CDVWKWebViewEngine" />
         </feature>
         <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
         <icon height="180" src="res/ios/icon-60@3x.png" width="180" />
@@ -117,6 +117,7 @@
     </plugin>
     <plugin name="cordova-plugin-androidx" spec="^1.0.2" />
     <plugin name="cordova-plugin-androidx-adapter" spec="^1.1.0" />
+    <plugin name="cordova-plugin-disable-ios11-statusbar" source="npm" spec="*" />
     <allow-navigation href="about:*" />
     <engine name="android" spec="^8.1.0" />
 </widget>

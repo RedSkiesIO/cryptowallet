@@ -136,7 +136,9 @@ export default {
 <style>
 .cloud-list .scroll-area {
   position: absolute;
-  height: calc(100% - 15rem);  width: 100%;
+  height: calc(100% - 15rem);
+  height: calc(100% - 15rem - 4rem - env(safe-area-inset-bottom));
+  width: 100%;
   left: 0;
   top: 15rem;
 }

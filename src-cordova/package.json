@@ -1,63 +1,66 @@
 {
-    "name": "com.atlascity.wallet.mobile",
-    "displayName": "Cent",
-    "version": "1.0.1",
-    "description": "A sample Apache Cordova application that responds to the deviceready event.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "com.atlascity.wallet.mobile",
+  "displayName": "Cent",
+  "version": "1.0.1",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-android": "^8.1.0",
+    "cordova-android-support-gradle-release": "^3.0.1",
+    "cordova-clipboard": "^1.2.1",
+    "cordova-ios": "^5.1.1",
+    "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-android-permissions": "^1.0.0",
+    "cordova-plugin-androidx": "^1.0.2",
+    "cordova-plugin-androidx-adapter": "^1.1.0",
+    "cordova-plugin-contacts": "^3.0.1",
+    "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-navigationbar-color": "0.0.9",
+    "cordova-plugin-network-information": "^2.0.1",
+    "cordova-plugin-qrscanner": "^3.0.1",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-vibration": "^3.1.0",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-wkwebview-engine": "^1.2.1",
+    "cordova-plugin-x-socialsharing": "^5.4.4",
+    "es6-promise-plugin": "^4.2.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-contacts": {},
+      "cordova-plugin-android-permissions": {},
+      "cordova-plugin-device": {},
+      "cordova-clipboard": {},
+      "cordova-plugin-x-socialsharing": {
+        "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
+      },
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-navigationbar-color": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      },
+      "cordova-plugin-androidx": {},
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-qrscanner": {},
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-disable-ios11-statusbar": {}
     },
-    "author": "Apache Cordova Team",
-    "license": "Apache-2.0",
-    "dependencies": {
-        "cordova-android": "^8.1.0",
-        "cordova-android-support-gradle-release": "^3.0.1",
-        "cordova-clipboard": "^1.2.1",
-        "cordova-ios": "^5.1.1",
-        "cordova-plugin-add-swift-support": "^2.0.2",
-        "cordova-plugin-android-permissions": "^1.0.0",
-        "cordova-plugin-androidx": "^1.0.2",
-        "cordova-plugin-androidx-adapter": "^1.1.0",
-        "cordova-plugin-contacts": "^3.0.1",
-        "cordova-plugin-device": "^2.0.2",
-        "cordova-plugin-navigationbar-color": "0.0.9",
-        "cordova-plugin-network-information": "^2.0.1",
-        "cordova-plugin-qrscanner": "^3.0.1",
-        "cordova-plugin-splashscreen": "^5.0.2",
-        "cordova-plugin-statusbar": "^2.4.2",
-        "cordova-plugin-vibration": "^3.1.0",
-        "cordova-plugin-whitelist": "^1.3.3",
-        "cordova-plugin-wkwebview-engine": "^1.2.1",
-        "cordova-plugin-x-socialsharing": "^5.4.4",
-        "es6-promise-plugin": "^4.2.2"
-    },
-    "cordova": {
-        "plugins": {
-            "cordova-plugin-whitelist": {},
-            "cordova-plugin-contacts": {},
-            "cordova-plugin-android-permissions": {},
-            "cordova-plugin-device": {},
-            "cordova-clipboard": {},
-            "cordova-plugin-x-socialsharing": {
-                "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
-            },
-            "cordova-plugin-network-information": {},
-            "cordova-plugin-vibration": {},
-            "cordova-plugin-splashscreen": {},
-            "cordova-plugin-statusbar": {},
-            "cordova-plugin-navigationbar-color": {},
-            "cordova-android-support-gradle-release": {
-                "ANDROID_SUPPORT_VERSION": "27.+"
-            },
-            "cordova-plugin-androidx": {},
-            "cordova-plugin-androidx-adapter": {},
-            "cordova-plugin-qrscanner": {},
-            "cordova-plugin-wkwebview-engine": {}
-        },
-        "platforms": [
-            "android",
-            "ios"
-        ]
-    },
-    "devDependencies": {}
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "devDependencies": {
+    "cordova-plugin-disable-ios11-statusbar": "*"
+  }
 }

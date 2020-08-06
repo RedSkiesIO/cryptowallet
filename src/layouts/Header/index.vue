@@ -342,12 +342,12 @@ export default {
   height: 2.5rem + env(safe-area-inset-top); */
   font-family: 'CooperHewitt-Semibold';
   position: relative;
-  /* padding-top: 35px + env(safe-area-inset-top); */
   padding-top: 35px;
+
 }
 
 .main-header {
-  height: 2.5rem;
+  /* height: 2.5rem; */
   /* height: 2.5rem + constant(safe-area-inset-top);
   height: 2.5rem + env(safe-area-inset-top); */
   font-family: 'CooperHewitt-Semibold';
@@ -355,6 +355,7 @@ export default {
   /* padding-top: 35px + constant(safe-area-inset-top);
   padding-top: 35px + env(safe-area-inset-top); */
   padding-top: 35px;
+  padding-top: env(safe-area-inset-top);
   z-index: 90;
   width: 100%;
 }

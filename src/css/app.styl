@@ -78,22 +78,39 @@
     font-family CooperHewitt-HeavyItalic
     src url(./fonts/CooperHewitt/CooperHewitt-HeavyItalic.otf)
 
+body {
+    background: whitesmoke;
+}
+
+.body-background {
+   background: whitesmoke;
+  }
+
 body #q-app {
   font-family: Inter-Regular
   background: #f9fafc;
 }
 
-body.q-ios-padding .q-dialog__inner {
-margin-top: -20px;
-padding-top: 0px !important;
-/* padding-top: env(safe-area-inset-top) !important; */
-padding-bottom: env(safe-area-inset-bottom) !important;
-}
+.q-select__dialog {
+  height: 95%;
+  }
 
-body.q-ios-padding .q-dialog__inner > div {
-/* max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; */
-max-height: 100vh !important;
-margin-bottom: -20px;
+// body.q-ios-padding .q-dialog__inner {
+// margin-top: -20px;
+// padding-top: 0px !important;
+/* padding-top: env(safe-area-inset-top) !important; */
+// padding-bottom: env(safe-area-inset-bottom) !important;
+//}
+
+// body.q-ios-padding .q-dialog__inner > div {
+// /* max-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important; */
+// max-height: 100vh !important;
+// margin-bottom: -20px;
+// }
+
+.q-footer {
+   padding-bottom: env(safe-area-inset-bottom) !important;
+   background: white;
 }
     
 
@@ -192,20 +209,44 @@ button.q-btn[disabled] {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-top: calc(2.5rem + 35px);  padding-bottom: 4rem;
+  padding-top: calc(2.5rem + 35px); 
+  padding-top: calc(2.5rem + env(safe-area-inset-top)); 
+  padding-bottom: 4rem;
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom)); 
   position: relative;
   color: black;
 }
 
-.q-pull-to-refresh-wrapper .layout-wrapper {
-  height: 100vh;
-  // @supports (height: constant(safe-area-inset-top)) {
-  //   height: calc(100vh - constant(safe-area-inset-top));
-  // }
-  // @supports (height: env(safe-area-inset-top)) {
-  //   height: calc(100vh  - env(safe-area-inset-top));
-  // }
-}
+// .q-pull-to-refresh-wrapper .layout-wrapper {
+//   height: 100vh;
+//   @supports (height: constant(safe-area-inset-top)) {
+//     height: calc(100vh - constant(safe-area-inset-top));
+//   }
+//   @supports (height: env(safe-area-inset-top)) {
+//     height: calc(100vh  - env(safe-area-inset-top));
+//   }
+// }
+
+.header-section {
+  @supports (height: constant(safe-area-inset-top)) {
+     padding-top: 0px !important;
+   }
+  @supports (height: env(safe-area-inset-top)) {
+    padding-top: 0px !important;
+   }
+  }
+
+  body.q-ios-padding .receive-modal .q-dialog__inner  {
+  @supports (height: constant(safe-area-inset-top)) {
+     padding-top: 0px !important;
+     padding-bottom: 0px !important;
+
+   }
+  @supports (height: env(safe-area-inset-top)) {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+   }
+  }
 
 .layout-wrapper > div,
 .setup-wrapper {

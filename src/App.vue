@@ -232,8 +232,17 @@ body > div {
 
 .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - 35px )!important;
-  /* height: calc(100vh - 2.5rem - 35px - constant(safe-area-inset-top))!important;
-  height: calc(100vh - 2.5rem - 35px - env(safe-area-inset-top))!important; */
+  /* height: calc(100vh - 2.5rem - constant(safe-area-inset-bottom)
+   - constant(safe-area-inset-top))!important; */
+  height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;
+}
+.dark-modal .q-dialog__inner {
+  background: whitesmoke;
+}
+
+.light-modal .q-dialog__inner {
+  background: whitesmoke;
+
 }
 
 .light-modal .header-section {
