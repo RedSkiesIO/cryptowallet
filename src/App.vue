@@ -234,8 +234,12 @@ body > div {
   height: calc(100vh - 2.5rem - 35px )!important;
   /* height: calc(100vh - 2.5rem - constant(safe-area-inset-bottom)
    - constant(safe-area-inset-top))!important; */
+}
+
+body.q-ios-padding .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;
 }
+
 .dark-modal .q-dialog__inner {
   background: whitesmoke;
 }

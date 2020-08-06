@@ -355,9 +355,12 @@ export default {
   /* padding-top: 35px + constant(safe-area-inset-top);
   padding-top: 35px + env(safe-area-inset-top); */
   padding-top: 35px;
-  padding-top: env(safe-area-inset-top);
   z-index: 90;
   width: 100%;
+}
+
+body.q-ios-padding .main-header {
+  padding-top: env(safe-area-inset-top);
 }
 
 .header-h1 {
