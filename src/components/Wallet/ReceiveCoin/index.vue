@@ -85,7 +85,7 @@
             </q-card>
           </q-expansion-item>
         </div>
-        <div class="text-center">
+        <div class="text-center q-mb-lg">
           <q-btn
             rounded
             unelevated

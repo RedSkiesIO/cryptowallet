@@ -1,9 +1,9 @@
 {
   "name": "cent",
-  "version": "0.1.43",
+  "version": "0.1.47",
   "description": "Cent - By Atlas 3T",
   "productName": "Cent",
-  "cordovaId": "finance.cent.mobile.wallet",
+  "cordovaId": "com.cent.mobile.wallet",
   "author": "Stephen Horsfall <stephen.horsfall@atlas3t.com>",
   "private": true,
   "scripts": {
@@ -17,6 +17,7 @@
     "test:unit:watch": "cross-env NODE_ENV=test jest --watch",
     "test:unit:snapshot": "cross-env NODE_ENV=test jest --updateSnapshot",
     "server:instanbul": "cross-env NODE_ENV=test http-server ./tests/unit/__coverage__/lcov-report -p4200 -d -i -g -e -o --cors",
+    "build:ios": "npm version patch && quasar build -m cordova -T ios",
     "build:android": "npm version patch && quasar build -m android",
     "build:android:sign": "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore dist/cordova/android/apk/release/app-release-unsigned.apk alias_name",
     "build:android:zipalign": "zipalign -v 4 dist/cordova/android/apk/release/app-release-unsigned.apk dist/cordova/android/apk/release/app-release.apk",

@@ -125,7 +125,7 @@ export default {
 .close-provider {
   position: absolute;
   z-index: 999;
-  top: 26px;
+  top: 45px;
   right: 2px;
 }
 
