@@ -137,10 +137,13 @@ export default {
 .cloud-list .scroll-area {
   position: absolute;
   height: calc(100% - 15rem);
-  height: calc(100% - 15rem - 4rem - env(safe-area-inset-bottom));
   width: 100%;
   left: 0;
   top: 15rem;
+}
+
+body.q-ios-padding .cloud-list .scroll-area {
+  height: calc(100% - 15rem - 4rem - env(safe-area-inset-bottom));
 }
 
 .large-cloud-btn {
