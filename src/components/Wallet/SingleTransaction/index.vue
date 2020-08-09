@@ -481,10 +481,18 @@ export default {
   font-size: 0.8rem;
   color:#757575;
 }
+body.body--dark .single-transaction-content {
+    color: whitesmoke;
+
+}
 
 .single-transaction-content .row {
   padding: 0.75rem 0;
   border-top: 1px solid #e0e0e0;
+}
+
+.body--dark .single-transaction-content .row {
+  border-top: 1px solid #424242;
 }
 
  .single-transaction-content .row .q-btn__wrapper {
@@ -536,7 +544,6 @@ export default {
 }
 
 .transaction-heading {
-  color: black;
   padding: 1rem 0;
 }
 </style>

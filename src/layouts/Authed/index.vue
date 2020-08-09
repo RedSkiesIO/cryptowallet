@@ -396,6 +396,10 @@ export default {
   box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
   margin-top: 10px;
 }
+body.body--dark .layout-shape.white {
+ background: black!important;
+}
+
 
 .no-balance .layout-shape {
   background: #e4e9ef;

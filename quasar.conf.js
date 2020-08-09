@@ -57,6 +57,9 @@ module.exports = (ctx) => {
       open: true,
     },
     framework: {
+      config: {
+        dark: false,
+      },
       components: [
         'QLayout',
         'QHeader',
@@ -115,7 +118,7 @@ module.exports = (ctx) => {
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],
     cordova: {
-      id: 'com.cent.mobile.wallet',
+      id: 'com.atlas.mobile.wallet',
       iosStatusBarPadding: false,
     },
   };

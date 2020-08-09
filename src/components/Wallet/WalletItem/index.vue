@@ -74,12 +74,12 @@
             v-close-popup
             flat
             :label="$t('cancelConfirm')"
-            color="blueish"
+            color="info"
           />
           <q-btn
             flat
             :label="$t('acceptConfirm')"
-            color="blueish"
+            color="info"
             @click="deleteWallet"
           />
         </q-card-actions>

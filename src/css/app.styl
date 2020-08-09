@@ -78,8 +78,13 @@
     font-family CooperHewitt-HeavyItalic
     src url(./fonts/CooperHewitt/CooperHewitt-HeavyItalic.otf)
 
+
 body {
     background: whitesmoke;
+}
+
+body.body--dark #q-app {
+  background: var(--q-color-dark)
 }
 
 .body-background {
@@ -212,7 +217,7 @@ button.q-btn[disabled] {
   padding-top: calc(2.5rem + 35px); 
   padding-bottom: 4rem;
   position: relative;
-  color: black;
+  // color: black;
 }
 
  body.q-ios-padding .layout-wrapper {
@@ -341,6 +346,9 @@ p.setup {
   border-top-left-radius: 0.5em;
   color: #252525;
 }
+body.body--dark .layout-shape {
+  color: white;
+}
 
 .layout-shape > div {
   width: 100%;
@@ -466,10 +474,14 @@ code
 }
 
 .q-banner {
-  color: #1e3c57 !important;
+  color: $info !important;
   border-radius: 0.3rem;
   background: #ececec!important;
 }
+ .body--dark .q-banner {
+   background: $dark!important;
+   color: $warning !important;
+ }
 
 .q-option .q-option-label{
   opacity: 0.6;
@@ -483,9 +495,9 @@ code
   opacity: 1!important;
 }
 
-.q-banner.info {
-  color: #1e3c57!important;
-}
+// .q-banner.info {
+//   color: #1e3c57!important;
+// }
 
 .q-banner.negative {
   background: #f44336 !important;
@@ -523,6 +535,11 @@ div.q-input {
 .dialog h2,
 .dialog p {
   color: #252525;
+}
+.body--dark
+.dialog h2,
+.dialog p {
+  color: white;
 }
 
 .dialog h2 {
@@ -564,6 +581,10 @@ div.q-input {
 .q-slide-item__content {
   background: whitesmoke;
   width: 100%;
+}
+
+body.body--dark .q-slide-item__content {
+  background: $dark;
 }
 
 .icon-btn .q-btn__wrapper {

@@ -37,4 +37,108 @@ $positive  = #2efa98
 $negative  = #fa2e69
 $info      = #361e4e
 $warning   = #fbd7d9
+$background = $negative
 
+
+body {
+  --q-color-background = $negative
+
+    // Background colors
+    // --color-background-primary: $grey-1
+    // --color-background-secondary: $grey-3
+    // --color-background-tertiary: $grey-4
+
+    // // Text colors
+    // --color-text-primary: $secondary
+    // --color-text-secondary: $grey-8
+    // --color-text-tertiary: $grey-3
+    // --color-text-inverted: $white
+    // --color-text-selected: rgba( $accent, .2 )
+}
+
+
+// Dark mode
+dark-mode-colors() {
+  filter: invert(100%) hue-rotate(180deg) !important;
+  -ms-filter: invert(100%);
+  -webkit-filter: invert(100%) hue-rotate(180deg) !important;
+  text-rendering: optimizeSpeed;
+  image-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -webkit-image-rendering: optimizeSpeed;
+
+
+
+  img, video, iframe, canvas, svg,
+  embed[type='application/x-shockwave-flash'],
+  object[type='application/x-shockwave-flash'],
+  *[style*='url('],
+  .q-toggle,
+ {
+  filter: invert(100%) hue-rotate(-180deg) !important;
+  -ms-filter: invert(100%) !important;
+  -webkit-filter: invert(100%) hue-rotate(-180deg) !important;
+}
+}
+
+darkMode() {
+  .bg-accent,  .payment-logo {
+      dark-mode-colors();
+    }
+
+       .cloud-list .bg-white, .receive-modal .bg-white {
+         background: black !important;
+       }
+
+
+      .receive-modal .q-dialog__inner {
+        background: none;
+      }
+
+      .text-black {
+        color: white!important;
+      }
+
+      .settings-row .text-info {
+        color: white!important;
+      }
+
+      .labels, .chart-container .text-info,
+      .dialog .text-info, .q-inner-loading .text-info {
+        color: $warning!important;
+        }
+}
+// Dark mode (OS native)
+// Browser support: https://caniuse.com/#search=prefers-color-scheme
+@media (prefers-color-scheme: dark) {
+    //  iframe, .q-footer, .layout-shape.white, .cloud-scroll, .light-modal,{
+    //     dark-mode-colors()
+    // }
+    //   .cloud-item {
+    //   box-shadow: 0px 10px 10px rgba(255,255,255,0.1) !important;
+    // }
+    // .q-dark {
+    //   background: white !important;
+    // }
+
+    // .q-field--dark:not(.q-field--focused) .q-field__label, .q-field--dark .q-field__marginal, .q-field--dark .q-field__bottom {
+    //  color: rgba(0,0,0,0.7) !important;
+    // }
+
+    // .q-field--dark .q-field__control:before {
+    //   border-color: rgba(0,0,0,0.6) !important;
+    // }
+
+    // .q-field--dark .q-field__native, .q-field--dark .q-field__prefix, .q-field--dark .q-field__suffix, .q-field--dark .q-field__input {
+    //   color: #000 !important;
+    // }
+
+//     .q-list--dark, .q-item--dark {
+//     color: #000 !important;
+//     border-color: rgba(0,0,0,0.28) !important;
+// }    
+}
+// Dark mode (Quasar global dark mode)
+.body--dark {
+    darkMode();
+}

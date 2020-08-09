@@ -195,9 +195,9 @@ export default {
 </script>
 
 <style lang='styl'>
-body > div {
+/* body > div {
   color: black;
-}
+} */
 
 .background {
   height: 100%;
@@ -240,29 +240,33 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;
 }
 
-.dark-modal .q-dialog__inner {
+.dark-modal .q-dialog__inner--maximized {
   background: whitesmoke;
 }
 
-.light-modal .q-dialog__inner {
+.light-modal .q-dialog__inner--maximized {
   background: whitesmoke;
 
 }
 
-.light-modal .header-section {
+body.body--dark .q-dialog__inner--maximized {
+  background: $dark;
+}
+
+/* .light-modal .header-section {
   background: whitesmoke;
 }
 
 .dark-modal .header-section {
   color: black;
   background: whitesmoke;
-}
+} */
 
 .dark-modal .header-section i {
   color: var(--q-color-primary);
 }
 
-.dark-modal .modal-layout-wrapper {
+/* .dark-modal .modal-layout-wrapper {
     color: black;
     background-color: whitesmoke;
 }
@@ -271,7 +275,7 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   background: white;
   background: whitesmoke;
 
-}
+} */
 
 
 .modal-layout-wrapper {
@@ -309,9 +313,13 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   color: slategray;
 }
 
-.dark-modal .modal-layout-wrapper {
-  color: black;
+.body--dark .light-modal .modal-layout-wrapper {
+  color: white;
 }
+
+/* .dark-modal .modal-layout-wrapper {
+  color: black;
+} */
 
 .modal {
   font-family: Inter-Regular;

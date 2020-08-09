@@ -39,6 +39,11 @@ export default {
     justify-content: space-between;
   }
 
+  body.body--dark .main-nav {
+    background: black;
+    border-top: 1px solid $grey-9;
+  }
+
   .main-nav > div {
     flex: 1;
   }
@@ -55,6 +60,10 @@ export default {
     text-decoration: none;
   }
 
+  body.body--dark .main-nav-link {
+    color: lightgrey;
+  }
+
   .main-nav-link i {
     font-size: 2em;
     margin-bottom: 0.2em;
@@ -65,7 +74,7 @@ export default {
   }
 
   .router-link-exact-active {
-    color: $primary;
+    color: $primary!important;
     font-family: 'Inter-Medium';
   }
 
