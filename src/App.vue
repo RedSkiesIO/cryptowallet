@@ -91,6 +91,12 @@ export default {
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
     },
+    isDarkMode() {
+      const user = this.accounts.find((account) => {
+        return account.name === this.settings.selectedAccount;
+      });
+      return user ? user.darkMode : false;
+    },
   },
 
   watch: {
@@ -102,6 +108,8 @@ export default {
       handler() {
         if (this.accounts.length < 1) {
           this.$router.push({ path: '/setup/0' });
+        } else {
+          this.$q.dark.set(this.isDarkMode);
         }
         this.storeSupportedCoins();
         return true;
@@ -137,6 +145,11 @@ export default {
   },
 
   async mounted() {
+    // if (this.accounts.length > 1) {
+    //   console.log('called');
+    //   console.log(this.accounts[0].darkMode);
+    //   this.$q.dark.set(this.accounts[0].darkMode);
+    // }
     window.store = this.$store;
     window.app = this;
     if (window.cordova) {

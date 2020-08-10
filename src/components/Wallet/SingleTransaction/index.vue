@@ -26,7 +26,17 @@
           {{ date }}
         </q-item-label>
       </q-item-section>
-
+      <q-item-section
+        v-if="data.failed"
+        class="text-center col-2"
+      >
+        <q-badge
+          outline
+          color="negative"
+          label="Failed"
+          style="width: fit-content;"
+        />
+      </q-item-section>
       <q-item-section side>
         <q-icon
           name="info"
@@ -58,6 +68,17 @@
               class="row justify-center"
             >
               {{ amount.prefix }} {{ amount.currency }}
+            </div>
+            <div
+              v-if="data.failed"
+              class="row justify-center q-mt-sm"
+            >
+              <q-badge
+                outline
+                color="negative"
+                label="Failed"
+                style="width: fit-content;"
+              />
             </div>
           </div>
 

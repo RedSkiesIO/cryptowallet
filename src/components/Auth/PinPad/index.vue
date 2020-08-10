@@ -184,7 +184,7 @@ export default {
 }
 
 body.body--dark .vue-keyboard-key,
-.vue-keyboard-key:hover {
+body.body--dark .vue-keyboard-key:hover {
   color: white;
 }
 

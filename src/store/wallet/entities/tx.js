@@ -29,6 +29,7 @@ export default class Tx extends Model {
       value: this.attr(''),
       isChange: this.attr(false),
       contractCall: this.attr(false),
+      failed: this.attr(false),
     };
   }
 
