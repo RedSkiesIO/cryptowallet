@@ -3,6 +3,7 @@ const etherscanToken = process.env.ETHERSCAN_TOKEN;
 export default {
   ETHEREUM: {
     name: 'ETHEREUM',
+    coinName: 'Ethereum',
     segwit: false,
     bip: 60,
     provider: 'https://mainnet.infura.io/v3/352fc30cd8364caabaea4a3d67da773f',
@@ -14,6 +15,7 @@ export default {
   },
   ETHEREUM_CLASSIC: {
     name: 'ETHEREUM_CLASSIC',
+    coinName: 'Ethereum Classic',
     segwit: false,
     bip: 60,
     provider: 'https://www.ethercluster.com/etc',
@@ -24,6 +26,7 @@ export default {
   },
   XDAI: {
     name: 'XDAI',
+    coinName: 'XDai',
     segwit: false,
     bip: 700,
     provider: 'https://dai.poa.network',
@@ -34,6 +37,7 @@ export default {
   },
   POA: {
     name: 'POA',
+    coinName: 'POA',
     segwit: false,
     bip: 178,
     provider: 'https://core.poa.network',
@@ -44,6 +48,7 @@ export default {
   },
   ETHEREUM_ROPSTEN: {
     name: 'ETHEREUM_ROPSTEN',
+    coinName: 'Ethereum Ropsten',
     segwit: false,
     bip: 60,
     provider: 'https://ropsten.infura.io/v3/352fc30cd8364caabaea4a3d67da773f',
@@ -55,6 +60,7 @@ export default {
   },
   ETHEREUM_KOVAN: {
     name: 'ETHEREUM_KOVAN',
+    coinName: 'Ethereum Kovan',
     segwit: false,
     bip: 60,
     provider: 'https://kovan.infura.io/v3/352fc30cd8364caabaea4a3d67da773f',
@@ -66,6 +72,7 @@ export default {
   },
   ETHEREUM_RINKEBY: {
     name: 'ETHEREUM_RINKEBY',
+    coinName: 'Ethereum Rinkeby',
     segwit: false,
     bip: 42,
     provider: 'https://rinkeby.infura.io/v3/352fc30cd8364caabaea4a3d67da773f',
@@ -77,6 +84,7 @@ export default {
   },
   ETHEREUM_GOERLI: {
     name: 'ETHEREUM_GOERLI',
+    coinName: 'Ethereum Goerli',
     segwit: false,
     bip: 42,
     provider: 'https://goerli.infura.io/v3/352fc30cd8364caabaea4a3d67da773f',
@@ -87,7 +95,8 @@ export default {
     ens: true,
   },
   POA_SOKOL: {
-    name: 'POA Sokol',
+    name: 'POA_SOKOL',
+    coinName: 'POA Sokol',
     segwit: false,
     bip: 178,
     provider: 'https://sokol.poa.network',

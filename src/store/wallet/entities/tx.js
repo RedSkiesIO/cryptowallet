@@ -1,8 +1,9 @@
 import { Model } from '@vuex-orm/core';
+import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 import networks from '@/store/settings/state/supportedNetworks';
 import { ENSResolver } from '@/boot/ENS';
-
+import { trackTx } from '@/boot/Notify';
 /**
  * Tx Entity.
  */
@@ -31,8 +32,17 @@ export default class Tx extends Model {
     };
   }
 
+  account() {
+    return Account.find(this.account_id);
+  }
+
   wallet() {
     return Wallet.find(this.wallet_id);
+  }
+
+  track() {
+    const { chainId } = networks[this.wallet().network];
+    return trackTx(this.hash, chainId, this.account().darkMode);
   }
 
   async ensName(address) {
