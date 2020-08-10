@@ -100,9 +100,17 @@ body #q-app {
   height: 95%;
   }
 
-  .bn-notify-custom .bn-notify-notifications {
-   font-family: Inter-Regular;
-   margin-top: 35px;
+ul.bn-notify-custom {
+   font-family: Inter-Regular !important;
+   margin-top: 35px !important;
+}
+
+body.q-ios-padding ul.bn-notify-custom {
+   margin-top: env(safe-area-inset-top) !important;
+}
+
+li.bn-notify-custom.bn-notify-dark-mode {
+  background: black!important;
 }
 
 // body.q-ios-padding .q-dialog__inner {

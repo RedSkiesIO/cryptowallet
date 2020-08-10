@@ -18,7 +18,8 @@ module.exports = (ctx) => {
       'BackEndService',
       'AccountInitializer',
       'ENS',
-      'Magic'
+      'Magic',
+      'Notify',
     ],
     css: ['app.styl'],
     extras: [

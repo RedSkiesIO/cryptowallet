@@ -145,11 +145,6 @@ export default {
   },
 
   async mounted() {
-    // if (this.accounts.length > 1) {
-    //   console.log('called');
-    //   console.log(this.accounts[0].darkMode);
-    //   this.$q.dark.set(this.accounts[0].darkMode);
-    // }
     window.store = this.$store;
     window.app = this;
     if (window.cordova) {
