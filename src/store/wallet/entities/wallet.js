@@ -41,6 +41,7 @@ export default class Wallet extends Model {
       .where('contractAddress', this.contractAddress)
       .get()[0];
 
+
     if (coin.sdk === 'ERC20') {
       return this.contractAddress;
     }

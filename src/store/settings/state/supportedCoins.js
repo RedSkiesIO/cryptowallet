@@ -46,6 +46,7 @@ export default [
   {
     displayName: 'XDai',
     name: 'XDai',
+    identifier: 'dai',
     sdk: 'Ethereum',
     coinType: 700,
     symbol: 'XDAI',
@@ -223,6 +224,7 @@ export default [
   {
     displayName: 'Ethereum Kovan',
     name: 'Ethereum Kovan',
+    identifier: 'ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',
@@ -236,6 +238,7 @@ export default [
   {
     displayName: 'Ethereum Rinkeby',
     name: 'Ethereum Rinkeby',
+    identifier: 'ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',
@@ -251,6 +254,7 @@ export default [
   {
     displayName: 'Ethereum Goerli',
     name: 'Ethereum Goerli',
+    identifier: 'ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',
@@ -264,6 +268,7 @@ export default [
   {
     displayName: 'POA Sokol',
     name: 'POA Sokol',
+    identifier: 'poa-network',
     sdk: 'Ethereum',
     coinType: 178,
     symbol: 'POA',

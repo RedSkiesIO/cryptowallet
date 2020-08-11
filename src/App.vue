@@ -164,7 +164,6 @@ export default {
           transak: coin.transak ? coin.transak : false,
           identifier: coin.identifier || '',
         };
-        console.log(data);
         if (!isThere) {
           if (coin.sdk === 'ERC20') {
             data.parentName = coin.parentName;
