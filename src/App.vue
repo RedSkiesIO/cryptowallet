@@ -233,8 +233,21 @@ body > div {
 
 .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - 35px )!important;
-  height: calc(100vh - 2.5rem - 35px - constant(safe-area-inset-top))!important;
-  height: calc(100vh - 2.5rem - 35px - env(safe-area-inset-top))!important;
+  /* height: calc(100vh - 2.5rem - constant(safe-area-inset-bottom)
+   - constant(safe-area-inset-top))!important; */
+}
+
+body.q-ios-padding .q-dialog .modal-layout-wrapper {
+  height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;
+}
+
+.dark-modal .q-dialog__inner {
+  background: whitesmoke;
+}
+
+.light-modal .q-dialog__inner {
+  background: whitesmoke;
+
 }
 
 .light-modal .header-section {
@@ -266,8 +279,8 @@ body > div {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 2.5rem);
-  height: calc(100vh - 2.5rem - constant(safe-area-inset-top));
-  height: calc(100vh - 2.5rem - env(safe-area-inset-top));
+  /* height: calc(100vh - 2.5rem - constant(safe-area-inset-top));
+  height: calc(100vh - 2.5rem - env(safe-area-inset-top)); */
   position: relative;
   padding: 0.5rem;
   overflow: scroll;
