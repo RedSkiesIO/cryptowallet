@@ -341,8 +341,7 @@ export default {
 
       setTimeout(() => {
         if (tx) {
-          const emitter = tx.track();
-          console.log(emitter);
+          tx.track();
         }
         this.loading = false;
         this.$store.dispatch('modals/setConfirmSendModalOpened', false);

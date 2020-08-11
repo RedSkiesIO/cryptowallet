@@ -344,7 +344,6 @@ export default {
       if (address.includes('.')) {
         const addr = await this.ens.resolver(address);
         if (addr) {
-          console.log(addr);
           this.addressHint = addr;
           this.address = addr;
           this.ensName = address;
@@ -603,7 +602,6 @@ export default {
     },
 
     async sendERC20() {
-      console.log(this.wallet);
       const coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
       const wallet = this.wallet.erc20Wallet;
       const parentWallet = this.activeWallets[this.authenticatedAccount][this.wallet.parentName];
