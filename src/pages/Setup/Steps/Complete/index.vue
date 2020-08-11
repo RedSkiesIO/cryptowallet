@@ -183,7 +183,7 @@ export default {
       const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
       let walletAddress = {};
       try {
-        await this.backEndService.loadCoinPriceData(wallet.symbol);
+        await this.backEndService.loadCoinPriceData(wallet.identifier);
 
         const initializedWallet = wallet.hdWallet;
 

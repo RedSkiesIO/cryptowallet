@@ -226,7 +226,7 @@ export default {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (prices) {
         return prices.data.PRICE;
       }
@@ -325,7 +325,7 @@ export default {
         const parent = this.supportedCoins.find((coin) => {
           return coin.name === this.wallet.parentName;
         });
-        const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
+        const price = this.$store.getters['entities/latestPrice/find'](`${parent.identifier}_${this.selectedCurrency.code}`).data.PRICE;
 
         const feeInCoin = new AmountFormatter({
           amount: inCoin,

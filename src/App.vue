@@ -162,6 +162,7 @@ export default {
           api: coin.api,
           testnet: coin.testnet ? coin.testnet : false,
           transak: coin.transak ? coin.transak : false,
+          identifier: coin.identifier || '',
         };
         if (!isThere) {
           if (coin.sdk === 'ERC20') {

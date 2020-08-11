@@ -97,6 +97,5 @@ export function setUpdateEmailModalOpened(context, payload) {
 }
 
 export function setExportKeysModalOpened(context, payload) {
-  console.log(payload);
   context.commit('SET_EXPORT_KEYS_MODAL_OPENED', payload);
 }

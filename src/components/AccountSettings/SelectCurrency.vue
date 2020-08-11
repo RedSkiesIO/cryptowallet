@@ -108,7 +108,7 @@ export default {
         const promises = [];
         this.wallets.forEach((wallet) => {
           promises.push(new Promise((res) => {
-            return res(this.backEndService.loadCoinPriceData(wallet.symbol));
+            return res(this.backEndService.loadCoinPriceData(wallet.identifier));
           }));
         });
         await Promise.all(promises);

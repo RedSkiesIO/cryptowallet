@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import axios from 'axios';
 import Account from '@/store/wallet/entities/account';
 import Prices from '@/store/prices';
@@ -238,13 +239,8 @@ class BackEndService {
    * @return {Object}
    */
   async getHistoricalData(coin, currency, period, attempts = 0) {
-    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin.toUpperCase()}/${currency}/${period}`, attempts);
-    const msToS = 1000;
+    const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/price-history/${coin}/${currency}/${period}`, attempts);
     if (!result) { return false; }
-
-    result.data.data = result.data.data.map((x) => {
-      return { t: x.time * msToS, y: x.close };
-    });
 
     return result.data;
   }
@@ -388,9 +384,9 @@ class BackEndService {
 
     const coins = [];
     wallets.forEach((coin) => {
-      const price = LatestPrice.find(`${coin.symbol}_${selectedCurrency.code}`);
+      const price = LatestPrice.find(`${coin.identifier}_${selectedCurrency.code}`);
       if (price) {
-        coins.push(coin.symbol);
+        coins.push(coin.identifier);
       }
     });
 
@@ -446,7 +442,7 @@ class BackEndService {
     }
 
     const latestPrice = await this.getPriceFeed(
-      [coin.toUpperCase()],
+      [coin],
       [selectedCurrency.code],
       attempts,
     );

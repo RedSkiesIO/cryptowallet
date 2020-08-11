@@ -155,7 +155,7 @@ export default {
     },
 
     ethPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`ETH_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`ethereum_${this.selectedCurrency.code}`);
       if (!prices) {
         return null;
       }
@@ -168,7 +168,7 @@ export default {
       this.wallets.forEach((wallet) => {
         const { unconfirmed } = getBalance(wallet, this.authenticatedAccount);
 
-        const price = this.$store.getters['entities/latestPrice/find'](`${wallet.symbol}_${this.selectedCurrency.code}`);
+        const price = this.$store.getters['entities/latestPrice/find'](`${wallet.identifier}_${this.selectedCurrency.code}`);
         if (price) {
           const formattedAmount = new AmountFormatter({
             amount: unconfirmed,
