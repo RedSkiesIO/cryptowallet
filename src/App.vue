@@ -91,6 +91,12 @@ export default {
     supportedCoins() {
       return this.$store.state.settings.supportedCoins;
     },
+    isDarkMode() {
+      const user = this.accounts.find((account) => {
+        return account.name === this.settings.selectedAccount;
+      });
+      return user ? user.darkMode : false;
+    },
   },
 
   watch: {
@@ -102,6 +108,8 @@ export default {
       handler() {
         if (this.accounts.length < 1) {
           this.$router.push({ path: '/setup/0' });
+        } else {
+          this.$q.dark.set(this.isDarkMode);
         }
         this.storeSupportedCoins();
         return true;
@@ -162,6 +170,7 @@ export default {
           api: coin.api,
           testnet: coin.testnet ? coin.testnet : false,
           transak: coin.transak ? coin.transak : false,
+          identifier: coin.identifier || '',
         };
         if (!isThere) {
           if (coin.sdk === 'ERC20') {
@@ -195,9 +204,9 @@ export default {
 </script>
 
 <style lang='styl'>
-body > div {
+/* body > div {
   color: black;
-}
+} */
 
 .background {
   height: 100%;
@@ -240,29 +249,33 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;
 }
 
-.dark-modal .q-dialog__inner {
+.dark-modal .q-dialog__inner--maximized {
   background: whitesmoke;
 }
 
-.light-modal .q-dialog__inner {
+.light-modal .q-dialog__inner--maximized {
   background: whitesmoke;
 
 }
 
-.light-modal .header-section {
+body.body--dark .q-dialog__inner--maximized {
+  background: $dark;
+}
+
+/* .light-modal .header-section {
   background: whitesmoke;
 }
 
 .dark-modal .header-section {
   color: black;
   background: whitesmoke;
-}
+} */
 
 .dark-modal .header-section i {
   color: var(--q-color-primary);
 }
 
-.dark-modal .modal-layout-wrapper {
+/* .dark-modal .modal-layout-wrapper {
     color: black;
     background-color: whitesmoke;
 }
@@ -271,7 +284,7 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   background: white;
   background: whitesmoke;
 
-}
+} */
 
 
 .modal-layout-wrapper {
@@ -309,9 +322,13 @@ body.q-ios-padding .q-dialog .modal-layout-wrapper {
   color: slategray;
 }
 
-.dark-modal .modal-layout-wrapper {
-  color: black;
+.body--dark .light-modal .modal-layout-wrapper {
+  color: white;
 }
+
+/* .dark-modal .modal-layout-wrapper {
+  color: black;
+} */
 
 .modal {
   font-family: Inter-Regular;

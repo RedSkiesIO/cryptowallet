@@ -68,6 +68,8 @@ export default {
    */
   mounted() {
     if (this.account) {
+      this.$q.dark.set(this.account.darkMode);
+
       this.$store.dispatch('settings/setSelectedAccount', this.account.name);
     }
   },

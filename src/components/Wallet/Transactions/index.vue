@@ -83,6 +83,10 @@ export default {
   position: relative;
 }
 
+.body--dark .recent-transactions .q-tab-panels {
+  background: black;
+}
+
 .scroll-content {
   overflow: hidden;
   padding: 0 1rem;

@@ -72,7 +72,12 @@
         </div>
         <div v-else>
           <img
-            v-if="!walletScreen"
+            v-if="!walletScreen && dark"
+            class="header-logo q-mt-xs"
+            src="~/assets/cent-logo-white.svg"
+          >
+          <img
+            v-else-if="!walletScreen"
             class="header-logo q-mt-xs"
             src="~/assets/cent-logo-black.svg"
           >
@@ -148,6 +153,10 @@ export default {
       modals: (state) => { return state.modals; },
     }),
 
+    dark() {
+      return this.$q.dark.isActive;
+    },
+
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);
     },
@@ -166,7 +175,7 @@ export default {
 
     displayPriceChart() {
       if (this.wallet && this.selectedCurrency) {
-        const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.symbol}_${this.selectedCurrency.code}`);
+        const price = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
         if (price) {
           return this.$route.name === 'walletSingle'
                 || this.$route.name === 'sendCoinSingle';

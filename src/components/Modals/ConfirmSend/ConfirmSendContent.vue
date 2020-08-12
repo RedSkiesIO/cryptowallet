@@ -188,7 +188,7 @@ export default {
     },
 
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (prices) {
         return prices.data.PRICE;
       }
@@ -281,9 +281,9 @@ export default {
         if (this.wallet.sdk === 'ERC20') {
           transaction.fee /= this.weiMultiplier;
         }
-        await Tx.$insert({ data: transaction });
+        const tx = (await Tx.$insert({ data: transaction })).tx[0];
 
-        this.completeTransaction();
+        this.completeTransaction(tx);
       }
     },
     coinToCurrency(amount, fee) {
@@ -299,11 +299,11 @@ export default {
       });
 
       if (this.wallet.sdk === 'ERC20' && fee) {
-        const parentSymbol = this.supportedCoins.find((coin) => {
+        const parentIdentifier = this.supportedCoins.find((coin) => {
           return coin.name === this.wallet.parentName;
-        }).symbol;
+        }).identifier;
 
-        const parentPrice = this.$store.getters['entities/latestPrice/find'](`${parentSymbol}_${this.selectedCurrency.code}`).data.PRICE;
+        const parentPrice = this.$store.getters['entities/latestPrice/find'](`${parentIdentifier}_${this.selectedCurrency.code}`).data.PRICE;
         formattedAmount = new AmountFormatter({
           amount,
           rate: parentPrice,
@@ -336,10 +336,13 @@ export default {
         }
       }, this.delay.short);
     },
-    completeTransaction() {
+    completeTransaction(tx) {
       this.$store.dispatch('modals/setSendSuccessModalOpened', true);
 
       setTimeout(() => {
+        if (tx) {
+          tx.track();
+        }
         this.loading = false;
         this.$store.dispatch('modals/setConfirmSendModalOpened', false);
       }, this.delay.short);

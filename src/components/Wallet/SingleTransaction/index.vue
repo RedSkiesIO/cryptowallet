@@ -26,7 +26,17 @@
           {{ date }}
         </q-item-label>
       </q-item-section>
-
+      <q-item-section
+        v-if="data.failed"
+        class="text-center col-2"
+      >
+        <q-badge
+          outline
+          color="negative"
+          label="Failed"
+          style="width: fit-content;"
+        />
+      </q-item-section>
       <q-item-section side>
         <q-icon
           name="info"
@@ -58,6 +68,17 @@
               class="row justify-center"
             >
               {{ amount.prefix }} {{ amount.currency }}
+            </div>
+            <div
+              v-if="data.failed"
+              class="row justify-center q-mt-sm"
+            >
+              <q-badge
+                outline
+                color="negative"
+                label="Failed"
+                style="width: fit-content;"
+              />
             </div>
           </div>
 
@@ -226,7 +247,7 @@ export default {
       return this.supportedCoins.find((coin) => { return coin.name === this.wallet.name; }).symbol;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (prices) {
         return prices.data.PRICE;
       }
@@ -325,7 +346,7 @@ export default {
         const parent = this.supportedCoins.find((coin) => {
           return coin.name === this.wallet.parentName;
         });
-        const price = this.$store.getters['entities/latestPrice/find'](`${parent.symbol}_${this.selectedCurrency.code}`).data.PRICE;
+        const price = this.$store.getters['entities/latestPrice/find'](`${parent.identifier}_${this.selectedCurrency.code}`).data.PRICE;
 
         const feeInCoin = new AmountFormatter({
           amount: inCoin,
@@ -481,10 +502,18 @@ export default {
   font-size: 0.8rem;
   color:#757575;
 }
+body.body--dark .single-transaction-content {
+    color: whitesmoke;
+
+}
 
 .single-transaction-content .row {
   padding: 0.75rem 0;
   border-top: 1px solid #e0e0e0;
+}
+
+.body--dark .single-transaction-content .row {
+  border-top: 1px solid #424242;
 }
 
  .single-transaction-content .row .q-btn__wrapper {
@@ -536,7 +565,6 @@ export default {
 }
 
 .transaction-heading {
-  color: black;
   padding: 1rem 0;
 }
 </style>

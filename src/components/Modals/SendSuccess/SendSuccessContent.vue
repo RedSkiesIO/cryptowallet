@@ -122,7 +122,7 @@ export default {
       return this.txData.transaction.receiver;
     },
     latestPrice() {
-      const prices = this.$store.getters['entities/latestPrice/find'](`${this.coinSymbol}_${this.selectedCurrency.code}`);
+      const prices = this.$store.getters['entities/latestPrice/find'](`${this.wallet.identifier}_${this.selectedCurrency.code}`);
       if (prices) {
         return prices.data.PRICE;
       }
@@ -160,7 +160,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="styl" scoped>
 .small-text {
   font-size: 0.8rem;
 }
@@ -228,6 +228,9 @@ export default {
   background: whitesmoke;
   margin-top: 1rem;
   border-radius: 0.5rem;
+}
+.body--dark .done-tx-details-wrapper {
+  background: $dark;
 }
 
 .tx-details-row {

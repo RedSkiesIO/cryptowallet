@@ -27,10 +27,7 @@
             >
           </q-item-section>
           <q-item-section>
-            <q-item-label
-              class="
-              text-blueish"
-            >
+            <q-item-label>
               {{ scope.opt.label }}
             </q-item-label>
           </q-item-section>

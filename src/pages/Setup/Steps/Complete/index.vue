@@ -124,6 +124,9 @@ export default {
         }, this.delay.normal);
       }, this.delay.normal);
     },
+    createDate(timestamp) {
+      return new Date(timestamp * this.msToS).getTime();
+    },
 
     async storeTransactions(txs, id) {
       if (txs.length > 0) {
@@ -183,7 +186,7 @@ export default {
       const coinSDK = this.coinSDKS[wallet.sdk](wallet.network);
       let walletAddress = {};
       try {
-        await this.backEndService.loadCoinPriceData(wallet.symbol);
+        await this.backEndService.loadCoinPriceData(wallet.identifier);
 
         const initializedWallet = wallet.hdWallet;
 

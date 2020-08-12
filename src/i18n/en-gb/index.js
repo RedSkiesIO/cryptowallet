@@ -140,6 +140,7 @@ export default {
   emailUpdated: 'Your email address has been updated',
   emailLogin: 'To change your email address please login with your current email address',
   viewKeys: 'View Private Keys',
+  toggleDarkMode: 'Dark Mode',
   // Wallet
   assets: 'Assets',
   balance: 'Balance',
