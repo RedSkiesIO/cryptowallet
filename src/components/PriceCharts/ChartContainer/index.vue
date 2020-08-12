@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Chart from '@/components/PriceCharts/Chart';
 
 export default {
@@ -55,8 +56,14 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+    }),
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
+    },
+    darkMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).darkMode;
     },
     chartData() {
       return {
@@ -103,7 +110,7 @@ export default {
             type: 'time',
             ticks: {
               minRotation: '45',
-              fontColor: '#1d1d1d',
+              fontColor: this.darkMode ? '#ffffff' : '#1d1d1d',
               padding: 15,
 
             },
@@ -113,9 +120,9 @@ export default {
           }],
           yAxes: [{
             position: 'left',
-            color: '#1d1d1d',
+            color: this.darkMode ? '#ffffff' : '#1d1d1d',
             ticks: {
-              fontColor: '#1d1d1d',
+              fontColor: this.darkMode ? '#ffffff' : '#1d1d1d',
               callback: (value) => { return `${this.selectedCurrency.symbol}${value}`; },
             },
           }],

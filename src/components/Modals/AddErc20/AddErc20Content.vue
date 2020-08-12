@@ -519,9 +519,9 @@ export default {
 </script>
 
 <style>
-.q-virtual-scroll__content .q-link {
+/* .q-virtual-scroll__content .q-link {
   background: white;
-}
+} */
 .add-erc20 .send {
   margin-top: 0;
   padding-top: 0;
@@ -633,22 +633,6 @@ export default {
   height: 90%;
   position: relative;
   z-index: 2;
-}
-
-.qr-code-wrapper .hor-line {
-  height: 50%;
-  width: 110%;
-  background: white;
-  position: absolute;
-  z-index: 1;
-}
-
-.qr-code-wrapper .ver-line {
-  height: 110%;
-  width: 50%;
-  background: white;
-  position: absolute;
-  z-index: 1;
 }
 
 .side-content {

@@ -186,6 +186,10 @@ export default {
   top: 50%;
 }
 
+.body--dark .send-modal-heading .h3-line {
+  border-bottom: 1px solid #424242;
+}
+
 .sm-input {
   font-size: 0.7rem;
 }
@@ -199,6 +203,7 @@ export default {
   border: 2px solid black;
   position: relative;
   cursor: pointer;
+  background: white;
 }
 
 .qr-code-wrapper img {
@@ -211,7 +216,7 @@ export default {
 .qr-code-wrapper .hor-line {
   height: 50%;
   width: 110%;
-  background: white;
+  background: none;
   position: absolute;
   z-index: 1;
 }
@@ -219,7 +224,7 @@ export default {
 .qr-code-wrapper .ver-line {
   height: 110%;
   width: 50%;
-  background: white;
+  background: none;
   position: absolute;
   z-index: 1;
 }
@@ -263,8 +268,17 @@ export default {
   font-family: Inter-SemiBold!important;
 }
 
+.body--dark .send-heading-btn {
+  background: var(--q-color-dark);
+}
+
 .send-heading-btn.active {
   border: 1px solid #de4662;
+}
+
+.send-heading-btn .q-btn__wrapper {
+  padding: 0;
+  min-height: 0;
 }
 
 .send-modal-heading .help-icon {

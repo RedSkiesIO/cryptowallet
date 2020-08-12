@@ -18,7 +18,8 @@ module.exports = (ctx) => {
       'BackEndService',
       'AccountInitializer',
       'ENS',
-      'Magic'
+      'Magic',
+      'Notify',
     ],
     css: ['app.styl'],
     extras: [
@@ -57,6 +58,9 @@ module.exports = (ctx) => {
       open: true,
     },
     framework: {
+      config: {
+        dark: false,
+      },
       components: [
         'QLayout',
         'QHeader',
@@ -104,7 +108,8 @@ module.exports = (ctx) => {
         'QAvatar',
         'QInnerLoading',
         'QSpinner',
-        'QCircularProgress'
+        'QCircularProgress',
+        'QBadge'
       ],
       directives: ['Ripple', 'ClosePopup', 'ClosePopup'],
       // Quasar plugins
@@ -115,7 +120,7 @@ module.exports = (ctx) => {
     // animations: 'all' --- includes all animations
     animations: ['slideInUp', 'slideOutDown'],
     cordova: {
-      id: 'com.cent.mobile.wallet',
+      id: 'com.atlas.mobile.wallet',
       iosStatusBarPadding: false,
     },
   };

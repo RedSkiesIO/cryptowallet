@@ -63,6 +63,11 @@ export default {
   border-bottom: none!important;
 }
 
+.body--dark .loading.background {
+  background: $dark;
+  border-bottom: none!important;
+}
+
 .loading-footer {
   position: absolute;
   width: 10rem;

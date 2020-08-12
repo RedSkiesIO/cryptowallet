@@ -41,7 +41,6 @@ export default {
 
 .account-item {
   display: flex;
-  color: black;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;

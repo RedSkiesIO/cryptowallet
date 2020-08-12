@@ -1,4 +1,5 @@
 import { Model } from '@vuex-orm/core';
+import { Dark } from 'quasar';
 import Wallet from './wallet';
 
 /**
@@ -24,6 +25,16 @@ export default class Account extends Model {
       default: this.attr(false),
       wallets: this.hasMany(Wallet, 'account_id'),
       showTestnets: this.attr(true),
+      darkMode: this.boolean(false),
+    };
+  }
+
+  static mutators() {
+    return {
+      darkMode(value) {
+        Dark.set(value);
+        return value;
+      },
     };
   }
 }
