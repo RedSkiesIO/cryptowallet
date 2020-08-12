@@ -69,8 +69,9 @@ export default class Coin extends Model {
 
   static async fetchAllTokens(address, account, network) {
     const SDK = new CryptoWalletJs();
-    const coinSDK = SDK.SDKFactory.createSDK('Ethereum', networks[network]);
-    const ERC20SDK = SDK.SDKFactory.createSDK('ERC20', networks[network]);
+    const api = networks[network];
+    const coinSDK = SDK.SDKFactory.createSDK('Ethereum', api);
+    const ERC20SDK = SDK.SDKFactory.createSDK('ERC20', api);
     const txs = await coinSDK.getERC20History(
       address,
     );
@@ -107,7 +108,7 @@ export default class Coin extends Model {
           network,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
-          parentName: 'Ethereum',
+          parentName: api.coiName,
           contractAddress: contract,
           decimals: tokenDecimal,
           minConfirmations: 1,

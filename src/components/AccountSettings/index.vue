@@ -50,7 +50,7 @@
         <q-btn
           icon="chevron_right"
           size="lg"
-          color="blueish"
+          color="info"
           class="settings-chevron"
           flat
           @click.prevent="openUpdateEmailModal"
@@ -95,6 +95,7 @@
       </div>
     </div>
     <ToggleTestnets />
+    <ToggleDarkMode />
     <div
       class="settings-row"
       @click="logout"
@@ -162,6 +163,8 @@ import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
 import ToggleTestnets from '@/components/AccountSettings/ToggleTestnets';
+import ToggleDarkMode from '@/components/AccountSettings/ToggleDarkMode';
+
 import UpdateEmail from '@/components/AccountSettings/UpdateEmail';
 import ExportKeys from '@/components/AccountSettings/ExportKeys';
 
@@ -174,6 +177,7 @@ export default {
     Pin,
     DeleteAccount,
     ToggleTestnets,
+    ToggleDarkMode,
     UpdateEmail,
     ExportKeys,
   },
@@ -227,6 +231,9 @@ export default {
   display: flex;
   align-items: center;
   font-family: 'Inter-Medium';
+}
+body.body--dark .settings-row {
+  border-bottom: 1px solid #424242;
 }
 
 .settings-chevron {

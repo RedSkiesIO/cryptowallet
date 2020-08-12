@@ -72,7 +72,12 @@
         </div>
         <div v-else>
           <img
-            v-if="!walletScreen"
+            v-if="!walletScreen && dark"
+            class="header-logo q-mt-xs"
+            src="~/assets/cent-logo-white.svg"
+          >
+          <img
+            v-else-if="!walletScreen"
             class="header-logo q-mt-xs"
             src="~/assets/cent-logo-black.svg"
           >
@@ -147,6 +152,10 @@ export default {
       delay: (state) => { return state.settings.delay; },
       modals: (state) => { return state.modals; },
     }),
+
+    dark() {
+      return this.$q.dark.isActive;
+    },
 
     wallet() {
       return this.$store.getters['entities/wallet/find'](this.id);

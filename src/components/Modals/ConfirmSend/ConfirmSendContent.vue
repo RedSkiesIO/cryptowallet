@@ -281,9 +281,9 @@ export default {
         if (this.wallet.sdk === 'ERC20') {
           transaction.fee /= this.weiMultiplier;
         }
-        await Tx.$insert({ data: transaction });
+        const tx = (await Tx.$insert({ data: transaction })).tx[0];
 
-        this.completeTransaction();
+        this.completeTransaction(tx);
       }
     },
     coinToCurrency(amount, fee) {
@@ -336,10 +336,13 @@ export default {
         }
       }, this.delay.short);
     },
-    completeTransaction() {
+    completeTransaction(tx) {
       this.$store.dispatch('modals/setSendSuccessModalOpened', true);
 
       setTimeout(() => {
+        if (tx) {
+          tx.track();
+        }
         this.loading = false;
         this.$store.dispatch('modals/setConfirmSendModalOpened', false);
       }, this.delay.short);

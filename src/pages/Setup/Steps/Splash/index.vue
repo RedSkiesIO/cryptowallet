@@ -2,6 +2,12 @@
   <div class="container splash">
     <div class="splash-logo text-center">
       <img
+        v-if="dark"
+        class="logo-loading"
+        src="~/assets/cent-logo-white.svg"
+      >
+      <img
+        v-else
         class="logo-loading"
         src="~/assets/cent-logo-black.svg"
       >
@@ -122,6 +128,10 @@ export default {
           icon: `./statics/flags/${lang}.svg`,
         };
       });
+    },
+
+    dark() {
+      return this.$q.dark.isActive;
     },
   },
 

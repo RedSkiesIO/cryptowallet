@@ -43,7 +43,7 @@
           :src="loadingLogo"
         >
       </q-circular-progress>
-      <div class="row text-center text-blueish q-pa-lg text-weight-bold">
+      <div class="row text-center text-info q-pa-lg text-weight-bold">
         You are now being transferred to our trusted partner...
       </div>
     </q-inner-loading>
@@ -117,11 +117,16 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="styl" scoped>
 .q-inner-loading {
   z-index: 999;
   background: white;
 }
+
+.body--dark .q-inner-loading {
+  background: $dark;
+}
+
 .close-provider {
   position: absolute;
   z-index: 999;

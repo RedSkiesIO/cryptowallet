@@ -16,7 +16,6 @@
       <q-btn
         flat
         :disabled="resetDisabled"
-        color="black"
         label="Clear"
         @click="clearPinArray"
       />
@@ -28,7 +27,7 @@
           || mode === 'confirm-new-pin')"
         :disabled="canProceed"
         color="secondary"
-        text-color="blueish"
+        text-color="info"
         :label="$t('done')"
         @click="done"
       />
@@ -184,6 +183,11 @@ export default {
   transition: all ease-in-out 100ms;
 }
 
+body.body--dark .vue-keyboard-key,
+body.body--dark .vue-keyboard-key:hover {
+  color: white;
+}
+
 .vue-keyboard-key.active {
   background: rgba(255,255,255,0.1);
 }
@@ -203,5 +207,10 @@ export default {
   border-radius: 100%;
   display: block;
   margin: 0 .5em;
+}
+
+body.body--dark .dot {
+    background: white;
+
 }
 </style>

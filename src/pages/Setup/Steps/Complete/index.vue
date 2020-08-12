@@ -124,6 +124,9 @@ export default {
         }, this.delay.normal);
       }, this.delay.normal);
     },
+    createDate(timestamp) {
+      return new Date(timestamp * this.msToS).getTime();
+    },
 
     async storeTransactions(txs, id) {
       if (txs.length > 0) {
