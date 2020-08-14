@@ -491,7 +491,7 @@ export default {
     async getFee() {
       const online = window ? window.navigator.onLine : navigator.connection === 'none';
       if (online) {
-        let gasLimit = 21000;
+        let gasLimit = 25000;
         let coinSymbol = this.wallet.symbol;
         let currentPrice = this.latestPrice;
         if (this.wallet.sdk === 'ERC20') {
@@ -515,6 +515,7 @@ export default {
         }
 
         const response = await this.backEndService.getTransactionFee(coinSymbol);
+
         const { data } = response;
         const fees = {
           low: data.low,

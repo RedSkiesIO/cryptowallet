@@ -6,6 +6,7 @@
       transition-show="slide-up"
       transition-hide="slide-down"
       content-class="dark-modal"
+      @before-hide="close"
     >
       <div>
         <div class="header-section">
@@ -15,7 +16,7 @@
               size="lg"
               class="icon-btn back-arrow-btn"
               flat
-              @click.prevent="close"
+              @click.prevent="closeModal"
             />
           </div>
           <h1 class="header-h1">
@@ -93,6 +94,9 @@ export default {
     await this.close();
   },
   methods: {
+    closeModal() {
+      this.addWalletModalOpened = false;
+    },
     openAddWalletModal() {
       this.$store.dispatch('modals/setAddErc20ModalOpened', true);
     },
