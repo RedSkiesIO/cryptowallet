@@ -132,7 +132,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import IconList from '@/statics/cc-icons/icons-list.json';
+import Coin from '@/store/wallet/entities/coin';
 
 
 export default {
@@ -155,6 +155,13 @@ export default {
 
     dark() {
       return this.$q.dark.isActive;
+    },
+
+    coin() {
+      return Coin.query()
+        .where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress)
+        .get()[0];
     },
 
     wallet() {
@@ -221,14 +228,7 @@ export default {
     },
 
     coinLogo() {
-      const coinIcon = IconList.find((icon) => {
-        return icon.symbol === this.wallet.symbol.toUpperCase();
-      });
-      if (coinIcon) {
-        const fileType = coinIcon.png ? '.png' : '.svg';
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
-      }
-      return './statics/cc-icons/color/generic.svg';
+      return this.coin.logo;
     },
     txsLength() {
       return this.$store.getters['entities/tx/all']().length;
@@ -285,15 +285,11 @@ export default {
       const tx = txs.shift();
       if (!tx.sent) {
         const wallet = this.$store.getters['entities/wallet/find'](tx.wallet_id);
-        let logo;
-        const coinLogo = IconList.find((icon) => {
-          return icon.symbol === wallet.symbol.toUpperCase();
-        });
-        if (coinLogo) {
-          logo = `./statics/cc-icons/color/${wallet.symbol.toLowerCase()}.svg`;
-        } else {
-          logo = './statics/cc-icons/color/generic.svg';
-        }
+        const coin = Coin.query()
+          .where('name', this.wallet.name)
+          .where('contractAddress', this.wallet.contractAddress)
+          .get()[0];
+        const { logo } = coin;
         const maxValueLength = 6;
         this.newTxModalData = {
           logo,

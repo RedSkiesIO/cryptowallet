@@ -45,6 +45,12 @@
             </div>
           </div>
         </div>
+      </q-pull-to-refresh>
+      <q-pull-to-refresh
+        :disable="!isSinglePullEnabled || isSinglePullTempDisabled"
+        color="secondary"
+        @refresh="refresher"
+      >
         <div
           class="layout-wrapper"
           @touchmove="prevent"
@@ -109,6 +115,8 @@ export default {
     return {
       isPullEnabled: true,
       isPullTempDisabled: false,
+      isSinglePullEnabled: true,
+      isSinglePullTempDisabled: false,
       transitionName: 'slide-left',
       isBalanceVisible: true,
       worker: null,
@@ -274,7 +282,8 @@ export default {
     },
 
     updateisPullEnabled() {
-      this.isPullEnabled = (this.$route.name === 'wallet' && this.wallets.length > 0) || this.$route.name === 'walletSingle';
+      this.isPullEnabled = (this.$route.name === 'wallet' && this.wallets.length > 0);
+      this.isSinglePullEnabled = this.$route.name === 'walletSingle';
     },
 
     refresher(done) {

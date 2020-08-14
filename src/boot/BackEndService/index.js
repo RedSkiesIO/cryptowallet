@@ -253,7 +253,7 @@ class BackEndService {
   async getTransactionFee(coin, attempts = 0) {
     const fee = Fees.find([coin]);
     const currentTime = new Date().getTime();
-    const updateTime = 600000;
+    const updateTime = 300000;
 
     if (!fee || (currentTime - fee.timestamp) > updateTime) {
       const result = await this.try(`${process.env.BACKEND_SERVICE_URL}/fee-estimate/${coin}`, attempts);

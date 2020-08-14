@@ -53,7 +53,7 @@
             1 {{ coinSymbol }} / {{ selectedCurrency.code }}
           </div>
           <div
-            v-if="latestPrice.data.TOTALVOLUME24HTO !== 0"
+            v-if="volume"
             class="col-6"
           >
             {{ $t('volume24h') }} {{ selectedCurrency.code }}
@@ -65,7 +65,7 @@
             {{ latestPrice.data.PRICE.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') }}
           </div>
           <div
-            v-if="latestPrice.data.TOTALVOLUME24HTO !== 0"
+            v-if="volume"
             class="col-6"
           >
             {{ selectedCurrency.symbol }}
@@ -102,7 +102,6 @@ import { mapState } from 'vuex';
 import PriceChart from '@/components/PriceCharts/ChartContainer';
 import Spinner from '@/components/Spinner';
 import Coin from '@/store/wallet/entities/coin';
-import IconList from '@/statics/cc-icons/icons-list.json';
 import Prices from '@/store/prices';
 
 export default {
@@ -151,6 +150,9 @@ export default {
       }
       return prices;
     },
+    volume() {
+      return this.latestPrice.data.TOTALVOLUME24HOURTO || null;
+    },
     chartData() {
       const day = Prices.find([`${this.coinIdentifier}_${this.selectedCurrency.code}_day`]);
       const week = Prices.find([`${this.coinIdentifier}_${this.selectedCurrency.code}_week`]);
@@ -179,14 +181,7 @@ export default {
       return '#de4662';
     },
     coinLogo() {
-      const coinIcon = IconList.find((icon) => {
-        return icon.symbol === this.wallet.symbol.toUpperCase();
-      });
-      if (coinIcon) {
-        const fileType = coinIcon.png ? '.png' : '.svg';
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
-      }
-      return './statics/cc-icons/color/generic.svg';
+      return this.coin.logo;
     },
   },
   async mounted() {
