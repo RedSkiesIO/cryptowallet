@@ -1,5 +1,6 @@
 import { Model } from '@vuex-orm/core';
 import CryptoWalletJs from 'cryptowallet-js';
+import IconList from '@/statics/cc-icons/icons-list.json';
 // import Wallet from './wallet';
 // import Tx from './tx';
 import networks from '../../settings/state/supportedNetworks';
@@ -33,6 +34,17 @@ export default class Coin extends Model {
       rampNetwork: this.attr(false),
       show: this.attr(true),
     };
+  }
+
+  get logo() {
+    const coinIcon = IconList.find((icon) => {
+      return icon.symbol === this.symbol.toUpperCase();
+    });
+    if (coinIcon) {
+      const fileType = coinIcon.png ? '.png' : '.svg';
+      return `./statics/cc-icons/color/${this.symbol.toLowerCase()}${fileType}`;
+    }
+    return './statics/cc-icons/color/generic.svg';
   }
 
   static findToken(name, contract = false) {

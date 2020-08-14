@@ -74,7 +74,6 @@
 import { mapState } from 'vuex';
 import Amount from '@/components/Wallet/Amount';
 import Coin from '@/store/wallet/entities/coin';
-import IconList from '@/statics/cc-icons/icons-list.json';
 import {
   AmountFormatter,
   getBalance,
@@ -104,28 +103,22 @@ export default {
     }),
 
     coinLogo() {
-      const coinIcon = IconList.find((icon) => {
-        return icon.symbol === this.wallet.symbol.toUpperCase();
-      });
-      if (coinIcon) {
-        const fileType = coinIcon.png ? '.png' : '.svg';
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
-      }
-      return './statics/cc-icons/color/generic.svg';
+      return this.coin.logo;
     },
 
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
 
-    supportedCoins() {
-      return Coin.all();
+    coin() {
+      return Coin.query()
+        .where('name', this.wallet.name)
+        .where('contractAddress', this.wallet.contractAddress)
+        .get()[0];
     },
 
     coinSymbol() {
-      return this.supportedCoins.find((coin) => {
-        return coin.name === this.wallet.name;
-      }).symbol;
+      return this.coin.symbol;
     },
 
     transakTestnet() {
@@ -133,10 +126,7 @@ export default {
     },
 
     canPurchase() {
-      const coin = this.supportedCoins.find((token) => {
-        return token.name === this.wallet.name;
-      });
-      if (coin.transak) { return true; }
+      if (this.coin.transak) { return true; }
       return false;
     },
 

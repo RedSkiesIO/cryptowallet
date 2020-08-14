@@ -95,7 +95,6 @@ import Address from '@/store/wallet/entities/address';
 import Tx from '@/store/wallet/entities/tx';
 import Utxo from '@/store/wallet/entities/utxo';
 import Coin from '@/store/wallet/entities/coin';
-import IconList from '@/statics/cc-icons/icons-list.json';
 
 export default {
   name: 'WalletItem',
@@ -143,14 +142,7 @@ export default {
       return Coin.findToken(this.wallet.name);
     },
     coinLogo() {
-      const coinIcon = IconList.find((icon) => {
-        return icon.symbol === this.wallet.symbol.toUpperCase();
-      });
-      if (coinIcon) {
-        const fileType = coinIcon.png ? '.png' : '.svg';
-        return `./statics/cc-icons/color/${this.wallet.symbol.toLowerCase()}${fileType}`;
-      }
-      return './statics/cc-icons/color/generic.svg';
+      return this.coin.logo;
     },
   },
 
