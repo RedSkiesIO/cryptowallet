@@ -216,6 +216,7 @@ export default {
   view: 'View',
   selectNetwork: 'Select Network',
   addFunds: 'Add Funds',
+  betaNotice: '⚠ This is beta software. Use at your own risk.',
   // Setup
   cryptoWallet: 'Cent',
   seedSetup: 'Seed Setup',
