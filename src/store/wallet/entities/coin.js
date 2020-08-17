@@ -228,6 +228,7 @@ export default class Coin extends Model {
         promises.push(tokenObj(contract));
       });
       await Promise.all(promises);
+      await Coin.fetchIcons();
       // await Coin.insert({ data: erc20Tokens });
 
       return erc20Tokens;
