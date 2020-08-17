@@ -24,6 +24,7 @@
     "cordova-plugin-iroot": "^2.0.2",
     "cordova-plugin-navigationbar-color": "0.0.9",
     "cordova-plugin-network-information": "^2.0.1",
+    "cordova-plugin-prevent-screenshot": "^1.0.3",
     "cordova-plugin-qrscanner": "^3.0.1",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
@@ -57,7 +58,8 @@
       "cordova-plugin-disable-ios11-statusbar": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-tapjackingprotection": {},
-      "cordova-plugin-iroot": {}
+      "cordova-plugin-iroot": {},
+      "cordova-plugin-prevent-screenshot": {}
     },
     "platforms": [
       "android",
