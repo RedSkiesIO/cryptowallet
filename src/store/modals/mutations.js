@@ -130,11 +130,9 @@ export function SET_UPDATE_EMAIL_MODAL_OPENED(state, payload) {
 export function SET_EXPORT_KEYS_MODAL_OPENED(state, payload) {
   if (window.cordova) {
     if (payload) {
-      window.plugins.preventscreenshot.enable(() => { return console.log('screenshot blocked'); },
-        () => { return console.log('screenshot blocking failed'); });
+      window.plugins.preventscreenshot.disable(() => {}, () => {});
     } else {
-      window.plugins.preventscreenshot.disable(() => { return console.log('screenshot enabled'); },
-        () => { return console.log('screenshot enabled failed'); });
+      window.plugins.preventscreenshot.enable(() => {}, () => {});
     }
   }
   state.exportKeysModalOpened = payload;

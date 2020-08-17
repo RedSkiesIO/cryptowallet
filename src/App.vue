@@ -157,6 +157,7 @@ export default {
       const rooted = () => { this.$store.dispatch('modals/setRootedNoticeModalOpened', true); };
       IRoot.isRooted(() => {}, rooted);
       IRoot.isRootedWithBusyBox(() => {}, rooted);
+      window.plugins.preventscreenshot.enable(() => {}, () => {});
     }
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },
