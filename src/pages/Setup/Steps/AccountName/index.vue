@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       accountName: '',
+      maxNameLength: 50,
     };
   },
   validations: {
@@ -59,6 +60,11 @@ export default {
 
       if (!this.$v.accountName.alphaNum) {
         this.$toast.create(10, this.$t('invalidAccountName'), this.delay.normal);
+        return false;
+      }
+
+      if (this.accountName.length > this.maxNameLength) {
+        this.$toast.create(10, this.$t('invalidAccountLength'), this.delay.normal);
         return false;
       }
 

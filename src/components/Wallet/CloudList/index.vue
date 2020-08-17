@@ -16,6 +16,21 @@
       class="scroll-area extended cloud-scroll q-px-md q-pt-lg"
     >
       <!-- <div class="scroll-offset" /> -->
+      <div
+        v-if="beta"
+        class="row justify-center text-negative q-mb-md"
+      >
+        {{ $t('betaNotice') }}
+        <q-btn
+          flat
+          dense
+          size="sm"
+          color="black"
+          class="q-ml-xs"
+          icon="close"
+          @click="beta = false"
+        />
+      </div>
       <div class="row q-mb-sm justify-between text-h6 text-weight-bold">
         <div>
           {{ $t('assets') }}
@@ -58,6 +73,7 @@ export default {
   data() {
     return {
       scrollPosition: 0,
+      beta: true,
     };
   },
 

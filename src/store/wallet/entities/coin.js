@@ -1,5 +1,6 @@
 import { Model } from '@vuex-orm/core';
 import CryptoWalletJs from 'cryptowallet-js';
+import axios from 'axios';
 import IconList from '@/statics/cc-icons/icons-list.json';
 // import Wallet from './wallet';
 // import Tx from './tx';
@@ -28,6 +29,7 @@ export default class Coin extends Model {
       decimals: this.attr(''),
       identifier: this.attr(''),
       api: this.attr(''),
+      icon: this.attr(null),
       imported: this.attr(false),
       testnet: this.attr(false),
       transak: this.attr(false),
@@ -37,6 +39,10 @@ export default class Coin extends Model {
   }
 
   get logo() {
+    // if (this.icon) {
+    //   console.log(this.logo);
+    //   return `data:image/png;base64, ${this.logo}`;
+    // }
     const coinIcon = IconList.find((icon) => {
       return icon.symbol === this.symbol.toUpperCase();
     });
@@ -45,6 +51,45 @@ export default class Coin extends Model {
       return `./statics/cc-icons/color/${this.symbol.toLowerCase()}${fileType}`;
     }
     return './statics/cc-icons/color/generic.svg';
+  }
+
+  static async fetchIcons() {
+    function fetchIcon(token, address) {
+      axios
+        .get(`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`, {
+          responseType: 'arraybuffer',
+        })
+        .then((response) => {
+          const base64 = Buffer.from(response.data, 'binary').toString('base64');
+          Coin.$update({
+            where: (record) => { return record.id === token.id; },
+            data: {
+              icon: base64,
+            },
+          });
+        });
+    }
+
+    const tokens = Coin.query()
+      .where('sdk', 'ERC20')
+      .where('parentName', 'Ethereum')
+      .where('icon', null)
+      .get();
+
+    if (tokens.length > 0) {
+      const whitelist = (await axios.get('https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/whitelist.json'))
+        .data;
+
+      const promises = tokens
+        .map((t) => {
+          const index = whitelist.findIndex((item) => {
+            return t.contractAddress.toLowerCase() === item.toLowerCase();
+          });
+          return index === -1 ? null : fetchIcon(t, whitelist[index]);
+        });
+
+      await Promise.all(promises);
+    }
   }
 
   static findToken(name, contract = false) {
@@ -183,6 +228,7 @@ export default class Coin extends Model {
         promises.push(tokenObj(contract));
       });
       await Promise.all(promises);
+      await Coin.fetchIcons();
       // await Coin.insert({ data: erc20Tokens });
 
       return erc20Tokens;

@@ -7,6 +7,7 @@
     <q-scroll-area
       ref="scrollArea"
       class="scroll-area static"
+      @scroll="scrolling"
     >
       <q-infinite-scroll
         :offset="50"
@@ -157,6 +158,13 @@ export default {
         this.page = this.page + 1;
         done(false);
       });
+    },
+    scrolling(info) {
+      if (info.verticalPosition > 0) {
+        this.$store.dispatch('settings/setDisablePullToRefresh', true);
+      } else {
+        this.$store.dispatch('settings/setDisablePullToRefresh', false);
+      }
     },
 
     touchStart(event) {

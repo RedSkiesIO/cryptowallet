@@ -24,7 +24,7 @@
         <h1 class="header-h1">
           <img
             :src="coinLogo"
-            class="coin-logo"
+            class="coin-logo token-icon"
           >
           {{ wallet.displayName }}
         </h1>

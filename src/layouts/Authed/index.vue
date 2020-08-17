@@ -47,7 +47,7 @@
         </div>
       </q-pull-to-refresh>
       <q-pull-to-refresh
-        :disable="!isSinglePullEnabled || isSinglePullTempDisabled"
+        :disable="!isSinglePullEnabled || isSinglePullTempDisabled || singlePullDisabled"
         color="secondary"
         @refresh="refresher"
       >
@@ -128,6 +128,7 @@ export default {
       id: (state) => { return state.route.params.id; },
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
       delay: (state) => { return state.settings.delay; },
+      singlePullDisabled: (state) => { return state.settings.disablePullToRefresh; },
     }),
 
     wallets() {
