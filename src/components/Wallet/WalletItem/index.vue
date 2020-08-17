@@ -142,6 +142,9 @@ export default {
       return Coin.findToken(this.wallet.name);
     },
     coinLogo() {
+      if (this.coin.icon) {
+        return `data:image/png;base64, ${this.coin.icon}`;
+      }
       return this.coin.logo;
     },
   },
@@ -358,6 +361,13 @@ export default {
 .icon img {
   width: 100%;
   height: 100%;
+  border-radius: 100%;
+}
+
+.body--dark .icon img {
+  padding: 1px;
+  background: white;
+  border: 1px solid white;
 }
 
 .initialize-wallet-modal {

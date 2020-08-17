@@ -247,7 +247,7 @@ export default {
         const parentSDK = this.coinSDKS[wallet.parentSdk](wallet.network);
         await this.backEndService.loadCoinPriceData(wallet.identifier);
 
-        if (!wallet.erc20Wallet) {
+        if (!wallet.erc20Wallet.address) {
           const parentWallet = this.activeWallets[this.authenticatedAccount][wallet.parentName];
           const keyPair = await parentSDK.generateKeyPair(parentWallet, 0);
           wallet.erc20Wallet = await coinSDK.generateERC20Wallet(

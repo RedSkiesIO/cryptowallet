@@ -32,3 +32,7 @@ export function SET_LAYOUT(state, payload) {
 export function SET_CURRENCY(state, payload) {
   state.selectedCurrency = payload;
 }
+
+export function SET_DISABLE_PULLTOREFRESH(state, payload) {
+  state.disablePullToRefresh = payload;
+}

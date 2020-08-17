@@ -649,7 +649,7 @@ export default {
     paste() {
       try {
         cordova.plugins.clipboard.paste((text) => {
-          this.address = text;
+          this.addressField = text;
         });
       } catch (err) {
         this.errorHandler(err);

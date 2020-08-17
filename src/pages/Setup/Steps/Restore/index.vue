@@ -61,6 +61,11 @@ export default {
 
     }),
   },
+  mounted() {
+    if (window.cordova) {
+      window.plugins.preventscreenshot.disable(() => {}, () => {});
+    }
+  },
   methods: {
     validate() {
       const twelve = 12;
@@ -84,6 +89,9 @@ export default {
 
       this.$store.dispatch('setup/setSeed', seedPhrase);
       this.$store.dispatch('setup/setSeedString', lowercase);
+      if (window.cordova) {
+        window.plugins.preventscreenshot.enable(() => {}, () => {});
+      }
       this.$router.push({ path: '/setup/4' });
       return true;
     },

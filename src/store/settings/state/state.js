@@ -23,4 +23,5 @@ export default {
     long: 1000,
     vlong: 3000,
   },
+  disablePullToRefresh: false,
 };
