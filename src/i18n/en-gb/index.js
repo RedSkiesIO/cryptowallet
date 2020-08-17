@@ -141,6 +141,8 @@ export default {
   emailLogin: 'To change your email address please login with your current email address',
   viewKeys: 'View Private Keys',
   toggleDarkMode: 'Dark Mode',
+  rootDetected: 'Rooted Device Detected',
+  rootDesc: 'It looks like this device has been rooted.\n Please keep in mind that this weakens the security of all applications including this one.',
   // Wallet
   assets: 'Assets',
   balance: 'Balance',

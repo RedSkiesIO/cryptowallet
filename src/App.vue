@@ -11,6 +11,7 @@
       <NewAccountModal />
       <GetStartedModal />
       <TermsModal />
+      <RootedNoticeModal />
 
       <div v-if="settings.authenticatedAccount">
         <OfflineNotice />
@@ -49,6 +50,7 @@ import SendFailureModal from '@/components/Modals/SendFailure';
 import AddErc20Modal from '@/components/Modals/AddErc20';
 import OfflineNotice from '@/components/OfflineNotice';
 import AddFundsModal from '@/components/Modals/AddFunds';
+import RootedNoticeModal from '@/components/Modals/RootedNotice';
 // import TorusSDK from '@/helpers/DirectAuth';
 
 export default {
@@ -70,6 +72,7 @@ export default {
     AddErc20Modal,
     OfflineNotice,
     AddFundsModal,
+    RootedNoticeModal,
   },
 
   data() {
@@ -105,12 +108,13 @@ export default {
      * If there are no Accounts, got to setup
      */
     'settings.loading': {
-      handler() {
+      async handler() {
         if (this.accounts.length < 1) {
           this.$router.push({ path: '/setup/0' });
         } else {
           this.$q.dark.set(this.isDarkMode);
         }
+        await Coin.fetchIcons();
         this.storeSupportedCoins();
         return true;
       },
@@ -150,6 +154,9 @@ export default {
     if (window.cordova) {
       StatusBar.overlaysWebView(true);
       StatusBar.styleDefault();
+      const rooted = () => { this.$store.dispatch('modals/setRootedNoticeModalOpened', true); };
+      IRoot.isRooted(() => {}, rooted);
+      IRoot.isRootedWithBusyBox(() => {}, rooted);
     }
     if (!this.settings.authenticatedAccount) { this.$router.push({ path: '/' }); }
   },

@@ -19,4 +19,5 @@ export default {
   addFundsModalOpened: false,
   updateEmailModalOpened: false,
   exportKeysModalOpened: false,
+  rootedNoticeModalOpened: false,
 };

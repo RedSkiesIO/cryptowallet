@@ -87,6 +87,7 @@ async function discoverEthereum(wallet, coinSDK, network) {
 }
 
 async function discoverErc20(wallet, coinSDK) {
+  console.log(wallet);
   const accounts = [{
     address: wallet.address,
     index: 0,

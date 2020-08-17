@@ -130,3 +130,7 @@ export function SET_UPDATE_EMAIL_MODAL_OPENED(state, payload) {
 export function SET_EXPORT_KEYS_MODAL_OPENED(state, payload) {
   state.exportKeysModalOpened = payload;
 }
+
+export function SET_ROOTED_NOTICE_MODAL_OPENED(state, payload) {
+  state.rootedNoticeModalOpened = payload;
+}
