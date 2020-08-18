@@ -205,6 +205,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  text-align: right;
 }
 
 .simple .wrapper {

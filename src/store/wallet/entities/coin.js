@@ -39,10 +39,6 @@ export default class Coin extends Model {
   }
 
   get logo() {
-    // if (this.icon) {
-    //   console.log(this.logo);
-    //   return `data:image/png;base64, ${this.logo}`;
-    // }
     const coinIcon = IconList.find((icon) => {
       return icon.symbol === this.symbol.toUpperCase();
     });
@@ -151,12 +147,6 @@ export default class Coin extends Model {
 
         const transactions = tokens[contract];
 
-        // const balance = await ERC20SDK.getBalance({
-        //   contract,
-        //   address,
-        //   decimals: tokenDecimal,
-        // });
-
         const data = {
           name: tokenName,
           displayName: tokenName,
@@ -165,7 +155,7 @@ export default class Coin extends Model {
           network,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
-          parentName: api.coiName,
+          parentName: api.coinName,
           contractAddress: contract,
           decimals: tokenDecimal,
           minConfirmations: 1,
@@ -179,7 +169,6 @@ export default class Coin extends Model {
         data.imported = false;
         data.enabled = false;
         data.parentName = 'Ethereum';
-        // data.confirmedBalance = balance;
         data.externalAddress = address;
         data.erc20Wallet = {
           decimals: tokenDecimal,
@@ -203,24 +192,6 @@ export default class Coin extends Model {
           await Promise.all(txPromises);
         }
 
-        // tokens[contract] = {
-        //   id: contract,
-        //   name: tokens[contract][0].tokenName,
-        //   sdk: 'ERC20',
-        //   symbol: tokens[contract][0].tokenSymbol,
-        //   account_id: account,
-        //   balance,
-        //   enabled: balance > 0,
-        //   txs: tokens[contract],
-        //   erc20Wallet: {
-        //     decimals: tokens[contract][0].tokenDecimal,
-        //     address,
-        //     network,
-        //     name: tokens[contract][0].tokenName,
-        //     symbol: tokens[contract][0].tokenSymbol,
-        //     contract,
-        //   },
-        // };
         erc20Tokens.push(data);
       };
       const promises = [];
