@@ -87,9 +87,6 @@ export default {
   },
   mounted() {
     this.generateSeed();
-    if (window.cordova) {
-      window.plugins.preventscreenshot.disable(() => {}, () => {});
-    }
   },
   methods: {
     generateSeed() {

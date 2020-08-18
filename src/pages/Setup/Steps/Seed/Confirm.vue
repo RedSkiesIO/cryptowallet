@@ -79,6 +79,9 @@ export default {
   },
   mounted() {
     this.reset();
+    if (window.cordova) {
+      window.plugins.preventscreenshot.disable(() => {}, () => {});
+    }
   },
   methods: {
     validate() {
