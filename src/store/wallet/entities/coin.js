@@ -73,7 +73,7 @@ export default class Coin extends Model {
       .get();
 
     if (tokens.length > 0) {
-      const whitelist = (await axios.get('https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/whitelist.json'))
+      const whitelist = (await axios.get('https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/allowlist.json'))
         .data;
 
       const promises = tokens
