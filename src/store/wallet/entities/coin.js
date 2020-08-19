@@ -39,6 +39,10 @@ export default class Coin extends Model {
   }
 
   get logo() {
+    // if (this.icon) {
+    //   console.log(this.logo);
+    //   return `data:image/png;base64, ${this.logo}`;
+    // }
     const coinIcon = IconList.find((icon) => {
       return icon.symbol === this.symbol.toUpperCase();
     });
