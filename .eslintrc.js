@@ -22,6 +22,7 @@ module.exports = {
     sms: true,
     QRScanner: true,
     StatusBar: true,
+    IRoot: true,
     NavigationBar: true,
   },
   rules: {

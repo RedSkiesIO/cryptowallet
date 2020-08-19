@@ -59,7 +59,7 @@
         <h1 class="text-accent header-h1">
           <img
             :src="coinLogo"
-            class="coin-logo"
+            class="coin-logo token-icon"
           >
           {{ wallet.displayName }}
         </h1>

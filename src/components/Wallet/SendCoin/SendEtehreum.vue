@@ -518,9 +518,9 @@ export default {
 
         const { data } = response;
         const fees = {
-          low: data.low,
-          medium: data.medium,
-          high: data.high,
+          low: Math.round(data.low),
+          medium: Math.round(data.medium),
+          high: Math.round(data.high),
         };
 
         let fee = (fees.medium * gasLimit) / this.weiMultiplier;
@@ -649,7 +649,7 @@ export default {
     paste() {
       try {
         cordova.plugins.clipboard.paste((text) => {
-          this.address = text;
+          this.addressField = text;
         });
       } catch (err) {
         this.errorHandler(err);

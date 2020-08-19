@@ -32,3 +32,7 @@ export function setLayout(context, payload) {
 export function setCurrency(context, payload) {
   context.commit('SET_CURRENCY', payload);
 }
+
+export function setDisablePullToRefresh(context, payload) {
+  context.commit('SET_DISABLE_PULLTOREFRESH', payload);
+}

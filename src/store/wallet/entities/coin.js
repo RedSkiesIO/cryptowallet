@@ -1,5 +1,6 @@
 import { Model } from '@vuex-orm/core';
 import CryptoWalletJs from 'cryptowallet-js';
+import axios from 'axios';
 import IconList from '@/statics/cc-icons/icons-list.json';
 // import Wallet from './wallet';
 // import Tx from './tx';
@@ -28,6 +29,7 @@ export default class Coin extends Model {
       decimals: this.attr(''),
       identifier: this.attr(''),
       api: this.attr(''),
+      icon: this.attr(null),
       imported: this.attr(false),
       testnet: this.attr(false),
       transak: this.attr(false),
@@ -37,6 +39,10 @@ export default class Coin extends Model {
   }
 
   get logo() {
+    // if (this.icon) {
+    //   console.log(this.logo);
+    //   return `data:image/png;base64, ${this.logo}`;
+    // }
     const coinIcon = IconList.find((icon) => {
       return icon.symbol === this.symbol.toUpperCase();
     });
@@ -45,6 +51,45 @@ export default class Coin extends Model {
       return `./statics/cc-icons/color/${this.symbol.toLowerCase()}${fileType}`;
     }
     return './statics/cc-icons/color/generic.svg';
+  }
+
+  static async fetchIcons() {
+    function fetchIcon(token, address) {
+      axios
+        .get(`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`, {
+          responseType: 'arraybuffer',
+        })
+        .then((response) => {
+          const base64 = Buffer.from(response.data, 'binary').toString('base64');
+          Coin.$update({
+            where: (record) => { return record.id === token.id; },
+            data: {
+              icon: base64,
+            },
+          });
+        });
+    }
+
+    const tokens = Coin.query()
+      .where('sdk', 'ERC20')
+      .where('parentName', 'Ethereum')
+      .where('icon', null)
+      .get();
+
+    if (tokens.length > 0) {
+      const whitelist = (await axios.get('https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/whitelist.json'))
+        .data;
+
+      const promises = tokens
+        .map((t) => {
+          const index = whitelist.findIndex((item) => {
+            return t.contractAddress.toLowerCase() === item.toLowerCase();
+          });
+          return index === -1 ? null : fetchIcon(t, whitelist[index]);
+        });
+
+      await Promise.all(promises);
+    }
   }
 
   static findToken(name, contract = false) {
@@ -106,12 +151,6 @@ export default class Coin extends Model {
 
         const transactions = tokens[contract];
 
-        // const balance = await ERC20SDK.getBalance({
-        //   contract,
-        //   address,
-        //   decimals: tokenDecimal,
-        // });
-
         const data = {
           name: tokenName,
           displayName: tokenName,
@@ -120,7 +159,7 @@ export default class Coin extends Model {
           network,
           denomination: '0.00000000',
           parentSdk: 'Ethereum',
-          parentName: api.coiName,
+          parentName: api.coinName,
           contractAddress: contract,
           decimals: tokenDecimal,
           minConfirmations: 1,
@@ -134,7 +173,6 @@ export default class Coin extends Model {
         data.imported = false;
         data.enabled = false;
         data.parentName = 'Ethereum';
-        // data.confirmedBalance = balance;
         data.externalAddress = address;
         data.erc20Wallet = {
           decimals: tokenDecimal,
@@ -158,24 +196,6 @@ export default class Coin extends Model {
           await Promise.all(txPromises);
         }
 
-        // tokens[contract] = {
-        //   id: contract,
-        //   name: tokens[contract][0].tokenName,
-        //   sdk: 'ERC20',
-        //   symbol: tokens[contract][0].tokenSymbol,
-        //   account_id: account,
-        //   balance,
-        //   enabled: balance > 0,
-        //   txs: tokens[contract],
-        //   erc20Wallet: {
-        //     decimals: tokens[contract][0].tokenDecimal,
-        //     address,
-        //     network,
-        //     name: tokens[contract][0].tokenName,
-        //     symbol: tokens[contract][0].tokenSymbol,
-        //     contract,
-        //   },
-        // };
         erc20Tokens.push(data);
       };
       const promises = [];
@@ -183,6 +203,7 @@ export default class Coin extends Model {
         promises.push(tokenObj(contract));
       });
       await Promise.all(promises);
+      await Coin.fetchIcons();
       // await Coin.insert({ data: erc20Tokens });
 
       return erc20Tokens;

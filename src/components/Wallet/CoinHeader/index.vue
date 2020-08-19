@@ -6,6 +6,7 @@
           <img
             width="32px"
             :src="coinLogo"
+            class="token-icon"
           >
           {{ wallet.displayName }}
         </div>
@@ -103,6 +104,9 @@ export default {
     }),
 
     coinLogo() {
+      if (this.coin.icon) {
+        return `data:image/png;base64, ${this.coin.icon}`;
+      }
       return this.coin.logo;
     },
 
@@ -201,6 +205,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  text-align: right;
 }
 
 .simple .wrapper {

@@ -79,10 +79,16 @@ export default {
   },
   mounted() {
     this.reset();
+    if (window.cordova) {
+      window.plugins.preventscreenshot.disable(() => {}, () => {});
+    }
   },
   methods: {
     validate() {
       if (Object.keys(this.seed).join('') === this.pipSeq.join('')) {
+        if (window.cordova) {
+          window.plugins.preventscreenshot.enable(() => {}, () => {});
+        }
         this.$router.push({ path: `/setup/${this.id + 1}` });
       } else {
         this.$toast.create(10, this.$t('seedSeqNotMatch'), this.delay.normal);

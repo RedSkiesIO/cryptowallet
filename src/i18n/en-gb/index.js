@@ -141,6 +141,8 @@ export default {
   emailLogin: 'To change your email address please login with your current email address',
   viewKeys: 'View Private Keys',
   toggleDarkMode: 'Dark Mode',
+  rootDetected: 'Rooted Device Detected',
+  rootDesc: 'It looks like this device has been rooted.\n Please keep in mind that this weakens the security of all applications including this one.',
   // Wallet
   assets: 'Assets',
   balance: 'Balance',
@@ -214,6 +216,7 @@ export default {
   view: 'View',
   selectNetwork: 'Select Network',
   addFunds: 'Add Funds',
+  betaNotice: '⚠ This is beta software. Use at your own risk.',
   // Setup
   cryptoWallet: 'Cent',
   seedSetup: 'Seed Setup',
@@ -252,6 +255,7 @@ export default {
   seedConfirmation: 'Have you stored your seed?',
   enterAccountName: 'Please enter an account name',
   invalidAccountName: 'An account name can only contain letters and numbers with no spaces',
+  invalidAccountLength: 'An account name can only have a maximum of 50 characters',
   invalidSeedPhrase: 'Invalid seed phrase',
   termsBox1: 'I understand that my funds are held securely on this device and not by Cent',
   termsBox2: 'I understand that if I lose this device or uninstall the app my digital assets can only be recovered using my 12 word recovery seed ',

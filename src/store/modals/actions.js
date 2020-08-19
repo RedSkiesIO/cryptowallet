@@ -99,3 +99,6 @@ export function setUpdateEmailModalOpened(context, payload) {
 export function setExportKeysModalOpened(context, payload) {
   context.commit('SET_EXPORT_KEYS_MODAL_OPENED', payload);
 }
+export function setRootedNoticeModalOpened(context, payload) {
+  context.commit('SET_ROOTED_NOTICE_MODAL_OPENED', payload);
+}
