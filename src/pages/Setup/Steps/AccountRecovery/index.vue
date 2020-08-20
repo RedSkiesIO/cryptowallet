@@ -191,6 +191,7 @@ export default {
       }
 
       if (this.accountEmail === 'demo@cent.finance') {
+        this.$store.dispatch('setup/setDemoMode', true);
         this.$router.push({ path: '/setup/4' });
         this.visible = false;
 

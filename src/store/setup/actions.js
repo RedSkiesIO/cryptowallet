@@ -114,6 +114,13 @@ export function setPinConfirm(context, payload) {
 }
 
 /**
+ * Action setDemoMode
+ */
+export function setDemoMode(context, payload) {
+  context.commit('SET_DEMO_MODE', payload);
+}
+
+/**
  * Action resetPin
  */
 export function resetPin(context) {

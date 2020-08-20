@@ -94,7 +94,7 @@
         />
       </div>
     </div>
-    <ToggleTestnets />
+    <ToggleTestnets v-if="!account.demoMode" />
     <ToggleDarkMode />
     <div
       class="settings-row"

@@ -15,4 +15,5 @@ export default {
   accountCurrency: null,
   accountCreated: null,
   getStartedModalOpened: false,
+  demoMode: false,
 };

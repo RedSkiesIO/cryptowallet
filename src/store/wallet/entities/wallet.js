@@ -32,6 +32,7 @@ export default class Wallet extends Model {
       decimals: this.attr(''),
       hdWallet: this.attr(''),
       erc20Wallet: this.attr(''),
+      demoMode: this.attr(false),
     };
   }
 

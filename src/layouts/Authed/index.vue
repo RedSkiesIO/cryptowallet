@@ -30,7 +30,10 @@
             <div class="row text-h6">
               {{ totalBalanceInEth }} ETH
             </div>
-            <div class="row q-pt-lg">
+            <div
+              v-if="!demoMode"
+              class="row q-pt-lg"
+            >
               <q-btn
                 icon="fas fa-plus-circle"
                 size="md"
@@ -143,6 +146,9 @@ export default {
         });
       }
       return wallets;
+    },
+    demoMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
     },
     showTestnets() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;

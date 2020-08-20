@@ -22,6 +22,7 @@ const accountInitializer = {
       default: accounts.length === 0,
       locale: setup.accountLocale || accounts[0].locale,
       node: setup.accountIpNode,
+      demoMode: setup.demoMode,
     };
 
     const result = await Account.$insert({

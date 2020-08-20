@@ -122,6 +122,14 @@ export function SET_PIN_CONFIRM(state, payload) {
 }
 
 /**
+ * State mutation for demo mode
+ */
+export function SET_DEMO_MODE(state, payload) {
+  state.demoMode = payload;
+}
+
+
+/**
  * Reset pin array
  */
 export function RESET_PIN(state) {
