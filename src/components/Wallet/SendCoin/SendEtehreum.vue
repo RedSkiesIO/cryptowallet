@@ -307,7 +307,7 @@ export default {
     this.maxValueCurrency = this.amountToCurrency(this.maxValueCoin);
 
     if (this.scannedAddress) {
-      this.address = this.scannedAddress;
+      this.addressField = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
     }
     setTimeout(() => {

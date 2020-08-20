@@ -153,6 +153,7 @@ export default {
       accountSms: '',
       recoveryType: 'email',
       visible: false,
+      demoMode: false,
     };
   },
   validations: {
@@ -187,6 +188,13 @@ export default {
       if (!this.$v.accountEmail.email) {
         this.$toast.create(10, this.$t('invalidAccountEmail'), this.delay.normal);
         return false;
+      }
+
+      if (this.accountEmail === 'demo@cent.finance') {
+        this.$router.push({ path: '/setup/4' });
+        this.visible = false;
+
+        return true;
       }
 
       if (this.$magic.isLoggedIn()) {

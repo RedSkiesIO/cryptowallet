@@ -396,9 +396,9 @@ export default {
 }*/
 
 .layout-shape .layout {
-  height: calc(100vh - 4rem - constant(safe-area-inset-bottom));
-  height: calc(100vh - 4rem - env(safe-area-inset-bottom));
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 4rem - constant(safe-area-inset-bottom))!important;
+  height: calc(100vh - 4rem - env(safe-area-inset-bottom))!important;
+  height: calc(100vh - 4rem)!important;
 }
 
 .layout-shape.white {
