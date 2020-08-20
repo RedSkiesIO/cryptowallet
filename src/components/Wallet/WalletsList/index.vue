@@ -4,7 +4,10 @@
       v-if="wallets.length > 0"
       class="scroll-area"
     >
-      <WalletFilter @active="hideWalletList" />
+      <WalletFilter
+        :wallets="wallets"
+        @active="hideWalletList"
+      />
       <div v-if="!hideList">
         <WalletItem
           v-for="wallet in wallets"

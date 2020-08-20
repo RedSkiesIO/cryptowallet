@@ -58,17 +58,17 @@ export default {
   components: {
     WalletItem,
   },
+  props: {
+    wallets: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       model: null,
       options: Coin.all(),
     };
-  },
-
-  computed: {
-    wallets() {
-      return Coin.all();
-    },
   },
 
   methods: {

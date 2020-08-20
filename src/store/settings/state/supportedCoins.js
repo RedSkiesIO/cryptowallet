@@ -211,6 +211,7 @@ export default [
   {
     displayName: 'Ethereum Ropsten',
     name: 'Ethereum Ropsten',
+    identifier: 'ethereum',
     sdk: 'Ethereum',
     coinType: 60,
     symbol: 'ETH',

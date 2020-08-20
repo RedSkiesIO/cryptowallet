@@ -437,6 +437,7 @@ export default {
           parentName: this.form.tokenNetwork.label,
           contractAddress: this.form.tokenContract,
           decimals: this.form.tokenDecimals,
+          testnet: coin.testnet,
           imported: true,
         };
         const newCoin = await Coin.$insert({
