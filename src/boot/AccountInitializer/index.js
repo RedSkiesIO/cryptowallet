@@ -4,6 +4,8 @@ import Wallet from '@/store/wallet/entities/wallet';
 import CryptoWalletSDK from 'cryptowallet-js';
 import bcrypt from 'bcryptjs';
 
+const demoSeed = 'give grow opera kid slide wrist final tattoo trust system valve impulse';
+
 const accountInitializer = {
 
   async createAccount(setup) {
@@ -20,6 +22,7 @@ const accountInitializer = {
       default: accounts.length === 0,
       locale: setup.accountLocale || accounts[0].locale,
       node: setup.accountIpNode,
+      demoMode: setup.demoMode,
     };
 
     const result = await Account.$insert({
@@ -31,6 +34,7 @@ const accountInitializer = {
   },
 
   async createWallets(setup, id, coins) {
+    const seedString = setup.demoMode ? demoSeed : setup.seedString;
     const password = setup.pinArray.join('');
     const SDK = new CryptoWalletSDK();
     const promises = [];
@@ -47,7 +51,7 @@ const accountInitializer = {
         promises.push(new Promise(async (resolve) => {
           const coinSDK = SDK.SDKFactory.createSDK(coin.sdk, coin.api);
           wallet.hdWallet = await coinSDK.generateHDWallet(
-            setup.seedString,
+            seedString,
             coin.network,
           );
           await Wallet.$insert({ data: wallet, password });

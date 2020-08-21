@@ -26,6 +26,7 @@ export default class Account extends Model {
       wallets: this.hasMany(Wallet, 'account_id'),
       showTestnets: this.attr(true),
       darkMode: this.boolean(false),
+      demoMode: this.boolean(false),
     };
   }
 

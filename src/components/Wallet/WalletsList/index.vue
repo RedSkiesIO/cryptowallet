@@ -4,7 +4,10 @@
       v-if="wallets.length > 0"
       class="scroll-area"
     >
-      <WalletFilter @active="hideWalletList" />
+      <WalletFilter
+        :wallets="wallets"
+        @active="hideWalletList"
+      />
       <div v-if="!hideList">
         <WalletItem
           v-for="wallet in wallets"
@@ -42,10 +45,17 @@ export default {
     showTestnets() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
     },
+    demoMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+    },
     wallets() {
       if (!this.showTestnets) {
         return Coin.query()
           .where('testnet', false).get();
+      }
+      if (this.demoMode) {
+        return Coin.query()
+          .where('testnet', true).get();
       }
       return Coin.all();
     },

@@ -38,7 +38,7 @@
           </q-btn-group>
         </div>
         <div
-          v-if="simple && transakTestnet"
+          v-if="simple && transakTestnet && !demoMode"
           class="text-center q-mb-md quick-coin-actions"
         >
           <q-btn
@@ -103,6 +103,9 @@ export default {
       },
     }),
 
+    demoMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+    },
     coinLogo() {
       if (this.coin.icon) {
         return `data:image/png;base64, ${this.coin.icon}`;

@@ -106,11 +106,21 @@ export default {
     showTestnets() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
     },
+    demoMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+    },
     supportedNetworks() {
       const networks = Coin.query()
         .where('sdk', 'Ethereum')
         .get();
-
+      if (this.demoMode) {
+        return networks.filter(({ testnet }) => { return testnet; }).map((coin) => {
+          return {
+            label: coin.name,
+            value: coin.network,
+          };
+        });
+      }
       if (!this.showTestnets) {
         return networks.filter(({ testnet }) => { return !testnet; }).map((coin) => {
           return {
@@ -139,6 +149,14 @@ export default {
       }
       return null;
     },
+  },
+  mounted() {
+    if (this.demoMode) {
+      this.token = {
+        label: 'Ethereum Rinkeby',
+        value: 'ETHEREUM_RINKEBY',
+      };
+    }
   },
 
   methods: {

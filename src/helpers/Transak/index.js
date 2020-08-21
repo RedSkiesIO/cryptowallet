@@ -18,6 +18,5 @@ export function transak(account, wallet, tokens, country, card = false, testnet 
     widgetHeight: '100%',
     widgetWidth: '100%',
     hideMenu: true,
-    // exchangeScreenTitle: `Buy ${wallet.symbol.toUpperCase()}`,
   });
 }

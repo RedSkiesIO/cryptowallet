@@ -255,10 +255,22 @@ export default {
     showTestnets() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
     },
+    demoMode() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+    },
     supportedNetworks() {
       const networks = Coin.query()
         .where('sdk', 'Ethereum')
         .get();
+
+      if (this.demoMode) {
+        return networks.filter(({ testnet }) => { return testnet; }).map((coin) => {
+          return {
+            label: coin.name,
+            value: coin.network,
+          };
+        });
+      }
 
       if (!this.showTestnets) {
         return networks.filter(({ testnet }) => { return !testnet; }).map((coin) => {
@@ -277,6 +289,13 @@ export default {
     },
   },
   mounted() {
+    if (this.demoMode) {
+      this.form.tokenNetwork = {
+        label: 'Ethereum Rinkeby',
+        value: 'ETHEREUM_RINKEBY',
+      };
+    }
+
     if (this.scannedAddress) {
       this.form.tokenContract = this.scannedAddress;
       this.$store.dispatch('qrcode/setScannedAddress', null);
@@ -418,6 +437,7 @@ export default {
           parentName: this.form.tokenNetwork.label,
           contractAddress: this.form.tokenContract,
           decimals: this.form.tokenDecimals,
+          testnet: coin.testnet,
           imported: true,
         };
         const newCoin = await Coin.$insert({

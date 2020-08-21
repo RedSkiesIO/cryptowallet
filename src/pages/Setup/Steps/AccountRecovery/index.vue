@@ -134,6 +134,48 @@
         color="primary"
       />
     </q-inner-loading>
+    <q-dialog
+      v-model="demoMode"
+      persistent
+    >
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">
+            Enter the demo mode password
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            v-model.trim="password"
+            autofocus
+            outlined
+            dense
+            float-label="Enter password"
+            color="primary"
+            type="password"
+            :error="passwordError"
+            :error-message="passwordErrorMessage"
+            @keydown.enter.prevent="useDemoMode"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            v-close-popup
+            flat
+            label="Cancel"
+            color="info"
+          />
+          <q-btn
+            flat
+            label="Enter"
+            color="info"
+            @click="useDemoMode"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -153,6 +195,10 @@ export default {
       accountSms: '',
       recoveryType: 'email',
       visible: false,
+      demoMode: false,
+      password: '',
+      passwordError: false,
+      passwordErrorMessage: 'Wrong password',
     };
   },
   validations: {
@@ -189,6 +235,11 @@ export default {
         return false;
       }
 
+      if (this.accountEmail === 'demo@cent.finance') {
+        this.demoMode = true;
+        return true;
+      }
+
       if (this.$magic.isLoggedIn()) {
         this.$magic.logout();
       }
@@ -217,6 +268,20 @@ export default {
         this.$router.push({ path: '/setup/4' });
       }
       this.visible = false;
+    },
+
+    useDemoMode() {
+      this.passwordError = false;
+      if (this.password !== 'cent') {
+        this.passwordError = true;
+        return false;
+      }
+
+      this.$store.dispatch('setup/setDemoMode', true);
+      this.$router.push({ path: '/setup/4' });
+      this.demoMode = false;
+      this.visible = false;
+      return true;
     },
   },
 };

@@ -104,14 +104,19 @@ export default {
           await this.backEndService.connect();
           await this.backEndService.loadPriceFeed();
 
-          const ethWallet = await this.enableWallet();
+          if (this.setup.demoMode) {
+            await this.enableWallet('Ethereum Rinkeby');
+          } else {
+            const ethWallet = await this.enableWallet();
 
-          await this.accountInitializer.createERC20Wallets(
-            this.setup,
-            account.id,
-            this.supportedCoins,
-            ethWallet,
-          );
+            await this.accountInitializer.createERC20Wallets(
+              this.setup,
+              account.id,
+              this.supportedCoins,
+              ethWallet,
+            );
+          }
+
 
           this.$store.dispatch('setup/clearSetupData');
           this.$store.dispatch('settings/setLayout', 'light');
@@ -176,10 +181,10 @@ export default {
       };
     },
 
-    async enableWallet() {
+    async enableWallet(name = 'Ethereum') {
       const wallet = Wallet.query()
         .where('account_id', this.authenticatedAccount)
-        .where('name', 'Ethereum')
+        .where('name', name)
         .get()[0];
 
       let success = true;
