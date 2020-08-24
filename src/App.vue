@@ -1,10 +1,14 @@
 <template>
-  <div :class="{ shrinked : settings.layout !== 'dark' }">
+  <div
+    class="flex justify-center"
+    :class="{ shrinked : settings.layout !== 'dark' }"
+  >
     <LoadingScreen :show="settings.loading" />
 
     <div
       id="q-app"
       :class="{ hidden: scanning }"
+      style="max-width: 600px"
     >
       <router-view />
       <SelectAccountModal />
@@ -219,6 +223,7 @@ export default {
 
 .background {
   height: 100%;
+  max-width: 600px;
   width: 100%;
   position: absolute;
 }
@@ -253,6 +258,11 @@ export default {
   /* height: calc(100vh - 2.5rem - constant(safe-area-inset-bottom)
    - constant(safe-area-inset-top))!important; */
 }
+
+body.desktop .q-dialog .modal-layout-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 
 body.q-ios-padding .q-dialog .modal-layout-wrapper {
   height: calc(100vh - 2.5rem - env(safe-area-inset-bottom) - env(safe-area-inset-top))!important;

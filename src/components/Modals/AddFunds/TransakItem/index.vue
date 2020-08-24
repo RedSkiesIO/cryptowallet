@@ -238,4 +238,8 @@ export default {
 .transak_close {
   display: none;
 }
+
+body.desktop .transak_modal {
+  max-width: 600px;
+}
 </style>

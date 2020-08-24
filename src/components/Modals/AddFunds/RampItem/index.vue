@@ -122,6 +122,7 @@ export default {
       this.ramp.domNodes.overlay.style.zIndex = 998;
       this.ramp.domNodes.iframe.style.height = '96vh';
       this.ramp.domNodes.iframe.style.paddingTop = '35px';
+      this.ramp.domNodes.iframe.style.maxWidth = '600px';
       this.$emit('loading', { on: true, logo: 'statics/payment-logos/ramp.svg' });
       setTimeout(() => {
         this.ramp.show();
