@@ -85,7 +85,10 @@
             </q-card>
           </q-expansion-item>
         </div>
-        <div class="text-center q-mb-lg">
+        <div
+          v-if="canShare"
+          class="text-center q-mb-lg"
+        >
           <q-btn
             rounded
             unelevated
@@ -180,6 +183,9 @@ export default {
     decimals() {
       return Coin.findToken(this.wallet.name).decimals;
     },
+    canShare() {
+      return window.cordova || navigator.share;
+    },
   },
   mounted() {
     this.qrCode();
@@ -245,14 +251,25 @@ export default {
       }
     },
     share() {
-      const options = {
-        message: `${this.address}`,
-      };
+      if (window.cordova) {
+        const options = {
+          message: `${this.address}`,
+        };
 
-      const onError = (msg) => {
-        this.errorHandler(new Error(msg));
-      };
-      window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
+        const onError = (msg) => {
+          this.errorHandler(new Error(msg));
+        };
+        window.plugins.socialsharing.shareWithOptions(options, () => {}, onError);
+      } else if (navigator.share) {
+        navigator.share({
+          title: 'My Cent wallet address',
+          text: `Here is my ${this.wallet.name} address ${this.address}`,
+        })
+          .then(() => {})
+          .catch((error) => {
+            this.errorHandler(new Error(error));
+          });
+      }
     },
     goBack() {
       this.$router.go(-1);
