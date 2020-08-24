@@ -16,7 +16,7 @@
       </h1>
     </div>
 
-    <div class="modal-layout-wrapper">
+    <div class="modal-layout-wrapper add-funds">
       <div class="text-center text-weight-bold q-pa-sm">
         Select Your Payment Method
       </div>
@@ -28,6 +28,8 @@
         <q-list
           padding
           separator
+          dense
+          class="q-gutter-y-md"
         >
           <TransakItem
             v-if="bankTransfer"
@@ -118,6 +120,7 @@ export default {
   },
 
   async mounted() {
+    console.log(navigator.language);
     this.transakTokens = (await axios.get('https://api.transak.com/api/v1/currencies/list')).data.response.cryptocurrencies
       .filter((token) => { return token.network === 'erc20'; })
       .map((token) => { return token.symbol; }).join();
@@ -134,6 +137,11 @@ export default {
 </script>
 
 <style>
+
+.add-funds .q-chip {
+  margin: 0 0.2rem;
+  padding: 0.5rem 0.4rem;
+}
 .checkbox-wrapper {
   margin-top: 2rem;
   padding: 1rem;

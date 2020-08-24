@@ -11,11 +11,50 @@
         >
       </q-item-section>
       <q-item-section class="text-weight-bold">
-        <span> Use your Bank Account </span>
         <q-item-label
           caption
+          class="justify-end text-right"
         >
-          Fee 2.5%
+          <q-chip
+            color="warning"
+            text-color="black"
+            size="sm"
+          >
+            No ID Required
+          </q-chip>
+          <q-chip
+            color="info"
+            text-color="white"
+            size="sm"
+          >
+            Instant
+          </q-chip>
+        </q-item-label>
+        <q-item-label
+          caption
+          class="text-right"
+        >
+          <q-chip
+            square
+            icon="fas fa-university"
+            size="12px"
+          >
+            1.95%
+          </q-chip>
+          <q-chip
+            square
+            icon="fas fa-credit-card"
+            size="12px"
+          >
+            2.9%
+          </q-chip>
+          <q-chip
+            square
+            icon="fab fa-cc-apple-pay"
+            size="12px"
+          >
+            2.9%
+          </q-chip>
         </q-item-label>
       </q-item-section>
       <q-item-section side>
