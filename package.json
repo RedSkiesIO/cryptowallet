@@ -31,6 +31,7 @@
     "@toruslabs/torus-direct-web-sdk": "^3.0.3",
     "@transak/transak-sdk": "^1.0.23",
     "@vuex-orm/core": "^0.27.0",
+    "@zxing/library": "^0.17.1",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "bip39": "^2.5.0",

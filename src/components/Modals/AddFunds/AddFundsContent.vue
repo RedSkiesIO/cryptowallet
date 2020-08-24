@@ -120,7 +120,6 @@ export default {
   },
 
   async mounted() {
-    console.log(navigator.language);
     this.transakTokens = (await axios.get('https://api.transak.com/api/v1/currencies/list')).data.response.cryptocurrencies
       .filter((token) => { return token.network === 'erc20'; })
       .map((token) => { return token.symbol; }).join();

@@ -138,6 +138,7 @@ export default {
           } else {
             this.$store.dispatch('modals/setSendCoinModalOpened', true);
           }
+          this.codeReader.reset();
           this.$q.scanning = false;
           if (typeof QRScanner !== 'undefined') {
             QRScanner.hide(() => {});

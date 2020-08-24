@@ -20,6 +20,7 @@ module.exports = (ctx) => {
       'ENS',
       'Magic',
       'Notify',
+      'WebQRScanner',
     ],
     css: ['app.styl'],
     extras: [
