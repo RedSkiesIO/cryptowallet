@@ -21,6 +21,7 @@ module.exports = (ctx) => {
       'Magic',
       'Notify',
       'WebQRScanner',
+      'VClipboard',
     ],
     css: ['app.styl'],
     extras: [

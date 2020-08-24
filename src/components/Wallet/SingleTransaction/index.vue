@@ -435,7 +435,11 @@ export default {
     },
     copy(text) {
       try {
-        cordova.plugins.clipboard.copy(text);
+        if (window.cordova) {
+          cordova.plugins.clipboard.copy(text);
+        } else {
+          this.$clipboard(text);
+        }
         this.$toast.create(0, this.$t('copied'), this.delay.short);
       } catch (err) {
         this.errorHandler(err);

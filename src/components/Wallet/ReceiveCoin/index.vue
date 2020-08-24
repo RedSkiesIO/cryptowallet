@@ -187,7 +187,11 @@ export default {
   methods: {
     copyToClipboard() {
       try {
-        cordova.plugins.clipboard.copy(this.address);
+        if (window.cordova) {
+          cordova.plugins.clipboard.copy(this.address);
+        } else {
+          this.$clipboard(this.address);
+        }
         // this.$toast.create(0, this.$t('copied'), this.delay.normal);
         this.$q.notify({
           message: this.$t('copied'),
