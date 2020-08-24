@@ -487,9 +487,15 @@ export default {
      */
     paste() {
       try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.form.tokenContract = text;
-        });
+        if (window.cordova) {
+          cordova.plugins.clipboard.paste((text) => {
+            this.form.tokenContract = text;
+          });
+        } else {
+          navigator.clipboard.readText().then((clipText) => {
+            this.form.tokenContract = clipText;
+          });
+        }
       } catch (err) {
         this.errorHandler(err);
       }

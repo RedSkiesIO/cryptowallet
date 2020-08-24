@@ -648,9 +648,15 @@ export default {
      */
     paste() {
       try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.addressField = text;
-        });
+        if (window.cordova) {
+          cordova.plugins.clipboard.paste((text) => {
+            this.addressField = text;
+          });
+        } else {
+          navigator.clipboard.readText().then((clipText) => {
+            this.addressField = clipText;
+          });
+        }
       } catch (err) {
         this.errorHandler(err);
       }
