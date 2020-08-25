@@ -48,6 +48,12 @@ export default {
   width: 100%;
 }
 
+.desktop .camera {
+    left: 50%;
+    transform: translate(-50%);
+    max-width: 600px;
+}
+
 .controls-box {
   position: absolute;
   bottom: 2rem;
@@ -61,6 +67,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.desktop .target-wrapper {
+    left: 50%;
+    transform: translate(-50%);
+    max-width: 600px;
 }
 
 .target {
