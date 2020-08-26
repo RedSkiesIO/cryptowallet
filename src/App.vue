@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center"
+    class="main"
     :class="{ shrinked : settings.layout !== 'dark' }"
   >
     <LoadingScreen :show="settings.loading" />
@@ -220,6 +220,12 @@ export default {
 /* body > div {
   color: black;
 } */
+
+body.desktop .main {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
 
 .background {
   height: 100%;
