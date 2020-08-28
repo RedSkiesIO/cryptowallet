@@ -140,7 +140,9 @@ export default {
             this.codeReader.reset();
             this.$store.dispatch('qrcode/cancelScanning');
           })
-          .catch((err) => { return console.error(err); });
+          .catch((err) => {
+            return this.errorHandler(err);
+          });
         this.codeReader.reset();
       }, this.delay.normal);
     },

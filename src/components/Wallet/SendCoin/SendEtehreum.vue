@@ -775,7 +775,9 @@ export default {
                 setTimeout(() => { return scanQR(); }, waitForToast);
               }
             })
-            .catch((err) => { return console.error(err); });
+            .catch((err) => {
+              return this.errorHandler(err);
+            });
           this.codeReader.reset();
         };
         scanQR();
