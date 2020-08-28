@@ -26,7 +26,34 @@
         @click="getStarted"
       />
     </div>
-    <div class="btns-wrapper">
+    <div class="advanced-dropdown q-mt-sm">
+      <q-expansion-item
+        label="Advanced"
+        color="info"
+      >
+        <q-btn
+          :label="$t('seedPhraseCreate')"
+          flat
+          no-caps
+          dense
+          class="import-account-btn"
+          text-color="blue"
+          size="13px"
+          @click="seedPhrase()"
+        />
+        <q-btn
+          :label="$t('seedPhraseImport')"
+          flat
+          no-caps
+          dense
+          class="import-account-btn"
+          text-color="blue"
+          size="13px"
+          @click="importAccount()"
+        />
+      </q-expansion-item>
+    </div>
+    <!-- <div class="btns-wrapper">
       <q-btn
         :label="$t('importAccount')"
         flat
@@ -36,7 +63,7 @@
         text-color="primary"
         @click="importAccount()"
       />
-    </div>
+    </div> -->
     <!-- <div class="flags">
       <div class="row q-input bg-blueish">
         <div class="col-2 flag-icon">
@@ -155,12 +182,43 @@ export default {
       this.$store.dispatch('setup/setAccountType', 'new');
       this.$router.push({ path: '/setup/8' });
     },
+
+    seedPhrase() {
+      this.$store.dispatch('setup/setAccountLocale', this.selectedLang.value);
+      this.$store.dispatch('setup/setAccountCurrency', this.$t('supportedCurrency'));
+      this.$store.dispatch('setup/setAccountType', 'new');
+      this.$router.push({ path: '/setup/2' });
+    },
   },
 };
 
 </script>
 
 <style>
+
+.advanced-dropdown .q-expansion-item__container {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.advanced-dropdown .q-item {
+  justify-content: center;
+  min-height: 0px;
+}
+
+.advanced-dropdown .q-item__section--main {
+  flex: none;
+}
+
+.advanced-dropdown .q-item__section--main ~ .q-item__section--side {
+  padding-left: 2px;
+}
+
+.import-account-btn {
+  width: 15rem;
+}
+
 .done-msg-wrapper {
   text-align: center;
   font-family: 'CooperHewitt-HeavyItalic';

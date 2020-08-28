@@ -134,6 +134,10 @@ export default {
   right: 2px;
 }
 
+body.desktop .close-provider  {
+    display: none;
+}
+
 .loading-logo {
   width: 100%;
   padding: 30px;

@@ -73,9 +73,14 @@ export default {
   },
 
   mounted() {
+    // eslint-disable-next-line no-magic-numbers
+    const lang = navigator.language.slice(-2).toUpperCase();
+    const country = this.countries.find(({ value }) => { return value.alpha2 === lang; });
+    if (country) { this.selectedCountry = country; }
+
     setTimeout(() => {
       this.$emit('selectedCountry', this.selectedCountry);
-    // eslint-disable-next-line no-magic-numbers
+      // eslint-disable-next-line no-magic-numbers
     }, 1000);
   },
 };

@@ -162,8 +162,11 @@ export default {
   methods: {
     copyToClipboard() {
       try {
-        cordova.plugins.clipboard.copy(this.key);
-        // this.$toast.create(0, this.$t('copied'), this.delay.normal);
+        if (window.cordova) {
+          cordova.plugins.clipboard.copy(this.key);
+        } else {
+          this.$clipboard(this.key);
+        }
         this.$q.notify({
           message: this.$t('copied'),
           color: 'positive',

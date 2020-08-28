@@ -648,9 +648,15 @@ export default {
      */
     paste() {
       try {
-        cordova.plugins.clipboard.paste((text) => {
-          this.addressField = text;
-        });
+        if (window.cordova) {
+          cordova.plugins.clipboard.paste((text) => {
+            this.addressField = text;
+          });
+        } else {
+          navigator.clipboard.readText().then((clipText) => {
+            this.addressField = clipText;
+          });
+        }
       } catch (err) {
         this.errorHandler(err);
       }
@@ -679,10 +685,17 @@ export default {
       this.inCoin = this.getMaxAmount();
     },
 
+    scan() {
+      if (typeof QRScanner !== 'undefined') {
+        return this.scanNative();
+      }
+      return this.scanWeb();
+    },
+
     /**
      * Initiates the QR code scanner
      */
-    scan() {
+    scanNative() {
       this.$store.dispatch('qrcode/scanQRCode');
       this.$store.dispatch('modals/setSendCoinModalOpened', false);
       const invalidAddress = this.$t('ethereumAddressInvalid');
@@ -723,6 +736,52 @@ export default {
           scanQR();
         }, this.delay.normal);
       }
+    },
+
+    scanWeb() {
+      this.$store.dispatch('qrcode/scanQRCode');
+      this.$store.dispatch('modals/setSendCoinModalOpened', false);
+      const invalidAddress = this.$t('ethereumAddressInvalid');
+      // const codeReader = new this.$QRScanner();
+      setTimeout(() => {
+        const scanQR = () => {
+          this.codeReader
+            .decodeOnceFromVideoDevice(undefined, 'video')
+            .then((result) => {
+              let { text } = result;
+              let amount;
+              if (text.includes(':')) {
+                const query = new URL(text);
+                text = query.pathname;
+                const queryParams = new URLSearchParams(query.search);
+                if (queryParams.has('amount')) {
+                  amount = queryParams.get('amount');
+                }
+              }
+              let coinSDK = this.coinSDKS[this.wallet.sdk](this.wallet.network);
+              if (this.wallet.sdk === 'ERC20') { coinSDK = this.coinSDKS[this.wallet.parentSdk](this.wallet.network); }
+              const isValid = coinSDK.validateAddress(text, this.wallet.network);
+              if (isValid) {
+                this.$store.dispatch('qrcode/setScannedAddress', text);
+                if (amount) {
+                  this.$store.dispatch('qrcode/setScannedAmount', amount);
+                }
+                this.codeReader.reset();
+                this.$store.dispatch('qrcode/cancelScanning');
+                this.$store.dispatch('modals/setSendCoinModalOpened', true);
+              } else {
+                this.$toast.create(10, invalidAddress, this.delay.normal);
+                const waitForToast = 5000;
+                setTimeout(() => { return scanQR(); }, waitForToast);
+              }
+            })
+            .catch((err) => {
+              return this.errorHandler(err);
+            });
+          this.codeReader.reset();
+        };
+        scanQR();
+      }, this.delay.normal);
     },
   },
 };

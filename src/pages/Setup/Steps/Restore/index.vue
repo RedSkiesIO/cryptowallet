@@ -96,10 +96,17 @@ export default {
       return true;
     },
 
+    scan() {
+      if (typeof QRScanner !== 'undefined') {
+        return this.scanNative();
+      }
+      return this.scanWeb();
+    },
+
     /**
      * Initiates the QR code scanner
      */
-    scan() {
+    scanNative() {
       this.$store.dispatch('qrcode/setQRMode', 'restore');
       this.$store.dispatch('qrcode/scanQRCode');
 
@@ -117,6 +124,27 @@ export default {
           });
         }, this.delay.normal);
       }
+    },
+
+    scanWeb() {
+      this.$store.dispatch('qrcode/setQRMode', 'restore');
+      this.$store.dispatch('qrcode/scanQRCode');
+      setTimeout(() => {
+        this.codeReader
+          .decodeOnceFromVideoDevice(undefined, 'video')
+          .then((result) => {
+            const { text } = result;
+            this.seedPhrase = text;
+            const valid = this.validate();
+            if (!valid) { this.seedPhrase = ''; }
+            this.codeReader.reset();
+            this.$store.dispatch('qrcode/cancelScanning');
+          })
+          .catch((err) => {
+            return this.errorHandler(err);
+          });
+        this.codeReader.reset();
+      }, this.delay.normal);
     },
   },
 };

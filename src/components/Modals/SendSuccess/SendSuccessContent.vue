@@ -150,7 +150,11 @@ export default {
     },
     copyToClipboard() {
       try {
-        cordova.plugins.clipboard.copy(this.txData.transaction.hash);
+        if (window.cordova) {
+          cordova.plugins.clipboard.copy(this.txData.transaction.hash);
+        } else {
+          this.$clipboard(this.txData.transaction.hash);
+        }
         this.$toast.create(0, this.$t('copied'), this.delay.normal);
       } catch (err) {
         this.errorHandler(err);

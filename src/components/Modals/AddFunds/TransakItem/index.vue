@@ -11,19 +11,51 @@
         >
       </q-item-section>
       <q-item-section class="text-weight-bold">
-        <span v-if="bank"> Use your Bank Account </span>
-        <span v-else> Use your Credit/Debit Card </span>
+        <q-item-label
+          caption
+          class="text-right"
+        >
+          <q-chip
+            v-if="card"
+            color="warning"
+            text-color="black"
+            size="sm"
+          >
+            No ID Required
+          </q-chip>
+          <q-chip
+            color="info"
+            text-color="white"
+            size="sm"
+          >
+            Instant
+          </q-chip>
+        </q-item-label>
         <q-item-label
           v-if="bank"
           caption
+          class="text-right"
         >
-          Fee 0.5%
+          <q-chip
+            square
+            icon="fas fa-university"
+            size="12px"
+          >
+            0.5%
+          </q-chip>
         </q-item-label>
         <q-item-label
           v-if="card"
           caption
+          class="text-right"
         >
-          Fee 3.9%
+          <q-chip
+            square
+            icon="fas fa-credit-card"
+            size="12px"
+          >
+            3.9%
+          </q-chip>
         </q-item-label>
       </q-item-section>
       <q-item-section side>
@@ -205,5 +237,9 @@ export default {
 
 .transak_close {
   display: none;
+}
+
+body.desktop .transak_modal {
+  max-width: 600px;
 }
 </style>

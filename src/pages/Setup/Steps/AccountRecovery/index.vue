@@ -1,29 +1,29 @@
 <template>
   <div>
     <div
-      class="q-mb-xl"
+      class="q-mb-sm"
       style="margin-top: -2.5rem"
     >
       <h1 class="setup ">
-        {{ $t('accountRecovery') }}
+        {{ $t('welcome') }}
       </h1>
-      <div class="text-center">
-        {{ $t('accountRecoveryDesc') }}
+      <div class="text-center q-mt-sm">
+        {{ $t('basicSecurityDesc') }}
       </div>
     </div>
 
     <div class="container q-px-md">
       <div>
-        <div class="q-mb-md q-pl-sm">
-          <div class="text-h6 text-weight-bold">
+        <!-- <div class="q-mb-md q-pl-sm"> -->
+        <!-- <div class="text-h6 text-weight-bold">
             {{ $t('basicSecurity') }}
-          </div>
-          <div class="text-caption">
+          </div> -->
+        <!-- <div class="text-caption">
             {{ $t('basicSecurityDesc') }}
-          </div>
-        </div>
-        <q-list class="q-gutter-y-md">
-          <q-item>
+          </div> -->
+        <!-- </div> -->
+        <!-- <q-list class="q-gutter-y-md"> -->
+        <!-- <q-item>
             <q-item-section
               avatar
               top
@@ -35,26 +35,25 @@
                 color="primary"
               />
             </q-item-section>
-            <q-item-section class=" recovery-option q-pa-md">
-              <q-item-label>
+            <q-item-section class=" recovery-option q-pa-md"> -->
+        <!-- <q-item-label>
                 <q-icon name="fas fa-at" />
                 {{ $t('emailRecovery') }}
-              </q-item-label>
-              <div class="account-email-input-wrapper">
-                <q-input
-                  ref="emailInput"
-                  v-model.trim="accountEmail"
-                  type="email"
-                  outlined
-                  dense
-                  color="primary"
-                  :placeholder="$t('emailPlaceholder')"
-                  @keydown.enter.prevent="validate"
-                />
-              </div>
-            </q-item-section>
-          </q-item>
-          <!-- <q-item>
+              </q-item-label> -->
+        <div class="account-email-input-wrapper">
+          <q-input
+            ref="emailInput"
+            v-model.trim="accountEmail"
+            type="email"
+            outlined
+            color="primary"
+            :placeholder="$t('emailPlaceholder')"
+            @keydown.enter.prevent="validate"
+          />
+        </div>
+        <!-- </q-item-section>
+          </q-item> -->
+        <!-- <q-item>
             <q-item-section
               avatar
               top
@@ -75,9 +74,9 @@
               </q-item-label>
             </q-item-section>
           </q-item> -->
-        </q-list>
+        <!-- </q-list> -->
       </div>
-      <div class="q-mt-xl">
+      <!-- <div class="q-mt-xl">
         <div class="q-mb-md q-pl-sm">
           <div class="text-h6 text-weight-bold">
             {{ $t('advancedSecurity') }}
@@ -108,7 +107,7 @@
             </q-item-section>
           </q-item>
         </q-list>
-      </div>
+      </div> -->
 
       <!-- <div class="account-name-input-wrapper">
       <q-input
