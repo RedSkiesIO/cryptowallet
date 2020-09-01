@@ -116,7 +116,7 @@ module.exports = (ctx) => {
       ],
       directives: ['Ripple', 'ClosePopup', 'ClosePopup'],
       // Quasar plugins
-      plugins: ['Notify', 'Dialog', 'BottomSheet'],
+      plugins: ['Notify', 'Dialog', 'BottomSheet', 'AppVisibility'],
       // iconSet: 'material-icons'
       lang: 'en-gb',
     },

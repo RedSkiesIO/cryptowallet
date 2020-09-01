@@ -39,7 +39,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import Account from '@/store/wallet/entities/Account';
+import Account from '@/store/wallet/entities/account';
 import SupportedCountries from '@/store/settings/state/transakSupportedCountries';
 
 export default {

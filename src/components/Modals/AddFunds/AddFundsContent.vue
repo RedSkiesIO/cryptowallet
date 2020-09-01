@@ -212,6 +212,8 @@ export default {
     this.transakTokens = (await axios.get('https://api.transak.com/api/v1/currencies/list')).data.response.cryptocurrencies
       .filter((token) => { return token.network === 'erc20'; })
       .map((token) => { return token.symbol; }).join();
+
+    console.log(await this.account.updateBalances());
   },
 
   methods: {

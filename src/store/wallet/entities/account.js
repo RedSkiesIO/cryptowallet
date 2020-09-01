@@ -1,6 +1,10 @@
 import { Model } from '@vuex-orm/core';
 import { Dark } from 'quasar';
+import Coin from './coin';
 import Wallet from './wallet';
+import {
+  refreshWallet,
+} from '@/helpers';
 
 /**
  * Account Entity.
@@ -24,7 +28,6 @@ export default class Account extends Model {
       currency: this.attr(''),
       node: this.attr(''),
       default: this.attr(false),
-      wallets: this.hasMany(Wallet, 'account_id'),
       showTestnets: this.attr(true),
       darkMode: this.boolean(false),
       demoMode: this.boolean(false),
@@ -38,5 +41,34 @@ export default class Account extends Model {
         return value;
       },
     };
+  }
+
+  get wallets() {
+    return Wallet.query()
+      .where('account_id', this.id)
+      .where('imported', true)
+      .get();
+  }
+
+  async updateBalances() {
+    try {
+      const coins = this.wallets
+        .filter((wallet) => {
+          return !wallet.erc20Wallet;
+        });
+      const coinPromises = coins.map((wallet) => {
+        return refreshWallet(wallet, false);
+      });
+
+      await Promise.all(coinPromises);
+      const tokenPromises = coins.map((wallet) => {
+        return Coin.fetchAllTokens(
+          wallet.externalAddress, this.authenticatedAccount, wallet.network,
+        );
+      });
+      await Promise.all(tokenPromises);
+    } catch (err) {
+      this.errorHandler(err);
+    }
   }
 }

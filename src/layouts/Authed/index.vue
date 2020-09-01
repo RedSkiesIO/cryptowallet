@@ -331,8 +331,6 @@ export default {
           );
         });
         await Promise.all(tokenPromises);
-
-        done();
       } catch (err) {
         this.errorHandler(err);
         done();
