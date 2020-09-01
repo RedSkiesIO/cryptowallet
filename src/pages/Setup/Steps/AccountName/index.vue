@@ -54,17 +54,17 @@ export default {
   methods: {
     validate() {
       if (!this.$v.accountName.required) {
-        this.$toast.create(10, this.$t('enterAccountName'), this.delay.normal);
+        this.$toast.create(10, this.$t('enterAccountName'), this.delay.normal, 'top');
         return false;
       }
 
       if (!this.$v.accountName.alphaNum) {
-        this.$toast.create(10, this.$t('invalidAccountName'), this.delay.normal);
+        this.$toast.create(10, this.$t('invalidAccountName'), this.delay.normal, 'top');
         return false;
       }
 
       if (this.accountName.length > this.maxNameLength) {
-        this.$toast.create(10, this.$t('invalidAccountLength'), this.delay.normal);
+        this.$toast.create(10, this.$t('invalidAccountLength'), this.delay.normal, 'top');
         return false;
       }
 
