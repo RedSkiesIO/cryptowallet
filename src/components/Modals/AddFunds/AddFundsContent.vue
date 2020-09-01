@@ -192,9 +192,16 @@ export default {
     transak_card() {
       return new Transak(this.$root, this.account, this.wallet, this.transakTokens, true, false);
     },
+    applePayEnabled() {
+      return /iPad|iPhone|iPod/.test(navigator.platform)
+       || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    },
     providers() {
       if (this.account.country && this.transakTokens) {
         return this.paymentOptions.filter((option) => {
+          if (option.type === 'Apple Pay' && !this.applePayEnabled) {
+            return false;
+          }
           return this[option.provider].isAvailable();
         });
       }
@@ -212,8 +219,6 @@ export default {
     this.transakTokens = (await axios.get('https://api.transak.com/api/v1/currencies/list')).data.response.cryptocurrencies
       .filter((token) => { return token.network === 'erc20'; })
       .map((token) => { return token.symbol; }).join();
-
-    console.log(await this.account.updateBalances());
   },
 
   methods: {

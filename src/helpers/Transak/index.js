@@ -60,7 +60,7 @@ export class Transak {
       if (data.eventName === 'TRANSAK_WIDGET_OPEN') { this.handleWidgetOpen(); }
       if (data.eventName === 'TRANSAK_WIDGET_CLOSE') { this.handleWidgetClose(); }
       if (data.eventName === 'TRANSAK_ORDER_CREATED') { this.handleOrderCreated(data); }
-      if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { this.handleOrderSuccess(data); }
+      if (data.eventName === 'TRANSAK_ORDER_SUCCESSFUL') { Transak.handleOrderSuccess(data); }
     });
     this.vm.$store.dispatch('settings/setPaymentLoading', { on: true, logo: 'statics/payment-logos/transak.png' });
     this.transak.init();
@@ -127,8 +127,7 @@ export class Transak {
     }
   }
 
-  handleOrderSuccess(order) {
-    console.log(this);
+  static handleOrderSuccess(order) {
     Payments.$update({
       where: (record) => {
         return record.id === order.status.id;

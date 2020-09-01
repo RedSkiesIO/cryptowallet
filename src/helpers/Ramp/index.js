@@ -100,9 +100,6 @@ export class Ramp {
           fiatAmount: order.payload.fiatValue,
           cryptoAmount: order.payload.cryptoAmount,
           conversionPrice: order.payload.assetExchangeRate,
-          // totalFeeInCrypto: order.status.totalFeeInCrypto,
-          // totalfeeInFiat: order.status.totalFeeInFiat,
-          // paymentOption: order.status.paymentOption[0],
           fromAddress: order.payload.escrowAddress,
           expires: order.payload.purchase.endTime,
         },
@@ -110,8 +107,7 @@ export class Ramp {
     }
   }
 
-  handleOrderSuccess(order) {
-    console.log(this);
+  static handleOrderSuccess(order) {
     Payments.$update({
       where: (record) => {
         return record.id === order.status.id;
