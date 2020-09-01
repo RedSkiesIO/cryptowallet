@@ -47,7 +47,7 @@
                 text-color="info"
               />
             </q-item-section>
-            <q-item-section>
+            <q-item-section class="text-black">
               {{ option.type }}
               <q-item-label caption>
                 {{ option.caption }}
@@ -59,6 +59,7 @@
               <q-chip
                 square
                 size="12px"
+                outline
               >
                 Fee: {{ option.fee }}
               </q-chip>
@@ -69,6 +70,7 @@
               <q-chip
                 square
                 size="12px"
+                outline
               >
                 {{ option.time }}
               </q-chip>
