@@ -26,29 +26,72 @@
         </div>
 
         <q-list
+          v-if="providers.length > 0"
           padding
-          separator
           dense
           class="q-gutter-y-md"
         >
-          <TransakItem
-            v-if="bankTransfer"
-            :country="country"
-            :bank="true"
-            :tokens="transakTokens"
-            v-on="$listeners"
-          />
-          <TransakItem
-            v-if="cardPayments"
-            :country="country"
-            :card="true"
-            :tokens="transakTokens"
-            v-on="$listeners"
-          />
-          <RampItem
-            v-if="rampAvailable"
-            v-on="$listeners"
-          />
+          <q-item
+            v-for="option in providers"
+            :key="option.type"
+            clickable
+            @click="openProvider(option.provider)"
+          >
+            <q-item-section
+              avatar
+              top
+            >
+              <q-avatar
+                :icon="option.icon"
+                color="accent"
+                text-color="info"
+              />
+            </q-item-section>
+            <q-item-section>
+              {{ option.type }}
+              <q-item-label caption>
+                {{ option.caption }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section
+              side
+            >
+              <q-chip
+                square
+                size="12px"
+              >
+                Fee: {{ option.fee }}
+              </q-chip>
+            </q-item-section>
+            <q-item-section
+              side
+            >
+              <q-chip
+                square
+                size="12px"
+              >
+                {{ option.time }}
+              </q-chip>
+            </q-item-section>
+          </q-item>
+          <q-item
+            clickable
+            @click.stop="receive"
+          >
+            <q-item-section
+              avatar
+              top
+            >
+              <q-avatar
+                icon="qr_code"
+                color="accent"
+                text-color="info"
+              />
+            </q-item-section>
+            <q-item-section>
+              Send from Wallet/Exchange
+            </q-item-section>
+          </q-item>
         </q-list>
       </div>
     </div>
@@ -58,65 +101,111 @@
 <script>
 import { mapState } from 'vuex';
 import axios from 'axios';
-import Coin from '@/store/wallet/entities/coin';
+import Wallet from '@/store/wallet/entities/wallet';
 import SelectCountry from './SelectCountry';
-import TransakItem from './TransakItem';
-import RampItem from './RampItem';
+import { Ramp } from '@/helpers/Ramp';
+import { Transak } from '@/helpers/Transak';
 
 export default {
   name: 'AddFunds',
   components: {
     SelectCountry,
-    TransakItem,
-    RampItem,
   },
   data() {
     return {
       country: null,
       transakTokens: null,
+      paymentOptions: [
+        {
+          type: 'Debit Card',
+          icon: 'fas fa-credit-card',
+          fee: '2.9%',
+          time: 'Instant',
+          caption: 'Lower Buy Limits',
+          provider: 'ramp',
+        },
+        {
+          type: 'Apple Pay',
+          icon: 'fab fa-cc-apple-pay',
+          fee: '2.9%',
+          time: 'Instant',
+          caption: 'Lower Buy Limits',
+          provider: 'ramp',
+        },
+        {
+          type: 'Credit/Debit Card',
+          icon: 'fas fa-credit-card',
+          fee: '3.9%',
+          time: 'Instant',
+          caption: 'Lower Buy Limits',
+          provider: 'transak_card',
+        },
+        {
+          type: 'Instant Bank Transfer',
+          icon: 'fas fa-university',
+          fee: '1.49% - 1.99%',
+          time: 'Instant',
+          caption: 'No ID Required',
+          provider: 'ramp',
+        },
+        {
+          type: 'Manual Bank Transfer',
+          icon: 'fas fa-university',
+          fee: '0.5%',
+          time: '1 - 3 hours',
+          caption: 'KYC Required',
+          provider: 'transak_bank',
+        },
+      ],
     };
   },
   computed: {
     ...mapState({
       id: (state) => { return parseInt(state.route.params.id, 10); },
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
     }),
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    defaultWallet() {
+      return Wallet.query()
+        .where('account_id', this.authenticatedAccount)
+        .where('name', 'Ethereum')
+        .get()[0];
+    },
     wallet() {
-      return this.$store.getters['entities/wallet/find'](this.id);
-    },
-    supportsRamp() {
-      if (this.wallet) {
-        return Coin.findToken(this.wallet.name).rampNetwork;
+      if (this.id) {
+        return this.$store.getters['entities/wallet/find'](this.id);
       }
-      return true;
+      return {
+        externalAddress: this.defaultWallet.externalAddress,
+      };
     },
-    partners() {
-      if (this.country) {
-        return this.country.value.partners;
-      }
-      return null;
-    },
-    rampAvailable() {
-      if (this.country?.label === 'United Kingdom' && this.supportsRamp) {
-        return true;
-      }
-      return false;
+    ramp() {
+      return new Ramp(this.$root, this.account, this.wallet, false);
     },
 
-    bankTransfer() {
-      if (this.country && this.transakTokens) {
-        return this.partners
-          .some((partner) => { return (!partner.isCardPayment); });
-      }
-      return false;
+    transak_bank() {
+      return new Transak(this.$root, this.account, this.wallet, this.transakTokens, false, false);
     },
 
-    cardPayments() {
-      if (this.country && this.transakTokens) {
-        return this.partners
-          .some((partner) => { return (!!partner.isCardPayment); });
-      }
-      return false;
+    transak_card() {
+      return new Transak(this.$root, this.account, this.wallet, this.transakTokens, true, false);
     },
+    providers() {
+      if (this.account.country && this.transakTokens) {
+        return this.paymentOptions.filter((option) => {
+          return this[option.provider].isAvailable();
+        });
+      }
+      return [];
+    },
+  },
+
+  beforeDestroy() {
+    this.ramp.close();
+    this.transak_bank.close();
+    this.transak_card.close();
   },
 
   async mounted() {
@@ -126,6 +215,14 @@ export default {
   },
 
   methods: {
+    openProvider(provider) {
+      this[provider].open();
+    },
+
+    receive() {
+      this.$router.push({ path: `/wallet/receive/${this.defaultWallet.id}` });
+    },
+
     goBack() {
       this.$router.go(-1);
     },
@@ -160,6 +257,20 @@ export default {
 
 .payment-logo {
   width: 6rem;
+}
+
+.transak_modal {
+  padding-top: 35px;
+}
+
+.transak_close {
+  margin-top: 10px!important;
+  right: 5px!important;
+  color: black!important;
+}
+
+body.desktop .transak_modal {
+  max-width: 600px;
 }
 
 /* .q-inner-loading {

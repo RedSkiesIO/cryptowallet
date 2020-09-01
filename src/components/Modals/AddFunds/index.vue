@@ -27,7 +27,7 @@
     </q-dialog>
 
     <q-inner-loading
-      :showing="visible"
+      :showing="paymentLoading.on"
     >
       <q-circular-progress
         show-value
@@ -40,7 +40,7 @@
       >
         <img
           class="loading-logo"
-          :src="loadingLogo"
+          :src="paymentLoading.logo"
         >
       </q-circular-progress>
       <div class="row text-center text-info q-pa-lg text-weight-bold">
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import AddFundsContent from './AddFundsContent';
 
 export default {
@@ -67,6 +68,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      paymentLoading: (state) => { return state.settings.paymentLoading; },
+    }),
     addFundsModalOpened: {
       get() {
         return this.$store.state.modals.addFundsModalOpened;
@@ -75,6 +79,7 @@ export default {
         this.$store.dispatch('modals/setAddFundsModalOpened', value);
       },
     },
+
     showCloseProvider() {
       if (this.provider && this.provider.isInitialised) {
         return true;

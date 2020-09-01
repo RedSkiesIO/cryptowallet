@@ -20,6 +20,7 @@ export default class Account extends Model {
       name: this.attr(''),
       email: this.attr(null),
       locale: this.attr(''),
+      country: this.attr(''),
       currency: this.attr(''),
       node: this.attr(''),
       default: this.attr(false),
