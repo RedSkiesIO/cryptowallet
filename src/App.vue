@@ -8,7 +8,6 @@
     <div
       id="q-app"
       :class="{ hidden: scanning }"
-      style="max-width: 600px"
     >
       <router-view />
       <SelectAccountModal />
@@ -221,15 +220,22 @@ export default {
   color: black;
 } */
 
+body.desktop #q-app {
+  max-width: 600px;
+}
+
 body.desktop .main {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
 }
 
+body.desktop .background {
+    max-width: 600px;
+}
+
 .background {
   height: 100%;
-  max-width: 600px;
   width: 100%;
   position: absolute;
 }
