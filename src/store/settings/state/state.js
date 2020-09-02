@@ -24,4 +24,5 @@ export default {
     vlong: 3000,
   },
   disablePullToRefresh: false,
+  paymentLoading: { on: false, logo: null },
 };

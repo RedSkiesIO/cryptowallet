@@ -36,3 +36,7 @@ export function SET_CURRENCY(state, payload) {
 export function SET_DISABLE_PULLTOREFRESH(state, payload) {
   state.disablePullToRefresh = payload;
 }
+
+export function SET_PAYMENT_LOADING(state, payload) {
+  state.paymentLoading = payload;
+}

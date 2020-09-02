@@ -58,14 +58,19 @@ export default {
   data() {
     return {
       scrollPosition: 0,
+      interval: 15000,
+      checkForUpdates: null,
     };
   },
 
   computed: {
     ...mapState({
       authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+      modals: (state) => { return state.modals; },
     }),
-
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
     selectedCurrency() {
       return this.$store.state.settings.selectedCurrency;
     },
@@ -91,10 +96,26 @@ export default {
       return wallets;
     },
   },
-  activated() {
+
+  watch: {
+    '$q.appVisible': function appVisible(val) {
+      if (!val) {
+        clearInterval(this.checkForUpdates);
+      } else {
+        this.updateInterval();
+      }
+    },
+  },
+
+  async activated() {
+    await this.updateInterval();
     if (document.querySelectorAll('.cloud-scroll .scroll')[0]) {
       document.querySelectorAll('.cloud-scroll .scroll')[0].scrollTop = this.scrollPosition;
     }
+  },
+
+  deactivated() {
+    clearInterval(this.checkForUpdates);
   },
 
   methods: {
@@ -117,6 +138,15 @@ export default {
       }
 
       return true;
+    },
+
+    async updateInterval() {
+      clearInterval(this.checkForUpdates);
+      this.checkForUpdates = setInterval(async () => {
+        if (Object.values(this.modals).every((i) => { return !i; })) {
+          await this.account.updateBalances();
+        }
+      }, this.interval);
     },
 
     scrolled(data) {

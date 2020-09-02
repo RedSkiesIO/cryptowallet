@@ -209,7 +209,7 @@ export default {
     },
 
     walletScreen() {
-      return this.$route.name === 'wallet' || this.$route.name === 'addFunds';
+      return this.$route.name === 'wallet' || this.$route.name === 'addFunds' || this.$route.name === 'receiveCoin';
     },
 
     getClass() {
@@ -244,7 +244,8 @@ export default {
           && this.$route.path !== '/setup/0'
           && this.$route.path !== '/setup/7'
           && this.$route.path !== '/'
-          && this.$route.path !== '/wallet') {
+          && this.$route.path !== '/wallet'
+          && this.$route.name !== 'receiveCoin') {
         this.isBackButtonEnabled = true;
       } else {
         this.isBackButtonEnabled = false;

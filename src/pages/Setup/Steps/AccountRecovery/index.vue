@@ -225,12 +225,12 @@ export default {
       }
 
       if (!this.$v.accountEmail.required) {
-        this.$toast.create(10, this.$t('enterAccountEmail'), this.delay.normal);
+        this.$toast.create(10, this.$t('enterAccountEmail'), this.delay.normal, 'top');
         return false;
       }
 
       if (!this.$v.accountEmail.email) {
-        this.$toast.create(10, this.$t('invalidAccountEmail'), this.delay.normal);
+        this.$toast.create(10, this.$t('invalidAccountEmail'), this.delay.normal, 'top');
         return false;
       }
 
@@ -244,14 +244,16 @@ export default {
       }
 
       this.visible = true;
-      await this.$magic.login(this.accountEmail);
-      const mnemonic = await this.$magic.getMnemonic();
-      const mnemonicArray = mnemonic.split(' ');
-      this.$store.dispatch('setup/setAccountEmail', this.accountEmail);
-      this.$store.dispatch('setup/setSeed', mnemonicArray);
-      this.$store.dispatch('setup/setSeedString', mnemonic);
-      this.$router.push({ path: '/setup/4' });
-      this.visible = false;
+      const login = await this.$magic.login(this.accountEmail);
+      if (login) {
+        const mnemonic = await this.$magic.getMnemonic();
+        const mnemonicArray = mnemonic.split(' ');
+        this.$store.dispatch('setup/setAccountEmail', this.accountEmail);
+        this.$store.dispatch('setup/setSeed', mnemonicArray);
+        this.$store.dispatch('setup/setSeedString', mnemonic);
+        this.$router.push({ path: '/setup/4' });
+        this.visible = false;
+      }
 
       return true;
     },

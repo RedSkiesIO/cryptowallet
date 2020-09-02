@@ -130,6 +130,11 @@ export default {
         legend: {
           display: false,
         },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+          displayColors: false,
+        },
 
       };
     },

@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import Account from '@/store/wallet/entities/account';
 import SupportedCountries from '@/store/settings/state/transakSupportedCountries';
 
 export default {
@@ -45,12 +47,32 @@ export default {
 
   data() {
     return {
-      selectedCountry: null,
+      // selectedCountry: null,
     };
   },
 
   computed: {
-
+    ...mapState({
+      authenticatedAccount: (state) => { return state.settings.authenticatedAccount; },
+    }),
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    selectedCountry: {
+      get() {
+        return this.account.country;
+      },
+      set(val) {
+        Account.$update({
+          where: (record) => {
+            return record.id === this.authenticatedAccount;
+          },
+          data: {
+            country: val,
+          },
+        });
+      },
+    },
     countryList() {
       return SupportedCountries;
     },

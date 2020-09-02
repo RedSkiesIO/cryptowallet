@@ -36,3 +36,7 @@ export function setCurrency(context, payload) {
 export function setDisablePullToRefresh(context, payload) {
   context.commit('SET_DISABLE_PULLTOREFRESH', payload);
 }
+
+export function setPaymentLoading(context, payload) {
+  context.commit('SET_PAYMENT_LOADING', payload);
+}
