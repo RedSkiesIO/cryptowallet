@@ -101,8 +101,11 @@ export default {
       //   const onInputVibrate = 25;
       //   navigator.vibrate(onInputVibrate);
       // }
+      const isIos = /iPad|iPhone|iPod/.test(navigator.platform)
+       || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
       const vibrateTime = 25;
-      if (navigator.vibrate) {
+      if (navigator.vibrate && !isIos) {
         window.navigator.vibrate(vibrateTime);
       }
       this.input.push(Math.random());
