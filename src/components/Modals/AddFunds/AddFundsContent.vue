@@ -90,7 +90,7 @@
                 text-color="info"
               />
             </q-item-section>
-            <q-item-section>
+            <q-item-section class="text-black">
               Send from Wallet/Exchange
             </q-item-section>
           </q-item>

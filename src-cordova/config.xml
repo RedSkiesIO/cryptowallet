@@ -42,7 +42,10 @@
         <access origin="*" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <allow-navigation href="*" />
+        <allow-navigation href="*://*.transak.com/*" />
+        <allow-navigation href="*://*.ramp.network/*" />
+        <allow-navigation href="*://*.magic.link/*" />
+        <allow-navigation href="*://*.firebaseapp.com/*" />
         <preference name="UseSwiftLanguageVersion" value="5" />
         <preference name="BackupWebStorage" value="none" />
         <preference name="WKWebViewOnly" value="true" />
