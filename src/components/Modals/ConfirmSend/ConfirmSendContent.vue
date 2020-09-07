@@ -261,7 +261,7 @@ export default {
         const newInternalIndex = this.wallet.internalChainAddressIndex + changeAddresses.length;
 
         Wallet.$update({
-          where: (record) => { return record.id === this.wallet.id; },
+          where: this.wallet.id,
           data: { internalChainAddressIndex: newInternalIndex },
         });
 

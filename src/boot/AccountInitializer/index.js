@@ -3,8 +3,17 @@ import Account from '@/store/wallet/entities/account';
 import Wallet from '@/store/wallet/entities/wallet';
 import CryptoWalletSDK from 'cryptowallet-js';
 import bcrypt from 'bcryptjs';
+// import AES from 'crypto-js/aes';
 
 const demoSeed = 'give grow opera kid slide wrist final tattoo trust system valve impulse';
+
+// function encrypt(data, password) {
+//   try {
+//     return AES.encrypt(JSON.stringify(data), password).toString();
+//   } catch (exception) {
+//     throw new Error(exception.message);
+//   }
+// }
 
 const accountInitializer = {
 
@@ -30,7 +39,7 @@ const accountInitializer = {
       password,
     });
 
-    return result.account[0];
+    return result[0];
   },
 
   async createWallets(setup, id, coins) {
@@ -54,6 +63,7 @@ const accountInitializer = {
             seedString,
             coin.network,
           );
+          // wallet.hdWallet = encrypt(hdWallet, password);
           await Wallet.$insert({ data: wallet, password });
           resolve();
         }));

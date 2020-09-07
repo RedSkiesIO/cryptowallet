@@ -188,7 +188,7 @@ export default {
             .where('name', this.wallet.parentName)
             .get();
           await Wallet.$update({
-            where: (record) => { return record.id === wallets[0].id; },
+            where: wallets[0].id,
             data: { imported: false, enabled: true },
           });
         }
@@ -202,7 +202,7 @@ export default {
 
         if (wallets.length > 0) {
           await Wallet.$update({
-            where: (record) => { return record.id === wallets[0].id; },
+            where: wallets[0].id,
             data: { imported: false, enabled: true },
           });
         } else {
@@ -219,7 +219,7 @@ export default {
           const newWalletId = newWalletResult.wallet[0].id;
 
           await Wallet.$update({
-            where: (record) => { return record.id === newWalletId; },
+            where: newWalletId,
             data: { imported: false, enabled: true },
           });
 
@@ -243,7 +243,7 @@ export default {
               );
 
             await Wallet.$update({
-              where: (record) => { return record.id === newWalletId; },
+              where: newWalletId,
               data: {
                 parentSdk: eth.sdk,
                 parentName: eth.name,
@@ -284,7 +284,7 @@ export default {
 
       walletIds.forEach((walletId) => {
         Wallet.$update({
-          where: (record) => { return record.id === walletId; },
+          where: walletId,
           data: { imported: false, enabled: false },
         });
 

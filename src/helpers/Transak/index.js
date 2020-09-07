@@ -129,9 +129,7 @@ export class Transak {
 
   static handleOrderSuccess(order) {
     Payments.$update({
-      where: (record) => {
-        return record.id === order.status.id;
-      },
+      where: order.status.id,
       data: {
         event: order.eventName,
         status: order.status.status,

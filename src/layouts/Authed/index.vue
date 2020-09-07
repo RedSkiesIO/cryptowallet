@@ -301,6 +301,7 @@ export default {
             try {
               await this.updateBalances(done);
               await this.backEndService.loadPriceFeed();
+              done();
             } catch (err) {
               this.errorHandler(err);
               done();

@@ -64,9 +64,7 @@ export default {
       },
       set(val) {
         Account.$update({
-          where: (record) => {
-            return record.id === this.authenticatedAccount;
-          },
+          where: this.authenticatedAccount,
           data: {
             country: val,
           },

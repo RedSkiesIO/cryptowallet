@@ -137,7 +137,7 @@ export default {
       const newEmail = await this.$magic.updateEmail(this.newEmail);
       if (newEmail) {
         Account.$update({
-          where: (record) => { return record.id === this.authenticatedAccount; },
+          where: this.authenticatedAccount,
           data: { email: this.newEmail },
         });
         this.closeModal();

@@ -62,7 +62,7 @@ export default class Coin extends Model {
         .then((response) => {
           const base64 = Buffer.from(response.data, 'binary').toString('base64');
           Coin.$update({
-            where: (record) => { return record.id === token.id; },
+            where: token.id,
             data: {
               icon: base64,
             },

@@ -79,7 +79,7 @@ export default {
       },
       set(newCurrency) {
         Account.$update({
-          where: (record) => { return record.id === this.authenticatedAccount; },
+          where: this.authenticatedAccount,
           data: { currency: newCurrency },
         });
 

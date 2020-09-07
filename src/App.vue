@@ -35,6 +35,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { hydrateStore } from '@/store';
 import LoadingScreen from '@/components/LoadingScreen';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -155,6 +156,7 @@ export default {
   async mounted() {
     window.store = this.$store;
     window.app = this;
+    await hydrateStore();
     if (window.cordova) {
       StatusBar.overlaysWebView(true);
       StatusBar.styleDefault();
@@ -195,7 +197,7 @@ export default {
           });
         } else {
           Coin.$update({
-            where: (record) => { return record.name === isThere.name; },
+            where: isThere.id,
             data,
           });
         }

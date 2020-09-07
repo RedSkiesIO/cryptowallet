@@ -148,8 +148,8 @@ export default {
 
       const keyPair = coinSDK.generateKeyPair(initializedWallet, externalChainAddressIndex);
 
-      Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+      await Wallet.$update({
+        where: wallet.id,
         data: {
           externalChainAddressIndex,
           internalChainAddressIndex,
@@ -187,8 +187,8 @@ export default {
         balance,
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
-      Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+      await Wallet.$update({
+        where: wallet.id,
         data: {
           externalChainAddressIndex: 0,
           internalChainAddressIndex: 0,
@@ -235,7 +235,7 @@ export default {
       }
 
       Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+        where: wallet.id,
         data: { imported: success, enabled: success },
       });
     },
@@ -267,7 +267,7 @@ export default {
         } = await this.discoverWallet(wallet.erc20Wallet, coinSDK, wallet.network, wallet.sdk);
 
         Wallet.$update({
-          where: (record) => { return record.id === wallet.id; },
+          where: wallet.id,
           data: {
             externalChainAddressIndex: 0,
             internalChainAddressIndex: 0,
@@ -291,7 +291,7 @@ export default {
         this.errorHandler(err);
       }
       Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+        where: wallet.id,
         data: { imported: success, enabled: success },
       });
     },

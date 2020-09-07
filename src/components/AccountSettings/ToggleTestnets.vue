@@ -38,22 +38,27 @@ export default {
       },
       set(val) {
         Account.$update({
-          where: (record) => { return record.id === this.authenticatedAccount; },
+          where: this.authenticatedAccount,
           data: {
             showTestnets: val,
           },
         });
       },
     },
+    testnets() {
+      return Coin.query().where('testnet', true).get();
+    },
   },
 
   methods: {
     async toggleTestnets(val) {
-      await Coin.$update({
-        where: (record) => { return record.testnet === true; },
-        data: {
-          show: val,
-        },
+      this.testnets.forEach((coin) => {
+        Coin.$update({
+          where: coin.id,
+          data: {
+            show: val,
+          },
+        });
       });
     },
   },

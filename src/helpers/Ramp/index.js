@@ -112,9 +112,7 @@ export class Ramp {
 
   static handleOrderSuccess(order) {
     Payments.$update({
-      where: (record) => {
-        return record.id === order.status.id;
-      },
+      where: order.status.id,
       data: {
         event: order.type,
         status: order.type,

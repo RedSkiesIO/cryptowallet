@@ -174,7 +174,7 @@ export default {
 
           Wallet.$update({
             data,
-            where: (record) => { return record.id === wallet.id; },
+            where: wallet.id,
             password: this.newPin.join(''),
           });
         });
@@ -190,7 +190,7 @@ export default {
 
       Account.$update({
         data,
-        where: (record) => { return record.id === this.authenticatedAccount; },
+        where: this.authenticatedAccount,
         password: this.newPin.join(''),
       });
     },
