@@ -39,7 +39,7 @@
     </div>
 
     <div
-      v-if="account.email"
+      v-if="email"
       class="settings-row"
       @click.prevent="openUpdateEmailModal"
     >
@@ -135,9 +135,9 @@
       </div>
     </div>
 
-    <SelectLanguage
+    <!-- <SelectLanguage
       :current-locale="account.locale"
-    />
+    /> -->
 
     <SelectCurrency
       :current-currency="account.currency"
@@ -158,7 +158,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
+// import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
@@ -172,7 +172,7 @@ import ExportKeys from '@/components/AccountSettings/ExportKeys';
 export default {
   name: 'AccountSettings',
   components: {
-    SelectLanguage,
+    // SelectLanguage,
     SelectCurrency,
     Pin,
     DeleteAccount,
@@ -187,6 +187,10 @@ export default {
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    email() {
+      if (this.account) { return this.account.email; }
+      return null;
     },
     updateEmailEnabled() {
       return this.$store.state.modals.updateEmailModalOpened;

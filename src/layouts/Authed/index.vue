@@ -147,11 +147,20 @@ export default {
       }
       return wallets;
     },
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
     demoMode() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+      if (this.account) {
+        return this.account.demoMode;
+      }
+      return null;
     },
     showTestnets() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+      if (this.account) {
+        return this.account.showTestnets;
+      }
+      return null;
     },
     testnets() {
       const coins = Coin.query()

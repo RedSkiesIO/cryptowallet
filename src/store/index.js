@@ -1,8 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexORM from '@vuex-orm/core';
 // import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
-import VuexORMLocalForage from 'vuex-orm-localforage';
+// import VuexORMLocalForage from 'vuex-orm-localforage';
+import VuexORMCordova from 'vuex-orm-cordova';
+// import localforage from 'localforage';
+// import cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 // import localforage from 'localforage';
 // import cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
@@ -86,7 +90,7 @@ if (process.env.DEV) {
 //   env: 'browser',
 // };
 
-VuexORM.use(VuexORMLocalForage, {
+VuexORM.use(VuexORMCordova, {
   database,
   actions: {
     $get: '$get',
