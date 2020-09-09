@@ -33,11 +33,11 @@
           </div>
 
           <div v-if="wallet.sdk === 'Ethereum'">
-            <SendEtehreum />
+            <SendEthereum />
           </div>
 
           <div v-if="wallet.sdk === 'ERC20'">
-            <SendEtehreum />
+            <SendEthereum />
           </div>
         </div>
       </div>
@@ -49,13 +49,13 @@
 import { mapState } from 'vuex';
 import CoinHeader from '@/components/Wallet/CoinHeader';
 import SendBitcoin from '@/components/Wallet/SendCoin/SendBitcoin.vue';
-import SendEtehreum from '@/components/Wallet/SendCoin/SendEtehreum.vue';
+import SendEthereum from '@/components/Wallet/SendCoin/SendEthereum.vue';
 
 export default {
   name: 'SendCoin',
   components: {
     SendBitcoin,
-    SendEtehreum,
+    SendEthereum,
     CoinHeader,
   },
   computed: {
