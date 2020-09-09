@@ -23,6 +23,7 @@ import LatestPrice from './latestPrice';
 import Fees from './fees';
 import Payments from './wallet/entities/payments';
 import Token from './wallet/entities/token';
+import Transactions from './transactions';
 
 const models = [
   Account,
@@ -84,6 +85,7 @@ if (process.env.DEV) {
   window.Fees = Fees;
   window.Payments = Payments;
   window.Token = Token;
+  window.Transactions = Transactions;
 }
 
 // const options = {
