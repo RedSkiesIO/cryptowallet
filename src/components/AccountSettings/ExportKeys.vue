@@ -35,8 +35,8 @@
                 v-on="scope.itemEvents"
               >
                 <q-item-section>
-                  <q-item-label color="black">
-                    <span class="text-black q-pl-sm ">
+                  <q-item-label>
+                    <span class="q-pl-sm ">
                       {{ scope.opt.label }}
                     </span>
                   </q-item-label>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="account">
     <!-- <div
       class="settings-row"
       @click.prevent="openSelectLanguageModal"
@@ -39,7 +39,7 @@
     </div>
 
     <div
-      v-if="account.email"
+      v-if="email"
       class="settings-row"
       @click.prevent="openUpdateEmailModal"
     >
@@ -94,7 +94,7 @@
         />
       </div>
     </div>
-    <ToggleTestnets v-if="!account.demoMode" />
+    <ToggleTestnets v-if="!demoMode" />
     <ToggleDarkMode />
     <div
       class="settings-row"
@@ -135,19 +135,22 @@
       </div>
     </div>
 
-    <SelectLanguage
+    <!-- <SelectLanguage
       :current-locale="account.locale"
-    />
+    /> -->
 
     <SelectCurrency
+      v-if="account"
       :current-currency="account.currency"
     />
 
     <Pin
+      v-if="account"
       :pin-hash="account.pinHash"
     />
 
     <DeleteAccount
+      v-if="account"
       :pin-hash="account.pinHash"
     />
     <UpdateEmail v-if="updateEmailEnabled" />
@@ -158,7 +161,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
+// import SelectLanguage from '@/components/AccountSettings/SelectLanguage';
 import SelectCurrency from '@/components/AccountSettings/SelectCurrency';
 import Pin from '@/components/AccountSettings/Pin';
 import DeleteAccount from '@/components/AccountSettings/DeleteAccount';
@@ -172,7 +175,7 @@ import ExportKeys from '@/components/AccountSettings/ExportKeys';
 export default {
   name: 'AccountSettings',
   components: {
-    SelectLanguage,
+    // SelectLanguage,
     SelectCurrency,
     Pin,
     DeleteAccount,
@@ -187,6 +190,14 @@ export default {
     }),
     account() {
       return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
+    email() {
+      if (this.account) { return this.account.email; }
+      return null;
+    },
+    demoMode() {
+      if (this.account) { return this.account.demoMode; }
+      return null;
     },
     updateEmailEnabled() {
       return this.$store.state.modals.updateEmailModalOpened;

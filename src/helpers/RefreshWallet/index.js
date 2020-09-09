@@ -57,7 +57,7 @@ async function updateBalance(coinSDK, wallet, addresses) {
 
   if (newBalance !== balance) {
     Wallet.$update({
-      where: (record) => { return record.id === wallet.id; },
+      where: wallet.id,
       data: { confirmedBalance: parseFloat(newBalance) },
     });
     return true;
@@ -67,11 +67,13 @@ async function updateBalance(coinSDK, wallet, addresses) {
 
 function updateTxs(txs, wallet) {
   txs.forEach((tx) => {
+    const txId = Tx.query()
+      .where('hash', tx.hash)
+      .where('wallet_id', wallet.id)
+      .get()[0].id;
+
     Tx.$update({
-      where: (record) => {
-        return record.hash === tx.hash
-        && record.wallet_id === wallet.id;
-      },
+      where: txId,
       data: tx,
     });
   });
@@ -109,7 +111,7 @@ function insertTxs(txs, wallet, coinSDK) {
       Address.$insert({ data: newAddress });
 
       Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+        where: wallet.id,
         data: {
           externalChainAddressIndex: addr.index,
           externalAddress: addr.address,

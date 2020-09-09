@@ -37,8 +37,8 @@
                 v-on="scope.itemEvents"
               >
                 <q-item-section>
-                  <q-item-label color="black">
-                    <span class="text-black q-pl-sm ">
+                  <q-item-label>
+                    <span class="q-pl-sm ">
                       {{ scope.opt.label }}
                     </span>
                   </q-item-label>
@@ -409,7 +409,7 @@ export default {
           .get();
 
         await Wallet.$update({
-          where: (record) => { return record.id === wallets[0].id; },
+          where: wallets[0].id,
           data: { imported: false, enabled: true },
         });
       }
@@ -446,7 +446,7 @@ export default {
         const newCoinId = newCoin.coin[0].id;
 
         await Coin.$update({
-          where: (record) => { return record.id === newCoinId; },
+          where: newCoinId,
           data: {
             minConfirmations: coin.minConfirmations,
           },
@@ -466,7 +466,7 @@ export default {
         const newWalletResult = await Wallet.$insert({ data });
         const newWalletId = newWalletResult.wallet[0].id;
         await Wallet.$update({
-          where: (record) => { return record.id === newWalletId; },
+          where: newWalletId,
           data: {
             account_id: this.authenticatedAccount,
             imported: false,

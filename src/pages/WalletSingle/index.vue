@@ -34,9 +34,6 @@ export default {
 
     wallet() {
       if (this.id) {
-        if (this.id.toString().substring(0, 2) === '0x') {
-          return this.$store.getters['entities/token/find'](this.id);
-        }
         return this.$store.getters['entities/wallet/find'](this.id);
       }
       return null;

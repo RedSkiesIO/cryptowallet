@@ -1,7 +1,0 @@
-{
-  "appId": "com.atlascity.wallet.mobile",
-  "appName": "CryptoWallet",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www"
-}

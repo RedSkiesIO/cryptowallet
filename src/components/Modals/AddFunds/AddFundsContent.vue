@@ -90,7 +90,7 @@
                 text-color="info"
               />
             </q-item-section>
-            <q-item-section>
+            <q-item-section class="text-black">
               Send from Wallet/Exchange
             </q-item-section>
           </q-item>
@@ -103,6 +103,7 @@
 <script>
 import { mapState } from 'vuex';
 import axios from 'axios';
+import Coin from '@/store/wallet/entities/coin';
 import Wallet from '@/store/wallet/entities/wallet';
 import SelectCountry from './SelectCountry';
 import { Ramp } from '@/helpers/Ramp';
@@ -183,16 +184,24 @@ export default {
         externalAddress: this.defaultWallet.externalAddress,
       };
     },
+    isTestnet() {
+      if (this.id) {
+        return Coin.findToken(this.wallet.name).testnet;
+      }
+      return false;
+    },
     ramp() {
-      return new Ramp(this.$root, this.account, this.wallet, false);
+      return new Ramp(this.$root, this.account, this.wallet, this.isTestnet);
     },
 
     transak_bank() {
-      return new Transak(this.$root, this.account, this.wallet, this.transakTokens, false, false);
+      return new Transak(this.$root,
+        this.account, this.wallet, this.transakTokens, false, this.isTestnet);
     },
 
     transak_card() {
-      return new Transak(this.$root, this.account, this.wallet, this.transakTokens, true, false);
+      return new Transak(this.$root,
+        this.account, this.wallet, this.transakTokens, true, this.isTestnet);
     },
     applePayEnabled() {
       return /iPad|iPhone|iPod/.test(navigator.platform)

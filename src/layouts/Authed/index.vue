@@ -147,11 +147,20 @@ export default {
       }
       return wallets;
     },
+    account() {
+      return this.$store.getters['entities/account/find'](this.authenticatedAccount);
+    },
     demoMode() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount).demoMode;
+      if (this.account) {
+        return this.account.demoMode;
+      }
+      return null;
     },
     showTestnets() {
-      return this.$store.getters['entities/account/find'](this.authenticatedAccount).showTestnets;
+      if (this.account) {
+        return this.account.showTestnets;
+      }
+      return null;
     },
     testnets() {
       const coins = Coin.query()
@@ -277,6 +286,9 @@ export default {
     this.$root.$on('isHomeBalanceVisible', (value) => {
       this.isBalanceVisible = value;
     });
+    if (this.account) {
+      this.$q.dark.set(this.account.darkMode);
+    }
   },
 
   methods: {
@@ -301,6 +313,7 @@ export default {
             try {
               await this.updateBalances(done);
               await this.backEndService.loadPriceFeed();
+              done();
             } catch (err) {
               this.errorHandler(err);
               done();

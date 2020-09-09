@@ -53,9 +53,7 @@ class BackEndService {
    */
   setRefreshToken(token) {
     Account.$update({
-      where: (record) => {
-        return record.id === this.accountId;
-      },
+      where: this.accountId,
       data: { refresh_token: token },
       password: this.password,
     });
@@ -260,7 +258,7 @@ class BackEndService {
       result.data.timestamp = currentTime;
       if (fee) {
         Fees.$update({
-          where: (record) => { return record.code === coin; },
+          where: coin,
           data: result.data,
         });
       } else {
@@ -295,22 +293,11 @@ class BackEndService {
         return true;
       };
 
-      const whereLatestPrice = (record, item) => {
-        return (
-          record.coin === item.coin
-            && record.currency === item.currency
-        );
-      };
-
       if (checkPriceExists(coin, priceData)) {
         LatestPrice.$update({
-          where: (record) => {
-            return whereLatestPrice(record, {
-              coin,
-              currency,
-            });
-          },
           data: {
+            coin,
+            currency,
             updated: +new Date(),
             data: priceData,
           },
@@ -341,24 +328,13 @@ class BackEndService {
         }
         return true;
       };
-      const whereChartData = (record, item) => {
-        return (
-          record.coin === item.coin
-          && record.currency === item.currency
-          && record.period === item.period
-        );
-      };
 
       if (checkChartDataExists(coin, chartData)) {
         Prices.$update({
-          where: (record) => {
-            return whereChartData(record, {
-              coin,
-              currency: selectedCurrency.code,
-              period,
-            });
-          },
           data: {
+            coin,
+            currency: selectedCurrency.code,
+            period,
             updated: +new Date(),
             data: chartData,
           },

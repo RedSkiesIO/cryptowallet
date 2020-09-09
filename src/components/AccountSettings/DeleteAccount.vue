@@ -170,7 +170,7 @@ export default {
 
         if (wasDefault && this.accounts.length > 0) {
           Account.$update({
-            where: (record) => { return record.id === this.accounts[0].id; },
+            where: this.accounts[0].id,
             data: { default: true },
           });
         }

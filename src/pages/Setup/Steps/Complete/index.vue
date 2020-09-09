@@ -155,7 +155,7 @@ export default {
       } = await this.discoverWallet(initializedWallet, coinSDK, wallet.network, wallet.sdk);
 
       Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+        where: wallet.id,
         data: {
           externalChainAddressIndex: 0,
           internalChainAddressIndex: 0,
@@ -208,7 +208,7 @@ export default {
       }
 
       Wallet.$update({
-        where: (record) => { return record.id === wallet.id; },
+        where: wallet.id,
         data: { imported: success, enabled: success },
       });
       return walletAddress;

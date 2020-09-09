@@ -46,11 +46,12 @@ class RefreshWalletWorker {
 
     function updateTxs(txs, walletId) {
       txs.forEach((tx) => {
+        const txId = Tx.query()
+          .where('hash', tx.hash)
+          .where('wallet_id', walletId)
+          .get()[0].id;
         Tx.$update({
-          where: (record) => {
-            return record.hash === tx.hash
-            && record.wallet_id === walletId;
-          },
+          where: txId,
           data: tx,
         });
       });
@@ -71,13 +72,13 @@ class RefreshWalletWorker {
     function updateWallet(walletId, option) {
       if (option.newBalance) {
         Wallet.$update({
-          where: (record) => { return record.id === walletId; },
+          where: walletId,
           data: { confirmedBalance: parseFloat(option.newBalance) },
         });
       }
       if (option.addr) {
         Wallet.$update({
-          where: (record) => { return record.id === walletId; },
+          where: walletId,
           data: {
             externalChainAddressIndex: option.addr.index,
             externalAddress: option.addr.address,

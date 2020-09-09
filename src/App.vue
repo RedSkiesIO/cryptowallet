@@ -35,6 +35,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { hydrateStore } from '@/store';
 import LoadingScreen from '@/components/LoadingScreen';
 import Coin from '@/store/wallet/entities/coin';
 
@@ -94,28 +95,33 @@ export default {
     accounts() {
       return this.$store.getters['entities/account/query']().get();
     },
-    supportedCoins() {
-      return this.$store.state.settings.supportedCoins;
-    },
-    isDarkMode() {
-      const user = this.accounts.find((account) => {
+    account() {
+      return this.accounts.find((account) => {
         return account.name === this.settings.selectedAccount;
       });
-      return user ? user.darkMode : false;
+    },
+    supportedCoins() {
+      return this.$store.state.settings.supportedCoins;
     },
   },
 
   watch: {
+    account: {
+      handler() {
+        if (this.account.darkMode) { this.$q.dark.set(this.account.darkMode); }
+      },
+    },
+
+
     /**
      * Waits until hydration is completed,
      * If there are no Accounts, got to setup
      */
+
     'settings.loading': {
       async handler() {
         if (this.accounts.length < 1) {
           this.$router.push({ path: '/setup/0' });
-        } else {
-          this.$q.dark.set(this.isDarkMode);
         }
         await Coin.fetchIcons();
         this.storeSupportedCoins();
@@ -155,6 +161,7 @@ export default {
   async mounted() {
     window.store = this.$store;
     window.app = this;
+    await hydrateStore();
     if (window.cordova) {
       StatusBar.overlaysWebView(true);
       StatusBar.styleDefault();
@@ -195,7 +202,7 @@ export default {
           });
         } else {
           Coin.$update({
-            where: (record) => { return record.name === isThere.name; },
+            where: isThere.id,
             data,
           });
         }

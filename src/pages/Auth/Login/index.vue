@@ -102,7 +102,7 @@ export default {
             });
             this.$i18n.locale = this.account.locale;
             this.$store.dispatch('settings/setCurrency', currency);
-            await this.decryptData(this.account.id, this.pin.join(''));
+            // await this.decryptData(this.account.id, this.pin.join(''));
             await this.initializeWallets(this.account.id);
             Object.getPrototypeOf(this.$root).backEndService = new this.BackEndService(this.$root, this.account.id, this.pin.join(''));
             // Object.getPrototypeOf(this.$root).$walletWorker = await new WalletWorker();

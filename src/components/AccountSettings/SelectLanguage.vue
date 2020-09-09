@@ -73,7 +73,7 @@ export default {
       },
       set(newLocale) {
         Account.$update({
-          where: (record) => { return record.id === this.authenticatedAccount; },
+          where: this.authenticatedAccount,
           data: { locale: newLocale },
         });
         this.$i18n.locale = newLocale;

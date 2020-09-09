@@ -32,13 +32,16 @@ export class Ramp {
     this.config = {
       hostAppName: 'Cent',
       hostLogoUrl: 'https://ramp-website.netlify.app/assets/images/Logo.svg',
-      hostApiKey: 'bbt5vhccp62ryb92zfgetrdtwtwqdx78e28qap4m',
       // swapAsset: wallet.symbol,
       userAddress: wallet.externalAddress,
       userEmailAddress: account.email || '',
       variant: 'mobile',
     };
-    if (testnet) { this.config.url = 'https://ri-widget-staging.firebaseapp.com/'; }
+    if (testnet) {
+      this.config.url = 'https://ri-widget-staging.firebaseapp.com/';
+    } else {
+      this.config.hostApiKey = 'bbt5vhccp62ryb92zfgetrdtwtwqdx78e28qap4m';
+    }
   }
 
   open() {
@@ -109,9 +112,7 @@ export class Ramp {
 
   static handleOrderSuccess(order) {
     Payments.$update({
-      where: (record) => {
-        return record.id === order.status.id;
-      },
+      where: order.status.id,
       data: {
         event: order.type,
         status: order.type,

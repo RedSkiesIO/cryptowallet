@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import { mount } from '@vue/test-utils';
-import SendEtehreum from '@/components/Wallet/SendCoin/SendEtehreum.vue';
+import SendEthereum from '@/components/Wallet/SendCoin/SendEthereum.vue';
 import { localVue, i18n, createRouter } from '@/helpers/SetupLocalVue';
 import { createMocks as createStoreMocks } from '@/store/__mocks__/store.js';
 import Wallet from '@/store/wallet/entities/wallet';
@@ -71,7 +71,7 @@ describe('SendEthereum component', () => {
   const defaultProps = {};
 
   function wrapperInit(options) {
-    return mount(SendEtehreum, options);
+    return mount(SendEthereum, options);
   }
 
   function storeInit(custom, propsData, id = 3) {

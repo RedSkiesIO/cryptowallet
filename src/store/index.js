@@ -1,7 +1,14 @@
+/* eslint-disable no-underscore-dangle */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexORM from '@vuex-orm/core';
-import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
+// import VuexORMLoki from '@atlascity/vuex-orm-plugin-lokijs';
+// import VuexORMLocalForage from 'vuex-orm-localforage';
+import VuexORMCordova from 'vuex-orm-cordova';
+// import localforage from 'localforage';
+// import cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+// import localforage from 'localforage';
+// import cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 // import entities.
 import Account from './wallet/entities/account';
@@ -17,6 +24,20 @@ import Fees from './fees';
 import Payments from './wallet/entities/payments';
 import Token from './wallet/entities/token';
 
+const models = [
+  Account,
+  Address,
+  Tx,
+  Utxo,
+  Wallet,
+  Coin,
+  KeyPair,
+  Prices,
+  LatestPrice,
+  Fees,
+  Payments,
+  Token,
+];
 
 // import modules.
 import settings from './settings';
@@ -29,18 +50,22 @@ Vue.use(Vuex);
 // Setup ORM database.
 const database = new VuexORM.Database();
 
-database.register(Account, {});
-database.register(Address, {});
-database.register(Tx, {});
-database.register(Utxo, {});
-database.register(Wallet, {});
-database.register(Coin, {});
-database.register(KeyPair, {});
-database.register(Prices, {});
-database.register(LatestPrice, {});
-database.register(Fees, {});
-database.register(Payments, {});
-database.register(Token, {});
+models.forEach((model) => {
+  database.register(model, {});
+});
+
+// database.register(Account, {});
+// database.register(Address, {});
+// database.register(Tx, {});
+// database.register(Utxo, {});
+// database.register(Wallet, {});
+// database.register(Coin, {});
+// database.register(KeyPair, {});
+// database.register(Prices, {});
+// database.register(LatestPrice, {});
+// database.register(Fees, {});
+// database.register(Payments, {});
+// database.register(Token, {});
 
 Vue.prototype.encryptedModels = [
   Account,
@@ -61,9 +86,22 @@ if (process.env.DEV) {
   window.Token = Token;
 }
 
-const options = {
-  env: 'browser',
-};
+// const options = {
+//   env: 'browser',
+// };
+
+VuexORM.use(VuexORMCordova, {
+  database,
+  actions: {
+    $get: '$get',
+    $fetch: '$fetch',
+    $create: '$insert',
+    $update: '$update',
+    $replace: '$create',
+    $delete: '$delete',
+    $deleteAll: '$deleteAll',
+  },
+});
 
 /**
  * Create CryptoWallet Vuex store obj.
@@ -86,7 +124,17 @@ function hydrationCompletedCallback() {
   }, delay);
 }
 
-VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
+export async function hydrateStore() {
+  const promises = [];
+  models.forEach((model) => {
+    promises.push(model.$fetch());
+  });
+  await Promise.all(promises);
+  hydrationCompletedCallback();
+}
+
+// VuexORM.use(VuexORMLoki, { database, options, hydrationCompletedCallback });
+
 
 Vue.prototype.activeWallets = {};
 

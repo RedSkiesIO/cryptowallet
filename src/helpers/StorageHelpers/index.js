@@ -44,7 +44,7 @@ export async function storeERC20Wallet(wallet, ERC20SDK) {
     const found = findWallet[0];
     if (balance !== found.confirmedBalance) {
       await Wallet.$update({
-        where: (record) => { return record.contractAddress === wallet.contractAddress; },
+        where: found.id,
         data: {
           confirmedBalance: balance,
           imported: true,
@@ -80,10 +80,7 @@ export async function storeTx(tx) {
 
   if (findTx.length > 0) {
     await Tx.$update({
-      where: (record) => {
-        return (record.hash === tx.hash)
-        && (record.account_id === tx.account_id);
-      },
+      where: findTx[0].id,
       data: tx,
     });
     return findTx[0].id;

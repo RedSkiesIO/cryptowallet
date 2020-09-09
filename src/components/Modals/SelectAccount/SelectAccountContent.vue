@@ -44,7 +44,8 @@
             :label="$t('default')"
             @input="defaultAccountChange({
               val: account.default,
-              name: account.name
+              name: account.name,
+              id: account.id
             })"
           />
         </div>
@@ -87,18 +88,20 @@ export default {
     },
     defaultAccountChange(data) {
       if (data.val) {
-        Account.$update({
-          where: () => { return true; },
-          data: { default: false },
+        this.accounts.forEach((account) => {
+          Account.$update({
+            where: account.id,
+            data: { default: false },
+          });
         });
 
         Account.$update({
-          where: (record) => { return record.name === data.name; },
+          where: data.val.id,
           data: { default: true },
         });
       } else {
         Account.$update({
-          where: (record) => { return record.name === data.name; },
+          where: data.id,
           data: { default: true },
         });
       }
