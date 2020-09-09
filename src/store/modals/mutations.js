@@ -3,14 +3,14 @@ function changeStatusBarColour(payload) {
     StatusBar.styleDefault();
     if (cordova.platformId === 'android') {
       // StatusBar.backgroundColorByHexString('#f5f5f5');
-      NavigationBar.backgroundColorByHexString('#f5f5f5', true);
+      // NavigationBar.backgroundColorByHexString('#f5f5f5', true);
     }
   } else if (payload === false && window.cordova) {
     StatusBar.styleDefault();
     if (cordova.platformId === 'android') {
       StatusBar.overlaysWebView(true);
       // StatusBar.backgroundColorByHexString('#dd3dff');
-      NavigationBar.backgroundColorByHexString('#dd3dff');
+      NavigationBar.backgroundColorByHexString('#000000');
     }
   }
 }

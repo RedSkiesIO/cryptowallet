@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="account">
     <!-- <div
       class="settings-row"
       @click.prevent="openSelectLanguageModal"
@@ -94,7 +94,7 @@
         />
       </div>
     </div>
-    <ToggleTestnets v-if="!account.demoMode" />
+    <ToggleTestnets v-if="!demoMode" />
     <ToggleDarkMode />
     <div
       class="settings-row"
@@ -140,14 +140,17 @@
     /> -->
 
     <SelectCurrency
+      v-if="account"
       :current-currency="account.currency"
     />
 
     <Pin
+      v-if="account"
       :pin-hash="account.pinHash"
     />
 
     <DeleteAccount
+      v-if="account"
       :pin-hash="account.pinHash"
     />
     <UpdateEmail v-if="updateEmailEnabled" />
@@ -190,6 +193,10 @@ export default {
     },
     email() {
       if (this.account) { return this.account.email; }
+      return null;
+    },
+    demoMode() {
+      if (this.account) { return this.account.demoMode; }
       return null;
     },
     updateEmailEnabled() {
