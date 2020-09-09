@@ -286,6 +286,9 @@ export default {
     this.$root.$on('isHomeBalanceVisible', (value) => {
       this.isBalanceVisible = value;
     });
+    if (this.account) {
+      this.$q.dark.set(this.account.darkMode);
+    }
   },
 
   methods: {
