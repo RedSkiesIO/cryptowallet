@@ -40,7 +40,7 @@ export class Ramp {
     if (testnet) {
       this.config.url = 'https://ri-widget-staging.firebaseapp.com/';
     } else {
-      this.config.hostApiKey = 'bbt5vhccp62ryb92zfgetrdtwtwqdx78e28qap4m';
+      this.config.hostApiKey = process.env.RAMP_KEY;
     }
   }
 
